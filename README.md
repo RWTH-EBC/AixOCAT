@@ -1,4 +1,4 @@
-![E.ON EBC RWTH Aachen University](./AixOCAT/Resources/Images/EBC_Logo.png)
+![E.ON EBC RWTH Aachen University](./Resources/Images/EBC_Logo.png)
 
 # AixOCAT - Library framework for building automation systems based on the OSCAT libraries
 
