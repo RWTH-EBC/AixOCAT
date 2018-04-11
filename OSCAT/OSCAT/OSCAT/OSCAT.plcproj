@@ -17,8 +17,9 @@
     <CombineIds>false</CombineIds>
     <Released>true</Released>
     <ProjectVersion>1.0.0</ProjectVersion>
-    <Company>RWTH Aachen University; E.ON Energy Research Center</Company>
-    <Title>AixOCAT</Title>
+    <Company>RWTH Aachen University - E.ON Energy Research Center</Company>
+    <Title>OSCAT</Title>
+    <Description>This library is based on the OSCAT library (http://www.oscat.de/)</Description>
     <!--    <OutputType>Exe</OutputType>
     <RootNamespace>MyApplication</RootNamespace>
     <AssemblyName>MyApplication</AssemblyName>-->
