@@ -64,8 +64,7 @@ Coming soon!
 
 AixOCAT is released by RWTH Aachen University, E.ON Energy
 Research Center, Institute for Energy Efficient Buildings and Indoor Climate,
-under the
-[MIT License](https://github.com/RWTH-EBC/AixOCAT/blob/master/License.md).
+under the MIT License
 
 ## Acknowledgements
 
