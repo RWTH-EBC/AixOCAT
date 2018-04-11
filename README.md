@@ -44,7 +44,13 @@ Visual Studio?
 
 The best option to install AixOCAT is:
 
-`do something`
+## How to install the OSCAT library
+
+
+Library Installation in [TwinCAT 3](https://infosys.beckhoff.com/english.php?content=../content/1033/tcplclibs_overviewtc3/html/tcplclibs_intro.htm&id=7464068842448702627)
+
+Library Installation in [Codesys](https://help.codesys.com/webapp/_cds_struct_installing_libraries;product=codesys;version=3.5.12.0)
+
 
 If you actively develop AixOCAT you can clone this repository by using:
 
