@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ISC_HEX" Id="{3b69dca6-e8b7-433b-91eb-e03835f37c3c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ISC_HEX : BOOL
+VAR_INPUT
+	IN : BYTE;
+END_VAR
+
+
+(*
+version 1.0	6. mar 2008
+programmer 	oscat
+tested by		hugo
+
+ISC_HEX checks if a character is 0..9, A..F, a..f.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ISC_HEX := (IN > 47 AND IN < 58) OR (IN > 64 AND IN < 71) OR (IN > 96 AND IN < 103);
+
+(* revision history
+hm		6. mar. 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="ISC_HEX">
+      <LineId Id="14" Count="6" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

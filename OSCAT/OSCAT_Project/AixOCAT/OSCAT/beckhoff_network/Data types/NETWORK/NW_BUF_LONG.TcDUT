@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="NW_BUF_LONG" Id="{c232f67b-932e-4a6d-a7c2-44c6a0c2b51d}">
+    <Declaration><![CDATA[TYPE
+	NW_BUF_LONG  : ARRAY[0..NETWORK_BUFFER_LONG_SIZE] OF BYTE;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

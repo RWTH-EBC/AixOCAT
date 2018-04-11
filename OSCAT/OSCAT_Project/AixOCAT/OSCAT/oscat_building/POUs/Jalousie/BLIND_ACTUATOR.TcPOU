@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BLIND_ACTUATOR" Id="{c3967a3a-063d-4cad-8736-170bb51fb91a}" SpecialFunc="None">
+    <Declaration><![CDATA[ FUNCTION_BLOCK BLIND_ACTUATOR
+VAR_INPUT
+	UP, DN : BOOL;
+	S_IN : BYTE;
+	T_UD : TIME := T#10s;
+	T_ANGLE : TIME := T#3s;
+END_VAR
+VAR_INPUT CONSTANT
+	T_LOCKOUT : TIME := t#100ms;
+END_VAR
+VAR_OUTPUT
+	POS, ANG : BYTE;
+	QU, QD : BOOL;
+	STATUS : BYTE;
+END_VAR
+VAR
+	position, angle : RMP_B;
+	lock : INTERLOCK;
+END_VAR
+
+(*
+version 1.4	08. mar. 2010
+programmer 	AE
+tested by	AE
+
+
+blind actuator drives the up and down motor of a blind. T_lockout specifies the time between up or dn becomes active. 
+To change direction there must be a minimum wait time to allow the motors to come to rest first.
+the up and down outputs QU and QD are controlled by the inputs UP and DN.
+the outputs pos and ang simulate the position of the blind pos = 0 means blind is down and pos = 255 = blind is up.
+the angle 0 means vertical posisition of the slates and 255 means horizontal position of the slates.
+
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* make sure only one motor is active at a given time *)
+lock(i1 := UP, I2 := DN, TL := T_lockout);
+
+(* ramp up or down to simulate the angle position of the blind slats *)
+angle(e := lock.Q1 OR lock.Q2, UP := lock.Q1, PT := T_Angle);
+position(e := lock.Q1 AND angle.high OR lock.Q2 AND angle.low, up := lock.Q1, PT := T_UD);
+
+(* set the outputs *)
+pos := position.Out;
+ang := angle.Out;
+
+(* set the outputs *)
+QU := lock.Q1;
+QD := lock.Q2;
+
+(* set the status output *)
+IF UP AND DN THEN
+	 status := 1;			(* error up and down together are not allowed *)
+ELSIF UP THEN
+	status := 121;
+ELSIF DN THEN
+	status := 122;
+ELSE
+	status := S_IN;
+END_IF;
+
+
+(* revision history
+hm	29. sep 2007	rev 1.0
+	original release
+
+hm	6. oct 2007	rev 1.1
+	rearanged outputs
+
+hm	18. oct. 2008	rev 1.2
+	changed calls for rmp_B because of change in RMP_B
+
+hm	27. jul. 2009	rev 1.3
+	changes status to be 12X
+
+ae	08. mar. 2010 rev 1.4	
+	at aPosition
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BLIND_ACTUATOR">
+      <LineId Id="34" Count="43" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

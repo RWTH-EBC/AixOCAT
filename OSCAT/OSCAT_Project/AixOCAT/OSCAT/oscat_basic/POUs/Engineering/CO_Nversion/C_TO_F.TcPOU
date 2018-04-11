@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="C_TO_F" Id="{f120bff4-4239-4a2a-bc89-8802355ce506}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION C_TO_F : REAL
+VAR_INPUT
+	celsius : REAL;
+END_VAR
+
+
+(*
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function converts celsius  to fahrenheit 
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[C_TO_F := celsius * 1.8 + 32.0;
+
+
+(* revision history
+
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="C_TO_F">
+      <LineId Id="14" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

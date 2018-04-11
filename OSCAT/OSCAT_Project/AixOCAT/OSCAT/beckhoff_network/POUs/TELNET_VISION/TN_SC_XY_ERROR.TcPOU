@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TN_SC_XY_ERROR" Id="{c54946b3-76c3-4173-b0c5-d4df14c77248}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION TN_SC_XY_ERROR : BOOL
+VAR_INPUT
+	X : INT;
+	Y : INT;
+END_VAR
+
+(*
+version 1.0		10. mai 2010
+programmer		ks
+tested by		ks
+
+TN_SC_XY_ERROR prüft ob die angegenene Koordinaten gültig sind 
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* min und max werte prüfen *)
+TN_SC_XY_ERROR := Y < 0 OR X < 0 OR Y > 23 OR X > 79;
+
+(* revision history
+ks	10. mai. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TN_SC_XY_ERROR">
+      <LineId Id="14" Count="6" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="RES_SI" Id="{749af293-a3b2-4854-be61-4af4fbdb8476}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION RES_SI : REAL
+VAR_INPUT
+	T : REAL;
+	RS : REAL;
+	TS : REAL;
+END_VAR
+VAR CONSTANT
+	A : REAL := 7.64E-3;
+	B : REAL := 1.66E-5;
+END_VAR
+VAR
+	TX: REAL;
+END_VAR
+
+(*
+version 1.2	11. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function returs the resistance for a silicon sensor for a temperature range from -50..+150 °C
+for example KTY10 normaly Rs at 25 °C
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TX := T - TS;
+RES_SI := RS * ( 1.0 + A * TX + B * TX * TX);
+
+(* revision history
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	2. dec 2007	rev 1.1
+	changed code for better performance
+
+hm	11. mar. 2009	rev 1.2
+	changed real constants to use dot syntax
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="RES_SI">
+      <LineId Id="22" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

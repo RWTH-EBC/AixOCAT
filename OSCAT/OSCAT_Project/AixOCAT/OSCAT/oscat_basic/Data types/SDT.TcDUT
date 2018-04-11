@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="SDT" Id="{a7f09b4c-caeb-4613-87e8-e06f9203fc9d}">
+    <Declaration><![CDATA[TYPE SDT :
+STRUCT
+	YEAR : INT;
+	MONTH : INT;
+	DAY : INT;
+	WEEKDAY : INT;
+	HOUR : INT;
+	MINUTE : INT;
+	SECOND : INT;
+	MS : INT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

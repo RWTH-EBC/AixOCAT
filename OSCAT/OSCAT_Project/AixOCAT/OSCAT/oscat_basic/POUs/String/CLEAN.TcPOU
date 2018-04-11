@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CLEAN" Id="{0d0656f4-0eb0-403b-a8e4-fbaf0d7657c6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CLEAN : STRING(STRING_LENGTH)
+VAR_INPUT
+	IN : STRING(STRING_LENGTH);
+	CX : STRING(80);
+END_VAR
+VAR
+	pos: INT := 1;
+	stop: INT;
+END_VAR
+
+
+(*
+version 1.0	18. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+Clean deletes all characters from a string except the ones specified in CX.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* copy input string *)
+CLEAN := IN;
+stop := LEN(in);
+WHILE pos <= stop DO
+	IF FIND(cx, MID(CLEAN, 1, pos)) > 0 THEN
+		(* charcter found skip to next one *)
+		pos := pos + 1;
+	ELSE
+		(* wrong chracter needs to be deleted *)
+		CLEAN := DELETE(CLEAN, 1, pos);
+		stop := stop - 1;	(* the string is one character shorter now *)
+	END_IF;
+END_WHILE;
+
+
+
+(* revision history
+
+hm		18. jun. 2008	rev 1.0		
+	original version 
+
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CLEAN">
+      <LineId Id="20" Count="22" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

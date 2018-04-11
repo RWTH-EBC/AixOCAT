@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FT_DERIV" Id="{54e4cd72-533d-4c27-84ab-0678e9508a0a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FT_DERIV
+VAR_INPUT
+	in : REAL;
+	K : REAL := 1.0;
+	run : BOOL := TRUE;
+END_VAR
+VAR_OUTPUT
+	out : REAL;
+END_VAR
+VAR
+	old: REAL;
+	tx: DWORD;
+	last: DWORD;
+	init: BOOL;
+	tc: REAL;
+END_VAR
+
+
+(*
+version 1.5	11. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+FT_deriv calculates the derivate over the signal "in" with Faktor "K".
+a run input enables or stops the calculation, if left unconnected its true and therfore the calculation is executed.
+if K is not specified the default is 1.
+
+*)
+
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* read system time *)
+tx := T_PLC_US();
+tc := DWORD_TO_REAL(tx - last);
+last := tx;
+
+(* init on first startup *)
+IF NOT init THEN
+	init := TRUE;
+	old := in;
+ELSIF run AND tc > 0.0 THEN
+	out := (in - old) / tc * 1000000.0 * K;
+	old := in;
+ELSE
+	out := 0.0;
+END_IF;
+
+
+
+(*
+hm 3.1.2007			rev 1.1
+	added init code for startup
+	set the default for K to 1
+
+hm	15. sep 2007	rev 1.2
+	replaced Time() with T_PLC_US for compatibility and performance reasons
+	increased accuracy and work in microseconds internally
+
+hm 29 oct 2007	rev 1.3
+	prohibit calculation when tx - last = 0 to avoid division by 0 and increase accuracy on fast systems
+
+hm	6. nov. 2008	rev 1.4
+	improved performance
+
+hm	11. mar. 2009	rev 1.5
+	inproved code
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="FT_DERIV">
+      <LineId Id="31" Count="35" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DAYS_IN_YEAR" Id="{71d4c627-b3eb-4261-bba4-974c696dd6f8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DAYS_IN_YEAR : INT
+VAR_INPUT
+	IDATE : DATE;
+END_VAR
+
+
+(*
+version 1.0	27. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+returs the total days of the year.
+the function retruns 366 for leap years and 365 otherwise.
+the function works for dates from 1970 - 2099
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF LEAP_OF_DATE(IDATE) THEN
+	DAYS_IN_YEAR := 366;
+ELSE
+	DAYS_IN_YEAR := 365;
+END_IF;
+
+
+(* revision history
+hm	27. mar. 2009		rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DAYS_IN_YEAR">
+      <LineId Id="18" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

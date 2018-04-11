@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DEG" Id="{14320fe7-5b4f-46a2-af27-80df3a8448eb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DEG : REAL
+VAR_INPUT
+	rad : REAL;
+END_VAR
+
+
+(*
+version 1.2	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function converts degrees into Radiant
+execution time on wago 750 - 841 =  10  us
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DEG := MODR(57.29577951308232 * RAD, 360.0);
+
+(* revision history
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm 16. oct 2007	rev 1.1
+	added modr statement which prohibits deg to become bigger than 360
+
+hm	10. mar. 2009	rev 1.2
+	real constants updated to new systax using dot
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DEG">
+      <LineId Id="14" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

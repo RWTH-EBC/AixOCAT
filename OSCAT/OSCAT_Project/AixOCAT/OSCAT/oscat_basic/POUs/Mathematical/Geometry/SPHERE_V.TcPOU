@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SPHERE_V" Id="{ab3e9c07-eb58-4362-956d-9953cd53aaa1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SPHERE_V : REAL
+VAR_INPUT
+	rx : REAL;
+END_VAR
+
+
+(*
+version 1.2	22. feb 2008
+programmer 	hugo
+tested by		tobias
+
+sphere_V calculates the Volume of a Sphere
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sphere_V := 4.188790205 * Rx * RX * RX;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	4. dec 2007		rev 1.1
+	changed code for better performance
+
+hm	22. feb 2008		rev 1.2
+	changed code for better performance
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="SPHERE_V">
+      <LineId Id="16" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

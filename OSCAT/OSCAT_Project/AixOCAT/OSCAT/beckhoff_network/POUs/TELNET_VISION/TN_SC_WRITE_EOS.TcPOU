@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TN_SC_WRITE_EOS" Id="{054cd4c1-b1a5-4de8-9f4c-9c8d79349c0b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TN_SC_WRITE_EOS
+VAR
+	TN_SC_WRITE : TN_SC_WRITE;
+END_VAR
+VAR_INPUT
+	Iby_ATTR : BYTE;
+	Ist_STRING : STRING;
+END_VAR
+VAR_IN_OUT
+	Xus_TN_SCREEN : us_TN_SCREEN;
+END_VAR
+
+(*
+version 1.0		10. mai 2010
+programmer		ks
+tested by		ks
+
+TN_SC_WRITE_EOS schreibt einem Text an das Ende des zuletzt geschreibene Texts 
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TN_SC_WRITE(Iin_Y := Xus_TN_SCREEN.in_EOS_Offset / 80, (* aktuelle Zeile ausrechnen *)
+			Iin_X := Xus_TN_SCREEN.in_EOS_Offset MOD 80, (* aktuelle Spalte ausrechnen *)
+			Iby_ATTR := Iby_ATTR,
+			Ist_STRING := Ist_STRING,
+			Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+(* revision history
+ks	10. mai. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TN_SC_WRITE_EOS">
+      <LineId Id="20" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

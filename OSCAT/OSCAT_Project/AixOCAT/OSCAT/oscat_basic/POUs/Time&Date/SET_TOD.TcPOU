@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SET_TOD" Id="{c92650c3-cafb-4da5-b24d-0239958b9b7c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SET_TOD : TOD
+VAR_INPUT
+	hour : INT;
+	minute : INT;
+	second : REAL;
+END_VAR
+
+
+(*
+version 1.5	16. mar 2008
+programmer 	hugo
+tested by	tobias
+
+creates tod from hour minute and second 
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SET_TOD := DWORD_TO_TOD(REAL_TO_DWORD(SECOND * 1000.0) + INT_TO_DWORD(MINUTE) * 60000 + INT_TO_DWORD(HOUR) * 3600000);
+
+(* revision history
+
+hm		4.aug.2006		rev 1.0
+	original version
+
+hm		11. sep 2007	rev 1.1
+	changed coding to avoid a compiler warning under twincat.
+
+hm		1. nov 2007	rev 1.2
+	changed coding to avoid possible overrun situation on möller ecp4
+
+hm		2. Nov	2007	rev 1.3
+	changed dword to DINT in calcualtion to avoid warnings with some compilers
+
+hm		14. mar 2008	rev 1.4
+	changed code to avoid rounding problem at last digit of millisecond
+
+hm		16. mar. 2008	rev 1.5
+	added type conversions to avoid warning under codesys 3.0
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SET_TOD">
+      <LineId Id="16" Count="21" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

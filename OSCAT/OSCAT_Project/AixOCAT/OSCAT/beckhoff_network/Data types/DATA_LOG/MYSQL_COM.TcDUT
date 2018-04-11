@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="MYSQL_COM" Id="{76a31c4f-2123-4b22-a1e4-08602d0a9d4b}">
+    <Declaration><![CDATA[TYPE MYSQL_COM :
+STRUCT
+	SERVER_PROTOCOL_VERSION : BYTE;
+	SERVER_CAPABILITIES : WORD;
+	SERVER_STATUS : WORD;
+	SERVER_LANGUAGE : BYTE;
+	S_BUF : NETWORK_BUFFER;
+	R_BUF : NETWORK_BUFFER;
+
+	(* eingänge *)
+	SQL_CON : BOOL;
+	SQL_START : BOOL;
+	SQL_URL : STRING(STRING_LENGTH);
+	SQL_PACKET_NO : BYTE;
+
+	TIMEOUT : TIME;
+	DNS_IP4 : DWORD;
+
+	(* ausgänge *)
+	SQL_LOGGED_IN : BOOL;
+	SQL_RCV_STATE : BYTE;
+	SQL_ERROR : STRING(STRING_LENGTH);
+	ERROR_C : DWORD;
+	ERROR_T : BYTE;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

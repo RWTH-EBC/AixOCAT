@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DLOG_BOOL" Id="{9684607a-caaa-40dd-9bc0-a992d8474bbe}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DLOG_BOOL
+VAR_IN_OUT
+	X : DLOG_DATA;
+END_VAR
+VAR_INPUT
+	STATE : BOOL;
+	OFF : STRING;
+	ON : STRING;
+	COLUMN : STRING(40);
+	DELTA : BOOL;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	UCB : UNI_CIRCULAR_BUFFER;
+	init : BOOL;
+	id : WORD;
+	last_delta : BOOL;
+	state_last: BOOL;
+END_VAR
+
+(*
+version 1.1		25. july. 2011
+programmer		ks
+tested by			ks
+
+DLOG_BOOL legt den ON/OFF Text im FIFO-RING-Buffer ab um diesen mit den Baustein DLOG_STORE_*  aufzuzeichnen
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT init THEN
+	init := TRUE;
+	X.ID_MAX := X.ID_MAX + 1;
+	id := WORD#16#0601; (* Quelltype BOOL , Zieltype STRING *)
+END_IF;
+
+IF X.ADD_HEADER THEN
+	X.UCB.D_STRING := COLUMN;
+	X.UCB.D_HEAD := id;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Daten eintragen *)
+ELSIF X.ADD_DATA THEN
+	X.UCB.D_STRING := SEL(state_last,OFF,ON);
+	X.UCB.D_HEAD := id;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Daten eintragen *)
+	last_delta := STATE;
+ELSIF DELTA AND (STATE XOR last_delta) THEN
+	X.ADD_DATA_REQ := TRUE;
+	last_delta := STATE;
+END_IF;
+state_last := STATE;
+
+(* revision history
+ks	17. may. 2011	rev 1.0
+	original version
+
+ks	25. july.   2011	rev 1.1
+	neue head information
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DLOG_BOOL">
+      <LineId Id="29" Count="29" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="GEN_PULSE" Id="{a705c1ba-fbca-4578-9de9-b061f5732b5b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK GEN_PULSE
+VAR_INPUT
+	ENQ : BOOL := TRUE;
+	PTH : TIME;
+	PTL : TIME;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+END_VAR
+VAR
+	tx: TIME;
+	tn: TIME;
+	init: BOOL;
+END_VAR
+
+(*
+version 1.5	8. apr. 2011
+programmer 	hugo
+tested by		oscat
+
+GEN_PULSE uses the internal sps timer to generate a continuous output waveform with programmable high and low time.
+the accuracy of gen_pulse is depending on the system timer.
+when time is 0 the high and low times are exactly one cycle.
+ENQ = TRUE will start and ENQ = FALSE will stop the generator.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF enq THEN
+	tx := DWORD_TO_TIME(T_PLC_MS());
+	IF NOT init THEN init := TRUE; tn := tx; END_IF;
+	IF tx - tn >= SEL(Q, PTL, PTH) THEN
+		tn := tn + SEL(Q, PTL, PTH);
+		Q := NOT Q;
+	END_IF;
+ELSE
+	Q := FALSE;
+	init := FALSE;
+END_IF;
+
+
+(* revision history
+hm	29. jun. 2008	rev 1.0
+	original version
+
+hm	23. nov. 2008	rev 1.1
+	set default for enq to be true
+
+hm	18. jul. 2009	rev 1.2
+	improved performance
+
+hm	13. nov. 2009	rev 1.3
+	corrected error
+
+hm	16. feb. 2011	rev 1.4
+	corrected an error when timer overflows
+
+hm	8. apr. 2011	rev 1.5
+	ptl and pth was exchanged
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="GEN_PULSE">
+      <LineId Id="26" Count="31" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

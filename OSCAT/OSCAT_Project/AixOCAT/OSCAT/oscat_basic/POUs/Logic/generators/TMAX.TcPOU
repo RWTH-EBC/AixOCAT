@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TMAX" Id="{574139da-ad50-4816-b936-3c9fc5670b36}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TMAX
+VAR_INPUT
+	IN : BOOL;
+	PT : TIME;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+	Z : BOOL;
+END_VAR
+VAR
+	tx : TIME;
+	start : TIME;
+	last_in: BOOL;
+END_VAR
+
+(*
+version 1.0	20. jul. 2008
+programmer 	hugo
+tested by	oscat
+
+Q of tmax will follow IN except that it forces a maximum ontime for the output Q.
+the output Z will be active for one cycle if the output is forced low by the timeout.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* read system timer *)
+tx := DWORD_TO_TIME(T_PLC_MS());
+
+Z := FALSE;
+
+IF NOT in THEN
+	Q := FALSE;
+ELSIF IN AND NOT last_in THEN
+	Q := TRUE;
+	start := tx;
+ELSIF (tx - start >= PT) AND Q THEN
+	Q := FALSE;
+	Z := TRUE;
+END_IF;
+
+last_in := IN;
+
+
+
+(* revision history
+hm	20. jul. 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TMAX">
+      <LineId Id="25" Count="23" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

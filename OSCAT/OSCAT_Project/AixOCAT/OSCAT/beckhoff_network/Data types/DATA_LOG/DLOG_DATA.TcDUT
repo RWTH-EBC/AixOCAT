@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="DLOG_DATA" Id="{5ce8bdd3-0cb2-4d18-a195-e57abfcded2e}">
+    <Declaration><![CDATA[TYPE DLOG_DATA :
+STRUCT
+	STORE_TYPE : BYTE;
+	ADD_HEADER : BOOL;
+	ADD_DATA : BOOL;
+	ADD_DATA_REQ : BOOL;
+	CLOCK_TRIG : BOOL;
+	ID_MAX : USINT;
+	DTI : DT;
+	UCB : UNI_CIRCULAR_BUFFER_DATA;
+	NEW_FILE : STRING;
+	NEW_FILE_RTRIG : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

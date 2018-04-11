@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TANK_VOL1" Id="{1c5b8dcd-c531-409d-8575-3949b6b78ae0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION TANK_VOL1 : REAL
+VAR_INPUT
+	TR : REAL;
+	TL : REAL;
+	H : REAL;
+END_VAR
+
+
+(*
+version 1.0	10. Mar 2010
+programmer 	hugo
+tested by		tobias
+
+TANK_VOL1 calculates the volume of a tubular tank filled to level H.
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TANK_VOL1 := CIRCLE_SEG(TR, H) * TL;
+
+
+(* revision histroy
+hm	10. mar 2010	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TANK_VOL1">
+      <LineId Id="18" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

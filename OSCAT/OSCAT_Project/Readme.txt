@@ -1,1 +1,0 @@
-Beckhoff Project of the library

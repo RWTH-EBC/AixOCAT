@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BYTE_OF_BIT" Id="{e68547bb-d38a-46a1-be66-24a954760592}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BYTE_OF_BIT : BYTE
+VAR_INPUT
+	B0:BOOL;
+	B1:BOOL;
+	B2:BOOL;
+	B3:BOOL;
+	B4:BOOL;
+	B5:BOOL;
+	B6:BOOL;
+	B7:BOOL;
+END_VAR
+
+
+(*
+version 1.1	 18. feb 2006
+programmer 	hugo
+tested by		tobias
+
+this function creates a byte from 8 individual bits
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Byte_of_bit := SHL(SHL(SHL(SHL(SHL(SHL(SHL(BOOL_TO_BYTE(B7),1) OR BOOL_TO_BYTE(B6),1) OR BOOL_TO_BYTE(B5),1) OR BOOL_TO_BYTE(B4),1)
+	OR BOOL_TO_BYTE(B3),1) OR BOOL_TO_BYTE(B2),1) OR BOOL_TO_BYTE(B1),1) OR BOOL_TO_BYTE(B0);
+
+
+(* revision history
+
+hm	4. aug 2006		rev 1.0
+	original version
+
+hm	18. feb. 2008	rev 1.1
+	improved performance
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BYTE_OF_BIT">
+      <LineId Id="21" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

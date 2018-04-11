@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="PRINTF_DATA" Id="{5a0409a6-a51e-4231-9266-21911b71c8fd}">
+    <Declaration><![CDATA[TYPE PRINTF_DATA : ARRAY [1..11]  OF STRING(LOG_SIZE);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

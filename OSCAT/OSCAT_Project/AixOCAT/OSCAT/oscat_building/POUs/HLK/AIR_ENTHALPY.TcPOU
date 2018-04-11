@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="AIR_ENTHALPY" Id="{5dbe9929-464f-443e-b84c-4fc50694ed01}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION AIR_ENTHALPY : REAL
+VAR_INPUT
+	T : REAL;
+	RH : REAL;
+END_VAR
+VAR CONSTANT
+	CPL : REAL := 1.00482;
+	CW : REAL := 1.86;
+	LH : REAL := 2500.78;
+END_VAR
+
+
+(*
+version 1.1	2 nov 2007
+programmer 	hugo
+tested by		tobias
+
+this function calculates the enthalpy for humid air between 0 and 100 deg C
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[AIR_ENTHALPY := CPL * T + (CW * T + LH) * DEW_CON(RH,T);
+
+(* revision history
+
+hm	31.10.2007	rev 1.0
+	original version
+
+hm	2.11.2007		rev 1.1
+	deleted unused variable RF
+
+hm	2.12.2007		rev 1.2
+	changed code for better performance
+*)
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="AIR_ENTHALPY">
+      <LineId Id="21" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

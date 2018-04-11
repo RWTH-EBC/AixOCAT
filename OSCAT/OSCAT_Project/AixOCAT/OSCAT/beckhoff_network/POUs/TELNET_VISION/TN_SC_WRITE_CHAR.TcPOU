@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TN_SC_WRITE_CHAR" Id="{10fbc496-4c3b-4e0e-a9eb-5a42abf63925}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TN_SC_WRITE_CHAR
+VAR
+	in_Offset : INT;
+END_VAR
+VAR_INPUT
+	Iin_Y : INT;
+	Iin_X : INT;
+	Iby_CHAR : BYTE;
+END_VAR
+VAR_IN_OUT
+	Xus_TN_SCREEN : us_TN_SCREEN;
+END_VAR
+
+(*
+version 1.0		10. mai 2010
+programmer		ks
+tested by		ks
+
+TN_SC_WRITE_CHAR schreibt ein einzelnes Zeichen an die angegebenen Koordinate ohne den vorhandenen Farbcode zu ändern 
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF TN_SC_XY_ERROR(Iin_X,Iin_Y) THEN RETURN; END_IF;
+in_Offset := (Iin_Y * 80) + Iin_X;
+Xus_TN_SCREEN.bya_CHAR[in_Offset] := Iby_CHAR; (* Charakter schreiben *)
+
+(* revision history
+ks	10. mai. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TN_SC_WRITE_CHAR">
+      <LineId Id="21" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

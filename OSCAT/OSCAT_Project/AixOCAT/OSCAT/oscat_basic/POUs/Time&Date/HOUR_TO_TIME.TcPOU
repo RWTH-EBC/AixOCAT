@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="HOUR_TO_TIME" Id="{8312c8d7-a03a-4e90-8ac0-322e69135966}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION HOUR_TO_TIME : TIME
+VAR_INPUT
+	IN : REAL;
+END_VAR
+
+
+(*
+version 1.2	24. feb. 2009
+programmer 	hugo
+tested by		tobias
+
+converts an amount of hours in real to time
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[HOUR_TO_TIME := DWORD_TO_TIME(REAL_TO_DWORD(IN * 3600000));
+
+
+(* revision history
+hm		4. aug 2006	rev 1.0
+	original version
+
+hm	14. mar. 2008	rev 1.1
+	rounded the input after the last digit
+
+hm	24. feb. 2009	rev 1.2
+	changed input to IN
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="HOUR_TO_TIME">
+      <LineId Id="14" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

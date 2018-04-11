@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="WINDOW2" Id="{f8a19065-3aed-4a51-bc32-390eae077192}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION WINDOW2 : BOOL
+VAR_INPUT
+	LOW : REAL;
+	IN : REAL;
+	HIGH : REAL;
+END_VAR
+
+
+(*
+	version 1.0	31 oct 2007
+	programmer 	hugo
+	tested BY	tobias
+
+this checks a signal if the signal is between the upper and lower limit including the two limits
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[WINDOW2 := IN >= LOW AND IN <= HIGH;
+
+
+(* revision history
+hm	31.10.2007	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="WINDOW2">
+      <LineId Id="15" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

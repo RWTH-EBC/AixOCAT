@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MIX" Id="{24d7af3a-bb33-4710-9a91-b1e33309edc2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MIX : REAL
+VAR_INPUT
+	A, B : REAL;
+	M : REAL;
+END_VAR
+
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+MIX is an analog Mixer. The Output is (1-M)*A + M*B.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[MIX := (1.0 - M) * A + M * B;
+
+(* revision history
+hm	19. Nov 2007	rev 1.0
+	original version
+
+hm	10. mar 2009	rev 1.1
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MIX">
+      <LineId Id="16" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

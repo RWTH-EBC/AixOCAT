@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MOON_PHASE" Id="{7920fe47-5cc9-49ef-9676-337957aba789}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MOON_PHASE
+VAR_INPUT
+	XDT : DT;
+	SCALE : BYTE := 12;
+	UPDATE : TIME := T#1h;
+END_VAR
+VAR_OUTPUT
+	PHASE : BYTE;
+END_VAR
+VAR
+	x : UDINT;
+	last_dt : DT;
+END_VAR
+
+(*
+version 1.0		15. may. 2011
+programmer		ks
+tested by			ks
+
+MOON_PHASE berechnet die aktuelle Mondphase
+*)
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF XDT - last_dt > UPDATE THEN
+	x := (DT_TO_UDINT(XDT) - 603240) MOD 2551392;
+	PHASE := UDINT_TO_BYTE(SCALE * x / 2551392) ;
+	last_dt := XDT;
+END_IF;
+
+(* revision history
+ks	15.may. 2011	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MOON_PHASE">
+      <LineId Id="23" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

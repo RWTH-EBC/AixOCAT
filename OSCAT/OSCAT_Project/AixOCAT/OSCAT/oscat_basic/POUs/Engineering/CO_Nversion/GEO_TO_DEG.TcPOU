@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="GEO_TO_DEG" Id="{a114c159-5b57-48b5-9f93-d09e8959c28f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION GEO_TO_DEG : REAL
+VAR_INPUT
+	D : INT;
+	M : INT;
+	SEC : REAL;
+END_VAR
+
+
+(*
+version 1.0	22. jan. 2009
+programmer 	hugo
+tested by		oscat
+
+this function converts degrees, minutes seconds to decimal degrees.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[GEO_TO_DEG := INT_TO_REAL(D) + INT_TO_REAL(M) * 0.016666666666667 + sec * 0.00027777777777778;
+
+
+(* revision histroy
+hm	22. jan. 2009	rev 1.0
+	original release
+
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="GEO_TO_DEG">
+      <LineId Id="16" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

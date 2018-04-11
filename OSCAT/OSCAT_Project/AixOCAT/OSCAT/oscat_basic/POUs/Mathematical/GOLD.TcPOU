@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="GOLD" Id="{29c238b0-59be-4990-ac0b-5c9a6a30112e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION GOLD : REAL
+VAR_INPUT
+	X : REAL;
+END_VAR
+
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the golden function.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[GOLD := (X + SQRT(X*X + 4.0)) * 0.5;
+
+
+(* revision history
+hm	27. apr. 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="GOLD">
+      <LineId Id="14" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

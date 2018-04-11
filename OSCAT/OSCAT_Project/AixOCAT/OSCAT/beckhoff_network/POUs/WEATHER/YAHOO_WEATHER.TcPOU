@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="YAHOO_WEATHER" Id="{0180f772-0d8e-4cd8-a8c3-1817e25e68a9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK YAHOO_WEATHER
+VAR_IN_OUT
+	IP_C : IP_C; (* IP_Control Verwaltungsstruktur *)
+	S_BUF : NETWORK_BUFFER;
+	R_BUF : NETWORK_BUFFER;
+	YW : YAHOO_WEATHER_DATA;
+END_VAR
+VAR_INPUT
+	ACTIVATE : BOOL;
+	UNITS : BOOL;
+	LOCATION : STRING(20);
+END_VAR
+VAR_OUTPUT
+	BUSY : BOOL;
+	DONE : BOOL;
+	ERROR_C : DWORD;
+	ERROR_T : BYTE;
+END_VAR
+VAR
+	CTRL : XML_CONTROL;
+	XML_READER : XML_READER;
+	URL_DATA : url;
+	DNS_CLIENT : DNS_CLIENT;
+	HTTP_GET : HTTP_GET;
+	last_state : BOOL;
+	value_int : INT;
+	value_real : REAL;
+	v_real : REAL;
+	state : INT;
+END_VAR
+
+(*
+
+version 1.3		04. may. 2011
+programmer 		ks
+tested by			ks
+
+YAHOO_WEATHER lädt vom Yahoo-Webserver einen Wetter RSS-Feed und analysiert die Daten und legt diese in einem Array ab
+*)
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE state OF
+
+00:	IF ACTIVATE AND NOT last_state THEN
+		state := 20;
+		DONE := FALSE;
+		BUSY := TRUE;
+		ERROR_C := DWORD#0;
+		ERROR_T := BYTE#0;
+	END_IF;
+
+20: (* URL for DNS UND HTTP-GET *)
+	(* Example: http://weather.yahooapis.com/forecastrss?p=94089&u=c *)
+	URL_DATA:=STRING_TO_URL(STR:='http://weather.yahooapis.com/forecastrss',
+							DEFAULT_PROTOCOL:='',
+							DEFAULT_PATH:=''
+							);
+  	URL_DATA.QUERY := CONCAT('w=',LOCATION);
+
+	IF UNITS THEN
+		URL_DATA.QUERY := CONCAT(URL_DATA.QUERY,'&u=f'); (* fahrenheit *)
+	ELSE
+		URL_DATA.QUERY := CONCAT(URL_DATA.QUERY,'&u=c'); (* celsius *)
+	END_IF;
+	state := 40;
+
+40:	IF DNS_CLIENT.DONE THEN
+		state := 60;
+	ELSIF (DNS_CLIENT.ERROR > DWORD#00) THEN
+		(* Fehlerbehandlung *)
+		ERROR_C := DNS_CLIENT.ERROR;
+	ERROR_T := BYTE#01;
+		state   := 100;
+	END_IF;
+
+60:	IF HTTP_GET.DONE THEN
+		state := 80;
+		CTRL.START_POS := HTTP_GET.BODY_START;
+		CTRL.STOP_POS := HTTP_GET.BODY_STOP;
+		CTRL.COMMAND := WORD#2#10000000_00011000; (* ONLY TEXT AND ATTRIBUTE *)
+		CTRL.WATCHDOG  := T#1ms;
+
+	ELSIF (HTTP_GET.ERROR > DWORD#00) THEN
+		(* Fehlerbehandlung *)
+		ERROR_C := HTTP_GET.ERROR;
+		ERROR_T := BYTE#02;
+		state := 100;
+	END_IF;
+
+80: XML_READER(CTRL:=CTRL,BUF:=R_BUF.BUFFER); (* XML Daten seriell lesen *)
+	IF CTRL.TYP < 98 THEN (* nur auswerten wenn kein Watchdog durchlauf *)
+		value_int := 0;
+		value_real := 0.0;
+		(* automatische konvertierung in real und int ausführen *)
+		IF LEN(CTRL.VALUE) <= 20 THEN
+			v_real:=FLOAT_TO_REAL(FLT:=CTRL.VALUE);
+			IF CHK_REAL(v_real) = 0 THEN (* !!! prüft auf gültigen REAL Wert, ansonsten stürzt Twincat ab !!!!  *)
+				value_real := v_real;
+				value_int := REAL_TO_INT(value_real);
+			END_IF;
+		END_IF;
+
+		IF CTRL.COUNT < UINT#52 THEN (* Performance-Teilung *)
+			(* ------------ Teil 1 --------------*)
+			CASE UINT_TO_INT(CTRL.COUNT) OF
+			027: YW.TimeToLive := value_int;
+			030: YW.location_city := CTRL.VALUE;
+			031: YW.location_region := CTRL.VALUE;
+			032: YW.location_country := CTRL.VALUE;
+			035: YW.unit_temperature := CTRL.VALUE;
+			036: YW.unit_distance := CTRL.VALUE;
+			037: YW.unit_pressure := CTRL.VALUE;
+			038: YW.unit_speed := CTRL.VALUE;
+			041: YW.wind_chill := value_int;
+			042: YW.wind_direction := value_int;
+			043: YW.wind_speed := value_real;
+			046: YW.atmosphere_humidity := value_int;
+			047: YW.atmosphere_visibility := value_real;
+			048: YW.atmosphere_pressure := value_int;
+			049: YW.atmosphere_rising := value_int;
+			END_CASE;
+		ELSE
+			(* ------------ Teil 2 --------------*)
+			CASE UINT_TO_INT(CTRL.COUNT) OF
+			052: YW.astronomy_sunrise := CTRL.VALUE;
+			053: YW.astronomy_sunset := CTRL.VALUE;
+			077: YW.geo_latitude := value_real;
+			080: YW.geo_longitude := value_real;
+			089: YW.cur_conditions_text := CTRL.VALUE;
+			090: YW.cur_conditions_code := value_int;
+				YW.cur_conditions_icon := value_int;
+			091: YW.cur_conditions_temp := value_int;
+			100: YW.forcast_today_low_temp := value_int;
+			101: YW.forcast_today_high_temp := value_int;
+			102: YW.forcast_today_text := CTRL.VALUE;
+			103: YW.forcast_today_code := value_int;
+				YW.forcast_today_icon := value_int;
+			108: YW.forcast_tomorrow_low_temp := value_int;
+			109: YW.forcast_tomorrow_high_temp := value_int;
+			110: YW.forcast_tomorrow_text := CTRL.VALUE;
+			111: YW.forcast_tomorrow_code := value_int;
+				YW.forcast_tomorrow_icon := value_int;
+			END_CASE;
+		END_IF;
+	ELSIF CTRL.TYP = 99 THEN (* EXIT - letztes Element gelesen *)
+		DONE  := TRUE;
+		state := 100;
+	END_IF; 
+
+100:
+	(* UNLOCK HTTP DATA *)
+	IF (NOT HTTP_GET.DONE) THEN
+		state := 0;
+		BUSY := FALSE;
+		DONE := ERROR_T = BYTE#0;
+	END_IF; 
+
+	END_CASE;
+
+(* ---------------- DNS --------------- *)
+DNS_CLIENT(	IP_C:=IP_C,
+			S_BUF:=S_BUF,
+			R_BUF:=R_BUF,
+			DOMAIN:=URL_DATA.DOMAIN,
+			IP4_DNS:=DWORD#00,
+			ACTIVATE:=state=40 (* DNS Start *)
+			);
+(* nicht oder nicht direkt verwendete Parameter *)
+(*	DWORD :=DNS_CLIENT.IP4;
+	BOOL  :=DNS_CLIENT.DONE;
+	BYTE  :=DNS_CLIENT.ERROR; *)
+(* -------------------------------------*)
+
+(* ------------- HTTP_GET --------------- *)
+HTTP_GET(	IP_C:=IP_C,
+			S_BUF:=S_BUF,
+			R_BUF:=R_BUF,
+			IP4:=DNS_CLIENT.IP4,
+			GET:=state=60,
+			MODE:=BYTE#2, (* HTTP 1.1 mit persistenter Verbindung *)
+			UNLOCK_BUF:=state=100,
+			URL_DATA:=URL_DATA
+			);
+
+(* nicht oder nicht direkt verwendete Parameter *)
+(*	STRING := HTTP_GET.HTTP_STATUS;
+	UINT :=HTTP_GET.HEADER_START;
+	UINT :=HTTP_GET.HEADER_STOP;
+	UINT :=HTTP_GET.BODY_START;
+	UINT :=HTTP_GET.BODY_STOP;
+	BOOL :=HTTP_GET.DONE;
+	BYTE :=HTTP_GET.ERROR;
+*)
+(* -------------------------------------*)
+
+last_state := ACTIVATE;
+
+(* revision history
+ks	18. dez. 2008	rev 1.0
+	original version
+
+ks	01. oct. 2009	rev 1.1
+	YAHOO_WEATHER_DATA
+
+ks	24. sep. 2010	rev 1.2
+	new URL-Location-parameter and REAL_CHECK (TwinCat BUG) 
+
+ks	04. may. 2011	rev 1.3
+	neue elemente:  CUR_CONDITIONS_ICON, FORCAST_TODAY_ICON, FORCAST_TOMORROW_ICON
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="YAHOO_WEATHER">
+      <LineId Id="41" Count="169" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

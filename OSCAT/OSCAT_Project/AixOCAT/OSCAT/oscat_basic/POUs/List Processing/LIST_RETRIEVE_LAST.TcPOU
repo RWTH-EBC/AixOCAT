@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="LIST_RETRIEVE_LAST" Id="{2d94758c-4ec2-428f-95dc-957e756b6e01}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION LIST_RETRIEVE_LAST : STRING(LIST_LENGTH)
+VAR_INPUT
+	SEP : BYTE;
+END_VAR
+
+VAR
+	i :	INT;
+	last : INT := 1;
+	pt : POINTER TO ARRAY[1..LIST_LENGTH] OF BYTE;
+	c: BYTE;
+END_VAR
+
+
+(*
+version 2.0		21. mar. 2011
+programmer 	hugo
+tested by		oscat
+
+LIST_RETRIEVE_LAST liefert das letzte element einer liste und löscht das element aus der liste.
+die liste liegt als string von elementen vor die mit den zeichen SEP beginnen.
+
+*)
+(*All VAR_IN_OUT variables have been moved to the end of the declaration due to compatibility reasons*)
+VAR_IN_OUT
+	LIST : STRING(LIST_LENGTH);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* load pointers *)
+pt := ADR(LIST);
+
+(* search position of last element *)
+FOR i := 1 TO LIST_LENGTH DO
+	c := pt^[i];
+	IF c = 0 THEN
+		EXIT;
+	ELSIF C = SEP THEN
+		last := i;
+	END_IF;
+END_FOR;
+(* return last element of list *)
+LIST_RETRIEVE_LAST := MID(LIST, LIST_LENGTH, last + 1);
+(* terminate list at i *)
+pt^[last] := 0;
+
+
+
+(* revision histroy
+hm	21. mar. 2011	rev 2.0
+	new module
+*)	]]></ST>
+    </Implementation>
+    <LineIds Name="LIST_RETRIEVE_LAST">
+      <LineId Id="26" Count="22" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

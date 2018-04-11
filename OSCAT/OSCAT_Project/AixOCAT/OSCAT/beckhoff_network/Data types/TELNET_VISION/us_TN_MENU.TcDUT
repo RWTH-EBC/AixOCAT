@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="us_TN_MENU" Id="{75a07309-8746-4c7d-ac00-f4e021b9eec7}">
+    <Declaration><![CDATA[TYPE us_TN_MENU :
+STRUCT
+	st_Menu_Text: STRING(STRING_LENGTH); (* X Menue Texte *)
+	in_Menu_E_Count: INT; (* Menue Elemente Anzahl *)
+	in_Y: INT; (* Menue Zeilennummer  Y-Position *)
+	in_X: INT; (* Menue Spaltennummer X-Position *)
+	by_Attr_mF: BYTE; (* Text Attribute mit Fokus *)
+	by_Attr_oF: BYTE; (* Text Attribute ohne Fokus *)
+	in_X_SM_new: INT; (* neue Sub-Menu X-Position *)
+	in_Y_SM_new: INT; (* neue Sub-Menu Y-Position *)
+	in_X_SM_old: INT; (* alte Sub-Menu X-Position *)
+	in_Y_SM_old: INT; (* alte Sub-Menu Y-Position *)
+	in_Cur_Menu_Item: INT; (* aktuelles Haupt-Menue *)
+	in_Cur_Sub_Item: INT; (* aktuelles Sub-Menue *)
+	in_State: INT; (*   Menu status   *)
+	in_Menu_Selected: INT; (* X Menu-Item mit Enter angewwählt *)
+	bo_Create: BOOL; (* X Menu erzeugen *)
+	bo_Destroy: BOOL; (* X Menu entfernen *)
+	bo_Update: BOOL; (* X Menu updaten *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
