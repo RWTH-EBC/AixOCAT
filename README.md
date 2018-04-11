@@ -31,32 +31,24 @@ To be done.
 
 ## Version
 
-AixOCAT is an ongoing research project, the current version is 0.0.1, which is
+AixOCAT is an ongoing research project, the current version is 1.0.0, which is
 still a pre-release.
 
 ## How to use AixOCAT
 
 ### Dependencies
 
-Visual Studio?
+Visual Studio is required.
 
-### Installation
-
-The best option to install AixOCAT is:
-
-## How to install the OSCAT library
-
+### Installation Guide
 
 Library Installation in [TwinCAT 3](https://infosys.beckhoff.com/english.php?content=../content/1033/tcplclibs_overviewtc3/html/tcplclibs_intro.htm&id=7464068842448702627)
 
 Library Installation in [Codesys](https://help.codesys.com/webapp/_cds_struct_installing_libraries;product=codesys;version=3.5.12.0)
 
-
 If you actively develop AixOCAT you can clone this repository by using:
 
  `git clone [SSH-Key/Https]`
-
-and then run:
 
 ### How to contribute to the development of AixOCAT
 You are invited to contribute to the development of AixOCAT. You may report any issues by using the 
