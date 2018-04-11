@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_AuxHeatCont" Id="{8a08c176-83fc-4b96-babc-93a632d33c5c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AuxHeatCont
+VAR_INPUT
+	bCompOp			:	BOOL	:=	FALSE; //has the controller requested compressor operation
+	bCycContOK		:	BOOL; //has the cycling control authorized the compressor start-up
+	bCompStart		:	BOOL; //is compressor start-up procedure active
+END_VAR
+VAR_OUTPUT
+	bAuxHeatOp	:	BOOL;
+END_VAR
+VAR
+	eVF1	:	E_TempSensVR10	:=	VF1;
+	eSP		:	E_TempSensVR10	:=	SP;
+	SampTim	:	TON();						//Sampling timer
+	fBuffVF1:	ARRAY[0..nAuxHeatStart] OF REAL;	//Buffer
+	fBuffSP	:	ARRAY[0..nAuxHeatStart] OF REAL;	//Buffer
+	i		:	INT;
+	bAuxCap	:	BOOL;
+END_VAR
+VAR CONSTANT
+	nAuxHeatStart	:	INT		:=	180;	//Time in seconds the auxiliary heater control waits for the heat pump to be effective
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bCompOp AND (NOT bAuxHeatOp) AND bCycContOK THEN
+
+	SampTim.IN	:=	TRUE;
+	SampTim.PT	:=	T#1s;
+	SampTim();
+
+	IF SampTim.Q THEN
+		FOR i := 0 TO nAuxHeatStart - 1 DO
+			fBuffVF1[i]	:=	fBuffVF1[i+1];
+		END_FOR
+		fBuffVF1[nAuxHeatStart] := Temperatures.stTempSensVR10[eVF1].fVal; //save current temperature in buffer
+	
+		FOR i := 0 TO nAuxHeatStart - 1 DO
+			fBuffSP[i]	:=	fBuffSP[i+1];
+		END_FOR
+		fBuffSP[nAuxHeatStart] := Temperatures.stTempSensVR10[eSP].fVal; //save current temperature in buffer
+	
+		//reset timer
+		SampTim.IN	:=	FALSE;
+		SampTim();
+	END_IF
+	
+	//check if auxiliary heater is needed
+	IF StateMachine.bSwitchVal THEN	//space heating mode
+		IF (fBuffVF1[nAuxHeatStart] < fBuffVF1[0]) THEN //temperature in buffer tank has not increased
+			bAuxHeatOp	:=	TRUE;	//activate auxiliary heater
+			bAuxCap		:=	TRUE;
+		END_IF
+	ELSE	//DHW mode
+		IF (fBuffSP[nAuxHeatStart] < fBuffSP[0]) THEN //temperature in buffer tank has not increased
+			bAuxHeatOp	:=	TRUE;	//activate auxiliary heater
+			bAuxCap		:=	TRUE;
+		END_IF
+	END_IF
+ELSIF bCompOp AND  (NOT bAuxHeatOp) AND (NOT bCycContOK) THEN	//heat demand, but compressor cannot start
+	bAuxHeatOp	:=	TRUE;	
+ELSIF (NOT bCompOp) THEN	//deactivate auxiliary heater when no compressor operation is needed
+	bAuxHeatOp	:=	FALSE;
+	bAuxCap 	:=	FALSE;
+ELSIF bAuxHeatOp AND bCycContOK AND (NOT bAuxCap) AND NOT (bCompStart) THEN //deactivate auxiliary heater when the compressor can start again
+	bAuxHeatOp := FALSE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="TerminalErrorRT" Id="{12653ee4-186e-40e8-acf6-4933b33a4be6}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	//check if the real-time communication with the terminals reports errors
+	//checks State of Working Counter: 
+	//0 - valid real-time communication
+	//1 - invalid real-time communication
+	bTermRt		AT %I*	:	ARRAY[0..8] OF BOOL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

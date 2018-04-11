@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="SysCheck" Id="{b502dd95-fb0d-4d87-a54e-ff3c16b3c97c}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	bTermErrRT	:	BOOL	:=	FALSE;
+	bSensErr	:	BOOL	:=	FALSE;
+	bAmbTemp	:	BOOL	:=	FALSE;
+	bBP			:	BOOL	:=	FALSE;
+	bHCP		:	BOOL	:=	FALSE;
+	bCompCyc	:	BOOL	:=	FALSE;
+	bPhaseSeqCh	:	BOOL	:=	FALSE;
+	bHeatTemp	:	BOOL	:=	FALSE;
+	bCompOut	:	BOOL	:=	FALSE;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

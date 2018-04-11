@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckSens" Id="{d2b4f7af-10da-4044-9b42-7ddf6d19d683}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckSens : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eTempVR10	:	E_TempSensVR10;
+	eTempVR11	:	E_TempSensVR11;
+	eTempPT100	:	E_TempSensPT100;
+	ePress		:	E_Press;
+	
+	bSensErr	:	BOOL	:=	False;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bSensErr	:=FALSE;
+
+//check VR10 sensors
+eTempVR10	:=	SP;
+IF NOT Temperatures.stTempSensVR10[eTempVR10].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	81;
+	StateMachine.sFaultMess	:=	'Sensor error: SP';
+END_IF
+
+eTempVR10	:=	VF1;
+IF NOT Temperatures.stTempSensVR10[eTempVR10].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	82;
+	StateMachine.sFaultMess	:=	'Sensor error: VF1';
+END_IF
+
+eTempVR10	:=	VF2;
+IF NOT Temperatures.stTempSensVR10[eTempVR10].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	83;
+	StateMachine.sFaultMess	:=	'Sensor error: VF2';
+END_IF
+
+eTempVR10	:=	RF1;
+IF NOT Temperatures.stTempSensVR10[eTempVR10].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	84;
+	StateMachine.sFaultMess	:=	'Sensor error: RF1';
+END_IF
+
+//check VR11 sensors
+eTempVR11	:=	T1;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	71;
+	StateMachine.sFaultMess	:=	'Sensor error: T1';
+END_IF
+
+eTempVR11	:=	T2;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	72;
+	StateMachine.sFaultMess	:=	'Sensor error: T2';
+END_IF
+
+eTempVR11	:=	T3;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	73;
+	StateMachine.sFaultMess	:=	'Sensor error: T3';
+END_IF
+
+eTempVR11	:=	T4;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	74;
+	StateMachine.sFaultMess	:=	'Sensor error: T4';
+END_IF
+
+eTempVR11	:=	T5;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	75;
+	StateMachine.sFaultMess	:=	'Sensor error: T5';
+END_IF
+
+eTempVR11	:=	T6;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	76;
+	StateMachine.sFaultMess	:=	'Sensor error: T6';
+END_IF
+
+eTempVR11	:=	T8;
+IF NOT Temperatures.stTempSensVR11[eTempVR11].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	78;
+	StateMachine.sFaultMess	:=	'Sensor error: T8';
+END_IF
+
+//check PT100 temperature sensors 
+(* 
+-> additional sensors are not relevant for the system control and therefore not checked here
+*)
+eTempPT100	:=	TAmb;
+IF NOT Temperatures.stTempSensPT100[eTempPT100].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	64;
+	StateMachine.sFaultMess	:=	'Sensor error: Ambient temperature';
+END_IF
+
+//check pressure sensors
+ePress	:=	HP;
+IF NOT Pressures.stPress[ePress].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	51;
+	StateMachine.sFaultMess	:=	'Sensor error: High pressure';
+END_IF
+
+ePress	:=	LP;
+IF NOT Pressures.stPress[ePress].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	52;
+	StateMachine.sFaultMess	:=	'Sensor error: Low pressure';
+END_IF
+
+ePress	:=	HCP;
+IF NOT Pressures.stPress[ePress].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	53;
+	StateMachine.sFaultMess	:=	'Sensor error: Heating circuit pressure';
+END_IF
+
+ePress	:=	BP;
+IF NOT Pressures.stPress[ePress].bValid THEN
+	bSensErr				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	54;
+	StateMachine.sFaultMess	:=	'Sensor error: Brine pressure';
+END_IF
+
+//Assign output
+F_CheckSens	:=	bSensErr;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

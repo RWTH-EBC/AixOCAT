@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="StateMachine" Id="{427b8264-6e21-4227-a916-050feb3b6458}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	eStatus			:	E_SMStatus	:= Initialize;
+	dtCurTime		:	DT;
+	todCurTime		:	TOD;
+	bActAuxHeat		:	BOOL	:= TRUE;	//Activate auxiliary heater
+	//Fault status
+	bFault			:	BOOL	:= FALSE;	//system fault indicator
+	nFault			:	USINT;				//fault number
+	sFaultMess		:	STRING	:= '';		//fault message
+	nErrCount		:	INT		:= 0;		//error counter
+	bPermShut		:	BOOL	:= FALSE;	//permanent shutdown
+	bTempShut		:	BOOL	:= FALSE;	//temporary shutdown
+	bEmOpPoss		:	BOOL	:= FALSE;	//emergency operation possible
+	bEmOpAct		:	BOOL	:= FALSE;	//emergency operation active
+	bManEmShutdown	:	BOOL	:= FALSE;	//manual emergency shutdown
+	//Cycling control
+	dtLastStart		:	DT;					//date and time of last start
+	dtLastStop		:	DT;					//date and time of last stop
+	nNumStart		:	USINT	:= 0;		//number of starts per hour
+	//Control signals
+	bCompRun		:	BOOL;
+	bAuxHeatOp		:	BOOL;
+	bSwitchVal		:	BOOL;				//True: space heating mode || False: DHW mode
+	fMixVal			:	REAL;				//mixing valve position [0..10V]
+	bBrinePump		:	BOOL;
+	nBrinePump		:	USINT	:= 100;		//brine pump rpm in percent (0% - minimum speed, 100% - maximum speed)
+	bIntHeatCPump	:	BOOL;
+	nIntHeatCPump	:	USINT	:= 100;		//internal heating circuit pump rpm in percent (0% - minimum speed, 100% - maximum speed)
+	bExtHeatCPump	:	BOOL;
+	nExtHeatCPump	:	USINT	:= 100;		//external heating circuit pump rpm in percent (0% - minimum speed, 100% - maximum speed)
+	bCircPump		:	BOOL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

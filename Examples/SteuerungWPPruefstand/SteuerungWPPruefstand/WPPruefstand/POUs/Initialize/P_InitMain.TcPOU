@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_InitMain" Id="{fa1a0a05-5d93-40cb-b505-d54e31c4d54d}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_InitMain
+VAR
+	bComplete	:	BOOL	:=	FALSE;
+	bError		:	BOOL	:=	FALSE;
+	fbInitTimes				:	FB_InitTimes;
+	fbReadTempResTabVR10	:	FB_ReadTempResTabVR10;
+	fbReadTempResTabVR11	:	FB_ReadTempResTabVR11;
+	fbReadPressTab			:	FB_ReadPressTab;	
+	fbReadPt100Tab			:	FB_ReadPT100Tab;
+	fbPumpTimes				:	FB_InitPumpTimes;
+	fbHeatCurve				:	FB_ReadHeatCurve;
+	fbNightMode				:	FB_ReadNightMode;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Initialization program
+IF NOT fbInitTimes.bReady THEN
+	fbInitTimes();
+END_IF
+
+IF NOT fbPumpTimes.bReady THEN	//only once
+	fbPumpTimes();
+END_IF
+
+IF NOT fbNightMode.bCompleted THEN
+	fbNightMode(bExecute:=TRUE);
+END_IF
+
+//set initial values for pumps -> 0.75V: no pump operation
+AnaOutputs.stOutpBP.fVal	:=	0.75;
+AnaOutputs.stOutpExtHP.fVal	:=	0.75;
+AnaOutputs.stOutpIntHP.fVal	:=	0.75;
+
+//Read temperature sensor data from csv-files
+IF NOT fbReadTempResTabVR10.bCompleted THEN
+	fbReadTempResTabVR10(bExecute:=TRUE);
+END_IF
+IF NOT fbReadTempResTabVR11.bCompleted THEN
+	fbReadTempResTabVR11(bExecute:=TRUE);
+END_IF
+IF NOT fbReadPressTab.bCompleted THEN
+	fbReadPressTab(bExecute:=TRUE);
+END_IF
+IF NOT fbReadPT100Tab.bCompleted THEN
+	fbReadPT100Tab(bExecute:=TRUE);
+END_IF
+IF NOT fbHeatCurve.bCompleted THEN
+	fbHeatCurve(bExecute:=TRUE);
+END_IF
+
+IF fbReadTempResTabVR10.bCompleted AND fbReadTempResTabVR11.bCompleted AND fbReadPressTab.bCompleted 
+		AND fbReadPT100Tab.bCompleted AND fbInitTimes.bReady AND fbHeatCurve.bCompleted AND fbNightMode.bCompleted THEN
+	bComplete	:=	TRUE;
+END_IF
+
+IF fbReadTempResTabVR10.bError OR fbReadTempResTabVR11.bError OR fbReadPressTab.bError 
+		OR fbReadPT100Tab.bError OR fbHeatCurve.bError OR fbNightMode.bError THEN
+	bError		:=	TRUE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

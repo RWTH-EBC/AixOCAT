@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckCompCycPress" Id="{cf16192f-fa46-41ee-8c89-fd020bb36148}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckCompCycPress : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eHP			:	E_Press	:=	HP;
+	eLP			:	E_Press	:=	LP;
+	bCompCycF	:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bCompCycF	:=	FALSE;
+
+//check compression cycle pressures
+IF Pressures.stPress[eHP].fVal > SysCheckParams.fHPMax THEN
+	bCompCycF				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	45;
+	StateMachine.sFaultMess	:=	'Compression cycle: Pressure too high';
+END_IF
+
+IF Pressures.stPress[eLP].fVal < SysCheckParams.fLPMin THEN
+	bCompCycF				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	46;
+	StateMachine.sFaultMess	:=	'Compression cycle: Pressure too low';
+END_IF
+
+IF (Pressures.stPress[eLP].fVal > (SysCheckParams.fLPMin + 0.5)) AND (Pressures.stPress[eHP].fVal < (SysCheckParams.fHPMax - 0.5)) THEN
+	bCompCycF	:=	FALSE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

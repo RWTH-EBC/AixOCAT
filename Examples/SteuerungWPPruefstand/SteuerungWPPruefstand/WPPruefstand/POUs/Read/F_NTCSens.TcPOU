@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_NTCSens" Id="{d3846b25-cbd1-4c06-9da9-61c659a3db7b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_NTCSens : ST_InputVar
+VAR_INPUT
+	stInput	:	ST_InputVar;
+	pIntTab	:	POINTER TO ARRAY[1..40,1..2] OF REAL;	//pointer to interpolation table
+END_VAR
+VAR
+	IntTab		:	ARRAY[1..40,1..2] OF REAL;
+	i			:	INT	:= 1;
+	nIntElem	:	REAL;
+	nLeftInd	:	INT;
+	nRightInd	:	INT;
+	bFound		:	BOOL	:=	FALSE;	//flag if left and right element were found
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IntTab		:=	pIntTab^; //get interpolation table
+nIntElem	:=	DINT_TO_REAL(stInput.nVarInput);
+//search left and right element in interpolation table
+(*
+negative temperature coefficient -> table gradient is negative at all time
+=> search for first element smaller than the interpolation element
+*)
+FOR i:=1 TO 40 DO
+	IF NOT bFound THEN	
+		IF (IntTab[i,1] <= nIntElem) THEN
+			nRightInd	:= i;
+			nLeftInd	:= i-1;
+			bFound	:=	TRUE;
+		END_IF
+	END_IF
+END_FOR
+
+IF (NOT bFound) OR (nLeftInd < 1) THEN	//check for valid range
+	stInput.bValid	:=	FALSE;	//value could not be found in interpolation table
+ELSE	//perform interpolation
+	stInput.fVal	:=	IntTab[nLeftInd,2] + ((nIntElem - IntTab[nLeftInd,1])/(IntTab[nRightInd,1] - IntTab[nLeftInd,1])) * (IntTab[nRightInd,2] - IntTab[nLeftInd,2]);
+END_IF
+
+IF stInput.bSensErr THEN	//check if sensor value is valid
+	stInput.bValid	:=	FALSE;
+END_IF
+
+//output
+F_NTCSens	:= stInput;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

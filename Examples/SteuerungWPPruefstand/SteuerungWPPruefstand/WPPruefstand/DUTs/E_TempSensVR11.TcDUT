@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_TempSensVR11" Id="{d0c13e21-5436-40f1-9196-fe0b7c8f3974}">
+    <Declaration><![CDATA[TYPE E_TempSensVR11 : //all VR11 temperature sensors
+(
+	T1,		//Temperature after compression
+	T2,		//Temperature before compression
+	T3,		//Source temperature before evaporator
+	T4,		//Temperature before expansion valve
+	T5,		//Temperature before internal heating circuit pump
+	T6,		//Temperature after auxiliary heater
+	T8		//Source temperature after brine pump
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

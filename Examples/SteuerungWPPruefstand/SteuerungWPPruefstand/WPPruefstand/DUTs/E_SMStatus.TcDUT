@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_SMStatus" Id="{3c99a96b-f127-4015-9b5f-06a7e2b7a393}">
+    <Declaration><![CDATA[{attribute 'strict'}
+TYPE E_SMStatus :
+(Initialize,
+Read,
+SystemCheck,
+Automatic,
+Write,
+Error);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

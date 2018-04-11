@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="ST_PumpTime" Id="{e2fbc107-901a-404e-afc6-c106717fab28}">
+    <Declaration><![CDATA[TYPE ST_PumpTime :
+STRUCT
+	tPre	:	TIME;	//time the pump runs before compressor start
+	tPost	:	TIME;	//time the pump runs after compressor stop
+	bFirst	:	BOOL;	//flag if pump is the first one to start
+	tDelay	:	Time;	//time the pump starts after the first pump
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

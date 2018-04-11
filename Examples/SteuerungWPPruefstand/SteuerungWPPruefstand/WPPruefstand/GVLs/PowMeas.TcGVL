@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="PowMeas" Id="{32b87d23-1146-4dc2-984a-9b8680552b45}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	//Power measurement values for all phases
+	ePowMeas	:	E_PowMeas;
+	stPowMeas	:	ARRAY[0..2]	OF ST_InputVar_PowMeas;
+	
+	//accumulated values
+	fEffPow		:	REAL;	//Total effective power = sum of effective power of phases
+	fMeanCosPhi	:	REAL;	//Mean power factor
+	fAppPow		:	REAL;	//Total apparent power
+	fReaPow		:	REAL;	//Total reactive power
+	
+	//phase sequence
+	bPhaseSeq	AT	%I*	: BOOL;	//Phase sequence detected by the power measurement terminal
+	//0 - Sequence L1-L3-L2 detected -> counter-clockwise net
+	//1 - Sequence L1-L2-L3 detected -> clockwise net, or at least 1 wire not connected
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

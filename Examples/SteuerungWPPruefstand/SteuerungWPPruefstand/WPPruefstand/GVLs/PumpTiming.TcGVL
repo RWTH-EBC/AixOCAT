@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="PumpTiming" Id="{829ac6aa-6c7c-4148-8eca-ed010515632e}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	stBPTime			:	ST_PumpTime;
+	stIntHeatCirTime	:	ST_PumpTime;
+	nMaxPre				:	DWORD;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

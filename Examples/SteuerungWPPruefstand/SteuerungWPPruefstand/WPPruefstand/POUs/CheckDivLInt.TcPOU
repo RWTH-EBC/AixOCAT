@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="CheckDivLInt" Id="{df4ffc24-8e73-4c0b-80d7-fe6bba7f4630}" SpecialFunc="CheckDivInt64">
+    <Declaration><![CDATA[// Implicitly generated code : DO NOT EDIT
+FUNCTION CheckDivLInt : LINT
+VAR_INPUT
+	divisor:LINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Implicitly generated code : Only an Implementation suggestion
+IF divisor = 0 THEN
+	CheckDivLInt:=1;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	2;
+	StateMachine.sFaultMess	:=	'Critical program error: division by 0';
+	StateMachine.eStatus	:=	Error;
+	P_EmShutdownAll();	//Execute emergency shutdown
+ELSE
+	CheckDivLInt:=divisor;
+END_IF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

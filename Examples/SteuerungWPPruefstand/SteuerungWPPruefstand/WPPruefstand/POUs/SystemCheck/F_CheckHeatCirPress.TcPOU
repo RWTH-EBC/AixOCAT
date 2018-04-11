@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckHeatCirPress" Id="{087f420e-a6c6-4b32-b610-49b66d8fe5b8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckHeatCirPress : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eHCP		:	E_Press	:=	HCP;
+	bHCPF		:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//check heating circuit pressure
+IF Pressures.stPress[eHCP].fVal < SysCheckParams.fHCPMinOff THEN
+	bHCPF					:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	44;
+	StateMachine.sFaultMess	:=	'Heating circuit pressure too low';
+END_IF
+
+IF Pressures.stPress[eHCP].fVal > SysCheckParams.fHCPMinOn THEN
+	bHCPF			:=	FALSE;
+	(*
+	Do not reset StateMachine fault here, in case there are other system faults!
+	*)
+END_IF
+
+//assign output
+F_CheckHeatCirPress	:=	bHCPF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

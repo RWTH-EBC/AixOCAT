@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="TempSetpoints" Id="{511b22a5-03a2-4598-b582-7277d84b3ff7}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	fDHWUpSP			:	REAL	:=	65;	//hot water temperature upper setpoint for DHW
+	fDHWLowSP			:	REAL	:=	55;	//hot water temperature lower setpoint for DHW
+	fSpaceHeatSP		:	REAL;			//water supply temperature setpoint for space heating
+	fRoomSetpoint		:	REAL	:=	20;	//room temperature setpoint temperature
+	fRoomSetpointNight	:	REAL	:=	15;	//room temperature setpoint for night mode
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

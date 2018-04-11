@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_Press" Id="{6a3957ba-04c7-41e5-bdef-091b41e4b532}">
+    <Declaration><![CDATA[TYPE E_Press :
+(
+	HP,		//High pressure - after compression
+	LP,		//Low pressure	- before compression
+	HCP,	//Heating circuit pressure
+	BP		//Brine circuit pressure
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
