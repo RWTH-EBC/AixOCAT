@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_CyclingControl" Id="{cd537a38-a498-4bcd-b478-d077c3d56443}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CyclingControl
+VAR_INPUT
+	nMaxStarts	:	USINT	:=	3;		//maximum number of startups per hour
+	nMinRunTime	:	DWORD	:=	300;	//minimum run time in seconds
+	nMinOffTime	:	DWORD	:=	300;	//minimum off time in seconds
+END_VAR
+VAR_OUTPUT
+	bStartupOK	:	BOOL;
+	bShutdownOK	:	BOOL;
+END_VAR
+VAR
+	//Startup counter
+	TimHour		:	TON;	//timer for 1h
+	
+	//run time | off time
+	nLastStart	:	DWORD;
+	nLastStop	:	DWORD;
+	
+	//Current time
+	nCurTime	:	DWORD;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Timer parameters
+TimHour.PT	:=	T#1h;
+TimHour.IN	:=	TRUE;
+TimHour();
+IF TimHour.Q THEN			//one hour has passed
+	TimHour.IN	:=	FALSE;	//reset timer
+	TimHour();
+	StateMachine.nNumStart	:=	0;		//reset counter
+END_IF
+
+//last start and stop time in seconds
+nLastStart	:=	DT_TO_DWORD(StateMachine.dtLastStart);
+nLastStop	:=	DT_TO_DWORD(StateMachine.dtLastStop);
+
+//Current time
+nCurTime	:=	DT_TO_DWORD(StateMachine.dtCurTime);	//current time in seconds
+
+//set startup flag
+IF (StateMachine.nNumStart >= nMaxStarts) OR (NOT ((nCurTime - nLastStop) >= (nMinOffTime - PumpTiming.nMaxPre))) THEN
+	//disable startup, if max. starts per hour are reached or minimum off time is violated
+	bSTartupOK	:=	FALSE;
+ELSE
+	bStartupOK	:=	TRUE;
+END_IF
+
+//set shutdown flag
+IF NOT ((nCurTime - nLastStart) >= nMinRunTime) THEN
+	bShutdownOK :=	FALSE;
+ELSE
+	bShutdownOK :=	TRUE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

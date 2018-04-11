@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_ReadTempResTabVR11" Id="{9f819a16-c0ee-4c9b-a63b-3be219d219d7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ReadTempResTabVR11
+VAR_INPUT
+	bExecute		:	BOOL	:= FALSE;
+END_VAR
+VAR_OUTPUT
+	bCompleted		:	BOOL	:=	FALSE;
+	bError			:	BOOL	:=	FALSE;
+END_VAR
+VAR
+	fbFileOpen		:	FB_FileOpen;
+	fbFileGets		:	FB_FileGets;
+	fbReader		:	FB_CSVMemBufferReader;
+	fbFileClose		:	FB_FileClose;
+	sCSVPath		:	STRING	:=	'D:\cve-mme\WpPruefstandData\KennlinieVR11.csv';	//Path to csv file
+	hFile			:	UINT;
+	bEOF			:	BOOL	:=	FALSE;
+	Step			:	DWORD	:=	0;
+	sLine			:	STRING;	//Line read by fbFileGets
+	nLine			:	UINT	:=	0;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Step OF
+	
+0:	//Standby mode
+	IF bExecute THEN
+		bExecute	:=	FALSE; //reset to defaults
+		hFile		:=	0;
+		bEOF		:=	FALSE;
+		bCompleted	:=	FALSE;
+		bError		:=	FALSE;
+		sLine		:=	'';
+		nLine		:=	0;
+		Step		:=	1; //start program
+	END_IF
+
+1:	//Open file
+	fbFileOpen(sNetId:='', sPathName:=sCSVPath, nMode:=FOPEN_MODEREAD OR FOPEN_MODETEXT,
+		ePath:=PATH_GENERIC, tTimeout:=T#5s, bExecute:=TRUE);
+	Step	:=	Step + 1;
+
+2:
+	fbFileOpen(bExecute:=FALSE);
+	IF NOT fbFileOpen.bBusy THEN
+		IF NOT fbFileOpen.bError THEN
+			//Store file handle
+			hFile	:=	fbFileOpen.hFile;
+			Step	:=	Step + 1;
+		ELSE
+			Step	:=	90;	
+		END_IF
+	END_IF
+
+3:	//Read csv file
+	fbFileGets(sNetId:='', hFile:=hFile, bExecute:=TRUE, tTimeout:=T#5S);
+	nLine	:=	nLine + 1;
+	Step	:=	Step + 1;
+
+4:
+	fbFileGets(bExecute:=FALSE);
+	IF NOT fbFileGets.bBusy THEN
+		IF NOT (nLine = 1) THEN //Header -> jump to next line
+			IF NOT fbFileGets.bError THEN
+				IF fbFileGets.bEOF THEN
+					Step	:=	10; //Reached end of file
+				ELSE
+					sLine	:=	fbFileGets.sLine; //store line
+					IF RIGHT(sLine,1) = '$L' THEN
+						sLine	:=	REPLACE(sLINE, '$R$L', 2, LEN(sLine)); //restore CRLF characters
+					END_IF
+					Step	:=	Step + 1;
+				END_IF
+			ELSE
+				Step	:=	90;
+			END_IF
+		ELSE
+			Step	:=	3;
+		END_IF
+	END_IF
+	
+5:	//Parse line
+	
+	fbReader.eCmd	:=	eEnumCmd_First;	//Read first value (temperature)
+	fbReader(pBuffer:=ADR(sLine), cbBuffer:=SIZEOF(sLine));
+	
+	IF fbReader.bOk THEN
+		TempConvDat.VR11[nLine-1,2] := STRING_TO_REAL(fbReader.getValue);	//account for header
+	ELSE
+		Step	:=	90;
+	END_IF	
+	
+	fbReader.eCmd	:=	eEnumCmd_Next;	//Read next value (resistance)
+	fbReader(pBuffer:=ADR(sLine), cbBuffer:=SIZEOF(sLine));
+	
+	IF fbReader.bOk THEN
+		TempConvDat.VR11[nLine-1,1] := STRING_TO_REAL(fbReader.getValue); //account for header
+	ELSE
+		Step	:=	90;
+	END_IF
+	
+	//Read next line
+	Step	:=	3;
+	
+10:	//end of csv file
+	IF (hFile <> 0) THEN
+		Step	:=	20; //close file
+	END_IF
+	
+20:	//close csv file
+	fbFileClose(bExecute:=FALSE);
+	fbFileClose(sNetId:='', hFile:=hFile, bExecute:=TRUE, tTimeout:=T#5S);
+	Step	:=	21;
+	
+21:	
+	fbFileClose(bExecute:=FALSE);
+	IF NOT fbFileClose.bBusy THEN
+		step	:=	0;	//Standby mode
+		bCompleted	:=	TRUE;
+	END_IF
+	
+90:	//TODO: Error handling
+	bError	:=	TRUE;
+	IF (hFile <> 0) THEN
+		Step	:=	20;	//close file
+	END_IF
+
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

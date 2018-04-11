@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckTerm" Id="{43a91168-fec7-4ddd-a882-8807982518ce}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckTerm : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eTerm		:	E_Terminals;
+
+	bTermErr	:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bTermErr	:=	FALSE;
+
+//Check all terminals
+eTerm	:=	TempSens1;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	91;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: TempSens1';
+END_IF
+
+eTerm	:=	TempSens2;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	92;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: TempSens2';
+END_IF
+
+eTerm	:=	TempSens3;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	93;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: TempSens3';
+END_IF
+
+eTerm	:=	TempSens3Wire;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	94;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: TempSens3Wire';
+END_IF
+
+eTerm	:=	PressSens;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	95;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: PressSens';
+END_IF
+
+eTerm	:=	PowMeasTerm;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	96;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: PowMeas';
+END_IF
+
+eTerm	:=	AnalogOutp;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	97;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: AnalogOutp';
+END_IF
+
+eTerm	:=	OutpSwitchValv;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	98;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: OutpSwitchValv';
+END_IF
+
+eTerm	:=	OutpCont;
+IF TerminalErrorRT.bTermRt[eTerm] THEN
+	bTermErr			:=	TRUE;
+	StateMachine.bFault	:=	TRUE;
+	StateMachine.nFault	:=	99;
+	StateMachine.sFaultMess	:=	'Real-time communication with terminal failed: OutpCont';
+END_IF
+
+//Assing output
+F_CheckTerm	:=	bTermErr;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

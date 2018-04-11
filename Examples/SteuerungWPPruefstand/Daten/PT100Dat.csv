@@ -1,0 +1,5 @@
+Sensor;Slope;Offset;Maximum value;Minimum value
+TExpVEv;1;0;150;-40
+TShEv;1;0;150;-40
+TCond;1;0;150;-40
+TAmb;1;0;150;-40

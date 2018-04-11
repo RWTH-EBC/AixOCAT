@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckPhaseSeq" Id="{ee4d857b-b4fe-49b5-8d2f-51f52f112b4c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckPhaseSeq : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	bPhaseSeqF	:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bPhaseSeqF	:=	FALSE;
+
+//Check phase sequence
+IF PowMeas.bPhaseSeq THEN
+	bPhaseSeqF				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	47;
+	StateMachine.sFaultMess	:=	'Wrong phase sequence detected';
+END_IF
+
+//assign output
+F_CheckPhaseSeq :=	bPhaseSeqF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

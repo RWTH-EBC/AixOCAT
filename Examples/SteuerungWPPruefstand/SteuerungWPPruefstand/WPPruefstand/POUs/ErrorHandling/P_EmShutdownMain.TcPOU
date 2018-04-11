@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_EmShutdownMain" Id="{509eeee3-3511-449c-8cfd-81e1e65b4341}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_EmShutdownMain
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF StateMachine.bManEmShutdown THEN
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	1;
+	StateMachine.sFaultMess	:=	'Manual emergency shutdown';
+END_IF
+
+//emergency shutdown scenarios
+
+//manual emergency shutdown or terminal communication error or initialization failed or division by 0 detected -> stop all components
+IF StateMachine.bManEmShutdown OR SysCheck.bTermErrRT OR (StateMachine.nFault = 10) OR (StateMachine.nFault = 2) THEN
+	P_EmShutdownAll();	//complete shutdown	
+//only brine pressure fault -> keep heating circuit pump running
+ELSIF (SysCheck.bBP OR (StateMachine.nFault = 54)) AND (NOT SysCheck.bHCP) THEN //brine pressure too low or sensor failure
+	P_EmShutdownHCPumpRun();
+//only heating circuit pressure fault -> keep brine pump running
+ELSIF (SysCheck.bHCP OR (StateMachine.nFault = 53)) AND (NOT SysCheck.bBP) THEN //heating circuit pressure too low or sensor failure
+	P_EmShutdownBPumpRun();
+//other faults keep all pumps running
+ELSE
+	P_EmShutdownPumpsRun();
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

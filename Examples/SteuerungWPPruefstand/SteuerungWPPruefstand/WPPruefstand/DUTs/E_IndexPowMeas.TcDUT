@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_IndexPowMeas" Id="{bb2bc3b5-6309-4e15-b462-c96fa5df35ad}">
+    <Declaration><![CDATA[TYPE E_IndexPowMeas :
+//Index-value connection of the second output of the power measurement terminal
+(ApparantPower, ReactivePower, Energy, cosPhi, Frequency, negEnergy);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

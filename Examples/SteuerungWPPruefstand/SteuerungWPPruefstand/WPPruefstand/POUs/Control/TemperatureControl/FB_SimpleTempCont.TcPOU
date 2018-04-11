@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_SimpleTempCont" Id="{669b4c74-13a7-4c01-b327-77af46526e6b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SimpleTempCont IMPLEMENTS I_TempController
+VAR_INPUT
+	//maximum times
+	tMaxTimeDHW		:	TIME	:=	T#40M;
+	tMaxTimeSH		:	TIME	:=	T#20M;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	eSP				:	E_TempSensVR10	:=	SP;
+	eRF1			:	E_TempSensVR10	:=	RF1;
+	eVF1			:	E_TempSensVR10	:=	VF1;
+	eAmb			:	E_TempSensPT100	:=	TAmb;
+	
+	//flags demand
+	bDemDHW			:	BOOL	:=	FALSE;	//DHW demand
+	bDemSH			:	BOOL	:=	FALSE;	//Space heating demand
+	bEarlyRech		:	BOOL	:=	FALSE;	//early recharching of space heating buffer tank
+	
+	//timers for parallel demand
+	TimDHW			:	TON;
+	TimSH			:	TON;
+	
+	//Compressor control values
+	CompOpCont		:	BOOL	:=	FALSE;
+	ValveModeCont	:	BOOL;
+	
+	fSHTempSP		:	REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//get temperature setpoint from heating curve
+fSHTempSP	:=	F_GetTempSP(fAmbTemp:=Temperatures.stTempSensPT100[eAmb].fVal);
+
+//identify DHW demand
+IF (Temperatures.stTempSensVR10[eSP].fVal < TempSetpoints.fDHWLowSP) THEN
+	bDemDHW		:=	TRUE;	//temperature lower than low setpoint -> demand
+END_IF
+IF (Temperatures.stTempSensVR10[eSP].fVal > TempSetpoints.fDHWUpSP) THEN
+	IF ((Temperatures.stTempSensVR10[eVF1].fVal < (TempSetpoints.fSpaceHeatSP + 2))) AND bDemDHW THEN
+		bEarlyRech	:=	TRUE;
+	END_IF
+	bDemDHW	:=	FALSE;	//temperature higher than upper setpoint -> cancel demand
+END_IF
+
+//identify space heating demand
+IF (Temperatures.stTempSensVR10[eVF1].fVal < TempSetpoints.fSpaceHeatSP) THEN
+	bDemSH		:=	TRUE;
+END_IF
+IF (Temperatures.stTempSensVR10[eRF1].fVal > (TempSetpoints.fSpaceHeatSP + 2)) THEN
+	bDemSH		:=	FALSE;
+END_IF
+IF (Temperatures.stTempSensVR10[eRF1].fVal > (TempSetpoints.fSpaceHeatSP + 2)) THEN
+	bEarlyRech	:=	FALSE;
+END_IF
+
+//Set modes
+
+//Switching valve mode: 
+//True: space heating mode
+//False: DHW mode	
+IF bDemDHW AND (NOT bDemSH) THEN			//only DHW demand
+	ValveModeCont	:=	FALSE;
+	CompOpCont		:=	TRUE;
+ELSIF bDemSH AND (NOT bDemDHW) THEN			//only space heating demand
+	ValveModeCont	:=	TRUE;
+	CompOpCont		:=	TRUE;
+ELSIF (NOT bDemSH) AND (NOT bDemDHW) THEN	//no demand
+	IF bEarlyRech THEN	//early recharging
+		ValveModeCont	:=	TRUE;
+		CompOpCont		:=	TRUE;
+	ELSE
+		CompOpCont		:=	FALSE;
+	END_IF
+ELSIF bDemSH AND bDemDHW THEN				//parallel demand
+	CompOpCont		:= TRUE;
+	IF (NOT ValveModeCont) AND TimDHW.Q THEN	//max. time DHW mode reached
+		ValveModeCont	:=	TRUE;	//switch to space heating
+	ELSIF ValveModeCont AND TimSH.Q THEN		//max. time SH mode reached
+		ValveModeCont	:=	FALSE;	//switch to DHW
+	END_IF	
+END_IF
+
+//Timing
+TimDHW.PT	:=	tMaxTimeDHW;
+TImSH.PT	:=	tMaxTimeSH;
+TimDHW();
+TimSH();
+IF StateMachine.bCompRun THEN	//only when the compressor is actually running
+	IF ValveModeCont THEN
+		TimSH.IN	:=	TRUE;
+		TimDHW.IN	:=	FALSE;
+	ELSE
+		TimSH.IN	:=	FALSE;
+		TimDHW.IN	:=	TRUE;
+	END_IF
+ELSE
+	TimSH.IN		:=	FALSE;
+	TimDHW.IN		:=	FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <Property Name="CompOp" Id="{8b4c11c7-3c68-4b82-af78-177aeced80b1}">
+      <Declaration><![CDATA[PROPERTY CompOp : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{7a253813-8e31-44cf-a5bd-644e9d2f337e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CompOp	:=	CompOpCont;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0473b220-d733-4258-9c71-f8467a39f1c8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CompOpCont	:=	CompOp;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SpaceHeatTempSP" Id="{7b98617f-b412-47af-97cf-94de1172fd5b}">
+      <Declaration><![CDATA[PROPERTY SpaceHeatTempSP : REAL]]></Declaration>
+      <Get Name="Get" Id="{4eb85bcf-72a2-41d0-842d-055a105a89ca}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SpaceHeatTempSP	:=	fSHTempSP;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{eacf8b30-b9b3-49f6-bc60-806118cd717d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fSHTempSP	:=	SpaceHeatTempSP;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ValveMode" Id="{493b9e14-9fbd-4ac0-b7e1-c918dff35615}">
+      <Declaration><![CDATA[PROPERTY ValveMode : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{36ce5fb2-ad0f-437b-ace1-00685fadedc3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValveMode	:=	ValveModeCont;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c33c9923-98f0-49bc-9a6e-5f7287ea6756}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValveModeCont	:= ValveMode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

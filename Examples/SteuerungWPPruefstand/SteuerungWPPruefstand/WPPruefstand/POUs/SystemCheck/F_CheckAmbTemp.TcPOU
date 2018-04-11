@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckAmbTemp" Id="{d1764370-3ca9-4384-8893-3369e56ecece}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckAmbTemp : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eAmbTemp	:	E_TempSensPT100 :=	TAmb;
+	
+	bAmbTempF	:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bAmbTempF	:=	FALSE;
+
+//check ambient temperature
+IF Temperatures.stTempSensPT100[eAmbTemp].fVal > SysCheckParams.fMaxAmbTemp THEN
+	bAmbTempF				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	41;
+	StateMachine.sFaultMess	:=	'Ambient temperature too high';
+END_IF
+
+IF Temperatures.stTempSensPT100[eAmbTemp].fVal < SysCheckParams.fMinAmbTemp THEN
+	bAmbTempF				:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	42;
+	StateMachine.sFaultMess	:=	'Ambient temperature too low';
+END_IF
+
+IF (Temperatures.stTempSensPT100[eAmbTemp].fVal < (SysCheckParams.fMaxAmbTemp - 1)) AND 
+		(Temperatures.stTempSensPT100[eAmbTemp].fVal > (SysCheckParams.fMinAmbTemp + 1)) THEN
+	bAmbTempF	:=	FALSE;
+END_IF
+
+//assign output
+F_CheckAmbTemp	:=	bAmbTempF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

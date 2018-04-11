@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="Temperatures" Id="{19a08775-a950-4355-b2c3-280e36b981f5}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	eTempSensVR10	:	E_TempSensVR10;	//VR10 temperature sensors
+	eTempSensVR11	:	E_TempSensVR11;	//VR11 temperature sensors
+	eTempSensPT100	:	E_TempSensPT100;	//PT100 temperature sensors
+	
+	stTempSensVR10	:	ARRAY[0..3] OF ST_InputVar;	//Structures corresponding to temperature sensor enumeration
+	stTempSensVR11	:	ARRAY[0..6] OF ST_InputVar;
+	stTempSensPT100	:	ARRAY[0..3] OF ST_InputVar;
+
+(*
+	//Internal temperature sensors
+	//Names of temperatures according to installation manual
+	stT1	:	ST_InputVar;	//Temperature after compression
+	stT2	:	ST_InputVar;	//Temperature before compression
+	stT3	:	ST_InputVar;	//Source temperature before evaporator
+	stT4	:	ST_InputVar;	//Temperature before expansion valve
+	stT5	:	ST_InputVar;	//Temperature before internal heating circuit pump
+	stT6	:	ST_InputVar;	//Temperature after auxiliary heater
+	stT8	:	ST_InputVar;	//Source temperature after brine pump
+	stSP	:	ST_InputVar;	//Temperature of DHW storage tank
+	stVF1	:	ST_InputVar;	//Temperature at the top of the space heating buffer tank
+	stVF2	:	ST_InputVar;	//Temperature after external mixing valve
+	stRF1	:	ST_InputVar;	//Temperature at the bottom of the space heating buffer tank
+	
+	//Additional temperature sensors
+	stTEXPVEV	:	ST_InputVar;	//Temperature between expansion valve and evaporator
+	stTSHEV		:	ST_InputVar;	//Temperature after evaporator
+	stTCond		:	ST_InputVar;	//Temperature after condenser
+	stTAmp		:	ST_InputCar;	//Ambient temperature
+*)
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

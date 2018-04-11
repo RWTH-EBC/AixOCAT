@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_PowMeas" Id="{36161259-02bf-457b-9fa0-2d6f382ef232}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_PowMeas
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Total effective power = sum of effective power of phases
+PowMeas.fEffPow		:=	PowMeas.stPowMeas[0].fEffPow + PowMeas.stPowMeas[1].fEffPow + PowMeas.stPowMeas[2].fEffPow;
+//Mean power factor
+PowMeas.fMeanCosPhi	:=	(PowMeas.stPowMeas[0].fcosPhi * PowMeas.stPowMeas[1].fcosPhi * PowMeas.stPowMeas[2].fcosPhi) / 3;
+//Power factor = effective power / apparent power
+IF (PowMeas.fMeanCosPhi <> 0) THEN
+	PowMeas.fAppPow		:=	PowMeas.fEffPow / PowMeas.fMeanCosPhi;
+END_IF
+//Apparent power = sqrt(effective power^2 + reaktive power^2)
+PowMeas.fReaPow		:= SQRT((PowMeas.fAppPow * PowMeas.fAppPow) - (PowMeas.fEffPow * PowMeas.fEffPow));]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

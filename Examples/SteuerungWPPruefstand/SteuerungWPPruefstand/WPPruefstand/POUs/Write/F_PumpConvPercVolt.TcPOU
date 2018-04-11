@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_PumpConvPercVolt" Id="{0297495b-ce22-4252-ac90-77fed00fb964}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_PumpConvPercVolt : REAL
+VAR_INPUT
+	nPercentRPM		:	USINT;
+END_VAR
+VAR
+	fVolt			:	REAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//converts the relative pump rpm in percent to a voltage signal
+(*
+<0.5V		: cable break detection - pump runs at minimum speed (emergency operation)
+0.5V - 1V	: pump stops
+1V - 3V		: pump runs at minimum speed (starting)
+2V - 3V		: pump runs at minimum speed (operation)
+3V - 10V	: speed varies linear between minimum and maximum
+*)
+fVolt	:=	3 + (10 - 3)*(USINT_TO_SINT(nPercentRPM)/100);
+
+//assign output
+F_PumpConvPercVolt	:=	fVolt;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

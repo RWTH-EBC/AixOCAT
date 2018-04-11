@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckHeatCirTemp" Id="{61800c94-e17b-46b4-aa7b-36b77afaa68b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckHeatCirTemp : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eT5					:	E_TempSensVR11	:=	T5;
+	eT6					:	E_TempSensVR11	:=	T6;
+	bHeatCirTempF		:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bHeatCirTempF	:=	FALSE;
+
+//check heating circuit temperatures
+IF Temperatures.stTempSensVR11[eT5].fVal > SysCheckParams.fTempHeatRetMax THEN
+	bHeatCirTempF			:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	31;
+	StateMachine.sFaultMess	:=	'Water return temperature too high';
+END_IF
+
+IF Temperatures.stTempSensVR11[eT6].fVal > SysCheckParams.fTempHeatSuppMax THEN
+	bHeatCirTempF			:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	32;
+	StateMachine.sFaultMess	:=	'Water supply temperature too high';
+END_IF
+
+IF (Temperatures.stTempSensVR11[eT5].fVal < (SysCheckParams.fTempHeatRetMax - 2)) 
+		AND (Temperatures.stTempSensVR11[eT6].fVal < (SysCheckParams.fTempHeatSuppMax -2)) THEN
+	bHeatCirTempF	:=	FALSE;
+END_IF
+
+//assign output
+F_CheckHeatCirTemp	:=	bHeatCirTempF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

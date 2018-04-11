@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <Itf Name="I_TempController" Id="{66f2a4fb-896c-4d37-9710-62ccf5406cb7}">
+    <Declaration><![CDATA[INTERFACE I_TempController
+
+//request compressor operation
+
+//Switching valve mode: 
+//True: space heating mode
+//False: DHW mode	
+]]></Declaration>
+    <Property Name="CompOp" Id="{c1829103-84b4-4c72-a689-554c0188a143}">
+      <Declaration><![CDATA[PROPERTY CompOp : BOOL]]></Declaration>
+      <Get Name="Get" Id="{bc959d44-fcfe-41be-8759-46ccab184ab5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{551b4795-095a-47cc-bfe6-724da00e1639}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="SpaceHeatTempSP" Id="{30195bdc-9b7c-4835-8686-bf164dbdd50c}">
+      <Declaration><![CDATA[PROPERTY SpaceHeatTempSP : REAL]]></Declaration>
+      <Get Name="Get" Id="{fde4633f-a164-4fde-be4f-a2bc76f8de3e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{e98744f3-cde7-4059-b85d-c92869e66068}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ValveMode" Id="{10954cdf-5686-480b-9abf-5014f6eedd6d}">
+      <Declaration><![CDATA[PROPERTY ValveMode : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4d2e3f90-d412-44ce-8fa4-0929d4b169d2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{8e4c1526-2bc2-439a-b1e2-66bdebc3de4d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

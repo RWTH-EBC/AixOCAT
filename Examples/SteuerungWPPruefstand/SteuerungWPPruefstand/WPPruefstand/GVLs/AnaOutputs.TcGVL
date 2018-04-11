@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="AnaOutputs" Id="{675695a3-833c-48ca-a88a-3cc7fe8bf9f5}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	stOutpBP		:	ST_OutputVar;	//Control signal for brine pump
+	stOutpIntHP		:	ST_OutputVar;	//Control signal for internal heating circuit pump
+	stOutpExtHP		:	ST_OutputVar;	//Control signal for external heating circuit pump
+	stOutpMixValv	:	ST_OutputVar;	//Control signal for circulating pump
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

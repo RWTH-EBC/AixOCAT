@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_ControlMain" Id="{985fdfc5-f46e-4d1e-bd08-247132339abb}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_ControlMain
+VAR_INPUT
+	bEmOp				:	BOOL	:=	FALSE;	//Emergency operation
+END_VAR
+VAR
+	iTempCont			:	I_TempController;	//temperature controller interface
+	//function block instances
+	fbSimpleTempCont	:	FB_SimpleTempCont;	//temperature controller
+	fbCycCont			:	FB_CyclingControl;
+	fbAuxHeatCont		:	FB_AuxHeatCont;		//auxiliary heater control
+	
+	//compressor startup and shutdown flags
+	bCompStart				:	BOOL	:= FALSE;
+	bCompStop				:	BOOL	:= FALSE;
+	bShutdownPump			:	BOOL	:= FALSE;
+	bShutdownPumpAux		:	BOOL;
+	bAuxHeatOld				:	BOOL;
+	
+	//pump timing
+	TimBP					:	TON;
+	TimIntHeatCir			:	TON;
+	TimIntHeatCirAux		:	TON;
+	TimIntHeatCirEm			:	TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//These lines need to be adjusted to use a different controller
+fbSimpleTempCont();					//execute temperature control function block
+iTempCont	:=	fbSimpleTempCont;	//assign function block to interface
+
+//set switching valve mode
+StateMachine.bSwitchVal	:=	iTempCont.ValveMode;
+
+//read space heating temperature setpoint
+TempSetpoints.fSpaceHeatSP	:=	iTempCont.SpaceHeatTempSP;
+
+IF (NOT bEmOp) THEN //normal operation
+	
+	//operate circulating pump
+	IF (TOD_TO_DINT(StateMachine.todCurTime) > TOD_TO_DINT(TimeProgs.todNightModeEnd)) AND
+		(TOD_TO_DINT(StateMachine.todCurTime) < TOD_TO_DINT(TimeProgs.todNightModeStart)) THEN //day
+		StateMachine.bCircPump	:=	TRUE;
+	ELSE
+		StateMachine.bCircPump	:=	FALSE;
+	END_IF
+
+	IF iTempCont.CompOp AND (NOT StateMachine.bCompRun) THEN	//compressor operation requested by controller and compressor not already running
+		//execute cycling control
+		fbCycCont();
+		IF (NOT StateMachine.bFault) AND fbCycCont.bStartupOK THEN	//system is not in fault state and cycling OK
+			bCompStart	:=	TRUE;		//give compressor start signal
+		END_IF
+	ELSIF (NOT iTempCont.CompOp) AND StateMachine.bCompRun THEN	//no compressor operation requested by controller and compressor running
+		//execute cycling control
+		fbCycCont();
+		IF fbCycCont.bShutdownOK THEN
+			bCompStop	:= TRUE;
+		END_IF
+	END_IF
+
+	//compressor startup procedure
+	IF bCompStart THEN
+		//start pumps
+		IF PumpTiming.stBPTime.bFirst THEN					//brine pump first
+			StateMachine.bBrinePump	:=	TRUE;
+			TimBP.PT				:=	PumpTiming.stBPTime.tPre;
+			TimBP.IN				:=	TRUE;
+			TimIntHeatCir.PT		:=	PumpTiming.stIntHeatCirTime.tDelay;
+			TimIntHeatCir.IN		:=	TRUE;
+			TimBP();
+			TimIntHeatCir();
+			IF TimIntHeatCir.Q THEN
+				StateMachine.bIntHeatCPump	:=	TRUE;
+			END_IF
+		ELSIF PumpTiming.stIntHeatCirTime.bFirst THEN		//internal heating circuit pump first
+			StateMachine.bIntHeatCPump	:=	TRUE;
+			TimIntHeatCir.PT			:=	PumpTiming.stIntHeatCirTime.tPre;
+			TimIntHeatCir.IN			:=	TRUE;
+			TimBP.PT					:=	PumpTiming.stBPTime.tDelay;
+			TimBP.IN					:=	TRUE;
+			TimIntHeatCir();
+			TimBP();
+			IF TimBP.Q THEN
+				StateMachine.bBrinePump		:=	TRUE;
+			END_IF
+		END_IF
+	
+		//start compressor
+		IF TimBP.Q AND TimIntHeatCir.Q THEN
+			//reset timers
+			TimBP.IN					:=	FALSE;
+			TimIntHeatCir.IN			:=	FALSE;
+			TimBP();
+			TimIntHeatCir();
+		
+			StateMachine.dtLastStart	:=	StateMachine.dtCurTime;
+			StateMachine.nNumStart		:=	StateMachine.nNumStart + 1;	//startup counter
+			StateMachine.bCompRun		:=	TRUE;
+			bCompStart					:=	FALSE;						//startup complete
+		END_IF
+	END_IF
+
+	//compressor shutdown procedure
+	IF bCompStop THEN
+		StateMachine.dtLastStop		:=	StateMachine.dtCurTime;
+		StateMachine.bCompRun		:=	FALSE;
+		bShutdownPump				:=	TRUE;
+		bCompStop					:=	FALSE;
+	END_IF
+
+	IF bShutDownPump THEN
+		//pump timing
+		TimBP.PT					:=	PumpTiming.stBPTime.tPost;
+		TimBP.IN					:=	TRUE;
+		TimIntHeatCir.PT			:=	PumpTiming.stIntHeatCirTime.tPost;
+		TimIntHeatCir.IN			:=	TRUE;
+		TimBP();
+		TimIntHeatCir();
+		IF TimBP.Q THEN	//stop brine pump
+			TimBP.IN				:=	FALSE;
+			StateMachine.bBrinePump	:=	FALSE;
+		END_IF
+		IF TimIntHeatCir.Q THEN	//stop internal heating circuit pump
+			TimIntHeatCir.IN			:=	FALSE;
+			StateMachine.bIntHeatCPump	:=	FALSE;
+		END_IF
+		IF TimIntHeatCir.Q AND TimBP.Q THEN
+			TimBP();
+			TimIntHeatCir();
+			bShutDownPump				:=	FALSE;	//shutdown complete
+		END_IF
+	END_IF
+	TimIntHeatCirEm(IN:=FALSE); //reset emergency operation timer
+ELSE	//emergency operation
+	StateMachine.bCompRun		:=	FALSE;
+	StateMachine.bBrinePump		:=	FALSE;
+	StateMachine.bIntHeatCPump	:=	TRUE;
+	TimIntHeatCirEm(IN:=TRUE,PT:=PumpTiming.stIntHeatCirTime.tPre);
+	StateMachine.bCircPump		:=	TRUE;
+	IF iTempCont.CompOp AND TimIntHeatCirEm.Q THEN	//start auxiliary heater if temperature controller identifies demand
+		StateMachine.bAuxHeatOp	:=	TRUE;
+	ELSE
+		StateMachine.bAuxHeatOp	:=	FALSE;
+	END_IF
+END_IF
+
+//space heating supply temperature and external heating circuit pump control
+P_SHSuppTempPID();
+
+//regular auxiliary heater control
+IF NOT bEmOp THEN
+	IF StateMachine.bActAuxHeat THEN
+		fbAuxHeatCont(bCompOp:=iTempCont.CompOp, bCycContOK:=fbCycCont.bStartupOK, bCompStart:=bCompStart);
+		IF fbAuxHeatCont.bAuxHeatOp THEN			//auxiliary heater operation requested
+			StateMachine.bIntHeatCPump	:=	TRUE;	//start internal heating circuit pump
+			TimIntHeatCirAux(IN:=TRUE, PT:=PumpTiming.stIntHeatCirTime.tPre);
+			IF TimIntHeatCirAux.Q THEN				//after 1 minute
+				StateMachine.bAuxHeatOp := TRUE;	//start auxiliary heater
+				TimIntHeatCirAux(In:=FALSE);		//reset timer
+			END_IF
+		ELSE
+			StateMachine.bAuxHeatOp	:=	FALSE;
+		END_IF
+	ELSE
+		StateMachine.bAuxHeatOp	:=	FALSE;
+	END_IF
+	
+	IF (NOT StateMachine.bAuxHeatOp) AND bAuxHeatOld THEN	//auxiliary heater was active last cycle
+		bShutdownPumpAux	:=	TRUE;
+	END_IF
+	
+END_IF
+
+IF bShutdownPumpAux THEN
+	TimIntHeatCirAux(IN:=TRUE, PT:=PumpTiming.stIntHeatCirTime.tPost);
+	IF TimIntHeatCirAux.Q THEN
+		StateMachine.bIntHeatCPump	:=	FALSE;
+		TimIntHeatCirAux(In:=FALSE);
+		bShutdownPumpAux	:=	FALSE;
+	END_IF
+END_IF
+
+bAuxHeatOld	:=	StateMachine.bAuxHeatOp;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

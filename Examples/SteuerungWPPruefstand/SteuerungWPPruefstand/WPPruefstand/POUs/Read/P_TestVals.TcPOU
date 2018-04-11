@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_TestVals" Id="{dc81e24e-637d-4707-b837-fa01b4097450}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_TestVals
+VAR
+	eVR10	:	E_TempSensVR10;
+	eVR11	:	E_TempSensVR11;
+	ePT100	:	E_TempSensPT100;
+	ePress	:	E_Press;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Manually set appropriate values
+for eVR10:=SP to RF1 do
+	Temperatures.stTempSensVR10[eVR10].bValid	:=	TRUE;
+END_FOR
+
+FOR eVR11:=T1 TO T8 DO
+	Temperatures.stTempSensVR11[eVR11].bValid	:=	TRUE;
+END_FOR
+
+FOR ePT100:=TExpVEv TO TAmb DO
+	Temperatures.stTempSensPT100[ePT100].bValid	:=	TRUE;
+END_FOR
+
+FOR ePress:=HP TO BP DO
+	Pressures.stPress[ePress].bValid			:=	TRUE;
+END_FOR
+
+ePress	:=	LP;
+Pressures.stPress[ePress].fVal	:=	3;
+ePress	:=	HP;
+Pressures.stPress[ePress].fVal	:=	25;
+ePress	:=	BP;
+Pressures.stPress[ePress].fVal	:=	2;
+ePress	:=	HCP;
+Pressures.stPress[ePress].fVal	:=	5;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

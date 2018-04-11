@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckBrinePressure" Id="{2782f311-c963-493a-85c3-d893bbd0a566}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckBrinePressure : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eBP				:	E_Press	:=	BP;	
+	bBrinePressF	:	BOOL	:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//check brine pressure
+IF Pressures.stPress[eBP].fVal < SysCheckParams.fBPMinOff THEN
+	bBrinePressF			:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	43;
+	StateMachine.sFaultMess	:=	'Brine pressure too low';
+END_IF
+
+IF Pressures.stPress[eBP].fVal > SysCheckParams.fBPMinOn THEN
+	bBrinePressF			:=	FALSE;
+	(*
+	Do not reset StateMachine fault here, in case there are other system faults!
+	*)
+END_IF
+
+//assign output
+F_CheckBrinePressure	:=	bBrinePressF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

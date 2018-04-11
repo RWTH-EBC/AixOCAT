@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FB_InitPumpTimes" Id="{d6a809c0-f42e-415e-bed6-9bdafe60ed80}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_InitPumpTimes
+VAR_INPUT
+	tBP_Pre				:	TIME	:=	T#1M;
+	tIntHeatCir_Pre		:	TIME	:=	T#1M;
+	tBP_Post			:	TIME	:=	T#5M;
+	tIntHeatCir_Post	:	TIME	:=	T#30M;
+END_VAR
+VAR_OUTPUT
+	bReady	:	BOOL	:=	False;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//write to GVL
+PumpTiming.stBPTime.tPre			:=	tBP_Pre;
+PumpTiming.stIntHeatCirTime.tPre	:=	tIntHeatCir_Pre;
+PumpTiming.stBPTime.tPost			:=	tBP_Post;
+PumpTiming.stIntHeatCirTime.tPost	:=	tIntHeatCir_Post;
+
+//find first one to start and calculate delays
+IF (tBP_Pre > tIntHeatCir_Pre) THEN
+	PumpTiming.stBPTime.bFirst			:=	TRUE;
+	PumpTiming.stBPTime.tDelay			:=	T#0MS;
+	PumpTiming.stIntHeatCirTime.tDelay	:=	tBP_Pre - tIntHeatCir_Pre;
+	PumpTiming.nMaxPre					:=	(TIME_TO_DWORD(tBP_Pre)/1000);
+ELSE
+	PumpTiming.stIntHeatCirTime.bFirst	:=	TRUE;
+	PumpTiming.stIntHeatCirTime.tDelay	:=	T#0MS;
+	PumpTiming.stBPTime.tDelay			:=	tIntHeatCir_Pre - tBP_Pre;
+	PumpTiming.nMaxPre					:=	(TIME_TO_DWORD(tIntHeatCir_Pre)/1000);
+END_IF
+
+bReady	:=	TRUE;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_InitPumpTimes">
+      <LineId Id="3" Count="18" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

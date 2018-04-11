@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_PowMeas" Id="{5d262649-7679-4242-8725-8bf1036bd6df}">
+    <Declaration><![CDATA[TYPE E_PowMeas :
+(
+	L1,	//power phase 1
+	L2,	//power phase 2
+	L3	//power phase 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

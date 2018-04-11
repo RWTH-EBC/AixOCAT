@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="E_TempSensVR10" Id="{bcd949e8-9a08-4451-8248-2a745e96c52a}">
+    <Declaration><![CDATA[TYPE E_TempSensVR10 : //all VR10 temperature sensors
+(
+	SP,		//Temperature of DHW storage tank
+	VF1,	//Temperature at the top of the space heating buffer tank
+	VF2,	//Temperature after external mixing valve
+	RF1		//Temperature at the bottom of the space heating buffer tank
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

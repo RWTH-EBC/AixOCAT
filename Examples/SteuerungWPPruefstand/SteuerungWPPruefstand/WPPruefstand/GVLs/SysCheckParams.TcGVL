@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="SysCheckParams" Id="{5ccd1bba-55f9-40cf-afc8-e1039398a504}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	(*
+		All values except maximum compressor outlet temperature, maximum water supply temperature and 
+		maximum water return temperature are set as recommended by the manufacturer. 
+	*)	
+
+	fMaxAmbTemp			:	REAL	:=	35;		//maximum ambient temperature
+	fMinAmbTemp			:	REAL	:=	-20;	//minimum ambient temperature
+	
+	fBPMinOff			:	REAL	:=	0.2;	//minimum brine circuit pressure
+	fBPMinOn			:	REAL	:=	0.4;	//brine circuit pressure for heat pump restart
+	
+	fHPMax				:	REAL	:=	30;		//maximum high pressure for compression cycle
+	fLPMin				:	REAL	:=	0.7;	//minimum low pressure for compression cycle
+	
+	fTempCompOutMax		:	REAL	:=	120;	//maximum compressor outlet temperature
+	
+	fHCPMinOff			:	REAL	:=	0.5;	//minimum heating circuit pressure
+	fHCPMinOn			:	REAL	:=	0.7;	//heating circuit pressure for heat pump restart
+	
+	fTempHeatSuppMax	:	REAL	:=	65;		//maximum water supply temperature
+	fTempHeatRetMax		:	REAL	:=	60;		//maximum water return temperature
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

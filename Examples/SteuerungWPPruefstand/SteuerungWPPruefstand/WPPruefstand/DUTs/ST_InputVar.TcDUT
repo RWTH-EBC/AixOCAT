@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="ST_InputVar" Id="{84c69915-5cb2-4da4-bf05-dbe7f27b0bc4}">
+    <Declaration><![CDATA[TYPE ST_InputVar :
+STRUCT
+	(*
+fVar = nVarInput*fParaM + fParaC
+
+fParaMinVal<=fVal<=fParaMaxVal
+	*)	
+	
+	//Raw input from terminal
+	nVarInput	AT %I*	:DINT; 		//Integer input from terminal
+	bSensErr	AT %I*	:BOOL;		//Sensor error bit
+	
+	//Physical value
+	fVal				:REAL;		//Input value as REAL/FLOAT/SINGLE
+	
+	//Linear conversion factors
+	fParaM				:REAL; 		//slope of linear conversion
+	fParaC				:REAL;		//offset of linear conversion
+	
+	//Physical limits
+	fParaMaxVal			:REAL;		//Maximum physical value
+	fParaMinVal			:REAL;		//Minimum physical value
+	
+	bValid				:BOOL	:=	TRUE;	//Indicator if fVal is valid
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="MAIN" Id="{28335900-e864-44c2-a829-2da0246f4db7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//MAIN PROGRAM
+
+//State machine
+CASE StateMachine.eStatus OF
+	
+	Initialize:		//Read sensor data from csv files
+		P_InitMain();
+		P_GetTime();
+		
+		IF P_InitMain.bError THEN //Initialization failed
+			StateMachine.bFault		:=	TRUE;
+			StateMachine.nFault		:=	10;
+			StateMachine.sFaultMess	:=	'Initialization failed';
+			StateMachine.eStatus	:=	Error;
+		END_IF
+		
+		IF P_InitMain.bComplete THEN
+			StateMachine.eStatus	:=	Read;
+		END_IF
+
+	Read:			//Read data from terminals and convert to physical values
+		P_ReadMain();
+		P_GetTime();
+		StateMachine.eStatus	:=	SystemCheck;
+		
+		//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		//P_TestVals();	//only for testing purposes
+		//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+	SystemCheck:	//Check system
+		P_SysCheckMain();
+		IF StateMachine.bFault THEN
+			StateMachine.nErrCount	:=	StateMachine.nErrCount + 1;
+			P_WriteErrLog(bStart:=TRUE);			//Start writing error log
+			StateMachine.eStatus	:=	Error;		//Error handling
+		ELSE
+			StateMachine.eStatus	:=	Automatic;	//Control
+		END_IF
+	
+	Automatic:		//Automatic heat pump control
+		P_ControlMain(bEmOp:=FALSE);
+		StateMachine.eStatus	:=	Write;
+		
+		IF StateMachine.bManEmShutdown THEN
+			StateMachine.eStatus	:=	Error;	//switch to error mode to execute emergency shutdown
+		END_IF
+	
+	Write:			//Write control signals to terminal
+		P_WriteMain();
+		StateMachine.eStatus	:=	Read;
+	
+	Error:			//Error handling
+		
+		IF NOT StateMachine.bEmOpAct THEN
+			P_EmShutdownMain();		//execute emergency shutdowns
+		END_IF
+		
+		P_ErrorHandlingMain();	//execute error handling
+		
+		P_GetTime();			//update time
+		P_WriteErrLog(bStart:=FALSE);	//finish writing error log
+		
+		IF StateMachine.bTempShut AND (NOT StateMachine.bPermShut) THEN	//temporary shutdown
+			P_ReadMain();		//read terminals
+			//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			//P_TestVals();	//only for testing purposes
+			//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			P_SysCheckMain();	//execute system check
+			IF (NOT (SysCheck.bAmbTemp OR SysCheck.bBP OR SysCheck.bCompCyc OR SysCheck.bCompOut OR SysCheck.bHCP OR 
+				SysCheck.bHeatTemp OR SysCheck.bPhaseSeqCh OR SysCheck.bSensErr OR SysCheck.bTermErrRT)) THEN
+				//no faults any more -> restart system
+				StateMachine.bTempShut	:=	FALSE;
+				StateMachine.bEmOpAct	:=	FALSE;
+				StateMachine.bEmOpPoss	:=	FALSE;
+				StateMachine.bFault		:=	FALSE;
+				StateMachine.nFault		:=	0;
+				StateMachine.sFaultMess	:=	'';
+				StateMachine.eStatus	:=	Read;
+			ELSE
+				StateMachine.eStatus	:=	Error;	//stay in error state
+			END_IF
+		ELSIF StateMachine.bPermShut THEN	//permanent shutdown
+				StateMachine.eStatus	:=	Error;	//stay in error state
+		END_IF
+		
+		IF StateMachine.bEmOpPoss AND StateMachine.bActAuxHeat THEN	//emergency operation
+			StateMachine.bEmOpAct	:=	TRUE;
+			P_ControlMain(bEmOp:=TRUE);			//emergency operation control
+			P_WriteMain();						//write values for emergency operation
+		ELSE
+			StateMachine.bEmOpAct	:=	FALSE;
+		END_IF
+
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_RampPump" Id="{52e661d8-144b-445a-9d91-6e596225ab4c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RampPump
+VAR_INPUT
+	fStartVal	:	REAL;
+	fEndVal		:	REAL;
+	tDuration	:	TIME;
+END_VAR
+VAR_OUTPUT
+	fCurVal		:	REAL;
+	bActiveRamp	:	BOOL	:=	FALSE;
+END_VAR
+VAR
+	Timer			:	TON;
+	nDurMS			:	DWORD;	//duration in ms
+	fInc			:	REAL;	//incremental change per ms
+	nTimeAfterStart	:	DWORD;	//time after start of ramp in ms
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bActiveRamp THEN	//initialization
+	nDurMS		:=	TIME_TO_DWORD(tDuration);
+	fInc		:=	(fEndVal - fStartVal)/DWORD_TO_REAL(nDurMS);
+	//reset timer
+	Timer.IN	:=	FALSE;
+	Timer();
+	Timer.PT	:=	tDuration;
+	bActiveRamp	:=	TRUE;
+ELSE	//generate ramp
+	Timer.IN		:=	TRUE;
+	Timer();
+	nTimeAfterStart	:=	TIME_TO_DWORD(Timer.ET);
+	fCurVal			:=	fStartVal + fInc*DWORD_TO_REAL(nTimeAfterStart);
+END_IF
+
+IF Timer.Q THEN
+	bActiveRamp	:=	FALSE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

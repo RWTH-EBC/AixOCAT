@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="DigOutputs" Id="{f5cee682-c39c-4136-a28a-9461f4a08331}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//contactors
+	bOutpComp	AT	%Q*	:	BOOL:=FALSE;	//Activate compressor - default: false
+	bOutpAH		AT	%Q*	:	BOOL:=FALSE;	//Activate auxiliary heater - default: false
+	
+	//Switching valve
+	bSHDHWSwitchValv	AT	%Q*	:	BOOL;	//Control signal for switching valve - Space Heating/DHW
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
