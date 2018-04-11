@@ -9,7 +9,7 @@ AixOCAT is an open source community library framework for building automation sy
 As the library framework is developed at the [RWTH Aachen University, E.ON Energy Research Center, Institute
 for Energy Efficient Buildings and Indoor Climate](https://www.ebc.eonerc.rwth-aachen.de/cms/~dmzz/E-ON-ERC-EBC/?lidx=1), the library's name AixOCAT is derived from the city's French 
 name Aix-la-Chapelle, which the people of Aachen are very fond of and use a lot. 
-With the name AixLib we follow this local tradition.
+With the name AixOCAT we follow this local tradition.
 
 The full documentation of AixOCAT including examples and description of modules,
 classes and functions can be found at the website:
