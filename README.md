@@ -11,11 +11,6 @@ for Energy Efficient Buildings and Indoor Climate](https://www.ebc.eonerc.rwth-a
 name Aix-la-Chapelle, which the people of Aachen are very fond of and use a lot. 
 With the name AixOCAT we follow this local tradition.
 
-The full documentation of AixOCAT including examples and description of modules,
-classes and functions can be found at the website:
-
- * http://rwth-ebc.github.io/AixOCAT/
-
 This GitHub page will be used to further develop the package and make it
 available under the
 [MIT License](https://github.com/RWTH-EBC/AixoCAT/blob/master/License.md).
