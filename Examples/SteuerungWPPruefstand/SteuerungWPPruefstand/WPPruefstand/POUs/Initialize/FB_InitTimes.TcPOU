@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_InitTimes" Id="{ae04cb86-efcd-4466-89e0-da946abc9a88}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_InitTimes
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	bReady				:	BOOL := False;
+END_VAR
+VAR
+	SysTim				:	NT_GetTime;
+	dtCurTime			:	DT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF SysTim.BUSY THEN
+	SysTim(Start:=FALSE);
+ELSE
+	SysTim(NetID:='', Start:=TRUE);
+END_IF
+
+IF NOT SysTim.BUSY THEN
+	dtCurTime	:=	SYSTEMTIME_TO_DT(SysTim.TIMESTR);
+	StateMachine.dtLastStart	:=	dtCurTime;
+	StateMachine.dtLastStop		:=	dtCurTime;
+	bReady	:= TRUE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

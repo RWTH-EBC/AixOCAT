@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_ErrorHandlingMain" Id="{f95c0c92-c7ec-4a65-a5cd-be8518a26331}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_ErrorHandlingMain
+VAR
+	HCPTim	:	TON;
+	BPTim	:	TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//error handling for each fault that can occur
+CASE StateMachine.nFault OF
+	
+	1:	//manual emergency shutdown
+		StateMachine.bPermShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE;
+		
+	2:	//division by 0
+		StateMachine.bPermShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE;
+		
+	10:	//Initialization failed
+		StateMachine.bPermShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE;
+
+	21:	//compressor outlet temperature too high
+		StateMachine.bTempShut	:=	TRUE;	//wait for a lower temperature
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+
+	31, 32:	//heating circuit temperatures too high
+		StateMachine.bTempShut	:=	TRUE;	//wait for lower temperatures
+		StateMachine.bEmOpPoss	:=	FALSE;
+		
+	41, 42:	//ambient temperature too high or low
+		StateMachine.bTempShut	:=	TRUE;	//wait for a suitable ambient temperature
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+
+	43:	//brine pressure too low
+		StateMachine.bTempShut	:=	TRUE;
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+		BPTim.PT				:=	T#5M;
+		BPTim.IN				:=	TRUE;
+		BPTim();
+		IF BPTim.Q THEN	//if the brine circuit pressure stays too low for 5 mins, switch to permanent shutdown
+			StateMachine.bTempShut	:=	FALSE;
+			StateMachine.bPermShut	:=	TRUE;
+			BPTim.IN				:=	FALSE;
+			BPTim();
+		END_IF
+
+	44:	//heating circuit pressure too low
+		StateMachine.bTempShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE;
+		HCPTim.PT				:=	T#5M;
+		HCPTim.IN				:=	TRUE;
+		HCPTim();
+		IF HCPTim.Q THEN	//if the heating circuit pressure stays too low for 5 mins, switch to permanent shutdown
+			StateMachine.bTempShut	:=	FALSE;
+			StateMachine.bPermShut	:=	TRUE;
+			HCPTim.IN				:=	FALSE;
+			HCPTim();
+		END_IF
+		
+	45, 46:	//evaporation pressure too low or condensation pressure too high
+		StateMachine.bTempShut	:=	TRUE;
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+
+	47:	//phase sequence error
+		StateMachine.bPermShut	:=	TRUE;
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+		
+	51, 52, 54: //brine circuit pressure, high pressure or low pressure sensor failure
+		StateMachine.bPermShut	:=	TRUE;
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+		
+	53:	//heating circuit pressure sensor failure
+		StateMachine.bPermShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE;	//disable emergency operation in case heating circuit pressure is too low
+		
+	64:	//ambient temperature sensor failure
+		StateMachine.bPermShut	:=	TRUE;
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF	
+		
+	71, 72, 73, 74, 75, 76, 77, 78:	//internal temperature sensor failure
+		StateMachine.bPermShut	:=	TRUE;
+		IF NOT SysCheck.bHCP THEN	//enable emergency operation if heating circuit pressure is ok
+			StateMachine.bEmOpPoss	:=	TRUE;
+		END_IF
+		
+	81, 82, 83, 84:	//external temperature sensor failure
+		StateMachine.bPermShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE; //disable emergency operation to prevent dangerous temperatures
+		
+	91, 92, 93, 94, 95, 96, 97, 98, 99:	//real-time communication failure
+		StateMachine.bPermShut	:=	TRUE;
+		StateMachine.bEmOpPoss	:=	FALSE;
+
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

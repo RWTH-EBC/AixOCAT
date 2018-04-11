@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_SHSuppTempPID" Id="{c2f97734-c6f7-4808-8795-437032b4a8f1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_SHSuppTempPID
+VAR
+	eTAmb			:	E_TempSensPT100	:=	TAmb;	//ambient temperature
+	fTAmbMax		:	REAL			:=	21;		//maximum ambient temperature before space heating is switched off
+	fbPIDSuppTemp	:	FB_PIDSuppTemp;				//PID controller
+	fPIDOutp		:	REAL;						//control signal from PID
+	bAct			:	BOOL			:=	True;	//space heating active
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Temperatures.stTempSensPT100[eTAmb].fVal > (fTAmbMax + 1) THEN
+	bAct	:=	FALSE;
+ELSIF Temperatures.stTempSensPT100[eTAmb].fVal < (fTAmbMax - 1) THEN
+	bAct	:=	TRUE;
+END_IF
+	
+IF bAct THEN
+	//run external heating circuit pump
+	StateMachine.bExtHeatCPump	:=	TRUE;
+
+	//execute PID Control
+	fbPIDSuppTemp(fSetPoint:=TempSetpoints.fSpaceHeatSP);
+	fPIDOutp	:=	fbPIDSuppTemp.fOutp;
+
+	//pass control signal to mixing valve
+	StateMachine.fMixVal	:=	fPIDOutp;
+ELSE
+	StateMachine.bExtHeatCPump	:=	FALSE;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

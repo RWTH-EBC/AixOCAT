@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_CheckCompOutTemp" Id="{af88325d-6b57-4d1b-94c4-be038b4616a9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CheckCompOutTemp : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	eT1				:	E_TempSensVR11	:=	T1;
+	bCompOutTempF	:	BOOL			:=	FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bCompOutTempF	:=	FALSE;
+
+//check compressor outlet temperature
+IF Temperatures.stTempSensVR11[eT1].fVal > SysCheckParams.fTempCompOutMax THEN
+	bCompOutTempF	:=	TRUE;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	21;
+	StateMachine.sFaultMess	:=	'Compressor outlet temperature too high';
+END_IF
+
+IF Temperatures.stTempSensVR11[eT1].fVal < (SysCheckParams.fTempCompOutMax - 2) THEN
+	bCompOutTempF	:=	FALSE;
+END_IF
+
+//assign output
+F_CheckCompOutTemp	:=	bCompOutTempF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

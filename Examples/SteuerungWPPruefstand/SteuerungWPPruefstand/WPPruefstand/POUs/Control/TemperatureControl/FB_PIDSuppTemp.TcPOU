@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="FB_PIDSuppTemp" Id="{78fb9438-5fef-4f7f-a36c-b0e4bdf3f4c2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PIDSuppTemp
+VAR_INPUT
+	fSetPoint	:	REAL;
+END_VAR
+VAR_OUTPUT
+	fOutp		:	REAL;
+END_VAR
+VAR
+	Tim			:	TON;
+	
+	fErr		:	REAL;			//current difference between setpoint and actual value
+	fErrOld		:	REAL	:= 0;	//error in last cycle
+	
+	eVF2		:	E_TempSensVR10	:=	VF2;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Tim(PT:=PID.tSamp,IN:=TRUE);
+
+IF Tim.Q THEN
+	//calculate current difference
+	fErr	:=	fSetPoint - Temperatures.stTempSensVR10[eVF2].fVal;
+
+	//Anti-windup
+	IF (fOutp < PID.fOutpUpLim) AND (fOutp > PID.fOutpLowLim) THEN
+		PID.fErrSum	:=	PID.fErrSum + (fErr * (TIME_TO_REAL(PID.tSamp)/1000));	//Integrate
+	END_IF
+
+	//calculate output signal
+	fOutp	:=	PID.fKp * (fErr + (1/PID.fTi) * PID.fErrSum + PID.fTd * ((fErr - fErrOld)/(TIME_TO_REAL(PID.tSamp) / 1000)));
+
+	IF fOutp > PID.fOutpUpLim THEN
+		fOutp	:= PID.fOutpUpLim;
+	ELSIF fOutp < PID.fOutpLowLim THEN
+		fOutp	:=	PID.fOutpLowLim;
+	END_IF
+
+	//save error
+	fErrOld	:=	fErr;
+	
+	//reset timer
+	Tim(IN:=FALSE);
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

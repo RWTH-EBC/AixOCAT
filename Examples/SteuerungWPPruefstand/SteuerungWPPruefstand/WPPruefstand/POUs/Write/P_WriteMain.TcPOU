@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_WriteMain" Id="{db344db0-6ca4-4556-9081-998b2c009850}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_WriteMain
+VAR
+	fbRampBP			:	FB_RampPump;
+	fbRampIntHeatC		:	FB_RampPump;
+	fbRampExtHeatC		:	FB_RampPump;
+	fValBPNew			:	REAL;
+	fValIntHeatCPumpNew	:	REAL;
+	fValExtHeatCPumpNew	:	REAL;
+	tTimeToMax			:	Time	:=	T#10s;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//write digital outputs
+DigOutputs.bOutpComp		:=	StateMachine.bCompRun;
+DigOutputs.bOutpAH			:=	StateMachine.bAuxHeatOp;
+DigOutputs.bSHDHWSwitchValv	:=	StateMachine.bSwitchVal;
+
+//prepare values for analog outputs
+IF StateMachine.bBrinePump THEN	//operate brine pump
+	fValBPNew	:=	F_PumpConvPercVolt(StateMachine.nBrinePump);
+ELSE	//stop brine pump
+	fValBPNew	:=	0.75;		//0.5-1V: pump stops
+END_IF
+IF (AnaOutputs.stOutpBP.fVal <> fValBPNew) THEN	//old value <> new value -> ramp
+	IF NOT fbRampBP.bActiveRamp THEN	//initialize
+		fbRampBP.fStartVal	:=	AnaOutputs.stOutpBP.fVal;
+		fbRampBP.fEndVal	:=	fValBPNew;
+		//allow 10s to get to maximum speed
+		fbRampBP.tDuration	:=	REAL_TO_TIME((ABS(AnaOutputs.stOutpBP.fVal - fValBPNew)/10) * TIME_TO_REAL(tTimeToMax));
+		fbRampBP();	//execute function block
+		AnaOutputs.stOutpBP.fVal	:=	fbRampBP.fCurVal;	//pass current value to output
+	ELSE
+		fbRampBP();	//execute function block
+		AnaOutputs.stOutpBP.fVal	:=	fbRampBP.fCurVal;	//pass current value to output
+	END_IF
+ELSE
+	AnaOutputs.stOutpBP.fVal	:=	fValBPNew;
+END_IF
+
+IF StateMachine.bIntHeatCPump THEN	//operate internal heating circuit pump
+	fValIntHeatCPumpNew	:=	F_PumpConvPercVolt(StateMachine.nIntHeatCPump);
+ELSE	//stop internal heating circuit pump
+	fValIntHeatCPumpNew	:=	0.75;		//0.5-1V: pump stops
+END_IF
+IF (AnaOutputs.stOutpIntHP.fVal <> fValIntHeatCPumpNew) THEN	//old value <> new value -> ramp
+	IF NOT fbRampIntHeatC.bActiveRamp THEN	//initialize
+		fbRampIntHeatC.fStartVal	:=	AnaOutputs.stOutpIntHP.fVal;
+		fbRampIntHeatC.fEndVal		:=	fValIntHeatCPumpNew;
+		//allow 10s to get to maximum speed
+		fbRampIntHeatC.tDuration	:=	REAL_TO_TIME((ABS(AnaOutputs.stOutpIntHP.fVal - fValIntHeatCPumpNew)/10) * TIME_TO_REAL(tTimeToMax));
+		fbRampIntHeatC();	//execute function block
+		AnaOutputs.stOutpIntHP.fVal	:=	fbRampIntHeatC.fCurVal;	//pass current value to output
+	ELSE
+		fbRampIntHeatC();	//execute function block
+		AnaOutputs.stOutpIntHP.fVal	:=	fbRampIntHeatC.fCurVal;	//pass current value to output
+	END_IF
+ELSE
+	AnaOutputs.stOutpIntHP.fVal	:=	fValIntHeatCPumpNew;
+END_IF
+
+IF StateMachine.bExtHeatCPump THEN	//operate external heating circuit pump
+	fValExtHeatCPumpNew	:=	F_PumpConvPercVolt(StateMachine.nExtHeatCPump);
+ELSE	//stop External heating circuit pump
+	fValExtHeatCPumpNew	:=	0.75;		//0.5-1V: pump stops
+END_IF
+IF (AnaOutputs.stOutpExtHP.fVal <> fValExtHeatCPumpNew) THEN	//old value <> new value -> ramp
+	IF NOT fbRampExtHeatC.bActiveRamp THEN	//initialize
+		fbRampExtHeatC.fStartVal	:=	AnaOutputs.stOutpExtHP.fVal;
+		fbRampExtHeatC.fEndVal		:=	fValExtHeatCPumpNew;
+		//allow 10s to get to maximum speed
+		fbRampExtHeatC.tDuration	:=	REAL_TO_TIME((ABS(AnaOutputs.stOutpExtHP.fVal - fValExtHeatCPumpNew)/10) * TIME_TO_REAL(tTimeToMax));
+		fbRampExtHeatC();	//execute function block
+		AnaOutputs.stOutpExtHP.fVal	:=	fbRampExtHeatC.fCurVal;	//pass current value to output
+	ELSE
+		fbRampExtHeatC();	//execute function block
+		AnaOutputs.stOutpExtHP.fVal	:=	fbRampExtHeatC.fCurVal;	//pass current value to output
+	END_IF
+ELSE
+	AnaOutputs.stOutpExtHP.fVal	:=	fValExtHeatCPumpNew;
+END_IF
+
+AnaOutputs.stOutpMixValv.fVal	:=	StateMachine.fMixVal;
+
+//convert voltages to int signals and write to terminal
+AnaOutputs.stOutpBP			:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpBP);
+AnaOutputs.stOutpIntHP		:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpIntHP);
+AnaOutputs.stOutpExtHP		:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpExtHP);
+AnaOutputs.stOutpMixValv	:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpMixValv);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

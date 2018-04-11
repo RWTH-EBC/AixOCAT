@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_GetTempSP" Id="{27b3b081-4db2-4110-ba62-d44ee69696cf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_GetTempSP : REAL
+VAR_INPUT
+	fAmbTemp	:	REAL;	//Ambient temperature
+END_VAR
+VAR
+	i			:	USINT	:= 0;
+	nLeftInd	:	USINT;
+	nRightInd	:	USINT;
+	bFound		:	BOOL	:=	FALSE;	//flag if left and right element were found
+	
+	fDiffSet	:	REAL;				//difference between room temperature setpoint and 20°C
+	fSlopeAdap	:	REAL	:=	2;		//slope of space heating setpoint adaption
+	
+	fIntVal		:	REAL;				//interpolated value
+	fSetpoint	:	REAL;				//space heating temperature setpoint
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:=1 TO 40 DO
+	IF NOT bFound THEN
+		IF HeatingCurve.HeatCurve[i,0] >= fAmbTemp THEN
+			nLeftInd	:=	i - 1;
+			nRightInd	:=	i;
+			bFound		:=	TRUE;
+		END_IF
+	END_IF
+END_FOR
+
+//perform interpolation
+IF bFound THEN
+	fIntVal	:=	HeatingCurve.HeatCurve[nLeftInd,1] + ((HeatingCurve.HeatCurve[nRightInd,1] - HeatingCurve.HeatCurve[nLeftInd,1])/(HeatingCurve.HeatCurve[nRightInd,0] - HeatingCurve.HeatCurve[nLeftInd,0])) * (fAmbTemp - HeatingCurve.HeatCurve[nLeftInd,0]);
+ELSIF HeatingCurve.HeatCurve[0,0] >= fAmbTemp THEN	//ambient temperature lower than minimum value in heating curve
+	fIntVal	:=	HeatingCurve.HeatCurve[0,1];
+ELSIF fAmbTemp >= HeatingCurve.HeatCurve[40,0] THEN	//ambient temperature higher than maximum value in heating curve
+	fIntVal	:=	HeatingCurve.HeatCurve[40,1];
+END_IF
+
+//adapt to room temperature setpoint
+IF (TOD_TO_UDINT(StateMachine.todCurTime) > TOD_TO_UDINT(TimeProgs.todNightModeEnd)) AND
+	(TOD_TO_UDINT(StateMachine.todCurTime) < TOD_TO_UDINT(TimeProgs.todNightModeStart)) THEN	//day
+	fDiffSet	:=	TempSetpoints.fRoomSetpoint - 20;
+ELSE	//night
+	fDiffSet	:=	TempSetpoints.fRoomSetpointNight - 20;
+END_IF
+fSetpoint	:=	fIntVal + (fDiffSet * fSlopeAdap);
+
+//assign output
+F_GetTempSP	:=	fSetpoint;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

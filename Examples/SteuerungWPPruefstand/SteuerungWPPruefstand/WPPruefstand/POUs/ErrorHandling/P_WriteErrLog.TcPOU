@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_WriteErrLog" Id="{b57f21f7-606d-40f6-96e1-83efe1c645f4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_WriteErrLog
+VAR_INPUT
+	bStart		:	BOOL;
+END_VAR
+VAR
+	nStep		:	USINT;
+
+	fbFileOpen	:	FB_FileOpen;
+	fbFileClose	:	FB_FileClose;
+	sErrLogPath	:	STRING	:=	'D:\cve-mme\WpPruefstandData\ErrorLog.txt';
+	
+	fbFilePuts	:	FB_FilePuts;
+	sErrLogMess	:	STRING;
+	
+	hLogFile	:	UINT;
+	nErrCount	:	INT		:=	0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE nStep OF
+	
+	0:	//idle
+		IF bStart THEN
+			bStart	:=	FALSE;
+			nStep	:=	1;
+		END_IF
+
+	1:	//open ErrorLog File
+		fbFileOpen(sNetId:='', sPathName:=sErrLogPath, nMode:=FOPEN_MODEAPPEND OR FOPEN_MODEPLUS, bExecute:=TRUE);
+		nStep	:=	2;
+		
+	2:
+		IF fbFileOpen.bError THEN
+			nStep	:=	0;
+		END_IF
+		
+		IF fbFileOpen.bBusy THEN
+			fbFileOpen(bExecute:=FALSE);
+		ELSE
+			fbFileOpen(bExecute:=FALSE);
+			hLogFile	:=	fbFileOpen.hFile;
+			sErrLogMess	:=	CONCAT(str1:=DT_TO_STRING(StateMachine.dtCurTime),
+				str2:=CONCAT(str1:='$t',str2:=CONCAT(str1:=StateMachine.sFaultMess,str2:='$n')));
+			nStep		:=	3;	
+		END_IF	
+		
+	3:	//write data
+		fbFilePuts(sNetId:='',hFile:=hLogFile,sLine:=sErrLogMess,bExecute:=TRUE);
+		nStep			:=	4;
+		
+	4:
+		IF fbFilePuts.bError THEN
+			nStep	:=	0;
+		END_IF
+	
+		IF fbFilePuts.bBusy THEN
+			fbFilePuts(bExecute:=FALSE);
+		ELSE
+			fbFilePuts(bExecute:=FALSE);
+			nStep	:=	5;
+		END_IF
+		
+	5:	//close file
+		fbFileClose(sNetId:='',hFile:=hLogFile,bExecute:=TRUE);
+		nStep	:=	6;
+		
+	6:	
+		IF fbFileClose.bError THEN
+			nStep	:=	0;
+		END_IF
+	
+		IF fbFileClose.bBusy THEN
+			fbFileClose(bExecute:=FALSE);
+		ELSE
+			fbFileClose(bExecute:=FALSE);
+			hLogFile	:=	0;
+			nStep		:=	0;	//switch to idle mode
+		END_IF
+END_CASE
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

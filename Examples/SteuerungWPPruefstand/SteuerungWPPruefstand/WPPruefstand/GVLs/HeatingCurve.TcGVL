@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="HeatingCurve" Id="{f585fd7d-37c8-4e56-a844-a3dfcb75af1e}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	HeatCurve	:	ARRAY[0..40,0..1] OF REAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

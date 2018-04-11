@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="P_ReadMain" Id="{8a51e37b-1fbe-4a51-aa2d-885cfff7eeba}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_ReadMain
+VAR
+	ePress		: 	E_PRESS;
+	ePT100		:	E_TempSensPT100;
+	eVR10		:	E_TempSensVR10;
+	eVR11		:	E_TempSensVR11;
+	ePowMeas	:	E_PowMeas;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Read pressure sensors
+FOR ePress := HP TO BP DO
+	Pressures.stPress[ePress]	:=	F_LinSens(stInput:=Pressures.stPress[ePress]);
+END_FOR
+
+//Read PT100 sensors
+FOR ePT100 := TExpVEv TO TAmb DO
+	Temperatures.stTempSensPT100[ePT100]	:=	F_LinSens(stInput:=Temperatures.stTempSensPT100[ePT100]);
+END_FOR
+
+//Read VR10 sensors
+FOR eVR10 := SP TO RF1 DO
+	Temperatures.stTempSensVR10[eVR10]	:=	F_NTCSens(stInput:=Temperatures.stTempSensVR10[eVR10], pIntTab:=ADR(TempConvDat.VR10));
+END_FOR
+
+//Read VR11 sensors
+FOR eVR11 := T1 TO T8 DO
+	Temperatures.stTempSensVR11[eVR11]	:=	F_NTCSens(stInput:=Temperatures.stTempSensVR11[eVR11], pIntTab:=ADR(TempConvDat.VR11));
+END_FOR
+
+//Read power measurement phase values
+FOR ePowMeas := L1 TO L3 DO
+	PowMeas.stPowMeas[ePowMeas]	:=	F_PowMeasPhase(stInput:=PowMeas.stPowMeas[ePowMeas]);
+END_FOR
+//Calculate accumulated power values
+P_PowMeas();]]></ST>
+    </Implementation>
+    <LineIds Name="P_ReadMain">
+      <LineId Id="3" Count="24" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

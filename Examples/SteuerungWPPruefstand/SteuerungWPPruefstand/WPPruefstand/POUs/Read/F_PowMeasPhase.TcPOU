@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_PowMeasPhase" Id="{ddcdae3e-f6d2-4edc-ad68-71801e9700f4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_PowMeasPhase : ST_InputVar_PowMeas
+VAR_INPUT
+	stInput	:	ST_InputVar_PowMeas;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stInput.fCurrent	:=	DINT_TO_REAL(stInput.nCurrentRaw) * stInput.fScaleCurr * stInput.fCurrTrans;	//current
+stInput.fVolt		:=	DINT_TO_REAL(stInput.nVoltRaw) * stInput.fScaleVolt;							//volt
+stInput.fEffPow		:=	DINT_TO_REAL(stInput.nEffPowRaw) * stInput.fScaleEffPow * stInput.fCurrTrans;	//effective power
+stInput.fcosPhi		:=	DINT_TO_REAL(stInput.nVariantRaw) * stInput.fScaleCosPhi;						//power factor]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

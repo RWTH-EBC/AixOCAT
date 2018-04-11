@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="TempConvDat" Id="{5679fa5c-7a12-4cb2-aa64-7d14469cc669}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	//stTempSensTables	:	ST_TempSensTables;
+	VR10	:	ARRAY[1..40,1..2] OF REAL;
+	VR11	:	ARRAY[1..40,1..2] OF REAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="ST_InputVar_PowMeas" Id="{bcbc2c87-886f-4ae4-ad7d-1beda4c3f510}">
+    <Declaration><![CDATA[TYPE ST_InputVar_PowMeas :
+STRUCT
+	//Input from terminal as INT32
+	nCurrentRaw	AT	%I*	:	DINT;
+	nVoltRaw	AT	%I*	:	DINT;
+	nEffPowRaw	AT	%I*	:	DINT;
+	nVariantRaw	AT	%I*	:	DINT;				//set to cos(phi)
+(*
+variant input is controlled by index output:
+0	-	Apparent power
+1	-	Reactive power
+2	-	Energy
+3	-	cos(phi)
+4	-	Frequency
+5	-	Negative Energy
+*)	
+	//Index output to terminal
+	nIndexOut	AT	%Q*	:	USINT	:=	3;		//cos(phi)
+	
+	//Physical values
+	fCurrent	:	REAL;
+	fVolt		:	REAL;
+	fEffPow		:	REAL;
+	fcosPhi		:	REAL;
+	
+	//Conversion factors
+	fScaleCurr		:	REAL	:=	0.000005;	//Current = 0.000005A * current transformer ratio * raw value
+	fScaleVolt		:	REAL	:=	0.0001;		//Voltage = 0.0001V * voltage transformer ratio * raw value
+	fScaleEffPow	:	REAL	:=	0.01;		//EffPow = 0.01W * current and voltage transformer ratio
+	fCurrTrans		:	REAL	:=	0.1; 		//current transformer ratio: A50/A5
+	fScaleAppPow	:	REAL	:=	0.01;		//AppPow = 0.01W * current and voltage transformer ratio * raw value
+	fScaleReaPow	:	REAL	:=	0.01;		//ReaPow = 0.01VAr * current and voltage transformer ratio * raw value
+	fScaleEn		:	REAL	:=	0.001;		//Energy = 0.001Wh * current and voltage transformer ratio * raw value
+	fScaleCosPhi	:	REAL	:=	0.001;		//CosPhi = 0.001 * raw value
+	fScaleFrequ		:	REAL	:=	0.1;		//Frequ = 0.1Hz * raw value
+		
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

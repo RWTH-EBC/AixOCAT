@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="ST_OutputVar" Id="{f97ecab3-1851-49b9-b335-fea392bd8a66}">
+    <Declaration><![CDATA[TYPE ST_OutputVar :
+STRUCT
+
+(*
+nVarOutput = (fVar-fParaC)/fParaM)
+*)	
+
+	nVarOutput AT %Q*	:INT;	//Output to terminal
+	fVal				:REAL;	//Output value as REAL/FLOAT/SINGLE
+	
+	fParaMaxOutp		:REAL	:= 10;			//slope of linear conversion -> 10V, 32767 bit (INT16)
+	nParaMaxInt			:INT	:= 32767;	
+	fParaC				:REAL	:= 0;			//offset of linear conversion
+	
+	fParaMaxVal			:REAL;	//Maximum value of output (e.g. 10V, 20mA)
+	fParaMinVal			:REAL;	//Minimum value of output (e.g. 0V, 4mA)
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

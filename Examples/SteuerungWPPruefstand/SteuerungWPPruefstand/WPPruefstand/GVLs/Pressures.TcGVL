@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="Pressures" Id="{3ff48237-ec27-4473-98a1-7187e406970a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	ePress	:	E_Press;
+	stPress	:	ARRAY[0..3] OF ST_InputVar;
+
+(*
+	stHP	:	ST_InputVar;	//High pressure - after compression
+	stLP	: 	ST_InputVar;	//Low pressure	- before compression
+	stHCP	:	ST_InputVar;	//Heating circuit pressure
+	stBP	:	ST_InputVar;	//Brine circuit pressure
+*)
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

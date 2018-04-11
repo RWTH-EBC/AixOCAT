@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_Terminals" Id="{0883c50c-4f56-420c-b099-505669e99866}">
+    <Declaration><![CDATA[TYPE E_Terminals :
+(
+	TempSens1,
+	TempSens2,
+	TempSens3,
+	TempSens3Wire,
+	PressSens,
+	PowMeasTerm,
+	AnalogOutp,
+	OutpSwitchValv,
+	OutpCont
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

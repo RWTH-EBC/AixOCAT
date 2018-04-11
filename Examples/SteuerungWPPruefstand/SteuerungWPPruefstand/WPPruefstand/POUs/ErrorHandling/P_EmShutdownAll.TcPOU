@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="P_EmShutdownAll" Id="{9463a3e7-e8a4-4cee-99f1-61d1e2ef936e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_EmShutdownAll
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//shut down all components
+
+StateMachine.bCompRun		:=	FALSE;
+DigOutputs.bOutpComp		:=	FALSE;
+
+StateMachine.bAuxHeatOp		:=	FALSE;
+DigOutputs.bOutpAH			:=	FALSE;
+
+StateMachine.bBrinePump		:=	FALSE;
+AnaOutputs.stOutpBP.fVal	:=	0.75;	//0.75 Volt: Pump stop
+AnaOutputs.stOutpBP			:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpBP);
+
+StateMachine.bIntHeatCPump	:=	FALSE;
+AnaOutputs.stOutpIntHP.fVal	:=	0.75;	//0.75 Volt: Pump stop
+AnaOutputs.stOutpIntHP		:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpIntHP);
+
+StateMachine.bExtHeatCPump	:=	FALSE;
+AnaOutputs.stOutpExtHP.fVal	:=	0.75;	//0.75 Volt: Pump stop
+AnaOutputs.stOutpExtHP			:=	F_ConvLinAnaOutp(stOutput:=AnaOutputs.stOutpExtHP);
+
+StateMachine.bCircPump		:=	FALSE;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

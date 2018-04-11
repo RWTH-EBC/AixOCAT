@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="CheckDivLReal" Id="{759fd0c0-4bd4-47c3-aba4-11cc8b1dc8b4}" SpecialFunc="CheckDivReal64">
+    <Declaration><![CDATA[// Implicitly generated code : DO NOT EDIT
+FUNCTION CheckDivLReal : LREAL
+VAR_INPUT
+	divisor:LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Implicitly generated code : Only an Implementation suggestion
+IF divisor = 0 THEN
+	CheckDivLReal:=1;
+	StateMachine.bFault		:=	TRUE;
+	StateMachine.nFault		:=	2;
+	StateMachine.sFaultMess	:=	'Critical program error: division by 0';
+	StateMachine.eStatus	:=	Error;
+	P_EmShutdownAll();	//Execute emergency shutdown
+ELSE
+	CheckDivLReal:=divisor;
+END_IF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

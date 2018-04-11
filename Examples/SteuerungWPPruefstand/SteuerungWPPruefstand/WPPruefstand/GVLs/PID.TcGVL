@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="PID" Id="{3b1e6d36-d591-4acb-a015-c74132b15195}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	fKp			:	REAL	:= 1;		//proportional gain
+	fTi			:	REAL	:= 10;		//integration time
+	fTd			:	REAL	:= 0;		//derivative time
+	tSamp		:	TIME	:= T#100MS;	//sampling time
+	
+	fErrSum		:	REAL	:= 0;	//sum of errors
+	
+	//limits of control signal - 0..10V signal
+	fOutpUpLim	:	REAL	:=	10;
+	fOutpLowLim	:	REAL	:=	0;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

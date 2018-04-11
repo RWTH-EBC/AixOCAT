@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <POU Name="F_LinSens" Id="{93407fe1-99d7-48bd-92cd-924237ac1e19}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_LinSens	:	ST_InputVar
+VAR_INPUT
+	stInput	:	ST_InputVar;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stInput.fVal	:=	stInput.fParaM * DINT_TO_REAL(stInput.nVarInput) + stInput.fParaC; //linear conversion
+
+IF stInput.bSensErr THEN
+	stInput.bValid	:=	FALSE;
+END_IF
+
+//check if value is valid
+IF (stInput.fVal > stInput.fParaMaxVal) OR (stInput.fVal < stInput.fParaMinVal) THEN
+	stInput.bValid	:=	FALSE;
+END_IF
+
+F_LinSens	:=	stInput;	//return]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

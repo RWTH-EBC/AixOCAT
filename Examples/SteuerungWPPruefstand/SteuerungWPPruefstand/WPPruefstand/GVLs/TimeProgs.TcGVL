@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <GVL Name="TimeProgs" Id="{49f04de1-7956-4771-8269-612013859e6b}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	todNightModeStart	:	TOD;
+	todNightModeEnd		:	TOD;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

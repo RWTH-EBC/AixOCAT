@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2">
+  <DUT Name="E_TempSensPT100" Id="{f2d071e4-e0a8-4f86-b09e-fc59cf847f01}">
+    <Declaration><![CDATA[TYPE E_TempSensPT100 :
+(
+	TExpVEv,	//Temperature between expansion valve and evaporator
+	TShEv,		//Temperature after evaporator
+	TCond,		//Temperature after condenser
+	TAmb		//Ambient temperature
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.2" FileSignature="07280fec84c55ee54a46da68f3e870d42af487bbb1209f47ae546524226e1106268ec699b99959642d4cbc04b50dd2a4038c81a50076287e8b47fb0ec21be160cf23902e834e8438c83c4978e2978f32e88c1b8ac9c86bcfbb9fab45d5717854ac162585c043038d780299a5a7babcfbe4b699044e64022439cb436cca1ace000bd0ee34ef92bc5fca6fad0ea5229bcc921acc797978e9b8f33f0b9e00c0ce92ca76b9efa43b99d5a813aaee507295628687ffd19e68e7ecbc660fa83c681577f6ab7bddfedaa9d39714ff020b72fbbbd3d411850267b4056a846cca031e2a0b2e3fb27c386488db83892c816f0aa7ae34ec71f4e465ed2b92711e0da7e92f1e">
+  <POU Name="F_WriteErrLog" Id="{a57295b0-41c1-4a86-946d-f3852ff7b370}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_WriteErrLog : BOOL
+VAR_INPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
