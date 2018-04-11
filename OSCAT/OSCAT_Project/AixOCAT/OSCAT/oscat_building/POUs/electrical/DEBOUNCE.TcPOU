@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DEBOUNCE" Id="{f5cf9e17-e957-4fe2-a173-224d76fc800b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DEBOUNCE
+VAR_INPUT
+	IN : BOOL;
+	TD : TIME;
+	PM : BOOL;
+END_VAR
+
+VAR_OUTPUT
+	Q : BOOL;
+END_VAR
+VAR
+	deb : TOF;
+END_VAR
+
+(*
+version 1.0	22. sep. 2008
+programmer 	oscat
+tested by	tobias
+
+DEBOUNCE is used to debounce switch inputs.
+in addition to the debounce functionality this FB can also be used to detect rising edges on IN when PM = TRUE.
+When PM = FALSE, Q follows in with the debounce functionality.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF NOT deb.Q AND IN THEN
+	(* rising edge on input detetced a *)
+	Q := TRUE;
+ELSIF NOT PM THEN
+	Q := deb.Q;
+ELSE
+	Q := FALSE;
+END_IF;
+
+(* run debounce timer *)
+deb(IN := IN, PT := TD);
+
+
+
+(*
+hm 22. sep. 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DEBOUNCE">
+      <LineId Id="24" Count="19" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

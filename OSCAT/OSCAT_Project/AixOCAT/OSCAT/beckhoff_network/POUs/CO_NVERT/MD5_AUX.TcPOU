@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MD5_AUX" Id="{55f98a6a-5f04-4fda-866f-54cb9227b384}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MD5_AUX : DWORD
+VAR_INPUT
+	N : INT;
+	A : DWORD;
+	B : DWORD;
+	C : DWORD;
+	D : DWORD;
+	X : DWORD;
+	U : INT;
+	T : DWORD;
+END_VAR
+VAR
+	w : DWORD;
+END_VAR
+
+(*
+version 1.0	06. dec. 2009
+programmer 	ks
+tested by	ks
+
+MD5_AUX ist ein Zusatzbaustein füR MD5_STREAM und enthäLT wiederkehrende Berechnungen
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE N OF
+	1: w := (B AND C) OR (NOT(B) AND D);
+	2: w := (B AND D) OR (C AND NOT D);
+	3: w := (B XOR C XOR D);
+	4: w := (C XOR (B OR  NOT(D)));
+END_CASE
+
+MD5_AUX := B + ROL(A + w + X + T,U);
+
+(* revision history
+
+ks	6. dec. 2009 rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MD5_AUX">
+      <LineId Id="23" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

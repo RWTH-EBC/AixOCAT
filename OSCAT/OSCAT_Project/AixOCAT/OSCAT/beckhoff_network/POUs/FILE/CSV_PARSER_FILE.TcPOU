@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CSV_PARSER_FILE" Id="{6a92b28b-3e38-4e9a-970d-e469907ca7d7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CSV_PARSER_FILE
+VAR_INPUT
+	SEP : BYTE;
+END_VAR
+VAR_IN_OUT
+	FILENAME : STRING;
+	FSD : FILE_SERVER_DATA;
+	RUN : BYTE;
+	OFFSET : UDINT;
+	VALUE : STRING(STRING_LENGTH);
+	PT	: NETWORK_BUFFER;
+END_VAR
+VAR_OUTPUT
+	RESULT : BYTE;
+END_VAR
+VAR
+	i : UDINT;
+	state : BYTE;
+	e : BYTE;
+	mode : BYTE;
+	step : INT;
+	c : BYTE;
+	v_add : BYTE;
+	eof : BOOL;
+	pv : POINTER TO BYTE;
+	pve : DWORD;
+	watchdog : TON;
+	x : BOOL;
+	FB : FILE_BLOCK;
+
+	(*LOG_MSG : LOG_MSG;
+	_debug_enable : BOOL := FALSE;
+	step_last : INT;*)
+END_VAR
+
+(*
+version 1.0		01. oct. 2010
+programmer 		ks
+tested by			ks
+
+CSV_PARSER_FILE liefert die Elemente oder Zeilen einer Textdatei.
+
+--------------------------------------
+
+RUN Mode
+00 = kein Befehl aktiv
+01 = Element suchen
+
+Result Codes
+01 = Element gefunden
+02 = Element und Zeilenende erkannt
+05 = Befehl in Arbeit (Busy)
+10 = nichts gefunden - Daten-Ende erreicht
+
+State Codes
+01 = Element gefunden
+02 = Element und Zeilenende erkannt
+05 = Befehl in Arbeit (Busy)
+10 = nichts gefunden - Daten-Ende erreicht
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF RUN > 0 THEN
+
+	IF state = 0 THEN (* Auswertung neu beginnen *)
+		pv := ADR(VALUE);
+		pv^ := 0; (* VALUE = '' *)
+		pve := pv + INT_TO_DWORD(STRING_LENGTH);
+		i := OFFSET;
+		RESULT := 0;
+		state := 5; (* Befehl in Arbeit (Busy) *)
+		step := 0; (* Auswertung neu beginnen *)
+
+		(* ---------------- Debug-Message -----------------------*)
+		(*IF _debug_enable THEN
+			LOG_CL.NEW_MSG := 'CPF: Startindex: ~1';
+			LOG_CL.PRINTF[1] := UDINT_TO_STRING(i);
+			LOG_MSG();
+		END_IF;*)
+		(* -----------------------------------------------------------------*)
+
+	END_IF;
+
+	watchdog(IN:=FALSE,PT:=T#1ms); (* Timer neustarten *)
+	watchdog.IN := TRUE;
+
+	WHILE (state = 5) DO (* Schleife solange kein Ergebnis *)
+
+		mode := 1;
+		FB(MODE:=mode,FSD:=fsd,PT:=PT,FILENAME:=FILENAME,POS:=i );
+		e:=FB.ERROR;
+		c:=FB.DATA;
+
+		eof := i + 1 = FSD.FILE_SIZE; (* End of File *)
+
+		(* ---------------- Debug-Message -----------------------*)
+		(*IF _debug_enable THEN
+			LOG_CL.NEW_MSG := 'CPF: mode: ~1, error: ~2 , >~7<>~3< ~4 step ~5 index ~6';
+			LOG_CL.PRINTF[1] := BYTE_TO_STRING(mode);
+			LOG_CL.PRINTF[2] := BYTE_TO_STRING(e);
+			LOG_CL.PRINTF[3] := BYTE_TO_STRING(c);
+			LOG_CL.PRINTF[4] := BOOL_TO_STRING(eof);
+			LOG_CL.PRINTF[5] := INT_TO_STRING(step);
+			LOG_CL.PRINTF[6] := UDINT_TO_STRING(i);
+			LOG_CL.PRINTF[7] := CHR_TO_STRING(c);
+			LOG_MSG();
+		END_IF;*)
+		(* -----------------------------------------------------------------*)
+		watchdog(); (* Timer aktualisieren *)
+
+		IF mode > 0 OR watchdog.Q THEN (* Baustein noch aktiv, oder watchdog ausgelöst *)
+			state := 5;
+			EXIT;
+		ELSIF e > 0 THEN (* File_error oder kein weiteres zeichen vorhanden *)
+			state := 10; (* nichts gefunden - Daten-Ende erreicht *)
+			EXIT;
+		ELSE
+
+			v_add := 0;
+
+			IF c = SEP THEN (* Neues Element erkannt *)
+				state := 1;
+				x := TRUE;
+			ELSIF c >= 32 THEN (* Element erkannt *)
+				v_add := c; (* Zeichen ablegen *)
+				IF eof THEN
+					state := 2; (* Element und Zeilenende erkannt *)
+				ELSE
+					x := TRUE;
+				END_IF;
+			ELSE
+				IF x THEN
+					state := 2; (* Element und Zeilenende erkannt *)
+					x := FALSE;
+				END_IF;
+			END_IF;
+
+			IF v_add > 0  AND pv < pve THEN (* Zeichen zu Value-String hinzufügen *)
+				pv^ := v_add; (* Zeichen eintragen *)
+				pv := pv + 1;
+				pv^ := 0; (* String-Terminierung eintragen *)
+			END_IF;
+
+			i := i + 1; (* Datenzeiger erhöhen *)
+
+		END_IF;
+	END_WHILE;
+
+	CASE state OF
+	01:	(* Element gefunden *)
+		RESULT := 1; (* Element gefunden *)
+		OFFSET := i; (* Offset uebernehmen *)
+		RUN := 0;
+		state := 0;
+	02:	(* Element gefunden *)
+		RESULT := 2; (* Element und Zeilenende erkannt *)
+		OFFSET := i; (* Offset uebernehmen *)
+		RUN := 0;
+		state := 0;
+
+	05:	RESULT := 5; (* in Arbeit *)
+
+	10:	(* Indexüberschreitung - Bufferende *)
+		RESULT := 10; (* nichts gefunden - Datenende erreicht *)
+		OFFSET := i; (* Offset uebernehmen *)
+		RUN := 0;
+		state := 0;
+	END_CASE;
+
+	(* ---------------- Debug-Message -----------------------*)
+	(*IF _debug_enable THEN
+		LOG_CL.NEW_MSG := 'CPF: intern Result ~1 , state ~2, step ~3 , offset ~4, run ~5';
+		LOG_CL.PRINTF[1] := BYTE_TO_STRING(RESULT);
+		LOG_CL.PRINTF[2] := BYTE_TO_STRING(state);
+		LOG_CL.PRINTF[3] := INT_TO_STRING(step);
+		LOG_CL.PRINTF[4] := UDINT_TO_STRING(OFFSET);
+		LOG_CL.PRINTF[5] := BYTE_TO_STRING(RUN);
+		LOG_MSG();
+	END_IF;*)
+	(* -----------------------------------------------------------------*)
+
+END_IF;
+
+(* ---------------- Debug-Message -----------------------*)
+(*IF _debug_enable THEN
+	IF step_last <> step THEN
+		LOG_CL.NEW_MSG := 'CPF: Step: ~1';
+		LOG_CL.PRINTF[1]  := INT_TO_STRING(step);
+		LOG_MSG();
+	END_IF;
+	step_last := step;
+END_IF;*)
+(* -----------------------------------------------------------------*)
+
+(* revision history
+ks	01. oct. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CSV_PARSER_FILE">
+      <LineId Id="62" Count="135" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

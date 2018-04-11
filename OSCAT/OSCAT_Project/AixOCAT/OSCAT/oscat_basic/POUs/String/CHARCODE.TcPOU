@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CHARCODE" Id="{215d5512-92b8-4388-ad2b-87e2ae3ffc6c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CHARCODE : BYTE
+VAR_INPUT
+	STR : STRING(10);
+END_VAR
+VAR
+	found: STRING(1);
+	search : STRING(10);
+	pos: INT;
+	i: INT;
+END_VAR
+
+(*
+version 1.2		24. oct. 2008
+programmer 		hugo
+tested by		hugo
+
+CHARCODE converts a HTML Character NAME INTO ITS code
+'äuml' is convterted to ä
+'euro' is converted to €
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF LEN(str) = 1 THEN
+	CHARCODE := CODE(STR, 1);
+ELSIF str <> '' THEN
+	(* construct search string *)
+	search := CONCAT('&', str);
+	search := CONCAT(search, ';');
+	WHILE pos = 0 AND (i < 4) DO
+		i := i + 1;
+		pos := FIND(setup.CHARNAMES[i], search);
+	END_WHILE;
+	found := MID(setup.CHARNAMES[i], 1, pos - 1);
+	CHARCODE := CODE(found, 1);
+END_IF;
+
+
+
+
+(* revision history
+hm	13. may. 2008	rev 1.0
+	original version
+
+hm	19. oct. 2008	rev 1.1
+	changed setup constants
+
+hm	24. oct. 2008	rev 1.2
+	optimized code
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="CHARCODE">
+      <LineId Id="21" Count="27" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

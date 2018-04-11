@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ACOSH" Id="{5ae75240-c4ec-4df2-b2a0-1bdc3ba5ec54}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ACOSH : REAL
+VAR_INPUT
+	X : REAL;
+END_VAR
+
+
+(*
+version 1.3	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the arcus cos hyperbolicus
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ACOSH := LN(SQRT(X * X - 1.0) + X);
+
+(* revision history
+hm		12 jan 2007	rev 1.0
+	original version
+
+hm		2. dec 2007	rev 1.1
+	changed code for better performance
+
+hm	16. mar. 2007		rev 1.2
+	changed sequence of calculations to improve performance
+
+hm	10. mar. 2009		rev 1.3
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="ACOSH">
+      <LineId Id="14" Count="15" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="HEAT_INDEX" Id="{0225ba95-9001-49a2-91e2-6e945e435ef6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION HEAT_INDEX : REAL
+VAR_INPUT
+	T : REAL;
+	RH : REAL;
+END_VAR
+VAR
+	RH2 : REAL;
+	T2 : REAL;
+END_VAR
+
+(*
+version 1.3	13. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the heat index temperature depending on external temperature and Relative humidity
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF RH < 20.0 OR T < 20.0 THEN
+	HEAT_INDEX := T;
+ELSE
+	RH2 := RH * RH;
+	T := C_TO_F(T);
+	T2 := T * T;
+	HEAT_INDEX := -42.379 + 2.04901523 * T - 6.83783E-3 * T2
+			+ RH * (10.1433127 - 0.22475541 * T + 1.22874E-3 * T2)
+			+ RH2 * (8.5282E-4 * T - 5.481717E-2 - 1.99E-6 * T2);
+	HEAT_INDEX := F_TO_C(HEAT_INDEX);
+END_IF;
+
+(* revision history
+
+hm 27.2.2007		rev 1.1
+	deleted unused variables rh3 and T3
+
+hm	2.12.2007		rev 1.2
+	changed code for better performance
+
+hm	13. mar. 2009	rev 1.3
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="HEAT_INDEX">
+      <LineId Id="18" Count="23" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="LEAP_DAY" Id="{9ac04835-8527-495d-9f8d-72a8f7d0fad1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION LEAP_DAY : BOOL
+VAR_INPUT
+	IDATE : DATE;
+END_VAR
+VAR
+END_VAR
+
+
+(*
+version 1.2	24. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+
+leap_day is true if the tested day is a leap day (29. of february).  
+  
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[LEAP_DAY := DATE_TO_UDINT(IDATE) MOD 126230400 = 68169600;
+
+
+(* change history
+
+hm 	15. jun. 2008	rev 1.0
+	original version
+
+hm	7. oct. 2008	rev 1.1
+	changed function month to month_of_date
+
+hm	24. jan. 2011	rev 1.2
+	improved performance
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="LEAP_DAY">
+      <LineId Id="18" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

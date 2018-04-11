@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BYTE_TO_RANGE" Id="{9c735e03-84f5-4cc0-bc0f-e05aeb44a5ae}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BYTE_TO_RANGE : REAL
+VAR_INPUT
+	X : BYTE;
+	low : REAL;
+	high : REAL;
+END_VAR
+
+
+(*
+version 1.0	9. jan 2008
+programmer 	hugo
+tested by		tobias
+
+Byte_to_Range converts a Byte into a real between low and high.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BYTE_TO_RANGE := (high - low) * X / 255.0 + low;
+
+
+(* revision history
+hm	9. jan 2008		rev 1.0
+	original version
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="BYTE_TO_RANGE">
+      <LineId Id="16" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

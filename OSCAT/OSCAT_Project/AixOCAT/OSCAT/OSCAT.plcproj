@@ -1,0 +1,2637 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>-->
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{697ca4b2-5f5f-413e-a571-698bcd1320f5}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <Name>OSCAT</Name>
+    <ProgramVersion>3.1.4022.1</ProgramVersion>
+    <Application>{24090bd9-c421-4f68-8952-b49be475612b}</Application>
+    <TypeSystem>{53cef978-f119-46f2-afcb-ed96775e6b4e}</TypeSystem>
+    <Implicit_Task_Info>{01840c9c-5456-4f2f-b789-6a998d1fbf60}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{f6bfacc4-2f16-4fc9-9d52-3b62b2fa2b09}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{987f37bf-5226-4489-b385-14121cfeb719}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{fd789346-d196-4941-98dd-ac5ca986e047}</LibraryReferences>
+    <CombineIds>false</CombineIds>
+    <Released>true</Released>
+    <ProjectVersion>1.0.0</ProjectVersion>
+    <Company>RWTH Aachen University; E.ON Energy Research Center</Company>
+    <Title>AixOCAT</Title>
+    <!--    <OutputType>Exe</OutputType>
+    <RootNamespace>MyApplication</RootNamespace>
+    <AssemblyName>MyApplication</AssemblyName>-->
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="beckhoff_network" />
+    <Folder Include="beckhoff_network\Data types" />
+    <Folder Include="beckhoff_network\Data types\DATA_LOG" />
+    <Folder Include="beckhoff_network\Data types\FILE_SERVER" />
+    <Folder Include="beckhoff_network\Data types\NETWORK" />
+    <Folder Include="beckhoff_network\Data types\NET_VAR" />
+    <Folder Include="beckhoff_network\Data types\TELNET_VISION" />
+    <Folder Include="beckhoff_network\Data types\WEATHER" />
+    <Folder Include="beckhoff_network\Global Variables" />
+    <Folder Include="beckhoff_network\POUs" />
+    <Folder Include="beckhoff_network\POUs\CO_NVERT" />
+    <Folder Include="beckhoff_network\POUs\DATA_LOG" />
+    <Folder Include="beckhoff_network\POUs\DEMO" />
+    <Folder Include="beckhoff_network\POUs\DRIVER" />
+    <Folder Include="beckhoff_network\POUs\FILE" />
+    <Folder Include="beckhoff_network\POUs\HARDWARE" />
+    <Folder Include="beckhoff_network\POUs\NETWORK" />
+    <Folder Include="beckhoff_network\POUs\NET_VAR" />
+    <Folder Include="beckhoff_network\POUs\OTHER" />
+    <Folder Include="beckhoff_network\POUs\TELNET_VISION" />
+    <Folder Include="beckhoff_network\POUs\WEATHER" />
+    <Folder Include="oscat_basic\Data types" />
+    <Folder Include="oscat_basic\Global Variables" />
+    <Folder Include="oscat_basic\POUs" />
+    <Folder Include="oscat_basic\POUs\Buffer Management" />
+    <Folder Include="oscat_basic\POUs\Engineering" />
+    <Folder Include="oscat_basic\POUs\Engineering\automation" />
+    <Folder Include="oscat_basic\POUs\Engineering\Control" />
+    <Folder Include="oscat_basic\POUs\Engineering\CO_Nversion" />
+    <Folder Include="oscat_basic\POUs\Engineering\measurements" />
+    <Folder Include="oscat_basic\POUs\Engineering\sensor" />
+    <Folder Include="oscat_basic\POUs\Engineering\signal generators" />
+    <Folder Include="oscat_basic\POUs\Engineering\signal processing" />
+    <Folder Include="oscat_basic\POUs\List Processing" />
+    <Folder Include="oscat_basic\POUs\Logic" />
+    <Folder Include="oscat_basic\POUs\Logic\FF edge triggered" />
+    <Folder Include="oscat_basic\POUs\Logic\FF pulse triggered" />
+    <Folder Include="oscat_basic\POUs\Logic\gate logic" />
+    <Folder Include="oscat_basic\POUs\Logic\generators" />
+    <Folder Include="oscat_basic\POUs\Logic\memory" />
+    <Folder Include="oscat_basic\POUs\Logic\Others" />
+    <Folder Include="oscat_basic\POUs\Mathematical" />
+    <Folder Include="oscat_basic\POUs\Mathematical\Array" />
+    <Folder Include="oscat_basic\POUs\Mathematical\Complex" />
+    <Folder Include="oscat_basic\POUs\Mathematical\Double Precision" />
+    <Folder Include="oscat_basic\POUs\Mathematical\functions" />
+    <Folder Include="oscat_basic\POUs\Mathematical\Geometry" />
+    <Folder Include="oscat_basic\POUs\Mathematical\Vektormathematik" />
+    <Folder Include="oscat_basic\POUs\Other" />
+    <Folder Include="oscat_basic\POUs\String" />
+    <Folder Include="oscat_basic\POUs\Time&amp;Date" />
+    <Folder Include="oscat_building" />
+    <Folder Include="oscat_basic" />
+    <Folder Include="oscat_building\Global Variables" />
+    <Folder Include="oscat_building\POUs" />
+    <Folder Include="oscat_building\POUs\actuators" />
+    <Folder Include="oscat_building\POUs\electrical" />
+    <Folder Include="oscat_building\POUs\HLK" />
+    <Folder Include="oscat_building\POUs\Jalousie" />
+    <Folder Include="oscat_building\POUs\Other" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="beckhoff_network\Data types\DATA_LOG\DLOG_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\DATA_LOG\LOG_CONTROL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\DATA_LOG\MYSQL_COM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\DATA_LOG\PRINTF_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\DATA_LOG\UNI_CIRCULAR_BUFFER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\DATA_LOG\us_LOG_VIEWPORT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\FILE_SERVER\FILE_PATH_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\FILE_SERVER\FILE_SERVER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\IP2GEO_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\IP_C.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\IP_FIFO_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\NETWORK_BUFFER.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\NETWORK_BUFFER_SHORT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\NW_BUF_LONG.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\NW_BUF_SHORT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\URL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\VMAP_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NETWORK\XML_CONTROL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\NET_VAR\NET_VAR_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\TELNET_VISION\us_TN_INPUT_CONTROL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\TELNET_VISION\us_TN_INPUT_CONTROL_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\TELNET_VISION\us_TN_MENU.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\TELNET_VISION\us_TN_MENU_POPUP.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\TELNET_VISION\us_TN_SCREEN.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\WEATHER\WORLD_WEATHER_CUR.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\WEATHER\WORLD_WEATHER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\WEATHER\WORLD_WEATHER_DAY.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Data types\WEATHER\YAHOO_WEATHER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Global Variables\Constants_1.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\Global Variables\Globale_Variablen_1.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\BASE64_DECODE_STR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\BASE64_DECODE_STREAM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\BASE64_ENCODE_STR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\BASE64_ENCODE_STREAM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\HTML_DECODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\HTML_ENCODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\IP4_CHECK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\IP4_DECODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\IP4_TO_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\IS_IP4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\IS_URLCHR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\MD5_AUX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\MD5_CRAM_AUTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\MD5_STR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\MD5_STREAM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\MD5_TO_STRH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\RC4_CRYPT_STREAM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\SHA1_STR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\SHA1_STREAM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\SHA1_TO_STRH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\STRING_TO_URL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\URL_DECODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\URL_ENCODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\CO_NVERT\URL_TO_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_BOOL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_DINT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_FILE_TO_FTP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_FILE_TO_SMTP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_REAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_STORE_FILE_CSV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_STORE_FILE_HTML.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_STORE_FILE_XML.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_STORE_RRD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\DLOG_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DATA_LOG\UNI_CIRCULAR_BUFFER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\BASE64_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\CSV_PARSER_BUF_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\CSV_PARSER_FILE_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DLOG_FILE_CSV_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DLOG_FILE_CSV_FTP_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DLOG_FILE_CSV_SMTP_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DLOG_FILE_HTML_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DLOG_FILE_XML_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DLOG_RRD_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DNS_DYN_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DNS_REV_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\DNS_SNTP_SYSLOG_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\FILE_BLOCK_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\FTP_CLIENT_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\GET_WAN_IP_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\HTTP_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\INI_PARSER_BUF_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\INI_PARSER_FILE_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\IP2GEO_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\IRTRANS_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\MB_CLIENT_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\MB_SERVER_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\MD5_CRAM_AUTH_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\NET_VAR_MASTER_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\NET_VAR_SLAVE_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\RC4_CRYPT_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\SHA1_MD5_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\SMTP_CLIENT_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\SPIDER_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\TELNET_LOG_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\TELNET_PRINT_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\TN_VISION_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\TN_VISION_DEMO_2.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\WORLD_WEATHER_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DEMO\YAHOO_WEATHER_DEMO.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_DECODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_RCV_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_RCV_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_RCV_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_SERVER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_SND_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_SND_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\DRIVER\IRTRANS_SND_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\FILE\CSV_PARSER_BUF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\FILE\CSV_PARSER_FILE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\FILE\FILE_BLOCK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\FILE\FILE_PATH_SPLIT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\FILE\INI_PARSER_BUF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\FILE\INI_PARSER_FILE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\HARDWARE\FILE_SERVER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\HARDWARE\IP_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\HARDWARE\IP_CONTROL2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\HARDWARE\IP_CONTROL_RESET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\DNS_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\DNS_DYN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\DNS_REV_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\FTP_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\GET_WAN_IP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\HTTP_GET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\IP2GEO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\IP_FIFO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\LOG_MSG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\LOG_VIEWPORT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\MB_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\MB_SERVER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\MB_VMAP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\PRINT_SF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\READ_HTTP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\SMTP_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\SNTP_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\SNTP_SERVER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\SPIDER_ACCESS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\SYS_LOG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\TELNET_LOG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\TELNET_PRINT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NETWORK\XML_READER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_BOOL8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_BUFFER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_DWORD8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_REAL8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\NET_VAR\NET_VAR_X8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\OTHER\ELEMENT_COUNT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\OTHER\ELEMENT_GET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\OTHER\NETWORK_VERSION.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_FRAMEWORK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_INPUT_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_INPUT_EDIT_LINE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_INPUT_MENU_BAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_INPUT_MENU_POPUP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_INPUT_SELECT_POPUP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_INPUT_SELECT_TEXT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_RECEIVE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_ADD_SHADOW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_AREA_RESTORE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_AREA_SAVE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_BOX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_FILL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_LINE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_READ_ATTR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_READ_CHAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_SHADOW_ATTR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_VIEWPORT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_WRITE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_WRITE_ATTR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_WRITE_C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_WRITE_CHAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_WRITE_EOS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_XY2_ERROR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SC_XY_ERROR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\TELNET_VISION\TN_SEND_ROWS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\MOON_PHASE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\WORLD_WEATHER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\WORLD_WEATHER_DESC_GE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\WORLD_WEATHER_ICON_OSCAT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\YAHOO_WEATHER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\YAHOO_WEATHER_DESC_GE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="beckhoff_network\POUs\WEATHER\YAHOO_WEATHER_ICON_OSCAT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CALENDAR.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\COMPLEX.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONSTANTS_LANGUAGE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONSTANTS_LOCATION.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONSTANTS_MATH.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONSTANTS_PHYS.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONSTANTS_SETUP.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\ESR_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\FRACTION.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\HOLIDAY_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\REAL2.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\SDT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\TIMER_EVENT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\VECTOR_3.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Global Variables\Constants_2.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Global Variables\Globale_Variablen_2.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Global Variables\Setup_Data_1.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\BUFFER_COMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\BUFFER_SEARCH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\BUFFER_TO_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\_BUFFER_CLEAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\_BUFFER_INIT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\_BUFFER_INSERT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\_BUFFER_UPPERCASE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Buffer Management\_STRING_TO_BUFFER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\DRIVER_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\DRIVER_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\DRIVER_4C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\FLOW_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\FT_Profile.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\INC_DEC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\INTERLOCK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\INTERLOCK_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\MANUAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\MANUAL_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\MANUAL_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\MANUAL_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\PARSET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\PARSET2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\SIGNAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\SIGNAL_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\SRAMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\TUNE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\automation\TUNE2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\BAND_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CONTROL_SET1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CONTROL_SET2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CTRL_IN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CTRL_OUT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CTRL_PI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CTRL_PID.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\CTRL_PWM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_BAND.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_BAND_A.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_ZONE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_ZONE2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FB_Integrate.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FB_PID.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_DERIV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_IMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_INT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_INT2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PDT1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PID.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PIDW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PIDWL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PIW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PIWL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PT1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_PT2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_TN16.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_TN64.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FT_TN8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\HYST.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\HYST_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\HYST_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\HYST_3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\INTEGRATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\ASTRO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\BFT_TO_MS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\C_TO_F.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\C_TO_K.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\DEG_TO_DIR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\DIR_TO_DEG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\ENERGY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_OM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_PT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\GEO_TO_DEG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\KMH_TO_MS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\K_TO_C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\LENGTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\MS_TO_BFT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\MS_TO_KMH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\OM_TO_F.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\PRESSURE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\PT_TO_F.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\SPEED.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\TEMPERATURE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\ALARM_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\BAR_GRAPH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\CALIBRATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\CYCLE_TIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\DT_SIMU.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\FLOW_METER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\METER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\METER_STAT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\M_D.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\M_T.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\M_TX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\ONTIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\TC_MS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\TC_S.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\TC_US.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\T_PLC_MS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\measurements\T_PLC_US.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\MULTI_IN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\RES_NI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\RES_NTC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\RES_PT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\RES_SI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\SENSOR_INT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\TEMP_NI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\TEMP_NTC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\TEMP_PT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\sensor\TEMP_SI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_PULSE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_PW2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_RDM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_RDT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_RMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_SIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\GEN_SQR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\PWM_DC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\PWM_PW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\RMP_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\RMP_SOFT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\RMP_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\_RMP_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\_RMP_NEXT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal generators\_RMP_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\AIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\AIN1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\AOUT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\AOUT1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\BYTE_TO_RANGE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FADE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_DW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_I.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_MAV_DW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_MAV_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_WAV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\MIX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\MUX_R2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\MUX_R4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\OFFSET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\OFFSET2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\OVERRIDE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\RANGE_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\RANGE_TO_WORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_B2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_B4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_B8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_D.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_R.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_X2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_X4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SCALE_X8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SEL2_OF_3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SEL2_OF_3B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SH_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SH_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\SH_T.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\STAIR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\STAIR2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\TREND.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\TREND_DW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\WORD_TO_RANGE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_ADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_CLEAN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_GET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_INSERT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_LEN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_NEXT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_RETRIEVE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\List Processing\LIST_RETRIEVE_LAST.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\COUNT_BR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\COUNT_DR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\FF_D2E.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\FF_D4E.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\FF_DRE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\FF_JKE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\FF_RSE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\SELECT_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\SHR_4E.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\SHR_4UDE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\SHR_8PLE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\SHR_8UDE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF edge triggered\TOGGLE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF pulse triggered\LTCH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF pulse triggered\LTCH_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\FF pulse triggered\STORE_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BCDC_TO_INT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_COUNT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_LOAD_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_LOAD_B2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_LOAD_DW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_LOAD_DW2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_LOAD_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_LOAD_W2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_OF_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_TOGGLE_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_TOGGLE_DW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BIT_TOGGLE_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BYTE_OF_BIT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BYTE_OF_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BYTE_TO_BITS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\BYTE_TO_GRAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\CHECK_PARITY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\CHK_REAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\DEC_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\DEC_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\DEC_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\DWORD_OF_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\DWORD_OF_WORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\DW_TO_REAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\GRAY_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\INT_TO_BCDC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\MUX_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\MUX_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\PARITY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\REAL_TO_DW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\REFLECT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\REVERSE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\SHL1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\SHR1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\SWAP_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\SWAP_BYTE2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\WORD_OF_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\gate logic\WORD_OF_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\A_TRIG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\B_TRIG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CLICK_CNT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CLICK_DEC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CLK_DIV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CLK_N.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CLK_PRG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CLK_PULSE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\CYCLE_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\D_TRIG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\GEN_BIT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\GEN_SQ.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\SCHEDULER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\SCHEDULER_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\SEQUENCE_4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\SEQUENCE_64.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\SEQUENCE_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TMAX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TMIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TOF_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TONOF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TP_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TP_1D.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\generators\TP_X.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\memory\FIFO_16.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\memory\FIFO_32.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\memory\STACK_16.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\memory\STACK_32.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\Others\CRC_GEN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\Others\MATRIX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Logic\Others\PIN_CODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ACOSH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ACOTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\AGDF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_AVG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_GAV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_HAV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_MAX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_MIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_SDV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_SPR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_SUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_TREND.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\ARRAY_VAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\IS_SORTED.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_ABS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_ADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_INIT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_MEDIAN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_MUL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_SHUFFLE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Array\_ARRAY_SORT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ASINH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ATAN2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ATANH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\BETA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\BINOM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\CAUCHY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\CAUCHYCD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\CEIL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\CEIL2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\CMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CABS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CACOS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CACOSH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CARG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CASIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CASINH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CATAN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CATANH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CCON.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CCOS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CCOSH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CDIV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CEXP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CINV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CLOG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CMUL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CPOL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CPOW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CSET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CSIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CSINH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CSQRT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CSUB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CTAN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Complex\CTANH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\COSH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\COTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\DEC1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\DEG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\DIFFER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Double Precision\R2_ABS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Double Precision\R2_ADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Double Precision\R2_ADD2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Double Precision\R2_MUL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Double Precision\R2_SET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\D_TRUNC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ERF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ERFC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\EVEN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\EXP10.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\EXPN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\FACT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\FIB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\FLOOR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\FLOOR2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\FRACT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\FRMP_B.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_AVG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_MIN_MAX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_RMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\F_LIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\F_LIN2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\F_POLY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\F_POWER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\F_QUAD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\LINEAR_INT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\POLYNOM_INT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\GAMMA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\GAUSS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\GAUSSCD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\GCD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\GDF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\CIRCLE_A.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\CIRCLE_C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\CIRCLE_SEG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\CONE_V.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\ELLIPSE_A.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\ELLIPSE_C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\SPHERE_V.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Geometry\TRIANGLE_A.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\GOLD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\HYPOT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\INC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\INC1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\INC2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\INV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\LAMBERT_W.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\LANGEVIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\MAX3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\MID3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\MIN3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\MODR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\MUL_ADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\NEGX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\RAD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\RDM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\RDM2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\RDMDW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\REAL_TO_FRAC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\RND.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\ROUND.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SGN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SIGMOID.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SIGN_I.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SIGN_R.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SINC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SINH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\SQRTN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\TANC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\TANH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_ABS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_ADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_ANG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_DPRO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_NORM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_NUL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_PAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_REV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_SMUL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_SUB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_XANG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_XPRO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_YANG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\Vektormathematik\V3_ZANG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\WINDOW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\WINDOW2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Other\ESR_COLLECT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Other\ESR_MON_B8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Other\ESR_MON_R4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Other\ESR_MON_X8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Other\OSCAT_VERSION.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Other\STATUS_TO_ESR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\BIN_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\BIN_TO_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\BYTE_TO_STRB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\BYTE_TO_STRH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\CAPITALIZE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\CHARCODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\CHARNAME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\CHR_TO_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\CLEAN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\CODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\COUNT_CHAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\COUNT_SUBSTRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DEC_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DEC_TO_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DEC_TO_INT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DEL_CHARS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DT_TO_STRF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DWORD_TO_STRB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DWORD_TO_STRF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\DWORD_TO_STRH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\EXEC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FILL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FINDB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FINDB_NONUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FINDB_NUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FINDP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FIND_CHAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FIND_CTRL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FIND_NONUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FIND_NUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FIX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FLOAT_TO_REAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FSTRING_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FSTRING_TO_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FSTRING_TO_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FSTRING_TO_MONTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FSTRING_TO_WEEK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\FSTRING_TO_WEEKDAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\HEX_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\HEX_TO_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\ISC_ALPHA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\ISC_CTRL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\ISC_HEX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\ISC_LOWER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\ISC_NUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\ISC_UPPER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_ALNUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_ALPHA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_CC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_CTRL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_HEX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_LOWER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_NCC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_NUM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\IS_UPPER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\LOWERCASE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\MESSAGE_4R.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\MESSAGE_8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\MIRROR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\MONTH_TO_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\OCT_TO_BYTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\OCT_TO_DWORD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\REAL_TO_STRF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\REPLACE_ALL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\REPLACE_CHARS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\REPLACE_UML.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TICKER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TO_LOWER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TO_UML.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TO_UPPER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TRIM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TRIM1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\TRIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\UPPERCASE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\String\WEEKDAY_TO_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\CALENDAR_CALC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DATE_ADD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAYS_DELTA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAYS_IN_MONTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAYS_IN_YEAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAY_OF_DATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAY_OF_MONTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAY_OF_WEEK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAY_OF_YEAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DAY_TO_TIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DCF77.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DST.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DT2_TO_SDT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\DT_TO_SDT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\EASTER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\EVENTS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\HOLIDAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\HOUR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\HOUR_OF_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\HOUR_TO_TIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\HOUR_TO_TOD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\JD2000.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\LEAP_DAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\LEAP_OF_DATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\LEAP_YEAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\LTIME_TO_UTC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MINUTE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MINUTE_OF_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MINUTE_TO_TIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MONTH_BEGIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MONTH_END.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MONTH_OF_DATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\MULTIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\PERIOD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\PERIOD2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\REFRACTION.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\RTC_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\RTC_MS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SDT_TO_DATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SDT_TO_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SDT_TO_TOD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SECOND.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SECOND_OF_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SECOND_TO_TIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SET_DATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SET_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SET_TOD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SUN_MIDDAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SUN_POS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\SUN_TIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\TIMECHECK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\UTC_TO_LTIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\WORK_WEEK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\YEAR_BEGIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\YEAR_END.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\YEAR_OF_DATE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\Global Variables\Constants.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\Global Variables\Globale_Variablen.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\Global Variables\Setup_Data.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\ACTUATOR_2P.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\ACTUATOR_3P.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\ACTUATOR_A.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\ACTUATOR_COIL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\ACTUATOR_PUMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\ACTUATOR_UD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\actuators\AUTORUN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\CLICK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\CLICK_MODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\DEBOUNCE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\DIMM_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\DIMM_I.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\F_LAMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\PULSE_LENGTH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\PULSE_T.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\SWITCH_I.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\SWITCH_X.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\SW_RECONFIG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\TIMER_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\TIMER_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\TIMER_EVENT_DECODE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\TIMER_EXT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\electrical\TIMER_P4.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\AIR_DENSITY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\AIR_ENTHALPY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\BOILER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\BURNER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\DEW_CON.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\DEW_RH.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\DEW_TEMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\HEAT_INDEX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\HEAT_METER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\HEAT_TEMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\LEGIONELLA.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\SDD.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\SDD_NH3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\SDT_NH3.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\TANK_LEVEL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\TANK_VOL1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\TANK_VOL2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\TEMP_EXT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\T_AVG24.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\WATER_CP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\WATER_DENSITY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\WATER_ENTHALPY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\WCT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_ACTUATOR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_CONTROL_S.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_INPUT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_NIGHT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_SCENE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_SECURITY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_SET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_SHADE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Jalousie\BLIND_SHADE_S.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\Other\BUILDING_VERSION.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OSCAT.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
+        <o>
+          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
+        <o>
+          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
+          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>Rules</v>
+            <o>
+              <v n="Name">"Rules"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+          </d>
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
+        <o>
+          <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>ActiveVisuProfile</v>
+            <v>IR0whWr8bwfwBwAA4nmM6gAAAABVAgAAmXe8kwAAAAABAAAAAAAAAAEaUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwACTHsAZgA5ADUAYgBiADQAMgA2AC0ANQA1ADIANAAtADQAYgA0ADUALQA5ADQAMAAwAC0AZgBiADAAZgAyAGUANwA3AGUANQAxAGIAfQADCE4AYQBtAGUABDBUAHcAaQBuAEMAQQBUACAAMwAuADEAIABCAHUAaQBsAGQAIAA0ADAAMgAyAC4AMAAFFlAAcgBvAGYAaQBsAGUARABhAHQAYQAGTHsAMQA2AGUANQA1AGIANgAwAC0ANwAwADQAMwAtADQAYQA2ADMALQBiADYANQBiAC0ANgAxADQANwAxADMAOAA3ADgAZAA0ADIAfQAHEkwAaQBiAHIAYQByAGkAZQBzAAhMewAzAGIAZgBkADUANAA1ADkALQBiADAANwBmAC0ANABkADYAZQAtAGEAZQAxAGEALQBhADgAMwAzADUANgBhADUANQAxADQAMgB9AAlMewA5AGMAOQA1ADgAOQA2ADgALQAyAGMAOAA1AC0ANAAxAGIAYgAtADgAOAA3ADEALQA4ADkANQBmAGYAMQBmAGUAZABlADEAYQB9AAoOVgBlAHIAcwBpAG8AbgALBmkAbgB0AAwKVQBzAGEAZwBlAA0KVABpAHQAbABlAA4aVgBpAHMAdQBFAGwAZQBtAE0AZQB0AGUAcgAPDkMAbwBtAHAAYQBuAHkAEAxTAHkAcwB0AGUAbQARElYAaQBzAHUARQBsAGUAbQBzABIwVgBpAHMAdQBFAGwAZQBtAHMAUwBwAGUAYwBpAGEAbABDAG8AbgB0AHIAbwBsAHMAEyhWAGkAcwB1AEUAbABlAG0AcwBXAGkAbgBDAG8AbgB0AHIAbwBsAHMAFCRWAGkAcwB1AEUAbABlAG0AVABlAHgAdABFAGQAaQB0AG8AcgAVIlYAaQBzAHUATgBhAHQAaQB2AGUAQwBvAG4AdAByAG8AbAAWFHYAaQBzAHUAaQBuAHAAdQB0AHMAFwxzAHkAcwB0AGUAbQAYGFYAaQBzAHUARQBsAGUAbQBCAGEAcwBlABkmRABlAHYAUABsAGEAYwBlAGgAbwBsAGQAZQByAHMAVQBzAGUAZAAaCGIAbwBvAGwAGyJQAGwAdQBnAGkAbgBDAG8AbgBzAHQAcgBhAGkAbgB0AHMAHEx7ADQAMwBkADUAMgBiAGMAZQAtADkANAAyAGMALQA0ADQAZAA3AC0AOQBlADkANAAtADEAYgBmAGQAZgAzADEAMABlADYAMwBjAH0AHRxBAHQATABlAGEAcwB0AFYAZQByAHMAaQBvAG4AHhRQAGwAdQBnAGkAbgBHAHUAaQBkAB8WUwB5AHMAdABlAG0ALgBHAHUAaQBkACBIYQBmAGMAZAA1ADQANAA2AC0ANAA5ADEANAAtADQAZgBlADcALQBiAGIANwA4AC0AOQBiAGYAZgBlAGIANwAwAGYAZAAxADcAIRRVAHAAZABhAHQAZQBJAG4AZgBvACJMewBiADAAMwAzADYANgBhADgALQBiADUAYwAwAC0ANABiADkAYQAtAGEAMAAwAGUALQBlAGIAOAA2ADAAMQAxADEAMAA0AGMAMwB9ACMOVQBwAGQAYQB0AGUAcwAkTHsAMQA4ADYAOABmAGYAYwA5AC0AZQA0AGYAYwAtADQANQAzADIALQBhAGMAMAA2AC0AMQBlADMAOQBiAGIANQA1ADcAYgA2ADkAfQAlTHsAYQA1AGIAZAA0ADgAYwAzAC0AMABkADEANwAtADQAMQBiADUALQBiADEANgA0AC0ANQBmAGMANgBhAGQAMgBiADkANgBiADcAfQAmFk8AYgBqAGUAYwB0AHMAVAB5AHAAZQAnVFUAcABkAGEAdABlAEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwARgBvAHIAQwBvAG4AdgBlAHIAdABpAGIAbABlAEwAaQBiAHIAYQByAGkAZQBzACgQTABpAGIAVABpAHQAbABlACkUTABpAGIAQwBvAG0AcABhAG4AeQAqHlUAcABkAGEAdABlAFAAcgBvAHYAaQBkAGUAcgBzACs4UwB5AHMAdABlAG0ALgBDAG8AbABsAGUAYwB0AGkAbwBuAHMALgBIAGEAcwBoAHQAYQBiAGwAZQAsEnYAaQBzAHUAZQBsAGUAbQBzAC1INgBjAGIAMQBjAGQAZQAxAC0AZAA1AGQAYwAtADQAYQAzAGIALQA5ADAANQA0AC0AMgAxAGYAYQA3ADUANgBhADMAZgBhADQALihJAG4AdABlAHIAZgBhAGMAZQBWAGUAcgBzAGkAbwBuAEkAbgBmAG8AL0x7AGMANgAxADEAZQA0ADAAMAAtADcAZgBiADkALQA0AGMAMwA1AC0AYgA5AGEAYwAtADQAZQAzADEANABiADUAOQA5ADYANAAzAH0AMBhNAGEAagBvAHIAVgBlAHIAcwBpAG8AbgAxGE0AaQBuAG8AcgBWAGUAcgBzAGkAbwBuADIMTABlAGcAYQBjAHkAMzBMAGEAbgBnAHUAYQBnAGUATQBvAGQAZQBsAFYAZQByAHMAaQBvAG4ASQBuAGYAbwA0MEwAbwBhAGQATABpAGIAcgBhAHIAaQBlAHMASQBuAHQAbwBQAHIAbwBqAGUAYwB0ADUaQwBvAG0AcABhAHQAaQBiAGkAbABpAHQAeQDQAAIaA9ADAS0E0AUGGgfQBwgaAUUHCQjQAAkaBEUKCwQDAAAABQAAAAoAAAAAAAAA0AwLrQIAAADQDQEtDtAPAS0Q0AAJGgRFCgsEAwAAAAUAAAAKAAAAFAAAANAMC60BAAAA0A0BLRHQDwEtENAACRoERQoLBAMAAAAFAAAACgAAAAAAAADQDAutAgAAANANAS0S0A8BLRDQAAkaBEUKCwQDAAAABQAAAAoAAAAUAAAA0AwLrQIAAADQDQEtE9APAS0Q0AAJGgRFCgsEAwAAAAUAAAAKAAAACgAAANAMC60CAAAA0A0BLRTQDwEtENAACRoERQoLBAMAAAAFAAAACgAAAAAAAADQDAutAgAAANANAS0V0A8BLRDQAAkaBEUKCwQDAAAABQAAAAoAAAAAAAAA0AwLrQIAAADQDQEtFtAPAS0X0AAJGgRFCgsEAwAAAAUAAAAKAAAAFAAAANAMC60EAAAA0A0BLRjQDwEtENAZGq0BRRscAdAAHBoCRR0LBAMAAAAFAAAACgAAAAAAAADQHh8tINAhIhoCRSMkAtAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAAAAANADAS0n0CgBLRHQKQEtENAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAQAAANADAS0n0CgBLRHQKQEtEJoqKwFFAAEC0AABLSzQAAEtF9AAHy0t0C4vGgPQMAutAQAAANAxC60TAAAA0DIarQDQMy8aA9AwC60CAAAA0DELrQMAAADQMhqtANA0Gq0A0DUarQA=</v>
+          </d>
+        </o>
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
+        <o>
+          <v n="Name">"{F66C7017-BDD8-4114-926C-81D6D687E35F}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
+        <o>
+          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>GlobalVisuImageFilePath</v>
+            <v>%APPLICATIONPATH%</v>
+          </d>
+        </o>
+      </d>
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+  <!-- 
+   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+-->
+</Project>

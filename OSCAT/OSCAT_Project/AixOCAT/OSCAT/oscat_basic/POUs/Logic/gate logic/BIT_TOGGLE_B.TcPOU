@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BIT_TOGGLE_B" Id="{8ee2d676-c423-4fef-bb56-6651aad7ea56}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BIT_TOGGLE_B : BYTE
+VAR_INPUT
+	IN : BYTE;
+	POS : INT;
+END_VAR
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function toggles a bit of a BYTE at position pos.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BIT_TOGGLE_B := SHL(BYTE#1, POS) XOR IN;
+
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="BIT_TOGGLE_B">
+      <LineId Id="15" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

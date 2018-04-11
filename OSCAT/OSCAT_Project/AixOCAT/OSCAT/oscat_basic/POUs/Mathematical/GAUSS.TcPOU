@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="GAUSS" Id="{753d2b83-c8d5-4e62-a544-74b9967abe43}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION GAUSS : REAL
+VAR_INPUT
+	X : REAL;
+	U : REAL;
+	SI: REAL;
+END_VAR
+VAR
+	temp: REAL;
+	si_inv: REAL;
+END_VAR
+
+
+(*
+version 1.2	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the gaussian density function
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[temp := X - U;
+si_inv := 1.0  / si;
+GAUSS := EXP(Temp * Temp * si_inv * si_inv * - 0.5) * 0.39894228 * si_inv;
+
+
+
+(* revision hisdtory
+hm	6. apr. 2008	rev 1.0
+	original version
+
+hm	27. oct. 2008	rev 1.1
+	optimized performance	
+
+hm	10. mar. 2009	rev 1.2
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="GAUSS">
+      <LineId Id="20" Count="16" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

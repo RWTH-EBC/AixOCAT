@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="NETWORK_VERSION" Id="{2bab0ab0-840f-4167-91a5-d6e9b2afdc43}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION NETWORK_VERSION : DWORD
+VAR_INPUT
+	IN : BOOL;
+END_VAR
+
+(*
+version 1.0	02. feb 2011
+programmer 	kst
+tested by		oscat
+
+network_version returns the version number in dword format
+110 is library version 1.10
+if IN = true, the release date will be returned
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF in THEN
+	NETWORK_VERSION := DATE_TO_DWORD(D#2011-12-01);
+ELSE
+	NETWORK_VERSION := 121;
+END_IF;
+
+(* revision history
+ks	2. feb 2011	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="NETWORK_VERSION">
+      <LineId Id="15" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <DUT Name="IP_FIFO_DATA" Id="{9605e475-f7a8-45fa-a8c8-86b00c456c64}">
+    <Declaration><![CDATA[TYPE IP_FIFO_DATA :
+STRUCT
+	X : ARRAY [1..128] OF BYTE; 	(* IP_ID FIFO Speicher          *)
+	Y : ARRAY [1..128] OF BYTE; 	(* IP_ID Zähler                 *)
+	ID : BYTE;					(* höchste vergabene id         *)
+	MAX_ID : BYTE;				(* maximal Anmeldungen pro ID   *)
+	INIT : BOOL;					(* Initialisierung durchgeführt *)
+	EMPTY : BOOL;				(* FIFO leer                    *)
+	FULL : BOOL;					(* FIFO voll                    *)
+	TOP : INT;					(* maximale anzahl in FIFO      *)
+	NW : INT;					(* Schreibzeiger                *)
+	NR : INT;						(* Lesezeiger                   *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="REFLECT" Id="{776b91c1-3f1d-414e-8d5e-bed5efb8f7c3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION REFLECT : DWORD
+VAR_INPUT
+	D : DWORD;
+	L : INT;
+END_VAR
+VAR
+	i : INT;
+END_VAR
+
+
+(*
+	version 1.0	16. jan 2011
+	programmer 	hugo
+	tested BY		tobias
+
+This function reverses the specified amount of bits from bit 0 to bit n within a dword  while L specifies the amount of Bits to be reflected.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[REFLECT := 0;
+FOR i := 1 TO L DO
+	REFLECT := SHL(REFLECT, 1) OR BOOL_TO_DWORD(D.0);
+	D := SHR(D, 1);
+END_FOR;
+REFLECT := REFLECT OR SHL(D, L);
+
+(* revision history
+hm	 16. jan 2011
+	new module
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="REFLECT">
+      <LineId Id="19" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

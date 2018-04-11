@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MONTH_BEGIN" Id="{57c5c249-769e-4517-ae01-e36d74e287bf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MONTH_BEGIN : DATE
+VAR_INPUT
+	idate : DATE;
+END_VAR
+
+
+(*
+version 1.0	15. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+returns the date for the first day of the current month in the current year.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[MONTH_BEGIN := DWORD_TO_DATE(DATE_TO_DWORD(idate) - INT_TO_DWORD(DAY_OF_MONTH(idate) - 1) * 86400);
+
+(* revision history
+hm	15. jun. 2008	rev 1.0
+	original version	
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MONTH_BEGIN">
+      <LineId Id="14" Count="6" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

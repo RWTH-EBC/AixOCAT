@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="C_TO_K" Id="{fdcf2e1d-a130-4e12-b273-a990bd587a4d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION C_TO_K : REAL
+VAR_INPUT
+	Celsius : REAL;
+END_VAR
+
+
+(*
+version 1.1	19. aug 2009
+programmer 	hugo
+tested by		tobias
+
+this function converts celsius to kelvin
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[C_TO_K := Celsius - phys.T0;
+
+(* revision history
+
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	19. aug 2009	rev 1.1
+	fixed calculation error
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="C_TO_K">
+      <LineId Id="13" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

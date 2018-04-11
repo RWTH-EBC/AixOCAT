@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CLICK" Id="{b4fa1f0f-874e-4456-a9a0-d70bdb09261c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CLICK
+VAR_INPUT
+	in : BOOL;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+	single : BOOL;
+	double : BOOL;
+	triple : BOOL;
+	status: BYTE;
+END_VAR
+VAR_INPUT CONSTANT
+	T_debounce : TIME := t#10ms;
+	T_short : TIME := t#200ms;
+	T_pause : TIME := t#500ms;
+	T_reconfig : TIME := t#1m;
+END_VAR
+VAR
+	s_in : SW_RECONFIG;
+	tx: TIME;
+	state: INT;
+	last: TIME;
+END_VAR
+
+(*
+version 2.0	28. dec. 2008
+programmer 	oscat
+tested by		oscat
+
+click checks an input for single, double or tripple click and sets the corresponding output single, doulbe or triple for the time the input stays high at the last click.
+the maximum high and low time for a click can be configured with setup variables.
+the input configures itself to be high or low active depending on which state the input stays longer than t_reconfig.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* reconfiguration and debounce circuitry *)
+s_in(in := in, TD := T_debounce, TR := T_reconfig);
+
+(* read system time *)
+tx := DWORD_TO_TIME(T_PLC_MS());
+
+(* count the mumber of clicks *)
+IF s_in.Q XOR Q THEN
+	last := tx;
+	IF s_in.Q THEN state := state + 1; END_IF;
+END_IF;
+Q := s_in.Q;
+
+(* set outputs *)
+IF state > 0 THEN
+	IF (Q AND tx - last > t_short) OR (NOT Q AND tx - last > t_pause) THEN
+		CASE state OF
+			1:	single := TRUE;
+				status := 111;
+			2:	double := TRUE;
+				status := 112;
+			3:	triple := TRUE;
+				status := 113;
+		END_CASE;
+		state := 0;
+	END_IF;
+ELSIF NOT q THEN
+	single := FALSE;
+	double := FALSE;
+	triple := FALSE;
+	status := 110;
+	last := tx;
+	state := 0;
+END_IF;
+
+
+
+
+
+(* revision history
+
+15 Feb 2007	rev 1.0	hm
+	created original version
+
+18.5.2007	rev 1.1 hm
+	corrected an error while execution would stop after t_reconfig elapsed.
+
+15.9.2007	rev 1.2 hm
+	replaced Time() with T_PLC_MS for compatibility and performance reasons
+
+28. dec. 2008	rev 2.0
+	rewritten using modular approach
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CLICK">
+      <LineId Id="34" Count="53" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
