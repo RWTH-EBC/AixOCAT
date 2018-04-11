@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "AixOCAT", "AixOCAT\AixOCAT.tsproj", "{F28AEA36-FAD3-4A65-B87A-26E962194038}"
+Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "OSCAT_project", "OSCAT\OSCAT_project.tsproj", "{F28AEA36-FAD3-4A65-B87A-26E962194038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
