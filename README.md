@@ -71,4 +71,4 @@ under the
 
 ## Acknowledgements
 
-As this framework is based on the OSCAT libraries we want to aknowlegde Tobias Mühlbauer for his Contribution to the OSCAT libraries.
+As this framework is based on the OSCAT libraries we want to acknowlegde Tobias Mühlbauer for his Contribution to the OSCAT libraries.
