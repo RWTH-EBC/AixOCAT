@@ -13,7 +13,7 @@ With the name AixOCAT we follow this local tradition.
 
 This GitHub page will be used to further develop the package and make it
 available under the
-[MIT License](https://github.com/RWTH-EBC/AixoCAT/blob/master/License.md).
+[MIT License](https://github.com/RWTH-EBC/AixoCAT/master/License.md).
 
 If you have any questions regarding AixOCAT feel free to contact us at
 [ebc-aixocat@eonerc.rwth-aachen.de](mailto:ebc-aixocat@eonerc.rwth-aachen.de).
@@ -60,7 +60,7 @@ Coming soon!
 AixOCAT is released by RWTH Aachen University, E.ON Energy
 Research Center, Institute for Energy Efficient Buildings and Indoor Climate,
 under the
-[MIT License](https://github.com/RWTH-EBC/AixOCAT/blob/master/License.md).
+[MIT License](https://github.com/RWTH-EBC/AixOCAT/master/License.md).
 
 ## Acknowledgements
 
