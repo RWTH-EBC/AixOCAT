@@ -99,7 +99,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{67A9EC0D-41F6-4F6D-A133-FF9C10635D24}" Name="HeatPumpTestBenchControl" PrjFilePath="HeatPumpTestBenchControl\HeatPumpTestBenchControl.plcproj" TmcFilePath="HeatPumpTestBenchControl\HeatPumpTestBenchControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="HeatPumpTestBenchControl\WPPruefstand.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="HeatPumpTestBenchControl\HeatPumpTestBenchControl.tmc">
 					<Name>HeatPumpTestBenchControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
