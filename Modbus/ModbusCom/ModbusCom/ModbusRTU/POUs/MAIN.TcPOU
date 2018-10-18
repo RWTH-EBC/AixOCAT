@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="MAIN" Id="{602de947-c890-43bc-9e37-71712f8ad59a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbValve		:	FB_ControlValve;
+	CurrentDat	:	ST_ValveDat;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TestModbus();
+fbValve(fSetPerc:=5000,fAct=>CurrentDat); //50.00%]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

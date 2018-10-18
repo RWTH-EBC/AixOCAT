@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="TestModbus" Id="{abc22cc8-5178-4aad-b847-de88e693095c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM TestModbus
+VAR
+	fbMaster	:	ModbusRtuMaster_KL6x22B;	//Modbus communication master
+
+	ModData		:	WORD;
+	Tim			:	TON;	//Timer
+	
+	//Addresses
+	UnitID		:	USINT;	//Address of modbus slave
+	ModAdr		:	WORD;	//Data address
+	
+	//Error
+	bModErr		:	BOOL;
+	ErrID		:	MODBUS_ERRORS;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Basic Modbus RTU communication program
+
+This example shows how to write or read a register on the modbus slave.
+Only one operation can be performed at a time, the other one has to be commented.
+Other Modbus operations such as writing multiple registers can be performed by using 
+the according method of the Master.
+
+Mapping:
+The master includes an InData and an OutData array, which need to be mapped to the I/O terminal. 
+The 'D' arrays have to be linked to the 'Data In' and 'Data Out' variables,
+the 'Status' and 'Ctrl' variables have to be linked to the corresponding variable.
+*)
+
+//Check status of Master (Execute=False -> no new request is sent)
+fbMaster.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+//fbMaster.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+
+
+//send one request every 5 seconds
+Tim(PT:=T#5S,IN:=TRUE);	//Timer
+IF Tim.Q THEN
+	Tim(IN:=FALSE);
+	IF NOT fbMaster.BUSY THEN
+		fbMaster.WriteSingleRegister(	//Send new request by calling the method of the master
+		//fbMaster.ReadRegs(
+			UnitID			:=	UnitID,	//Device adress of modbus slave
+			Quantity		:=	1,		//Number of registers to be read/written
+			MBAddr			:=	ModAdr,	//Adress of register on slave -> which value is to be read/written
+			cbLength		:=	SIZEOF(ModData),	//Size of data
+			Timeout			:=	T#4S,				//Time to wait for the slave to respond
+			pMemoryAddr		:=	ADR(ModData),		//Adress of data -> this data is written to the slave register, read data is stored here
+			Execute			:=	TRUE				//Start execution
+		);
+	ELSE
+		//Wait until previous operation has finished
+	END_IF
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="TestModbus">
+      <LineId Id="290" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="296" Count="2" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="302" Count="0" />
+      <LineId Id="304" Count="2" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="291" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="256" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="177" Count="6" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="187" Count="1" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="207" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_ControlValve" Id="{f6c35c88-71d7-4dd7-8a3a-d9826cd4e4bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ControlValve
+VAR_INPUT
+	fSetPerc	:	WORD;			//Volume flow setpoint in 1/100 %
+END_VAR
+VAR_OUTPUT
+	fAct		:	ST_ValveDat;	//Current data
+END_VAR
+VAR	
+	Step	:	INT		:=	1;
+	UnitID	:	USINT	:=	1;
+	fbMod	:	ModbusRtuMaster_KL6x22B; //Modbus Master
+	bModErr	:	BOOL;
+	ErrID	:	MODBUS_ERRORS;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Control of a VAV-valve via Modbus RTU
+
+The relative volume flow setpoint is written to the valve. 
+Then, the current volume flow and position is read from the valve and written to the fAct structure.
+The register adresses are compatible to Belimo VAV valves and may have to be changed to use different products.
+The UnitID needs to be adjusted to the present system.
+
+The mapping needs to be done as described in the basic example.
+*)	
+
+CASE Step OF
+		
+	1:	//start writing setpoint to valve
+		
+		fbMod.WriteSingleRegister(
+			UnitID		:=	UnitID,	//Modbus address of slave
+			MBAddr		:=	0,	//Register address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(fSetPerc),		//Pointer to write data
+			cbLength	:=	SIZEOF(fSetPerc),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	2;
+
+		
+	2:	//finish writing process
+		fbMod.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbMod.BUSY THEN
+			Step	:=	3;	//go to next step when writing process has finished
+		END_IF
+		IF fbMod.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	3:	//start reading relative position
+		fbMod.ReadRegs(
+			UnitID		:=	UnitID,	//Modbus address of slave
+			MBAddr		:=	4,	//Register address
+			Quantity	:=	1,	//Number of registers to be read
+			pMemoryAddr	:=	ADR(fAct.PosRel),		//Pointer to read data
+			cbLength	:=	SIZEOF(fAct.PosRel),	//Size of read data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	4;
+		
+	4:	//finish reading process
+		fbMod.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbMod.BUSY THEN
+			Step	:=	5;	//go to next step when reading process has finished
+		END_IF
+		IF fbMod.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	5:	//start reading absolute position
+		fbMod.ReadRegs(
+			UnitID		:=	UnitID,	//Modbus address of slave
+			MBAddr		:=	5,	//Register address
+			Quantity	:=	1,	//Number of registers to be read
+			pMemoryAddr	:=	ADR(fAct.PosAbs),		//Pointer to read data
+			cbLength	:=	SIZEOF(fAct.PosAbs),	//Size of read data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	6;
+		
+	6:	//finish reading process
+		fbMod.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbMod.BUSY THEN
+			Step	:=	7;	//go to next step when reading process has finished
+		END_IF
+		IF fbMod.Error THEN
+			Step	:=	99;
+		END_IF
+	
+	7:	//start reading relative volume flow
+		fbMod.ReadRegs(
+			UnitID		:=	UnitID,	//Modbus address of slave
+			MBAddr		:=	6,	//Register address
+			Quantity	:=	1,	//Number of registers to be read
+			pMemoryAddr	:=	ADR(fAct.FlowRel),		//Pointer to read data
+			cbLength	:=	SIZEOF(fAct.FlowRel),	//Size of read data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	8;
+		
+	8:	//finish reading process
+		fbMod.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbMod.BUSY THEN
+			Step	:=	9;	//go to next step when reading process has finished
+		END_IF
+		IF fbMod.Error THEN
+			Step	:=	99;
+		END_IF
+
+	9:	//start reading absolute volume flow
+		fbMod.ReadRegs(
+			UnitID		:=	UnitID,	//Modbus address of slave
+			MBAddr		:=	7,	//Register address
+			Quantity	:=	1,	//Number of registers to be read
+			pMemoryAddr	:=	ADR(fAct.FlowAbs),		//Pointer to read data
+			cbLength	:=	SIZEOF(fAct.FlowAbs),	//Size of read data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	10;
+		
+	10:	//finish reading process
+		fbMod.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbMod.BUSY THEN
+			Step	:=	1;	//start next cycle when reading process has finished
+		END_IF
+		IF fbMod.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	99: //Error
+		
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ControlValve">
+      <LineId Id="326" Count="0" />
+      <LineId Id="926" Count="0" />
+      <LineId Id="925" Count="0" />
+      <LineId Id="927" Count="0" />
+      <LineId Id="930" Count="1" />
+      <LineId Id="929" Count="0" />
+      <LineId Id="928" Count="0" />
+      <LineId Id="924" Count="0" />
+      <LineId Id="923" Count="0" />
+      <LineId Id="922" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="450" Count="0" />
+      <LineId Id="914" Count="7" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="202" Count="2" />
+      <LineId Id="225" Count="2" />
+      <LineId Id="286" Count="2" />
+      <LineId Id="232" Count="1" />
+      <LineId Id="236" Count="5" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="243" Count="1" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="256" Count="1" />
+      <LineId Id="260" Count="3" />
+      <LineId Id="293" Count="1" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="532" Count="0" />
+      <LineId Id="534" Count="0" />
+      <LineId Id="536" Count="8" />
+      <LineId Id="556" Count="2" />
+      <LineId Id="560" Count="6" />
+      <LineId Id="575" Count="0" />
+      <LineId Id="579" Count="0" />
+      <LineId Id="581" Count="8" />
+      <LineId Id="601" Count="2" />
+      <LineId Id="605" Count="6" />
+      <LineId Id="621" Count="1" />
+      <LineId Id="624" Count="8" />
+      <LineId Id="644" Count="2" />
+      <LineId Id="648" Count="6" />
+      <LineId Id="904" Count="1" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="187" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

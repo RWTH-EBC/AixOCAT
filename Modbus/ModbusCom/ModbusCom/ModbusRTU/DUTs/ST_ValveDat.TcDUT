@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <DUT Name="ST_ValveDat" Id="{7a576a78-ca9e-4e70-85e6-8ef4302cbac9}">
+    <Declaration><![CDATA[TYPE ST_ValveDat :
+STRUCT
+	SetFlow	:	REAL;
+	SetPerc	:	WORD;
+	PosRel	:	WORD;
+	PosAbs	:	WORD;
+	FlowRel	:	WORD;
+	FlowAbs	:	WORD;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
