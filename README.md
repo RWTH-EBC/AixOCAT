@@ -4,12 +4,14 @@
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
-AixOCAT is an open source community library framework for building automation systems and is based on the [OSCAT](http://www.oscat.de/) libraries.
+AixOCAT is an open source software library for the implementation of control algorithms in building automation systems and test benches and is based on the [OSCAT](http://www.oscat.de/) libraries.
 
 As the library framework is developed at the [RWTH Aachen University, E.ON Energy Research Center, Institute
 for Energy Efficient Buildings and Indoor Climate](https://www.ebc.eonerc.rwth-aachen.de/cms/~dmzz/E-ON-ERC-EBC/?lidx=1), the library's name AixOCAT is derived from the city's French 
 name Aix-la-Chapelle, which the people of Aachen are very fond of and use a lot. 
 With the name AixOCAT we follow this local tradition.
+
+AixOCAT features support for different software tools, that can be used for the implementation of control algorithms, as well as support for various commonly used communication/signal transmission interfaces.
 
 This GitHub page will be used to further develop the package and make it
 available under the
