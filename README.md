@@ -24,7 +24,9 @@ If you have any questions regarding AixOCAT feel free to contact us at
 
 ## Description
 
-To be done.
+- Evaluation and interfaces for different tools that can be used for the implementation of control algorithms
+- Examples and documentation for different communication/signal transmission interfaces
+- General control modules for different use cases 
 
 ## Version
 
