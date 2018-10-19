@@ -1,15 +1,21 @@
-> Just stopping by to let us know about some issue you encountered with AixOCAT? Please feel free to delete all of this text and tell us what you think!
-
-> If you want to suggest larger changes and/or adding new structures to AixOCAT, please make sure to briefly answer the following few questions. For more information on how to contribute to AixOCAT, see our [Wiki](https://github.com/RWTH-EBC/AixOCAT/wiki). Before submitting the issue, you can delete these first lines. Thanks for contributing!
-
-## What is the problem?
+## What is the issue/what feature do you want to develop?
 
 - ...
 
-## Why do we want to solve it?
+## What is the current application?
+
+- ...
+
+## What are the requirements?
 
 - ...
 
 ## How do we want to solve it?
+
+- ...
+
+## Select a label!
+
+## Priority, deadline?
 
 - ...
