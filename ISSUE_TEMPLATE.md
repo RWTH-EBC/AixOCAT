@@ -13,3 +13,9 @@
 ## How do we want to solve it?
 
 - ...
+
+## Select a label!
+
+## Priority, deadline?
+
+- ...
