@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP CNX82A
+D DC Optocoupler, Vce 80V, CTR 50%, SO-4
+K NPN DC Optocoupler
+F http://rtellason.com/chipdata/cnx82a.w.pdf
+$ENDCMP
+#
+#End Doc Library
