@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_CCAController" Id="{da05d8ca-47c8-4481-ac8d-2220e5eec054}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CCAController IMPLEMENTS I_HydMixCircControl
+VAR_INPUT
+END_VAR
+VAR_OUTPUT	
+	bInitSuccess			:	BOOL;
+END_VAR
+VAR
+	eModeSet:	E_ControlMode;	//set control mode
+	eMode 	:	E_ControlMode;	//active control mode
+	eModeOld:	E_ControlMode;	//previous control mode
+	
+	fbPID		:	FB_PID;	//PID controller
+	stPIDParams	:	ST_PIDParams;
+	
+	fValSet		:	REAL;	//Valve setpoint
+
+	Tset_hCurve	:	REAL;	//Temperature setpoint from heat curve
+	T_amb_mean	:	REAL;
+	TsetMax		:	REAL := 50;
+	tAct		:	REAL;
+	ePumpModeSet:	E_PumpControlMode;
+	fPumpSet	:	REAL;
+	
+	//change rate limiter
+	TsetLim	:	REAL;	//limited temperature setpoint
+	TimCR	:	TON;	//timer
+	slope	:	REAL;	
+	
+	//Operation Test
+	TimCR_OT	: TON;
+	T_start_OT	: REAL := 17.5; 	// start temperature for operation test
+	T_Set_OT	: REAL := 17.5;
+	Tim1OT		: TON;
+	Tim2OT		: TON;
+	phaseOT		: INT :=0; 	
+	(*Phase of operation test: 1: fixed temperature for 7 days; 
+	2: rising temperature until Tmax is reached; 
+	3: hold Tmax for one day*)
+	counter					: INT;		// counter for duration of phase 2 and 3
+	
+	bError					:	BOOL;
+END_VAR
+VAR_OUTPUT PERSISTENT
+		bOperationTestSuccess   : BOOL; 	//True if OperationsTest has been finished sucessfully
+		bOperationTestActive 	: BOOL; 	//True if operation test runs
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Auto" Id="{3fcf218d-38ee-496e-9fd0-bc284f21791a}">
+      <Declaration><![CDATA[METHOD Auto : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// linear supply temperature set curve depending on the ambient temperature
+Tset_hCurve := FC_SetCurveCCA(T_amb:= T_amb_mean);
+
+// limit the change rate (change rate: "slope" in K per second)
+TimCR(IN:=TRUE,PT:=T#1S);
+IF TimCR.Q THEN
+	TimCR(IN:=FALSE);	//reset timer
+	IF TsetLim < (Tset_hCurve - slope) THEN
+		TsetLim	:=	TsetLim + slope;	//Increment actual setpoint	
+	ELSIF TsetLim > (Tset_hCurve + slope) THEN
+  		TsetLim	:=	TsetLim - slope;
+	END_IF	
+END_IF
+
+//Limit set supply temperature to 50°C
+IF TsetLim > TsetMax THEN
+	TsetLim := TsetMax;
+END_IF
+
+//Pump
+fPumpSet	:=	60;
+ePumpModeSet:=	E_PumpControlMode.CONST_DIFFPRESS;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Error" Id="{6443c1aa-e9cb-4950-abb6-1e10ff791078}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{1628712a-da20-4750-a9c3-77274990e029}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0d559401-f752-4b6f-aac3-65e9406683d2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Init" Id="{e52b350a-5704-483b-ab75-08a15eec3a91}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fPumpSet	:=	0;
+ePumpModeSet:=	E_PumpControlMode.OFF;
+TsetLim	:=	Tact;	//start value for changing the cca set value
+T_amb_mean := 13;
+slope := 0.05; //0.05K/s
+
+//PID parameters
+stPIDParams.K				:=	1.4;
+stPIDParams.Ti				:=	80;
+stPIDParams.Td				:=	0;
+stPIDParams.LimLow			:=	0;
+stPIDParams.LimHigh			:=	100;
+stPIDParams.bReverseActing	:=	FALSE;
+
+bInitSuccess := True;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Manual" Id="{beb2df00-619a-45a5-8c2f-e551226fd7c2}">
+      <Declaration><![CDATA[METHOD Manual : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ModeSet" Id="{0173551f-fdab-4625-8931-ad6cac7c68fc}">
+      <Declaration><![CDATA[PROPERTY ModeSet : E_ControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{b201e650-2803-4c23-9111-4ce9ed465161}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ModeSet := eModeSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c1a1e394-7a1f-476e-9fa6-79b216a02a4c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eModeSet := ModeSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Off" Id="{158be691-7910-4628-b7de-927003d52baf}">
+      <Declaration><![CDATA[METHOD Off : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fPumpSet	:=	0;
+ePumpModeSet:=	E_PumpControlMode.OFF;
+fValSet 	:=	0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OperationTest" Id="{be032e8a-0f8f-460b-85a6-54761c345e87}">
+      <Declaration><![CDATA[METHOD OperationTest : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bOperationTestActive = FALSE THEN
+		phaseOT := 1;
+		counter := 0;
+		Tim1OT.PT := T#7D;	// duration of first operation test action
+		Tim2OT.PT	:= T#1D;	// duration of second operation action
+		bOperationTestActive := TRUE;
+END_IF
+
+CASE phaseOT OF
+	1 	: 	Tim1OT(IN:=TRUE);	//check timer
+			T_set_OT := T_start_OT;
+			IF Tim1OT.Q THEN
+				Tim1OT(IN:=FALSE);	//reset timer
+				phaseOT := 2;
+			END_IF
+			
+	2 	:	Tim2OT(IN:=TRUE); //check timer
+			IF Tim2OT.Q THEN
+				IF 	T_set_OT >= TsetMax THEN
+					T_set_OT := TsetMax;
+					Tim2OT(IN:=FALSE);	//reset timer
+					phaseOT := 3;
+				ELSE
+					T_set_OT := T_start_OT + 5 * counter + 5;
+					counter := counter +1;
+					Tim2OT(IN:=FALSE);	//reset timer
+				END_IF
+			END_IF		
+			
+	3	:	Tim2OT(IN:=TRUE);	//check timer
+			IF Tim2OT.Q THEN
+				IF T_set_OT - 10 > 30 THEN
+					T_set_OT := T_set_OT - 10;
+					counter := counter +1;
+					Tim2OT(In:=FALSE);	//reset timer
+				ELSE
+					T_set_OT := 30;
+					Tim2OT(In:=FALSE);	//reset timer
+					phaseOT := 4;
+				END_IF
+			END_IF		
+	
+	4	:	bOperationTestActive  := FALSE;
+			bOperationTestSuccess := TRUE;
+			phaseOT	:= 0;
+END_CASE
+
+// limit the maximal change rate (change rate: "slope" in K per second)
+TimCR_OT(IN:=TRUE,PT:=T#1S);
+IF TimCR_OT.Q THEN
+	TimCR_OT(IN:=FALSE);	//reset timer
+	IF TsetLim < (T_set_OT - slope) THEN
+		TsetLim	:=	TsetLim + slope;	
+	ELSIF TsetLim > (T_set_OT + slope) THEN
+  		TsetLim	:=	TsetLim - slope;
+	END_IF	
+END_IF
+
+//Limit set supply temperature to 50°C
+IF TsetLim > TsetMax THEN
+	TsetLim := TsetMax;
+END_IF
+	
+//Pump
+fPumpSet	:=	60;
+ePumpModeSet:=	E_PumpControlMode.CONST_DIFFPRESS;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="PumpMode" Id="{4e19bde3-f640-4b1f-8b76-d048c5f00046}">
+      <Declaration><![CDATA[PROPERTY PumpMode : E_PumpControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{3580cee6-b4f8-42b7-afa3-6d2a1794d864}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[PumpMode := ePumpModeSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{33e376b7-c946-49e9-b7a4-4cfb87b0818e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ePumpModeSet := PumpMode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="PumpSet" Id="{ef16b24a-0b20-4201-b8d5-0a1a4b23b76a}">
+      <Declaration><![CDATA[PROPERTY PumpSet : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{6460da71-7f78-4232-b35b-107839d55fdf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[PumpSet := fPumpSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a8e5a2d4-ba74-4c77-8863-80f3b08f0ac7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fPumpSet := PumpSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{86136bc4-edba-41b5-8977-d0e4d84451ee}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bOperationTestActive = TRUE THEN
+	eModeSet := E_ControlMode.OperationTest;
+END_IF
+
+// predescribed Mode
+CASE eModeSet OF
+	E_ControlMode.Off:		   			eMode	:= E_ControlMode.Off ;
+	
+		
+	E_ControlMode.Auto:   				IF T_amb_mean < 15 AND NOT bError THEN
+											eMode := E_ControlMode.Auto;
+										ELSE
+											eMode := E_ControlMode.OFF;
+										END_IF										
+	
+	E_ControlMode.Manual:				IF bError THEN
+											eMode := E_ControlMode.Off;
+										ELSE
+											eMode := E_ControlMode.Manual;
+										END_IF
+															
+	E_ControlMode.OperationTest:	    IF bError THEN
+											eMode := E_ControlMode.Off;
+										ELSE
+											IF bOperationTestSuccess = FALSE THEN
+												eMode := E_ControlMode.OperationTest;
+											ELSE
+												eMode := E_ControlMode.Auto;
+											END_IF
+										END_IF	 		
+END_CASE
+
+// Control Modes of concrete core activation
+CASE eMode OF
+	E_ControlMode.Off:		   			Off();
+				
+	E_ControlMode.Auto:   				Auto();										
+	
+	E_ControlMode.Manual:				Manual();
+
+	E_ControlMode.OperationTest:	    OperationTest();	
+END_CASE
+
+//PID controller for valve
+fbPID(
+	xSet:= TsetLim, 
+	xAct:= tAct, 
+	Kp:= stPIDParams.K, 
+	Ti:= stPIDParams.Ti, 
+	Td:= stPIDParams.Td, 
+	LimLow:= stPIDParams.LimLow, 
+	LimHigh:= stPIDParams.LimHigh, 
+	bReverseActing:= stPIDParams.bReverseActing, 
+	RST:= FALSE, 
+	Y=> fValSet 
+	);
+
+eModeOld := eMode; //store old mode]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="TempAct" Id="{26aa7a03-4ac3-4743-9f55-60b9b62f5e83}">
+      <Declaration><![CDATA[PROPERTY TempAct : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{0586237d-1913-4ba9-969a-c062db05113a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TempAct := tAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{adc84409-7fe4-46d3-9e56-534b44a43859}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[tAct := TempAct;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ValveSet" Id="{9dd2f278-521e-470f-ac35-4d8fe76d27c4}">
+      <Declaration><![CDATA[PROPERTY ValveSet : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{313f1cda-db21-43b8-9604-af697fe7ed46}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValveSet := fValSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{29a9895b-c6cb-4787-95ba-79a101075b10}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fValSet := ValveSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_CCAController">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Auto">
+      <LineId Id="5" Count="20" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Init">
+      <LineId Id="15" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="18" Count="6" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Manual">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.ModeSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.ModeSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Off">
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.OperationTest">
+      <LineId Id="5" Count="64" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.PumpMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.PumpMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.PumpSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.PumpSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.Run">
+      <LineId Id="18" Count="4" />
+      <LineId Id="69" Count="24" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="10" Count="5" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="11" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.TempAct.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.TempAct.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.ValveSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCAController.ValveSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <Itf Name="I_HydMixCircControl" Id="{b98bea97-b9b0-4895-a15d-420b8b2d07be}">
+    <Declaration><![CDATA[INTERFACE I_HydMixCircControl EXTENDS I_Controller
+]]></Declaration>
+    <Property Name="PumpMode" Id="{d1cbf04a-eca6-49be-bae8-63cf06fa230a}">
+      <Declaration><![CDATA[PROPERTY PumpMode : E_PumpControlMode]]></Declaration>
+      <Get Name="Get" Id="{1d8b5486-2f1f-49d9-899a-26445ff593b9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{9477f27f-158b-4771-a547-e2d037aea8b7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="PumpSet" Id="{d2bea3ce-d982-4552-a3cb-90b7add37970}">
+      <Declaration><![CDATA[PROPERTY PumpSet : REAL]]></Declaration>
+      <Get Name="Get" Id="{c3292f07-d6b5-432e-aab8-a022870e328e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{e3db5659-dcfa-4665-a7a8-44207e4ae425}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="TempAct" Id="{3c5326bb-461d-43c9-8762-a8ce097d4993}">
+      <Declaration><![CDATA[PROPERTY TempAct : REAL]]></Declaration>
+      <Get Name="Get" Id="{fdb7021a-e8c1-448d-b095-0f43b25b4db3}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{3fcb3fc7-f8db-4f33-9014-63793c0137bc}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ValveSet" Id="{9757f8bf-6938-40cd-a6e1-d7634b1556a9}">
+      <Declaration><![CDATA[PROPERTY ValveSet : REAL]]></Declaration>
+      <Get Name="Get" Id="{862e486e-177d-445e-a583-4ad3d429069c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{87ae0ea4-1f1b-4f1f-a304-4c0782c74509}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

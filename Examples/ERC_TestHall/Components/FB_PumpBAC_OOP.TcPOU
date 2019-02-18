@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_PumpBAC_OOP" Id="{7f0e5f54-2fa6-4224-8e97-d7750eb423eb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PumpBAC_OOP IMPLEMENTS I_Pump
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Values
+	fSet		:	REAL;
+	bSetOn		:	BOOL;
+	eContMode	:	E_PumpControlMode;
+	bPumpErr	:	BOOL;
+	
+	//BACnet client
+	DevPump		:	FB_BACnet_RemoteDevice;
+	//BACnet values
+	SetpointBAC		:	FB_BACnet_RemoteAnalogOutput_EX;
+	ContModeBAC		:	FB_BACnet_RemoteMultiStateOutput_EX;
+	PumpOnBAC		:	FB_BACnet_RemoteBinaryOutput_EX;
+	OperatingBAC	:	FB_BACnet_RemoteBinaryInput_EX;
+	EstFlowBAC		:	FB_BACnet_RemoteAnalogInput_EX;		//Estimated volume flow
+	EstPressureBAC	:	FB_BACnet_RemoteAnalogInput_EX;		//Estimated pressure difference
+	PowerBAC		:	FB_BACnet_RemoteAnalogInput_EX;		//Current power
+	SpeedBAC		:	FB_BACnet_RemoteAnalogInput_EX;
+	PumpErrorBAC	:	FB_BACnet_RemoteBinaryInput_EX;
+	
+	bInitSuccess	:	BOOL;
+	bErr			:	BOOL;
+	stInfo			:	ST_PumpInfo;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ControlMode" Id="{07698076-32c6-4954-a517-412963f2ed52}">
+      <Declaration><![CDATA[PROPERTY ControlMode : E_PumpControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{b80ca269-ebc6-44f3-b89e-8c91e1c60502}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ControlMode := eContMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4c7f796d-66bd-4d16-9f87-baaa3923ab4e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eContMode := ControlMode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{81bf7fc3-7339-4d2d-8e80-d903ebf81c08}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{083f51d3-14fd-402e-9325-0a58ce42e052}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := bErr;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6d03d2c7-920e-4e64-a20d-e14a02de0836}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bErr := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Info" Id="{fd20ec84-3d65-42ed-a635-111edf11a543}">
+      <Declaration><![CDATA[PROPERTY Info : ST_PumpInfo
+]]></Declaration>
+      <Get Name="Get" Id="{8ded07ad-24f2-475a-89d3-cbd38230099a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Info := stInfo;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c7a012a8-442b-4159-aa11-904ea26d666a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stInfo := Info;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Init" Id="{7aae8fa6-ed0a-4c1f-b0c8-274647ad480f}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Init Device
+DevPump(
+	bReset:=FALSE,
+	bAutoReset:=FALSE,
+	bDisableWOC:=FALSE,
+	bReSubscribeCOV:=FALSE,
+	bAutoResubscribe:=FALSE,
+	bTriggerWOC:=FALSE,
+	bReload:=FALSE
+);
+IF DevPump.bOperational THEN
+	Init	:=	True;
+ELSE
+	Init	:=	FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="InitSuccess" Id="{63830226-da2f-4f36-aede-8eca7ed4fae3}">
+      <Declaration><![CDATA[PROPERTY InitSuccess : BOOL]]></Declaration>
+      <Get Name="Get" Id="{41dcb806-b297-48d3-ae90-1d7763c319a4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[InitSuccess := bInitSuccess;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bbc7bde0-5ea0-4891-971a-b850e8bf700a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bInitSuccess := InitSuccess;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{ce19e317-4fd4-452d-89d2-9fa6b26b7e17}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT bInitSuccess THEN
+	bInitSuccess := Init();
+END_IF
+
+//Read current values
+PumpErrorBAC(RemoteDevice:=DevPump,bPresentValue=>bPumpErr);
+OperatingBAC(RemoteDevice:=DevPump,bPresentValue=>stInfo.bOperating);
+EstFlowBAC(RemoteDevice:=DevPump,fPresentValue=>stInfo.fVolFlow);
+EstPressureBAC(RemoteDevice:=DevPump,fPresentValue=>stInfo.fPressDiff);
+PowerBAC(RemoteDevice:=DevPump,fPresentValue=>stInfo.fPower);
+SpeedBAC(RemoteDevice:=DevPump,fPresentValue=>stInfo.fSpeed);
+
+IF bPumpErr OR PumpOnBAC.bError OR ContModeBAC.bError OR SetpointBAC.bError THEN
+	bErr	:=	TRUE;
+ELSE
+	bErr	:=	FALSE;
+END_IF
+
+IF DevPump.bOperational THEN
+	IF bErr THEN
+		PumpOnBAC(RemoteDevice:=DevPump,bPV:=FALSE,bEnablePV:=TRUE);
+		ContModeBAC(RemoteDevice:=DevPump);	//update status
+		SetpointBAC(RemoteDevice:=DevPump);
+	ELSE
+		IF eContMode = E_PumpControlMode.OFF THEN
+			PumpOnBAC(RemoteDevice:=DevPump,bPV:=FALSE,bEnablePV:=TRUE);	//Switch pump off
+			ContModeBAC(RemoteDevice:=DevPump,nPV:=eContMode,bEnablePV:=TRUE);	//Set to appropriate control mode
+			SetpointBAC(RemoteDevice:=DevPump,fPV:=fSet,bEnablePV:=TRUE);		//Setpoint
+		ELSIF eContMode = E_PumpControlMode.NONE THEN
+			PumpOnBAC(RemoteDevice:=DevPump,bNullPV:=TRUE);	//Clear entry
+			ContModeBAC(RemoteDevice:=DevPump,bNullPV:=TRUE);	//Clear entry
+			SetpointBAC(RemoteDevice:=DevPump,bNullPV:=TRUE);	//Clear entry
+		ELSE 
+			PumpOnBAC(RemoteDevice:=DevPump,bPV:=TRUE,bEnablePV:=TRUE);		//Switch pump on
+			ContModeBAC(RemoteDevice:=DevPump,nPV:=eContMode,bEnablePV:=TRUE);	//Set to appropriate control mode
+			SetpointBAC(RemoteDevice:=DevPump,fPV:=fSet,bEnablePV:=TRUE);		//Setpoint
+		END_IF
+	END_IF
+ELSE //Reinit if device not operational
+	bInitSuccess := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SetOn" Id="{62297e7e-a4fb-4c9f-bb76-887107f81e5c}">
+      <Declaration><![CDATA[PROPERTY SetOn : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{42084819-7311-4774-a9ba-faa414b19766}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SetOn := bSetOn;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{104b85bf-d34b-48ea-8bac-549fe6582068}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bSetOn := SetOn;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Setpoint" Id="{69da2b84-876c-4d73-8ccc-1f6a0ed44fa7}">
+      <Declaration><![CDATA[PROPERTY Setpoint : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{27eb97ba-2530-4a9c-b895-c6de1ab9e26d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Setpoint := fSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f0370411-c83e-44a3-aa86-6ec71545481c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fSet := Setpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_PumpBAC_OOP">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.ControlMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.ControlMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Info.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Info.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Init">
+      <LineId Id="6" Count="11" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="23" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.InitSuccess.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.InitSuccess.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Run">
+      <LineId Id="4" Count="2" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="58" Count="3" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="39" Count="2" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.SetOn.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.SetOn.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Setpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBAC_OOP.Setpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

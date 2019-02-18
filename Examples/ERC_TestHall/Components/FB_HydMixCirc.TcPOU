@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_HydMixCirc" Id="{eabd025c-8904-4613-9374-1385642bd5cf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HydMixCirc
+VAR_INPUT
+	iPump			:	I_Pump;
+	iValve			:	I_Valve;
+	iTempSupPrim	:	I_TempSens;
+	iTempRetPrim	:	I_TempSens;
+	iTempSup		:	I_TempSens;
+	iTempRet		:	I_TempSens;
+	iControl		:	I_HydMixCircControl;
+	eModeSet 		:	E_ControlMode := E_ControlMode.Off;	// set control mode
+	bInit			:	BOOL;
+END_VAR
+VAR_OUTPUT
+	bErr	:	BOOL;
+END_VAR
+VAR	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Update temperatures
+iTempSupPrim.Run();
+iTempRetPrim.Run();
+iTempSup.Run();
+iTempRet.Run();
+
+//Run Controller
+IF bInit THEN
+	iControl.TempAct := iTempSup.Temperature;
+	iControl.Init();
+ELSE
+	iControl.ModeSet := eModeSet; //Mode setpoint
+	iControl.TempAct := iTempSup.Temperature;
+	iControl.Run();
+END_IF
+	
+//Pump
+iPump.Setpoint := iControl.PumpSet;
+iPump.SetOn := TRUE;
+iPump.ControlMode := iControl.PumpMode;
+
+//Valve
+iValve.OpenPercSet := iControl.ValveSet;
+
+//Run components
+iPump.Run();
+iValve.Run();
+
+IF iPump.Error OR iValve.Error OR iControl.Error THEN
+	bErr := TRUE;
+ELSE
+	bErr := FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_HydMixCirc">
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="3" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="137" Count="1" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="64" Count="2" />
+      <LineId Id="109" Count="1" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="78" Count="1" />
+      <LineId Id="76" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
