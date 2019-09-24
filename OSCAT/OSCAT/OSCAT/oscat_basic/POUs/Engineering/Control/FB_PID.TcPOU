@@ -23,7 +23,6 @@ VAR_OUTPUT
 END_VAR
 VAR
 	e			:  REAL;		// control difference
-	bAntiWindup	:  BOOL;		// false if anit-windup stops integration
 		
 	fbDerivative :  FT_DERIV; 	// function block for derivation
 	fbIntegrate  :	FB_Integrate;	// function block for integration
@@ -56,20 +55,18 @@ END_IF
 IF Y < LimLow  THEN
 	Y := LimLow;
 	LIM := TRUE;
-	fbIntegrate(RST:=TRUE, inStart:=Y/Kp - e);
+	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
 ELSIF Y > LimHigh THEN
 	Y := LimHigh;
 	LIM := TRUE;
-	fbIntegrate(RST:=True, inStart:=Y/Kp - e);
+	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
 ELSE
 	LIM := FALSE;	
 END_IF
 
-
-
-
-
-]]></ST>
+(*
+aku 24.09.2019: first implementation
+*)]]></ST>
     </Implementation>
     <LineIds Name="FB_PID">
       <LineId Id="38" Count="0" />
@@ -101,8 +98,9 @@ END_IF
       <LineId Id="96" Count="0" />
       <LineId Id="92" Count="0" />
       <LineId Id="87" Count="0" />
-      <LineId Id="99" Count="4" />
-      <LineId Id="98" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="172" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>
