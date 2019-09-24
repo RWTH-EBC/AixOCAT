@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="TICKER" Id="{58f1cc29-85bd-471c-86a5-bb346575890d}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK TICKER
 
@@ -8,7 +8,7 @@ VAR_INPUT
 	PT : TIME;
 END_VAR
 
-VAR_IN_OUT
+VAR_INPUT
 	Text : STRING(STRING_LENGTH);
 END_VAR
 

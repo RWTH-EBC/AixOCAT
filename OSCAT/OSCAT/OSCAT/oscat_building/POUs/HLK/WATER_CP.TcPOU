@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="WATER_CP" Id="{fdcb6246-b659-4e55-9400-06d5d94a87a6}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION WATER_CP : REAL
 VAR_INPUT
@@ -7,7 +7,7 @@ VAR_INPUT
 END_VAR
 VAR
 	Pts : INT := 10;
-	data : ARRAY[1..20, 0..1] OF REAL := 0.0,4.228, 5.0,4.20, 10.0,4.188, 15.0,4.184, 50.0,4.181, 60.0,4.183, 70.0,4.187, 80.0,4.194, 90.0,4.204, 100.0,4.22;
+	data : ARRAY[1..20, 0..1] OF REAL := [0.0, 4.228, 5.0,4.20, 10.0,4.188, 15.0,4.184, 50.0,4.181, 60.0,4.183, 70.0,4.187, 80.0,4.194, 90.0,4.204, 100.0,4.22];
 END_VAR
 
 (*
