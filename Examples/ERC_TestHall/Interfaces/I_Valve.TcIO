@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <Itf Name="I_Valve" Id="{349284c8-5eac-4f19-b67f-917c70c393bb}">
+    <Declaration><![CDATA[INTERFACE I_Valve
+]]></Declaration>
+    <Property Name="Error" Id="{95678a48-062d-4180-a968-9c2ee0e1cb2c}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ba079ae1-eaca-4662-8fcb-d87fbb35422c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{0a39e53f-252e-4a3e-a6a3-b7bcdeb58d81}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="OpenPercAct" Id="{bcdfbede-aecd-4eac-96be-59c3c19639cf}">
+      <Declaration><![CDATA[PROPERTY OpenPercAct : Real]]></Declaration>
+      <Get Name="Get" Id="{f9ee8040-86bf-423f-b6fa-c984856a82a6}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{49885976-284b-47aa-8933-a30c685c14b5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="OpenPercSet" Id="{5f0b7046-bc45-42ff-a1f6-d4498411a0fc}">
+      <Declaration><![CDATA[PROPERTY OpenPercSet : Real]]></Declaration>
+      <Get Name="Get" Id="{294a9c5e-a7c0-4fd7-bb32-b81964db692f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{2b836d67-ea79-485e-8640-b077cd7d9d62}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{8a3c6de5-f18b-4de5-9bcf-36aa38c6d892}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

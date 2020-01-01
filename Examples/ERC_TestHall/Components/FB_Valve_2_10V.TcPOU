@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_Valve_2_10V" Id="{3d6f0c4c-7091-433d-9206-ca167187df45}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve_2_10V IMPLEMENTS I_Valve
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fValSet		:	REAL;
+	nValSetRaw	AT %Q*	:	INT;
+	fValAct		:	REAL;
+	nValActRaw	AT %I*	:	INT;
+	
+	nIntMin		:	INT	:=	6553;
+	nIntMax		:	INT	:=	32767;
+	
+	//Error detection
+	bErr	:	BOOL;
+	MaxTime	:	TIME	:=	T#1M;	//Maximum time to allow for movement
+	MaxDiff	:	REAL	:=	5;		//Maximum percentage difference
+	TimED	:	TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{c64f3baa-2842-4663-8dc7-d4d6876f1ac2}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{e3241b09-0eb7-44db-b486-2f179656e658}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := bErr;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ff13ee99-0c04-42d3-b2a6-250c9c15b27e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bErr := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpenPercAct" Id="{89e5fad3-85b4-4451-92dc-e91e994a45cf}">
+      <Declaration><![CDATA[PROPERTY OpenPercAct : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{333363fe-f4bc-4c70-8dbd-e3235597e1e9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpenPercAct	:=	fValAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f306478a-4dcb-43ca-9c9a-6c27bbaa3b05}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fValAct	:=	OpenPercAct;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpenPercSet" Id="{4d8785bc-ec30-433f-bf34-36204ffce037}">
+      <Declaration><![CDATA[PROPERTY OpenPercSet : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{c05774ab-866d-4582-a095-ec10c1450998}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpenPercSet := fValSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2df06ab4-5b5a-4e7a-a78d-a1438ccdef8e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fValSet := OpenPercSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{383d8f0a-acf2-43b9-89c8-e35835787764}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF fValSet < 0 THEN
+	nValSetRaw	:=	0;
+ELSE
+	nValSetRaw := REAL_TO_INT(nIntMin + (fValSet/100)*(nIntMax-nIntMin));
+END_IF
+
+IF nValActRaw < 100 THEN
+	fValAct := 0;
+ELSE
+	fValAct := 100*INT_TO_REAL(nValActRaw-nIntMin)/(nIntMax-nIntMin); //0-100% between Min and Max
+END_IF
+
+//Error detection
+IF ABS(fValSet - fValAct) > MaxDiff THEN
+	TimED(IN:=TRUE,PT:=MaxTime);
+	IF TimED.Q THEN
+		bErr	:=	TRUE;
+	END_IF
+ELSE
+	TimED(In:=FALSE);
+	bErr	:=	FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Valve_2_10V">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.OpenPercAct.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.OpenPercAct.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.OpenPercSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.OpenPercSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_2_10V.Run">
+      <LineId Id="5" Count="9" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="16" Count="8" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

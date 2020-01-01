@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_Integrate" Id="{78b5c855-9b36-4e73-9f6e-2cf75411e118}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Integrate
 VAR_INPUT
@@ -41,7 +41,10 @@ ELSIF run THEN
 	in_last := in;
 END_IF;
 last := tx;	//save last time
-]]></ST>
+
+(*
+aku 24.09.2019: first implementation
+*)]]></ST>
     </Implementation>
     <LineIds Name="FB_Integrate">
       <LineId Id="25" Count="1" />
@@ -54,6 +57,7 @@ last := tx;	//save last time
       <LineId Id="27" Count="3" />
       <LineId Id="63" Count="0" />
       <LineId Id="31" Count="4" />
+      <LineId Id="84" Count="2" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

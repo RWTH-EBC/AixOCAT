@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_CCA_OOP" Id="{dad6c183-7fe9-42c9-ab69-8ffe0d7d0677}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CCA_OOP
+VAR_INPUT
+	eModeSet :	E_ControlMode := E_ControlMode.Off;	// set control mode
+END_VAR
+VAR_OUTPUT
+	bError					:	BOOL;	
+	bInitSuccess			:	BOOL;
+END_VAR
+VAR
+	eModeOld	:	E_ControlMode;
+
+	//Components
+	fbHydCir		:	FB_HydMixCirc;
+	fbPump			:	FB_PumpBAC_OOP;
+	fbValve			:	FB_Valve_2_10V;
+	fbTempSupPrim	:	FB_TempSensPt100;
+	fbTempRetPrim	:	FB_TempSensPt100;
+	fbTempSup		:	FB_TempSensPt100;
+	fbTempRet		:	FB_TempSensPt100;
+	fbControl		:	FB_CCAController;
+END_VAR
+VAR_OUTPUT PERSISTENT
+		bOperationTestSuccess   : BOOL; 	// True if OperationsTest has been finished sucessfully
+		bOperationTestActive 	: BOOL; 	//True if operation test runs
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Initialize if necessary
+IF  (eModeOld = E_ControlMode.Off) AND (eModeSet <> E_ControlMode.Off) THEN //Initialize after switching on
+	bInitSuccess := FALSE;
+END_IF
+
+IF NOT bInitSuccess THEN
+	bInitSuccess := Init();
+	fbHydCir(iPump := fbPump,
+	iValve := fbValve,
+	iTempSupPrim := fbTempSupPrim,
+	iTempRetPrim := fbTempRetPrim,
+	iTempSup := fbTempSup,
+	iTempRet := fbTempRet,
+	iControl := fbControl,
+	eModeSet := eModeSet,
+	bInit := TRUE
+	);
+ELSE
+	fbHydCir(iPump := fbPump,
+	iValve := fbValve,
+	iTempSupPrim := fbTempSupPrim,
+	iTempRetPrim := fbTempRetPrim,
+	iTempSup := fbTempSup,
+	iTempRet := fbTempRet,
+	iControl := fbControl,
+	eModeSet := eModeSet,
+	bInit := FALSE
+	);
+END_IF
+
+IF fbHydCir.bErr THEN
+	bError := TRUE;
+ELSE
+	bError := FALSE;
+END_IF
+
+//write pump info to GVL
+PumpInfos.stPumpCCAInfo := fbPump.Info;
+
+//write temperatures to GVL
+TempSensors.TempCCASupPrim := fbTempSupPrim.Temperature;
+TempSensors.TempCCARetPrim := fbTempRetPrim.Temperature;
+TempSensors.TempCCASup := fbTempSup.Temperature;
+TempSensors.TempCCARet := fbTempRet.Temperature;
+
+eModeOld := eModeSet;]]></ST>
+    </Implementation>
+    <Method Name="Init" Id="{573dab19-e8ad-426d-ae2f-93b5734afb73}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Init pump
+fbPump.Init();
+
+IF fbPump.InitSuccess AND (NOT fbPump.Error) THEN
+	Init := TRUE;
+ELSE
+	Init := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_CCA_OOP">
+      <LineId Id="255" Count="3" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="264" Count="8" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="222" Count="7" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="147" Count="1" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="352" Count="2" />
+      <LineId Id="380" Count="0" />
+      <LineId Id="379" Count="0" />
+      <LineId Id="381" Count="3" />
+      <LineId Id="327" Count="0" />
+      <LineId Id="326" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CCA_OOP.Init">
+      <LineId Id="18" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

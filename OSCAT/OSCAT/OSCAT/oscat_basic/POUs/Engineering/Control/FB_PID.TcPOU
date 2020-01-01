@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_PID" Id="{9148ddd9-4f6e-4c4f-98a6-9a43459fe84e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PID
 VAR_INPUT
@@ -7,7 +7,7 @@ VAR_INPUT
 	xAct:	REAL;	// measured Value	
 
 	Kp  :  	REAL;  	// proportional factor
-	Ti  :  	REAL;  	// integreal time
+	Ti  :  	REAL;  	// integral time
 	Td  :	REAL; 	// derivative time
 		
 	LimLow	:	REAL; 	// lower limit of output
@@ -23,7 +23,6 @@ VAR_OUTPUT
 END_VAR
 VAR
 	e			:  REAL;		// control difference
-	bAntiWindup	:  BOOL;		// false if anit-windup stops integration
 		
 	fbDerivative :  FT_DERIV; 	// function block for derivation
 	fbIntegrate  :	FB_Integrate;	// function block for integration
@@ -43,7 +42,7 @@ END_IF;
 IF Ti>0 THEN
 	//derivative and integral calculation
 	fbDerivative(in:=e,run:=TRUE);
-	fbIntegrate(run:= NOT LIM, in := e, RST:=RST);
+	fbIntegrate(run:= TRUE, in := e, RST:=RST);
 	Y := Kp * (e + 1/Ti * fbIntegrate.out + Td * fbDerivative.out);
 ELSE
 	//derivative  calculation
@@ -52,22 +51,22 @@ ELSE
 END_IF
 
 
-//Check limits
+//Check limits and Anti-wind up
 IF Y < LimLow  THEN
 	Y := LimLow;
 	LIM := TRUE;
+	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
 ELSIF Y > LimHigh THEN
 	Y := LimHigh;
 	LIM := TRUE;
+	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
 ELSE
 	LIM := FALSE;	
 END_IF
 
-
-
-
-
-]]></ST>
+(*
+aku 24.09.2019: first implementation
+*)]]></ST>
     </Implementation>
     <LineIds Name="FB_PID">
       <LineId Id="38" Count="0" />
@@ -92,12 +91,16 @@ END_IF
       <LineId Id="42" Count="0" />
       <LineId Id="85" Count="1" />
       <LineId Id="89" Count="0" />
+      <LineId Id="140" Count="0" />
       <LineId Id="91" Count="0" />
-      <LineId Id="94" Count="2" />
+      <LineId Id="94" Count="1" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="96" Count="0" />
       <LineId Id="92" Count="0" />
       <LineId Id="87" Count="0" />
-      <LineId Id="99" Count="4" />
-      <LineId Id="98" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="172" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

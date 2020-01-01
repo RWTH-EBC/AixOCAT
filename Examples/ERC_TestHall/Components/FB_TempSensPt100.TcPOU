@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_TempSensPt100" Id="{60e11487-1969-4eb3-8d78-2657500a42bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TempSensPt100 IMPLEMENTS I_TempSens
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	Temp	:	REAL;
+	TempRaw	AT %I*	:	INT;
+	ConvFac : INT := 10;	//Conversion factor
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Run" Id="{5e069eca-69e5-4426-bff7-45108ac3798c}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Temp := INT_TO_REAL(TempRaw)/ConvFac;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Temperature" Id="{7d5851d0-8b9c-424c-8d6b-fb269c5d74eb}">
+      <Declaration><![CDATA[PROPERTY Temperature : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{574153b9-daa8-4f80-9414-e97e59bda2b9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Temperature := Temp;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e435d3b7-c16b-4b91-8e3e-60643b2418da}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Temp := Temperature;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_TempSensPt100">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TempSensPt100.Run">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TempSensPt100.Temperature.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TempSensPt100.Temperature.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

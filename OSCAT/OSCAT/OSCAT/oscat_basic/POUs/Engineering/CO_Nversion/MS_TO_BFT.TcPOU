@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="MS_TO_BFT" Id="{da316858-f22e-419d-bfbe-b1a067e323a7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION MS_TO_BFT : INT
 VAR_INPUT
@@ -15,7 +15,7 @@ tested by	oscdat
 this function converts wind speed from M/s to beaufort
 *)]]></Declaration>
     <Implementation>
-      <ST><![CDATA[MS_TO_BFT := REAL_TO_INT(EXPT(MS * 1.196172, 0.666667));
+      <ST><![CDATA[MS_TO_BFT := LREAL_TO_INT(EXPT(MS * 1.196172, 0.666667));
 
 
 (* revision history

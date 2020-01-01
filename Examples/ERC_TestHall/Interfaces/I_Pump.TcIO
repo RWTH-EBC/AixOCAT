@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <Itf Name="I_Pump" Id="{6708c869-51bd-40b3-85aa-c589ee8ef940}">
+    <Declaration><![CDATA[INTERFACE I_Pump
+]]></Declaration>
+    <Property Name="ControlMode" Id="{0c419dd5-76f6-4e27-b46f-fb91615d6acb}">
+      <Declaration><![CDATA[PROPERTY ControlMode : E_PumpControlMode]]></Declaration>
+      <Get Name="Get" Id="{d3938a8c-818a-4dc4-bd8a-4d69883e8b26}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{aacf2ae1-d420-415d-aadd-1f477c6bd076}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{dde96706-37f3-487d-8277-4e32acc9a409}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{953246e6-062b-4759-815f-3762378fed07}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{399a5c66-b7a5-42ea-8095-3c70092fa7d1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Info" Id="{33af2e0f-377e-42f2-9e4d-304d1b2354ce}">
+      <Declaration><![CDATA[PROPERTY Info : ST_PumpInfo]]></Declaration>
+      <Get Name="Get" Id="{3e0b9307-ea45-4500-9648-62f76348eb87}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{6d636757-d2a9-4963-91a7-766327cdb211}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{a5dd7c0b-b49f-48a9-8ae0-91e8b008cb3c}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="SetOn" Id="{0e587226-d53a-4505-86c2-9b0e3da39fbf}">
+      <Declaration><![CDATA[PROPERTY SetOn : BOOL]]></Declaration>
+      <Get Name="Get" Id="{29b7ae73-716f-4194-bb7b-ea08bd2b176d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{5a240b5b-4035-478f-ab0b-537a602dfd77}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Setpoint" Id="{32eec7ee-8c7c-4301-9b66-d3ba251bbd5e}">
+      <Declaration><![CDATA[PROPERTY Setpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{7ecb7839-204c-4cec-b5dd-4fd3c3fdb67f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{310b12d6-57d6-4b9d-b739-dc957067b719}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

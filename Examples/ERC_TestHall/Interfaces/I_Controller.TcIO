@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <Itf Name="I_Controller" Id="{ab40a599-317e-4cd4-9178-6d9062a7ba16}">
+    <Declaration><![CDATA[INTERFACE I_Controller
+]]></Declaration>
+    <Method Name="Auto" Id="{112ddb5e-4eb7-4dfc-ab77-001278816b96}">
+      <Declaration><![CDATA[METHOD Auto : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Error" Id="{88b99533-39a9-4082-8dff-70d6f4a07263}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b5f55336-9cb5-4abc-bd69-43513ed9c1b3}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{bfbef26e-e1f3-4485-8a2f-0e7ff23436b2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Init" Id="{6806c677-063e-4c3e-8ae6-5aa601fbd080}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Manual" Id="{a5e8ba1e-065e-4ca8-a46b-9be1d914f7c8}">
+      <Declaration><![CDATA[METHOD Manual : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="ModeSet" Id="{abbbfe2f-4100-4965-97a9-71219d685e20}">
+      <Declaration><![CDATA[PROPERTY ModeSet : E_ControlMode]]></Declaration>
+      <Get Name="Get" Id="{636c71dd-561f-4fe1-9bf5-3645f1bae2d5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{48c06a2e-6729-4451-9397-50aac944e162}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Off" Id="{fae2e95d-58d0-4a86-b8db-974fd48fc70f}">
+      <Declaration><![CDATA[METHOD Off : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="OperationTest" Id="{85abbe26-99c1-413b-84d3-4799ee5976a1}">
+      <Declaration><![CDATA[METHOD OperationTest : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Run" Id="{56164453-5847-4033-8f29-f4d63dbe80dc}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

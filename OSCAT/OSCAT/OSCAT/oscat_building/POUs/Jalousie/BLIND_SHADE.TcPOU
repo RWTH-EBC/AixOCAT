@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="BLIND_SHADE" Id="{5e98910f-9151-4bf7-a976-2236f704c33c}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK BLIND_SHADE
 VAR_INPUT
@@ -57,7 +57,7 @@ IF UP AND DN AND enable AND sun_delay.Q AND cx.SUN_HOR > direction - angle_offse
 	(* check if sun angle is between 0 and max angle *)
 	IF cx.SUN_VER > 0.0 AND cx.SUN_VER < angle THEN
 		angle := cx.SUN_VER + DEG(ACOS(COS(RAD(cx.SUN_VER))*slat_spacing / Slat_width));
-		ao := INT_TO_BYTE(LIMIT(0,TRUNC(angle * 2.833333333), 255));
+		ao := DINT_TO_BYTE(LIMIT(0,TRUNC(angle * 2.833333333), 255));
 	ELSE
 		ao := 255;
 	END_IF;
