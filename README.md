@@ -1,4 +1,4 @@
-![E.ON EBC RWTH Aachen University](./Resources/Images/EBC_Logo.png)
+﻿![E.ON EBC RWTH Aachen University](./Resources/Images/EBC_Logo.png)
 
 # AixOCAT - Library framework for building automation systems based on the OSCAT libraries
 
@@ -71,3 +71,4 @@ under the
 As this framework is based on the OSCAT libraries we want to acknowlegde Tobias Mühlbauer for his Contribution to the OSCAT libraries.
 
 We also acknowledge the ERDF for their financial support (reference No. KEU-1-006C).
+![ERDF](./Resources/Images/ERDF_Logo.png)
