@@ -57,7 +57,7 @@ The workflow for changes is described in our [Wiki](https://github.com/RWTH-EBC/
 
 ### AixOCAT related publications
 
-Coming soon!
+- "AixOCAT: Open Source Library for Automation Systems" Essen / Vulkan Verlag GmbH (2019) [Link to RWTH Publications Server](http://publications.rwth-aachen.de/record/768255)
 
 ## License
 
