@@ -41,7 +41,7 @@ Visual Studio is required.
 
 ### Installation Guide
 
-Library Installation in [TwinCAT 3](https://infosys.beckhoff.com/english.php?content=../content/1033/tcplclibs_overviewtc3/html/tcplclibs_intro.htm&id=7464068842448702627)
+Library Installation in [TwinCAT 3](https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_plc_intro/27021601982523403.html)
 
 Library Installation in [Codesys](https://help.codesys.com/webapp/_cds_struct_installing_libraries;product=codesys;version=3.5.12.0)
 
