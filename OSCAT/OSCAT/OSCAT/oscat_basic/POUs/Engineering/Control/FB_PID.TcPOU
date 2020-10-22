@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="FB_PID" Id="{9148ddd9-4f6e-4c4f-98a6-9a43459fe84e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PID
 VAR_INPUT
@@ -36,9 +36,6 @@ ELSE
 	e := xSet - xAct;	
 END_IF;
 
-
-
-
 IF Ti>0 THEN
 	//derivative and integral calculation
 	fbDerivative(in:=e,run:=TRUE);
@@ -47,16 +44,15 @@ IF Ti>0 THEN
 ELSE
 	//derivative  calculation
 	fbDerivative(in:=e,run:=TRUE);
-	Y := Kp * (e + Td * fbDerivative.out);		
+	Y := Kp * (e + Td * fbDerivative.out);
 END_IF
 
-
 //Check limits and Anti-wind up
-IF Y < LimLow  THEN
+IF Y < LimLow AND NOT RST THEN
 	Y := LimLow;
 	LIM := TRUE;
 	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
-ELSIF Y > LimHigh THEN
+ELSIF Y > LimHigh AND NOT RST THEN
 	Y := LimHigh;
 	LIM := TRUE;
 	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
@@ -74,9 +70,6 @@ aku 24.09.2019: first implementation
       <LineId Id="34" Count="0" />
       <LineId Id="36" Count="1" />
       <LineId Id="35" Count="0" />
-      <LineId Id="73" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="75" Count="0" />
       <LineId Id="77" Count="0" />
       <LineId Id="76" Count="0" />
       <LineId Id="106" Count="0" />
@@ -86,7 +79,6 @@ aku 24.09.2019: first implementation
       <LineId Id="107" Count="1" />
       <LineId Id="83" Count="0" />
       <LineId Id="79" Count="0" />
-      <LineId Id="74" Count="0" />
       <LineId Id="84" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="85" Count="1" />
