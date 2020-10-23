@@ -1,2 +1,5 @@
 
 *.~u
+*.tmc
+OSCAT/OSCAT/_Boot/
+OSCAT/OSCAT/OSCAT/_CompileInfo
