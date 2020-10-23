@@ -30,7 +30,7 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF StartY <> 0 THEN
+      <ST><![CDATA[IF StartY <> yOffset THEN
 	yOffset := StartY;
 	IF RST THEN
 		fbIntegrate(RST:=TRUE, inStart:=0);
