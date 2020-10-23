@@ -32,9 +32,6 @@ END_VAR
     <Implementation>
       <ST><![CDATA[IF StartY <> 0 THEN
 	yOffset := StartY;
-	IF RST THEN
-		fbIntegrate(RST:=TRUE, inStart:=0);
-	END_IF
 END_IF
 
 //determine direct or reverse acting
@@ -78,11 +75,7 @@ aku 24.09.2019: first implementation
     </Implementation>
     <LineIds Name="FB_PID">
       <LineId Id="205" Count="0" />
-      <LineId Id="207" Count="0" />
-      <LineId Id="236" Count="0" />
-      <LineId Id="239" Count="0" />
-      <LineId Id="238" Count="0" />
-      <LineId Id="208" Count="0" />
+      <LineId Id="207" Count="1" />
       <LineId Id="206" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="9" Count="0" />
