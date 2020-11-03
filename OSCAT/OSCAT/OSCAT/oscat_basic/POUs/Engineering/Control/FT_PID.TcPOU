@@ -40,7 +40,7 @@ default values for KP = 1, KI = 1, ILIM_L = -1E37, iLIM_H = +1E38.
 IF TN > 0.0 THEN
 	integ(IN := IN, K := 1.0 / TN, RUN := IEN, RST := RST, OUT_MIN := ILIM_L, OUT_MAX := ILIM_H);
 ELSE
-	integ(RST := FALSE);
+	integ(RST := TRUE);
 END_IF;
 
 (* run differentiator *)
