@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+	\path[thick,draw,fill=white] (0, 0) circle (1);
+	
+	\begin{scope}
+		\path[draw,thick] (-0.85, 0.4) -- (-0.51, 0.4) arc (142:38:0.65) -- (0.85, 0.4);
+		\path[draw,thick] (-0.95, 0.05) -- (-0.648, 0.05) arc (175.5:364.5:0.65) -- (0.95, 0.05);
+		\path[draw,thick,fill=black] (0, 0) circle (0.1);
+		\draw[thick,rotate=0] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=30] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=60] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=90] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=120] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=150] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=180] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=210] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=240] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=270] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=300] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=330] (0, 0) -- (0, 0.6);
+		\draw[thick,rotate=360] (0, 0) -- (0, 0.6);
+		\draw[rwth_green,thick,->] (-0.9, 0.225) -- (-0.6, 0.225);
+	\end{scope}
+\end{tikzpicture}

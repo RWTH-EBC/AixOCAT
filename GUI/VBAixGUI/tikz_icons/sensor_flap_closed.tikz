@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+	\path[thick,draw,fill=white] (-1, 0.8) arc (180:90:0.2) -- (0.8, 1) arc (90:0:0.2) -- (1, -0.8) arc (360:270:0.2) -- (-0.8, -1) arc (270:180:0.2) -- cycle;
+	\draw[thick] (-0.8, 0.8) -- (0.8, 0.8);
+	\draw[thick] (-0.8, -0.8) -- (0.8, -0.8);
+	\begin{scope}[shift={(0,0.6)},rotate=0]
+		\draw[thick,fill=black] (0, 0) circle (0.02);
+		\draw[thick] (0,-0.13) -- (0, 0.13);
+	\end{scope}
+	\begin{scope}[shift={(0,0.3)},rotate=0]
+		\draw[thick,fill=black] (0, 0) circle (0.02);
+		\draw[thick] (0,-0.13) -- (0, 0.13);
+	\end{scope}
+	\begin{scope}[shift={(0,0.0)},rotate=0]
+		\draw[thick,fill=black] (0, 0) circle (0.02);
+		\draw[thick] (0,-0.13) -- (0, 0.13);
+	\end{scope}
+	\begin{scope}[shift={(0,-0.3)},rotate=0]
+		\draw[thick,fill=black] (0, 0) circle (0.02);
+		\draw[thick] (0,-0.13) -- (0, 0.13);
+	\end{scope}
+	\begin{scope}[shift={(0,-0.6)},rotate=0]
+		\draw[thick,fill=black] (0, 0) circle (0.02);
+		\draw[thick] (0,-0.13) -- (0, 0.13);
+	\end{scope}
+\end{tikzpicture}
