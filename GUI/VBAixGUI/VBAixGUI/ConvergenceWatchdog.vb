@@ -11,8 +11,10 @@ Public Class ConvergenceWatchdog
     <Browsable(True), Description("Average")> Dim _average As Decimal
     <Browsable(True), Description("Averaging time")> Dim _averageTime As Integer = 10000
     <Browsable(True), Description("Convergence")> Dim _convergence As Boolean
-    <Browsable(True), Description("Convergence Threshold")> Dim _convergenceThreshold As Decimal = 0.05
-    <Browsable(True), Description("Deviation")> Dim _deviation As Decimal
+    <Browsable(True), Description("Absolute Convergence Threshold")> Dim _absConvergenceThreshold As Decimal = 5
+    <Browsable(True), Description("Relative Convergence Threshold")> Dim _relConvergenceThreshold As Decimal = 0.05
+    <Browsable(True), Description("AbsDeviation")> Dim _absDeviation As Decimal
+    <Browsable(True), Description("RelDeviation")> Dim _relDeviation As Decimal
     <Browsable(True), Description("Hint")> Dim _hint As String
     <Browsable(True), Description("Poll rate")> Dim _pollRate As Integer = 100
     <Browsable(True), Description("Relative mode")> Dim _relative As Boolean = True
@@ -74,27 +76,54 @@ Public Class ConvergenceWatchdog
         End Set
     End Property
 
-    Public Property ConvergenceThreshold() As Decimal
+    Public Property AbsConvergenceThreshold() As Decimal
         Get
-            ConvergenceThreshold = _convergenceThreshold
+            AbsConvergenceThreshold = _absConvergenceThreshold
         End Get
         Set(ByVal Value As Decimal)
-            If _convergenceThreshold <> Value Then
-                _convergenceThreshold = Value
+            If _absConvergenceThreshold <> Value Then
+                _absConvergenceThreshold = Value
                 IconChange()
                 Me.Invalidate()
             End If
         End Set
     End Property
 
-    Public Property Deviation() As Decimal
+    Public Property RelConvergenceThreshold() As Decimal
         Get
-            Deviation = _deviation
+            RelConvergenceThreshold = _relConvergenceThreshold
         End Get
         Set(ByVal Value As Decimal)
-            If _deviation <> Value Then
-                _deviation = Value
-                Convergence = (_deviation < ConvergenceThreshold)
+            If _relConvergenceThreshold <> Value Then
+                _relConvergenceThreshold = Value
+                IconChange()
+                Me.Invalidate()
+            End If
+        End Set
+    End Property
+
+    Public Property AbsDeviation() As Decimal
+        Get
+            AbsDeviation = _absDeviation
+        End Get
+        Set(ByVal Value As Decimal)
+            If _absDeviation <> Value Then
+                _absDeviation = Value
+                EvaluateConvergence()
+                IconChange()
+                Me.Invalidate()
+            End If
+        End Set
+    End Property
+
+    Public Property RelDeviation() As Decimal
+        Get
+            RelDeviation = _relDeviation
+        End Get
+        Set(ByVal Value As Decimal)
+            If _relDeviation <> Value Then
+                _relDeviation = Value
+                EvaluateConvergence()
                 IconChange()
                 Me.Invalidate()
             End If
@@ -200,25 +229,29 @@ Public Class ConvergenceWatchdog
         Dim deviation As Decimal
         Dim unit As String
         If Relative Then
-            deviation = Me.Deviation * 100
+            deviation = Me.RelDeviation * 100
             unit = "%"
         Else
-            deviation = Me.Deviation
+            deviation = Me.AbsDeviation
             unit = Me.Unit
         End If
         If Average >= 1000 Then
             Me.lblValue.Text = Average.ToString("F0") & " " & Me.Unit
         ElseIf Average >= 100 Then
             Me.lblValue.Text = Average.ToString("F1") & " " & Me.Unit
+        ElseIf Average >= 1 Then
+            Me.lblValue.Text = Average.ToString("F2") & " " & Me.Unit
         Else
-            Me.lblValue.Text = Average.ToString("F") & " " & Me.Unit
+            Me.lblValue.Text = Average.ToString("F3") & " " & Me.Unit
         End If
         If deviation >= 100 Then
             Me.lblDeviation.Text = "+/- " & deviation.ToString("F0") & " " & unit
         ElseIf deviation >= 10 Then
             Me.lblDeviation.Text = "+/- " & deviation.ToString("F1") & " " & unit
-        Else
+        ElseIf deviation >= 1 Then
             Me.lblDeviation.Text = "+/- " & deviation.ToString("F2") & " " & unit
+        Else
+            Me.lblDeviation.Text = "+/- " & deviation.ToString("F3") & " " & unit
         End If
         If Convergence Then
             Me.lblDeviation.BackColor = System.Drawing.Color.FromArgb(87, 171, 39)
@@ -227,6 +260,23 @@ Public Class ConvergenceWatchdog
             Me.lblDeviation.BackColor = System.Drawing.Color.FromArgb(204, 7, 30)
             Me.ToolTipInfo.SetToolTip(Me.lblDeviation, "not stationary")
         End If
+    End Sub
+
+    Private Sub EvaluateConvergence()
+        Dim refValue As Decimal
+        Dim relAbsDeviation As Decimal
+        If SymbolTarget = "" Then
+            refValue = Average
+        Else
+            refValue = CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate))
+        End If
+        relAbsDeviation = refValue * RelDeviation
+        If AbsDeviation > relAbsDeviation Or (RelDeviation > RelConvergenceThreshold) Then
+            Relative = False
+        Else
+            Relative = True
+        End If
+        Convergence = (AbsDeviation <= AbsConvergenceThreshold) Or (RelDeviation <= RelConvergenceThreshold)
     End Sub
 
     Private Sub InitializeBuffer()
@@ -261,23 +311,18 @@ Public Class ConvergenceWatchdog
             _buffer.AddValue(CDec(ADS.getSymbolValueCached(Symbol, PollRate)))
             Average = _buffer.Average
             If SymbolTarget = "" Then
-                If Relative Then
-                    Deviation = _buffer.RelDeviation
-                Else
-                    Deviation = _buffer.AbsDeviation
-                End If
+                RelDeviation = _buffer.RelDeviation
+                AbsDeviation = _buffer.AbsDeviation
             Else
                 _bufferDelta.AddValue(Math.Abs(CDec(ADS.getSymbolValueCached(Symbol, PollRate)) - CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate))))
-                If Relative Then
-                    If CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate)) <> 0 Then
-                        Deviation = _bufferDelta.Maximum / CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate))
-                    Else
-                        Deviation = 0
-                    End If
+                If CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate)) <> 0 Then
+                    RelDeviation = _bufferDelta.Maximum / CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate))
                 Else
-                    Deviation = _bufferDelta.Maximum
+                    RelDeviation = 0
                 End If
+                AbsDeviation = _bufferDelta.Maximum
             End If
+
             IconChange()
         End If
         _elapsed = CInt((DateTime.UtcNow - _lastTime).TotalMilliseconds)

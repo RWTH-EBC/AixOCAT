@@ -34,7 +34,7 @@ Partial Class ConvergenceWatchdog
         Me.lblValue.Dock = System.Windows.Forms.DockStyle.Left
         Me.lblValue.Location = New System.Drawing.Point(0, 0)
         Me.lblValue.Name = "lblValue"
-        Me.lblValue.Size = New System.Drawing.Size(70, 30)
+        Me.lblValue.Size = New System.Drawing.Size(65, 30)
         Me.lblValue.TabIndex = 2
         Me.lblValue.Text = "xxx.xx"
         Me.lblValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -52,9 +52,9 @@ Partial Class ConvergenceWatchdog
         '
         Me.lblDeviation.BackColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(7, Byte), Integer), CType(CType(30, Byte), Integer))
         Me.lblDeviation.Dock = System.Windows.Forms.DockStyle.Left
-        Me.lblDeviation.Location = New System.Drawing.Point(70, 0)
+        Me.lblDeviation.Location = New System.Drawing.Point(65, 0)
         Me.lblDeviation.Name = "lblDeviation"
-        Me.lblDeviation.Size = New System.Drawing.Size(60, 30)
+        Me.lblDeviation.Size = New System.Drawing.Size(65, 30)
         Me.lblDeviation.TabIndex = 3
         Me.lblDeviation.Text = "xxx.xx"
         Me.lblDeviation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft

@@ -3,7 +3,7 @@ Imports TwinCAT.Ads
 Imports TwinCAT.Ads.TypeSystem
 Imports TwinCAT.TypeSystem
 
-Module ADS
+Public Module ADS
 
 #Region "Properties"
     Dim client As New TcAdsClient

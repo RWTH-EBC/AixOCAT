@@ -26,6 +26,7 @@ Public Class Measurement
     Private _adjustedInterval As Integer
     Private _numMeasurements As Integer
     Private _loggedPoints As Integer
+    Private _running As Boolean
     Private _saveName As String
     Private _saveLocation As String
 #End Region
@@ -93,6 +94,18 @@ Public Class Measurement
         End Set
     End Property
 
+    Public ReadOnly Property Running() As Boolean
+        Get
+            Running = _running
+        End Get
+    End Property
+
+    Public ReadOnly Property SymbolBuffers As Dictionary(Of String, Buffer)
+        Get
+            SymbolBuffers = _symbolBuffers
+        End Get
+    End Property
+
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
     Public Property SymbolList As List(Of SeriesSelection)
         Set(ByVal Value As List(Of SeriesSelection))
@@ -151,10 +164,19 @@ Public Class Measurement
         End If
     End Sub
 
+    Public Function GetAveragedValue(ByVal _symbol As String) As Double
+        If _symbolBuffers.ContainsKey(_symbol) Then
+            Return (_symbolBuffers(_symbol).Average * _symbolBuffers(_symbol).Size / _loggedPoints)
+        Else
+            Return (0)
+        End If
+    End Function
+
     Private Function SetupSaveFile() As Boolean
         If _saveFolder <> "" Then
             Dim dateTimeString As String = Now.Year.ToString("D4") & Now.Month.ToString("D2") & Now.Day.ToString("D2") & "_" & Now.Hour.ToString("D2") & Now.Minute.ToString("D2") & Now.Second.ToString("D2")
-            _saveName = _measurementIdentifier & "_" & dateTimeString
+            MeasurementIdentifier = txtBoxMeasurementName.Text
+            _saveName = MeasurementIdentifier & "_" & dateTimeString
             _saveLocation = _saveFolder & "\" & _saveName & ".csv"
             txtBoxSaveLocation.Text = _saveLocation
 
@@ -198,6 +220,7 @@ Public Class Measurement
             btnStartMeasurement.Enabled = False
             btnStopMeasurement.Enabled = True
             lblStatus.Text = "Starting measurement ..."
+            _running = True
             ADS.CachedOnly = True
             TimerPoll.Interval = Resolution
             _startTime = DateTime.UtcNow
@@ -211,6 +234,7 @@ Public Class Measurement
         lblStatus.Text = "Finishing measurement ..."
         TimerPoll.Stop()
         SaveMeasurement()
+        _running = False
         ADS.CachedOnly = False
         btnStartMeasurement.Enabled = True
         btnStopMeasurement.Enabled = False
@@ -240,7 +264,7 @@ Public Class Measurement
         _numMeasurements = _numMeasurements + 1
         DataGridView1.Rows.Add({_saveName})
         For Each symbol As SeriesSelection In SymbolList
-            DataGridView1.Rows(_numMeasurements - 1).Cells(symbol.Symbol).Value = Math.Round(_symbolBuffers(symbol.Symbol).Average * _symbolBuffers(symbol.Symbol).Size / _loggedPoints, 4)
+            DataGridView1.Rows(_numMeasurements - 1).Cells(symbol.Symbol).Value = Math.Round(GetAveragedValue(symbol.Symbol), 4)
         Next
     End Sub
 #End Region

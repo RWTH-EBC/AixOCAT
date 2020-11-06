@@ -6,7 +6,7 @@ Public Enum MessageType
     MajorError = 4
 End Enum
 
-Module Log
+Public Module Log
 
 #Region "Events"
 
