@@ -77,13 +77,13 @@
         _max = _buffer(0)
         _min = _buffer(0)
         For i = 0 To UBound(_buffer)
-            _absDeviation = Math.Max(_absDeviation, Math.Abs(_buffer(i) - Average))
+            _absDeviation = Math.Max(Math.Abs(_absDeviation), Math.Abs(_buffer(i) - Average))
             _max = Math.Max(_max, _buffer(i))
             _min = Math.Max(_min, _buffer(i))
             If Average <> 0 Then
-                _relDeviation = Math.Max(_relDeviation, Math.Abs((_buffer(i) - Average) / Average))
+                _relDeviation = Math.Max(Math.Abs(_relDeviation), Math.Abs((_buffer(i) - Average) / Average))
             Else
-                _relDeviation = Math.Max(_relDeviation, 0)
+                _relDeviation = Math.Max(Math.Abs(_relDeviation), 0)
             End If
         Next
     End Sub

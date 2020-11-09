@@ -316,11 +316,11 @@ Public Class ConvergenceWatchdog
             Else
                 _bufferDelta.AddValue(Math.Abs(CDec(ADS.getSymbolValueCached(Symbol, PollRate)) - CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate))))
                 If CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate)) <> 0 Then
-                    RelDeviation = _bufferDelta.Maximum / CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate))
+                    RelDeviation = _bufferDelta.Maximum / Math.Abs(CDec(ADS.getSymbolValueCached(SymbolTarget, PollRate)))
                 Else
                     RelDeviation = 0
                 End If
-                AbsDeviation = _bufferDelta.Maximum
+                AbsDeviation = Math.Abs(_bufferDelta.Maximum)
             End If
 
             IconChange()
