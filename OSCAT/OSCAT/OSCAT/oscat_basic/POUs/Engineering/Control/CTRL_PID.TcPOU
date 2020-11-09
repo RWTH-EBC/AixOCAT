@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="CTRL_PID" Id="{13a4f0c7-5f2d-4812-9818-ab2721f8b920}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK CTRL_PID
 VAR_INPUT
 	ACT, SET, SUP, OFS, M_I : REAL;
 	MAN : BOOL;
 	RST : BOOL;
+	REV : BOOL := FALSE;
 	KP : REAL := 1.0;
 	TN : REAL := 1.0;
 	TV : REAL := 1.0;
@@ -38,12 +39,15 @@ the output flags lim will signal that the output limits are active.
 *)
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[DIFF := CTRL_IN(SET, ACT, SUP);
+      <ST><![CDATA[IF REV THEN
+	DIFF := CTRL_IN(ACT, SET, SUP);
+ELSE
+	DIFF := CTRL_IN(SET, ACT, SUP);
+END_IF
 pid(in := DIFF, kp := KP, tn := TN, tv := TV, lim_l := LL, lim_h := LH, rst := RST);
 co(ci := pid.Y, OFFSET := OFS, man_in := M_I, lim_l := LL, lim_h := LH, MANUAL := MAN);
 Y := co.Y;
 LIM := co.LIM;
-
 
 
 (* revision history
@@ -68,10 +72,14 @@ hm	3.11.2007	rev 1.5
 
 hm	5. jan 2008	rev 1.6
 	improved code for better performance
+	
+PhOstmann 09. nov 2020 rev 2.1
+	added the possibility to reverse the control input difference
 *)]]></ST>
     </Implementation>
     <LineIds Name="CTRL_PID">
-      <LineId Id="36" Count="30" />
+      <LineId Id="102" Count="35" />
+      <LineId Id="66" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
