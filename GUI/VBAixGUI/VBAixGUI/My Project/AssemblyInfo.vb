@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Die Werte der Assemblyattribute überprüfen
 
-<Assembly: AssemblyTitle("EBC_ADS_Bib")> 
+<Assembly: AssemblyTitle("VBAixGUI")>
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("RWTH Aachen")> 
-<Assembly: AssemblyProduct("EBC_ADS_Bib")> 
-<Assembly: AssemblyCopyright("Copyright © RWTH Aachen 2015")> 
+<Assembly: AssemblyCompany("RWTH Aachen")>
+<Assembly: AssemblyProduct("VBAixGUI")>
+<Assembly: AssemblyCopyright("Copyright © RWTH Aachen 2020")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
