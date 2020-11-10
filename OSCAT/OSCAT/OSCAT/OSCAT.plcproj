@@ -504,6 +504,9 @@
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY_200.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY_4.TcPOU">
       <SubType>Code</SubType>
     </Compile>
