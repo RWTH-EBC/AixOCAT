@@ -139,6 +139,11 @@ Public Class LED
                 Me.Label1.BackColor = ColorFalse
         End Select
     End Sub
+
+    Public Sub SubmitSetValue()
+        ADS.setSymboleValue(Symbol, Convert.ToBoolean(State))
+        SetValueNew = False
+    End Sub
 #End Region
 
 #Region "Form Events"

@@ -160,6 +160,11 @@ Public Class Input_SetValue
         Me.NumericUpDown1.Minimum = MinValue
         Me.NumericUpDown1.Maximum = MaxValue
     End Sub
+
+    Public Sub SubmitSetValue()
+        ADS.setSymboleValue(Symbol, CSng(SetValue))
+        SetValueNew = False
+    End Sub
 #End Region
 
 #Region "Form Events"
