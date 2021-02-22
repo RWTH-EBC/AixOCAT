@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DEC_2" Id="{3da7c21f-62c6-446d-b739-2c62f0612952}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DEC_2
+VAR_INPUT
+	D: BOOL;
+	A: BOOL;
+END_VAR
+VAR_OUTPUT
+	Q0: BOOL;
+	Q1: BOOL;
+END_VAR
+
+
+(*
+version 1.1	3 Mar 2007
+programmer 	hugo
+tested by		tobias
+
+a bit input will be decoded to the two outputs Q0 or Q1
+dependent on the value of A
+A=0 decodes to Q0 and A=1 decodes to Q1
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Q0 := D AND NOT A;
+Q1 := D AND A;
+
+(* revision history
+hm 3.3.2007	rev 1.1
+	rewritten in ST for better compatibility
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DEC_2">
+      <LineId Id="21" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

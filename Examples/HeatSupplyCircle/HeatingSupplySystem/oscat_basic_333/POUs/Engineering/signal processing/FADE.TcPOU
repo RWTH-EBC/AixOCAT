@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FADE" Id="{cea32801-d9c1-419a-8ef5-2c6e4450313b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FADE
+VAR_INPUT
+	IN1 : REAL;
+	IN2 : REAL;
+	F : BOOL;
+	TF : TIME;
+	rst : BOOL;
+END_VAR
+VAR_OUTPUT
+	Y : REAL;
+END_VAR
+VAR
+	rmx : RMP_W;
+END_VAR
+
+(*
+version 1.3	24. jan. 2009
+programmer 	oscat
+tested BY		oscat
+
+FADE is used to crossfade between the inputs IN1 and IN2. The fade_over time is specified with TF.
+When F = TRUE then Y = IN2 after the time TF, and when F = FALSE then Y = IN1.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rmx(rst := rst AND NOT F, set := rst AND F, pt := TF, up := F);
+Y := (in2 - In1) / 65535.0 * WORD_TO_REAL(rmx.out) + in1;
+
+
+(* code for rev 1.1
+IF rst THEN
+	rmx(set := F, rst := NOT F);
+ELSIF F AND (NOT rmx.high) THEN
+	rmx(PT := TF, UP := TRUE, e := TRUE, rst := FALSE, set := FALSE);
+ELSIF (NOT F) AND (NOT rmx.low) THEN
+	rmx(PT := TF, UP := FALSE, e := TRUE, rst := FALSE, set := FALSE);
+ELSE
+	rmx(e := FALSE, rst := FALSE, set := FALSE);
+END_IF;
+Y := (WORD_TO_REAL(rmx.out) * in1 + WORD_TO_REAL(FF - rmx.out) * IN2) / FF;
+*)
+
+
+(* revision history
+hm	26. dec 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	improved performance
+	changed calls for rmp_w because rmp_w has chaged
+
+hm	17. dec. 2008	rev 1.2
+	function of input f was inverted
+
+hm	24. jan. 2009	rev 1.3
+	delted unused var FF
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="FADE">
+      <LineId Id="25" Count="31" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

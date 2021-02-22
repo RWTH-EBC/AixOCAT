@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="GAMMA" Id="{8046f25d-cefd-45b3-8299-14977dbdb3ae}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION GAMMA : REAL
+VAR_INPUT
+	X : REAL;
+END_VAR
+
+
+(*
+version 1.3	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+this function calculates the stirling function which is an approximation for the gamma function
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF x > 0.0 THEN
+	GAMMA := SQRT(math.PI2 / X) * EXPT(math.E_INV * (x + 1.0 / (12.0 * x - 0.1 / X)), X);
+END_IF;
+
+
+(* the stirling formula is not very accurate for small values of X
+IF X >=0 THEN GAMMA := SQRT(math.PI2 * X) * EXPT(X / math.E, X); END_IF;
+*)
+
+
+
+
+
+(* revision history
+hm	10.12.2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	using math constants
+
+hm	26. oct. 2008	rev 1.2
+	using new formula with better accuracy
+
+hm	10. mar. 2009	rev 1.3
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="GAMMA">
+      <LineId Id="14" Count="26" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

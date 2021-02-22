@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_AmbientAir" Id="{90d51716-db66-4a5f-aa64-9deae95092df}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AmbientAir 
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	ftemp_sin: OSCAT.GEN_SIN:= ( PT := T#10S,
+								     AM := 7,
+								     OS := 12,
+								     DL:= 0); 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Run" Id="{cbf9f38b-8652-4b83-8fba-69d0b7cd88b3}">
+      <Declaration><![CDATA[METHOD Run 
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ftemp_sin();
+GVL.fTempAmbAir := ftemp_sin.Out;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AmbientAir">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AmbientAir.Run">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

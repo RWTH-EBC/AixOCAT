@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DIR_TO_DEG" Id="{1e6d7c9b-7466-4d9d-8172-1d6ab5982b30}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DIR_TO_DEG : INT
+VAR_INPUT
+	DIR : STRING(3);
+	L : INT;
+END_VAR
+VAR
+	ly: INT;
+	i : INT;
+END_VAR
+
+(*
+version 1.1	22. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this function converts compass directions to degrees
+it will recognize up to 3 letter directions in english and german writing.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF L = 0 THEN ly := LANGUAGE.DEFAULT; ELSE ly := MIN(L, LANGUAGE.LMAX); END_IF;
+FOR i := 0 TO 15 DO
+	IF language.DIRS[ly, i] = DIR THEN EXIT; END_IF;
+END_FOR;
+DIR_TO_DEG := SHR(i * 45 + 1, 1);
+
+
+
+
+
+
+(* revision histroy
+hm	22. oct. 2008	rev 1.1
+	original release
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DIR_TO_DEG">
+      <LineId Id="19" Count="15" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CASIN" Id="{4f2b0a3d-adca-4510-8db9-13f7e96223b3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CASIN : complex
+VAR_INPUT
+	X : complex;
+END_VAR
+VAR
+	Y : complex;
+END_VAR
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the arcus sinus function of a complex number
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[y.re := -x.im;
+y.im := x.re;
+y := CASINH(y);
+CASIN.re := y.im;
+CASIN.im := -y.re;
+
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CASIN">
+      <LineId Id="16" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

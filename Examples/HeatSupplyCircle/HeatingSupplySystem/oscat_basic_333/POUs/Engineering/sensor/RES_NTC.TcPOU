@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="RES_NTC" Id="{89958ffa-1a0c-4100-89a4-b1f44e72d428}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION RES_NTC : REAL
+VAR_INPUT
+	T : REAL;
+	RN : REAL;
+	B : REAL;
+END_VAR
+
+
+(*
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function returs the resistance for a NTC sensor for a given temperature in °C.
+RN is the resistance at 25 °C and B is a constant for the given sensor.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[RES_NTC := RN * EXP(B * (1.0 / (T+273.15) - 0.00335401643468053));
+
+
+
+(* revision history
+
+hm 30. dec. 2008	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	changed real constants to use dot syntax
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="RES_NTC">
+      <LineId Id="17" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

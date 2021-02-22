@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SCALE_X4" Id="{14e5fe2e-7891-40b5-ad85-55aacde0c4d8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SCALE_X4 : REAL
+VAR_INPUT
+	IN1: BOOL;
+	IN2: BOOL;
+	IN3: BOOL;
+	IN4: BOOL;
+	K : REAL;
+	O : REAL;
+END_VAR
+VAR_INPUT CONSTANT
+	IN1_MIN: REAL;
+	IN1_MAX: REAL := 1000.0;
+	IN2_MIN: REAL;
+	IN2_MAX: REAL := 1000.0;
+	IN3_MIN: REAL;
+	IN3_MAX: REAL := 1000.0;
+	IN4_MIN: REAL;
+	IN4_MAX: REAL := 1000.0;
+END_VAR
+
+(*
+version 1.1	26. oct. 2008
+programmer 	hugo
+tested by		tobias
+
+	this function can scale up to 4 inputs.
+	the input can select between two values with true or false.
+	the summed output is then scaled by an scale input K and a offset O can be added to the output.
+	the min and max input configurations can be edited in the cfc editor by double clicking the symbol body.
+
+*)
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SCALE_X4 := (SEL(IN1,IN1_MIN, IN1_MAX) + SEL(IN2, IN2_MIN, IN2_MAX)+SEL(IN3, IN3_MIN, IN3_MAX)+ SEL(IN4, IN4_MIN, IN4_MAX)) * k + o;
+
+
+(* revision history
+hm	19. jan. 2008	rev 1.0
+	original version
+
+hm	26. oct. 2008	rev 1.1
+	optimized code
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SCALE_X4">
+      <LineId Id="33" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

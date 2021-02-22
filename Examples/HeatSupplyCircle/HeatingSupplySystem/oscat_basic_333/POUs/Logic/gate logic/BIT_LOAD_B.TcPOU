@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BIT_LOAD_B" Id="{e3e5feca-121e-4bb0-b5af-26acd59001f2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BIT_LOAD_B : BYTE
+VAR_INPUT
+	IN : BYTE;
+	VAL : BOOL;
+	POS : INT;
+END_VAR
+VAR CONSTANT
+	dat : BYTE := 1;
+END_VAR
+
+(*
+version 1.1	16. mar 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads a bit into a byte at position pos.
+ *)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF VAL THEN
+	BIT_LOAD_B := in OR SHL(dat,pos);
+ELSE
+	BIT_LOAD_B := in AND (NOT SHL(dat,pos));
+END_IF;
+
+
+(* revision history
+hm	29. feb 2008	rev 1.0
+	original version
+
+hm	16. mar 2008	rev 1.1
+	change input bit to val for compatibility reasons
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="BIT_LOAD_B">
+      <LineId Id="17" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

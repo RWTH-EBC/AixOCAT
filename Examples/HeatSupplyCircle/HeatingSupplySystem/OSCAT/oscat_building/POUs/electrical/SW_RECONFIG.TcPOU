@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SW_RECONFIG" Id="{d8671df2-6bd1-49e6-af1b-3b15b5fede14}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SW_RECONFIG
+VAR_INPUT
+	IN : BOOL;
+	TD : TIME;
+	TR : TIME;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+END_VAR
+VAR
+	T1, T2 : TON;
+	INV: BOOL;
+END_VAR
+
+
+(*
+version 1.0	22. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+SW_reconfig detects if an input is high or low active and debounces the input
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* run debounce circuit *)
+t1(in := IN, PT := TD);
+
+IF tr > t#0s THEN
+	(* generate output *)
+	Q := t1.Q XOR inv;
+	(* reconfiguration timer *)
+	T2(in := Q, pt := TR);
+	(* when T2.Q goes high then reverse INV *)
+	IF T2.Q THEN INV := NOT INV; END_IF;
+ELSE
+	Q := t1.Q;
+END_IF;
+
+
+
+(* revision history
+hm	22.10.2008	rev 1.0
+	original version
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="SW_RECONFIG">
+      <LineId Id="23" Count="21" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

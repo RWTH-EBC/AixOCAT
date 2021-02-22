@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ELLIPSE_C" Id="{35e11106-50d0-4519-b4c5-c5608c335b58}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ELLIPSE_C : REAL
+VAR_INPUT
+	R1 : REAL;
+	R2 : REAL;
+END_VAR
+
+
+(*
+version 1.2	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+ellipse_C calculates the circumference of an ellipe based on the two radians R1 and R2
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ELLIPSE_C := math.PI * (3.0 * (R1+R2) - SQRT((3.0 * r1 + R2) * (3.0 * r2 + r1)));
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	using math constants
+
+hm	10. mar. 2009	rev 1.2
+	changed syntax of real constants to 0.0
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="ELLIPSE_C">
+      <LineId Id="16" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

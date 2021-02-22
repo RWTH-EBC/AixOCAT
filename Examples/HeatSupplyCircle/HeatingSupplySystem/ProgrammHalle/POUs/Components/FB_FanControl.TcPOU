@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_FanControl" Id="{643c59a2-f668-40c9-a3c5-9486aaf77939}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_FanControl
+VAR_INPUT
+	fSpeed	:	REAL;		//Fan speed setpoint 0..100%
+END_VAR
+VAR
+	fSpeedSetRaw  AT%Q*	: INT 	:=0; 	//Raw value for terminal => send to valve
+END_VAR
+VAR CONSTANT
+		fFactor : REAL :=327.67;	// factor for calculating the terminal integer values (from percentage to int)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fSpeedSetRaw := REAL_TO_INT(fSpeed*fFactor);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_FanControl">
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

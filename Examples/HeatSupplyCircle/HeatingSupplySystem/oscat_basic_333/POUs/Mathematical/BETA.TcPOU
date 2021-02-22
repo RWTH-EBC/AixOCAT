@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BETA" Id="{3db873b9-8f23-4766-b632-b920eeb8e6f5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BETA : REAL
+VAR_INPUT
+	X : REAL;
+	Y : REAL;
+END_VAR
+
+
+(*
+version 1.0	26. oct. 2008
+programmer 	hugo
+tested by		oscat
+
+this function calculates the beta function for real number > 0.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BETA := GAMMA(X) * GAMMA(Y) / GAMMA(x + y);
+
+
+(* revision history
+hm	26. oct. 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BETA">
+      <LineId Id="15" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

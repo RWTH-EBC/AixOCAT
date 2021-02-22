@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SCHEDULER_2" Id="{6795855b-c4cd-4332-b012-d958139d7993}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SCHEDULER_2
+VAR_INPUT
+	E0 : BOOL;
+	E1 : BOOL;
+	E2 : BOOL;
+	E3 : BOOL;
+END_VAR
+VAR_INPUT CONSTANT
+	C0, C1, C2, C3 : UINT;
+	O0, O1, O2, O3 : UINT;
+END_VAR
+VAR_OUTPUT
+	Q0, Q1, Q2, Q3 : BOOL;
+END_VAR
+VAR
+	sx : UINT;
+END_VAR
+
+
+(*
+version 1.0	29. sep 2008
+programmer 	hugo
+tested by		tobias
+
+SCHEDULER_2 is used to call programs or function blocks at specific cycles.
+C0..C3 defines after how many cycles the output becomes active.
+O0..O3 defines a cycle offset at startup.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Q0 := E0 AND (sx MOD C0 - O0 = 0);
+Q1 := E1 AND (sx MOD C1 - O1 = 0);
+Q2 := E2 AND (sx MOD C2 - O2 = 0);
+Q3 := E3 AND (sx MOD C3 - O3 = 0);
+
+(* increment cycle counter every cycle *)
+sx := sx + 1;
+
+
+(* revision history
+hm 29. sep. 2008		rev 1.0
+	original version
+
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SCHEDULER_2">
+      <LineId Id="30" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

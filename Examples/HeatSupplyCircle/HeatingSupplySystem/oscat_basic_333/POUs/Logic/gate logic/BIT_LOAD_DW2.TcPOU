@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BIT_LOAD_DW2" Id="{e1ef6dd3-8ffc-4360-acfa-b032961ab430}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BIT_LOAD_DW2 : DWORD
+VAR_INPUT
+	I : DWORD;
+	D : BOOL;
+	P : INT;
+	N : INT;
+END_VAR
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads N bits of D at pos P in DWORD I
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF D THEN
+	BIT_LOAD_DW2 := ROL(SHR(DWORD#4294967295, 32 - N) OR ROR(i, P), P);
+ELSE
+	BIT_LOAD_DW2 := ROL(SHL(DWORD#4294967295, N) AND ROR(I, P), P);
+END_IF;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="BIT_LOAD_DW2">
+      <LineId Id="17" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

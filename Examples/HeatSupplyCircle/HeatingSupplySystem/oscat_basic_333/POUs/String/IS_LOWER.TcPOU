@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="IS_LOWER" Id="{47b31235-621e-42fb-8efa-1c35c0bc7d44}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION IS_LOWER : BOOL
+VAR_INPUT
+	str : STRING(STRING_LENGTH);
+END_VAR
+VAR
+	l: INT;
+	pt : POINTER TO BYTE;
+	pos: INT;
+END_VAR
+
+(*
+version 1.1	29. mar. 2008
+programmer 		kurt
+tested by		hugo
+
+IS_LOWER testet ob in einem string nur kleinbuchstaben vorkommen.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[PT := ADR(str);
+L := LEN(str);
+FOR pos := 1 TO L DO
+	IF NOT (ISC_LOWER(pt^)) THEN
+		IS_LOWER := FALSE;
+		RETURN;
+	END_IF;
+    	PT := PT + 1;
+END_FOR;
+IS_LOWER := L > 0;
+
+
+(* revision history
+hm	29. feb 2008	rev 1.0
+	original version
+
+hm	29. mar. 2008	rev 1.1
+	changed STRING to STRING(STRING_LENGTH)
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="IS_LOWER">
+      <LineId Id="18" Count="18" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

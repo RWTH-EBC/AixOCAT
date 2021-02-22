@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="YEAR_END" Id="{5c8ec53e-0e0a-4e33-bf23-f27a78d66abb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION YEAR_END : DATE
+VAR_INPUT
+	y : INT;
+END_VAR
+
+
+(*
+version 1.1	24. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+returs the date of december 31st for the given year  
+the function works for dates from 1970 - 2099 
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[YEAR_END := DWORD_TO_DATE(SHR(INT_TO_DWORD(y) * 1461 - 2876712, 2) * 86400);
+
+
+
+(* revision history
+hm	15. jun. 2008	rev 1.0
+	original version
+
+hm	24. jan 2011	rev 1.1
+	improved performance
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="YEAR_END">
+      <LineId Id="15" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

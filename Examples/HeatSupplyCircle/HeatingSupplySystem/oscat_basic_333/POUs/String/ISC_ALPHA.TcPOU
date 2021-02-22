@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ISC_ALPHA" Id="{4c60a846-9a56-4e73-8bbd-b4613f78a7f1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ISC_ALPHA : BOOL
+VAR_INPUT
+	IN : BYTE;
+END_VAR
+
+
+(*
+version 1.1	19. oct. 2008
+programmer 	oscat
+tested by	oscat
+
+ISC_ALPHA checks if a character is a..z or A..Z.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF setup.EXTENDED_ASCII THEN
+	ISC_ALPHA := (in > 64 AND in < 91) OR (in > 191  AND in <> 215 AND in <> 247) OR (in > 96 AND in < 123);
+ELSE
+	ISC_ALPHA := (IN > 64 AND IN < 91) OR (in > 96 AND in < 123);
+END_IF;
+
+(* revision history
+hm	6. mar. 2008	rev 1.0
+	original version
+
+hm	19. oct. 2008	rev 1.1
+	changes setup constants
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="ISC_ALPHA">
+      <LineId Id="14" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

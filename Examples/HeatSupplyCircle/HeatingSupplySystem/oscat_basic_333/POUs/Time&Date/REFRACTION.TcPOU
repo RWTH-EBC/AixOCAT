@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="REFRACTION" Id="{821ee6bb-bf87-4bb8-9b5f-9151806ddfb4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION REFRACTION : REAL
+VAR_INPUT
+	ELEV : REAL;
+END_VAR
+
+
+(*
+version 1.1	7. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+REFRACTION calculates the atmospheric refraction in degrees.
+the input angle goes from 0 at the hirizon to 90 at midday.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[elev := LIMIT(-1.9, elev, 80.0);
+REFRACTION := 0.0174532925199433 / TAN(0.0174532925199433 * (ELEV + 10.3 / (ELEV + 5.11)));
+
+
+(* revision histroy
+hm	14. jul. 2008	rev 1.0
+	original release
+
+hm	7. mar. 2009	rev 1.1
+	using new formula
+
+*)	
+]]></ST>
+    </Implementation>
+    <LineIds Name="REFRACTION">
+      <LineId Id="15" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

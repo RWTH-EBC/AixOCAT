@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TP_1D" Id="{0edf29a4-ef23-4e87-ba9f-80d3c5f2a339}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TP_1D
+VAR_INPUT
+	IN : BOOL;
+	PT1 : TIME;
+	PTD : TIME;
+	RST : BOOL;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+	W : BOOL;
+END_VAR
+VAR
+	tx : TIME;
+	start: TIME;
+	ix: BOOL;
+END_VAR
+
+
+(*
+version 1.0	28. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+TP_1D generates a pulse every time it is calles with in := TRUE.
+the module will reset IN by itself so no clearing of in is necessary.
+in addition the timer can be cleared asynchronously with rst.
+also the rst input is cleared by the module itself.
+the timer can be retriggered as often as necessary. it will count PT from the last trigger.
+after the time PT1 is elapsed, the timer blocks itself for PT2 and only allow new sequences after PT2 has elapsed.
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* read system timer *)
+tx := DWORD_TO_TIME(T_PLC_MS());
+
+IF RST THEN
+	Q := FALSE;
+	rst := FALSE;
+	W := FALSE;
+ELSIF W THEN
+	IF tx - start >= PTD THEN
+		W := FALSE;
+	END_IF;
+ELSIF IN AND NOT ix THEN
+	Q := TRUE;
+	start := tx;
+	in := FALSE;
+ELSIF tx - start >= PT1 THEN
+	Q := FALSE;
+	W := TRUE;
+	start := tx;
+END_IF;
+
+ix := IN;
+
+
+
+(* revision history
+hm	28. jun. 2008
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TP_1D">
+      <LineId Id="33" Count="29" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FC_Voltage0_10Raw_TO_Percentage" Id="{3c477724-9db8-4201-94ab-bbcc427d8baf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_Voltage0_10Raw_TO_Percentage : REAL
+VAR_INPUT
+	i : INT;
+END_VAR
+VAR
+	f : REAL;
+	nIntMax : INT := 32767;
+	nIntMin : INT := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FC_Voltage0_10Raw_TO_Percentage := 100*INT_TO_REAL(i-nIntMin)/(nIntMax-nIntMin);]]></ST>
+    </Implementation>
+    <LineIds Name="FC_Voltage0_10Raw_TO_Percentage">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

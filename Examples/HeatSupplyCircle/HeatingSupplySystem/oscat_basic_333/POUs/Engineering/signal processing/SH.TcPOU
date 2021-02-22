@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SH" Id="{9c27988b-8891-41cb-b8c0-699454cd84dd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SH
+VAR_INPUT
+	in : REAL;
+	CLK : BOOL;
+END_VAR
+VAR_OUTPUT
+	out : REAL;
+	trig : BOOL;
+END_VAR
+VAR
+	edge : BOOL;
+END_VAR
+
+(*
+version 1.1	16 jan 2007
+programmer 	hugo
+tested by		tobias
+
+this sample and hold module samples an input at the rising edge of clk an stores it in out.
+the out stays stable until the next rising clk edge appears.
+a trigger output as active for one cycle when the output was updated.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF clk AND NOT edge THEN
+	out := in;
+	trig := TRUE;
+ELSE;
+	trig := FALSE;
+END_IF;
+edge := clk;
+
+(* revision history
+
+hm 16.1.2007	rev 1.1
+	added trig output
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SH">
+      <LineId Id="23" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

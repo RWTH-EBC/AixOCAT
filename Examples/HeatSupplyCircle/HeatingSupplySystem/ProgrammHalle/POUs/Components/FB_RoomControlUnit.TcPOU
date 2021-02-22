@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_RoomControlUnit" Id="{2aaec910-a1ff-41dd-9ed4-59f14b75c9b9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomControlUnit
+VAR_INPUT
+	fOffsetTemp :	REAL;
+END_VAR
+VAR_OUTPUT
+	fPos		:	REAL;	//-100% - +100%
+	bButton		:	BOOL;	//Button pressed?
+	fTemp		:	REAL;	//Temperature
+END_VAR
+VAR
+	nPosRaw		AT	%I*	:	INT;
+	bButtonRaw	AT	%I*	:	BOOL;
+	nTempRaw	AT	%I*	:	INT;
+END_VAR
+VAR CONSTANT
+	fVal	:	REAL	:=	327.67;	//percentage to int
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//TODO: Check which integer value corresponds to which position
+bButton	:=	bButtonRaw;
+fPos	:=	nPosRaw/fVal;
+fTemp	:=	INT_TO_REAL(nTempRaw)/10 + fOffsetTemp;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RoomControlUnit">
+      <LineId Id="20" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

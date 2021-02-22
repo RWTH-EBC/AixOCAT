@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FC_CoolingCurve" Id="{ea412ee7-da61-48f8-8263-7ba3a4a60c3e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_CoolingCurve : REAL
+VAR_INPUT
+	fTempAmb 	: REAL; 		//Ambient temerature
+	fSlope 		: REAL := -1; 	//Slope of heatcurve
+	fOffset 	: REAL := 18;	//In °C; off set at T_amb=T_room °C
+	ftr			: REAL := 24;	//In °C; the set room temperature
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF fTempAmb < ftr THEN
+	FC_CoolingCurve := foffset;
+ELSE
+	FC_CoolingCurve := fOffset - (fTempAmb - ftR);
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="FC_CoolingCurve">
+      <LineId Id="12" Count="1" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

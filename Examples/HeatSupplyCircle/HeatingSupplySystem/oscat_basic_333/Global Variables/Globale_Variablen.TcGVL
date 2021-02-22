@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <GVL Name="Globale_Variablen" Id="{871e8e57-8d93-4293-8ad0-e4e026e929c5}">
+    <Declaration><![CDATA[{attribute 'Tc2GvlVarNames'}
+VAR_GLOBAL
+	MATH : CONSTANTS_MATH;
+	PHYS : CONSTANTS_PHYS;
+	LANGUAGE : CONSTANTS_LANGUAGE;
+	SETUP : CONSTANTS_SETUP;
+	LOCATION : CONSTANTS_LOCATION;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

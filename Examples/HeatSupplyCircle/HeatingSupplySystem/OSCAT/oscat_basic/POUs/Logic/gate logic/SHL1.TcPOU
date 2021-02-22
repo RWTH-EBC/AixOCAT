@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SHL1" Id="{e1a0fb53-209f-4b51-a5fe-195bd78564ab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SHL1 : DWORD
+VAR_INPUT
+	IN : DWORD;
+	N : INT;
+END_VAR
+VAR CONSTANT
+	temp : DWORD := 16#FFFF_FFFF;
+END_VAR
+
+(*
+version 1.1	27 dec 2007
+programmer 	hugo
+tested by		tobias
+
+SHL1 shifts N bits to the left filling the new bits with 1
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SHL1 := SHR(temp,32-N) OR SHL(IN,N);
+
+
+(* revision history
+hm	14.9.2007		rev 1.0
+	original version
+
+hm	27. dec 2007	rev 1.1
+	changed code for better performance
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SHL1">
+      <LineId Id="17" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CIRCLE_A" Id="{cbb2838e-abbc-411f-8ded-31ba29d248cf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CIRCLE_A : REAL
+VAR_INPUT
+	rx : REAL;
+	ax : REAL;
+END_VAR
+
+
+(*
+version 1.2	22. feb 2008
+programmer 	hugo
+tested by		tobias
+
+circle_A calculates the Area of a circle segement if ax = 360 the whole circle is calculated
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[circle_A := Rx * RX * 8.726646E-3 * Ax;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	4. dec 2007		rev 1.1
+	changed code for better performance
+
+hm	22. feb 2008	rev 1.2
+	improved performance
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CIRCLE_A">
+      <LineId Id="17" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SWAP_BYTE2" Id="{e64f88a6-a791-4515-a80c-8f4b8fdd22f4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SWAP_BYTE2 : DWORD
+VAR_INPUT
+	IN : DWORD;
+END_VAR
+
+
+(*
+version 1.0	4 feb 2008
+programmer 	hugo
+tested by		tobias
+
+This function reverses the byte order in the dword.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Swap_Byte2 := (ROR(in,8) AND 16#FF00FF00) OR (ROL(in,8) AND 16#00FF00FF);
+
+(* revision history
+hm		4. feb 2008	rev 1.0
+	original version
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="SWAP_BYTE2">
+      <LineId Id="14" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

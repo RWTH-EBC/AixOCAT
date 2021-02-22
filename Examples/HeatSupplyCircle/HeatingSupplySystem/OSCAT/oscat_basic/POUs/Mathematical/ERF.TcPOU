@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ERF" Id="{34a8bd4f-8c09-4812-8d13-176a3cdecd24}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ERF : REAL
+VAR_INPUT
+	X : REAL;
+END_VAR
+VAR
+	x2 : REAL;
+	ax2 : REAL;
+END_VAR
+
+
+(*
+version 1.3	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the erf (error) function.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[x2 := X*X;
+ax2 := 0.147 * x2 + 1.0;
+ERF := SQRT(1.0 - EXP(-X2 * ((0.27323954473516 + aX2)/(ax2)))) * SGN(x);
+
+
+
+
+(* revision history
+hm	7. apr. 2008	rev 1.0
+	original version
+
+hm	30. jun. 2008	rev 1.1
+	added type conversions to avoid warnings under codesys 3.0
+
+hm	25. oct. 2008	rev 1.2
+	new code using new algorithm
+
+hm	10. mar. 2009	rev 1.3
+	real constants updated to new systax using dot
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="ERF">
+      <LineId Id="18" Count="19" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

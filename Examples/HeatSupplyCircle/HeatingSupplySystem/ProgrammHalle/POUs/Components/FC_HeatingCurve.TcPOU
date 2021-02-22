@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FC_HeatingCurve" Id="{dc111241-9f5f-4341-81b4-6d748baebe02}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_HeatingCurve : REAL
+VAR_INPUT
+	fTempAmb 	: REAL; 		//Ambient temerature
+	fSlope 		: REAL := -1; 	//Slope of heatcurve
+	fOffset 	: REAL := 35;	//In °C; off set at T_amb=0°C
+END_VAR
+VAR
+END_VAR
+VAR CONSTANT 
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FC_HeatingCurve:= fSlope * fTempAmb + fOffset;]]></ST>
+    </Implementation>
+    <LineIds Name="FC_HeatingCurve">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CABS" Id="{d2f12f10-dfda-4a78-8ee5-066a11d9c4cb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CABS : REAL
+VAR_INPUT
+	X : complex;
+END_VAR
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function the aboslute value of a complex number
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CABS := HYPOT(x.re, x.im);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CABS">
+      <LineId Id="14" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

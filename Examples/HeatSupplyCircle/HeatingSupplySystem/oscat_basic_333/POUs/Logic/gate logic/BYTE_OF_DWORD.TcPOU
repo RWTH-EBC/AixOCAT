@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BYTE_OF_DWORD" Id="{ee0f37ac-6398-4ed7-8438-52386c820bd0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BYTE_OF_DWORD : BYTE
+VAR_INPUT
+	in : DWORD;
+	N : BYTE;
+END_VAR
+
+
+(*
+version 1.2	30. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this function extracts a single byte from the nth position from right (right is lowest byte) 
+the lower byte (starting with Bit0 from in) is selected with N=0.
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BYTE_OF_DWORD := DWORD_TO_BYTE(SHR(in,SHL(n,3)));
+
+(* revision history
+hm	17. jan 2007	rev 1.0
+	original version
+
+hm	2. jan 2008		rev 1.1
+	improved performance
+
+hm	30. oct. 2008	rev 1.2
+	improved performance
+*)
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="BYTE_OF_DWORD">
+      <LineId Id="16" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

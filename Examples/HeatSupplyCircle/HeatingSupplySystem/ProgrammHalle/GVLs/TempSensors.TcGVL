@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GVL Name="TempSensors" Id="{85ca2fa2-2375-48f1-a6ce-727919266df1}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+
+	//HSS
+	TempDIDSupPrim			:	REAL;
+	TempDIDRetPrim			:	REAL;
+	TempDIDSup				:	REAL;
+	TempDIDRet				:	REAL;
+	
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

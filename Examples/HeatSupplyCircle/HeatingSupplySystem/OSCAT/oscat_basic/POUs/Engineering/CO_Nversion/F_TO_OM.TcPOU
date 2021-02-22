@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="F_TO_OM" Id="{74a0b03d-0e8e-4b1d-b2af-727a8f3cda22}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_TO_OM : REAL
+VAR_INPUT
+	F : REAL;
+END_VAR
+
+
+(*
+version 1.1	18. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this function converts frequency to Omega F
+Omega = 2*PI*F
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_TO_OM := math.PI2 * F;
+
+
+(* revision history
+hm	22. jan. 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	unsing math constants
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="F_TO_OM">
+      <LineId Id="14" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

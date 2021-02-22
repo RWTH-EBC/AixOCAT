@@ -1,0 +1,766 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{e7771e4c-fb12-4469-9355-7f7bf7c8cc6d}</ProjectGuid>
+    <Name>oscat_basic_333</Name>
+    <Application>{74148a2b-5758-407d-b8a5-aeabbbfede09}</Application>
+    <TypeSystem>{531b0c97-9fc0-4a39-89ed-0fce89669f73}</TypeSystem>
+    <Implicit_Task_Info>{2e948533-f75f-4b73-8ff2-8d805c608b57}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{9067f013-ceaa-49c8-ad73-c86efed34ede}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{47d841da-7205-4f34-a923-eeae776daacd}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{b54adb0c-ff13-42be-9af4-6e395b63e81c}</LibraryReferences>
+    <FileVersion>1.0.0.0</FileVersion>
+    <CombineIds>false</CombineIds>
+    <Title>OscatBasic</Title>
+    <Released>false</Released>
+    <ProjectVersion>1.0.0</ProjectVersion>
+    <Description>This library is based on the oscat basic 333 library (see http://www.oscat.de)</Description>
+    <Company>Institute for Energy Efficient Buildings and Indoor Climate</Company>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Data types" />
+    <Folder Include="Global Variables" />
+    <Folder Include="POUs" />
+    <Folder Include="POUs\Buffer Management" />
+    <Folder Include="POUs\Engineering" />
+    <Folder Include="POUs\Engineering\automation" />
+    <Folder Include="POUs\Engineering\Control" />
+    <Folder Include="POUs\Engineering\CO_Nversion" />
+    <Folder Include="POUs\Engineering\measurements" />
+    <Folder Include="POUs\Engineering\sensor" />
+    <Folder Include="POUs\Engineering\signal generators" />
+    <Folder Include="POUs\Engineering\signal processing" />
+    <Folder Include="POUs\List Processing" />
+    <Folder Include="POUs\Logic" />
+    <Folder Include="POUs\Logic\FF edge triggered" />
+    <Folder Include="POUs\Logic\FF pulse triggered" />
+    <Folder Include="POUs\Logic\gate logic" />
+    <Folder Include="POUs\Logic\generators" />
+    <Folder Include="POUs\Logic\memory" />
+    <Folder Include="POUs\Logic\Others" />
+    <Folder Include="POUs\Mathematical" />
+    <Folder Include="POUs\Mathematical\Array" />
+    <Folder Include="POUs\Mathematical\Complex" />
+    <Folder Include="POUs\Mathematical\Double Precision" />
+    <Folder Include="POUs\Mathematical\functions" />
+    <Folder Include="POUs\Mathematical\Geometry" />
+    <Folder Include="POUs\Mathematical\Vektormathematik" />
+    <Folder Include="POUs\Other" />
+    <Folder Include="POUs\String" />
+    <Folder Include="POUs\Time&amp;Date" />
+    <Folder Include="Version" />
+    <Folder Include="Visualizations" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data types\CALENDAR.TcDUT" />
+    <Compile Include="Data types\COMPLEX.TcDUT" />
+    <Compile Include="Data types\CONSTANTS_LANGUAGE.TcDUT" />
+    <Compile Include="Data types\CONSTANTS_LOCATION.TcDUT" />
+    <Compile Include="Data types\CONSTANTS_MATH.TcDUT" />
+    <Compile Include="Data types\CONSTANTS_PHYS.TcDUT" />
+    <Compile Include="Data types\CONSTANTS_SETUP.TcDUT" />
+    <Compile Include="Data types\ESR_DATA.TcDUT" />
+    <Compile Include="Data types\FRACTION.TcDUT" />
+    <Compile Include="Data types\HOLIDAY_DATA.TcDUT" />
+    <Compile Include="Data types\REAL2.TcDUT" />
+    <Compile Include="Data types\SDT.TcDUT" />
+    <Compile Include="Data types\TIMER_EVENT.TcDUT" />
+    <Compile Include="Data types\VECTOR_3.TcDUT" />
+    <Compile Include="Global Variables\Constants.TcGVL" />
+    <Compile Include="Global Variables\Globale_Variablen.TcGVL" />
+    <Compile Include="Global Variables\Setup_Data.TcGVL" />
+    <Compile Include="POUs\Buffer Management\BUFFER_COMP.TcPOU" />
+    <Compile Include="POUs\Buffer Management\BUFFER_SEARCH.TcPOU" />
+    <Compile Include="POUs\Buffer Management\BUFFER_TO_STRING.TcPOU" />
+    <Compile Include="POUs\Buffer Management\_BUFFER_CLEAR.TcPOU" />
+    <Compile Include="POUs\Buffer Management\_BUFFER_INIT.TcPOU" />
+    <Compile Include="POUs\Buffer Management\_BUFFER_INSERT.TcPOU" />
+    <Compile Include="POUs\Buffer Management\_BUFFER_UPPERCASE.TcPOU" />
+    <Compile Include="POUs\Buffer Management\_STRING_TO_BUFFER.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\DRIVER_1.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\DRIVER_4.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\DRIVER_4C.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\FLOW_CONTROL.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\FT_Profile.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\INC_DEC.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\INTERLOCK.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\INTERLOCK_4.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\MANUAL.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\MANUAL_1.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\MANUAL_2.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\MANUAL_4.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\PARSET.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\PARSET2.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\SIGNAL.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\SIGNAL_4.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\SRAMP.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\TUNE.TcPOU" />
+    <Compile Include="POUs\Engineering\automation\TUNE2.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\BAND_B.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CONTROL_SET1.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CONTROL_SET2.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CTRL_IN.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CTRL_OUT.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CTRL_PI.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CTRL_PID.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\CTRL_PWM.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\DEAD_BAND.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\DEAD_BAND_A.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\DEAD_ZONE.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\DEAD_ZONE2.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FB_Integrate.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Engineering\Control\FB_PID.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Engineering\Control\FT_DERIV.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_IMP.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_INT.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_INT2.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PD.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PDT1.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PI.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PID.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PIDW.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PIDWL.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PIW.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PIWL.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PT1.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_PT2.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_TN16.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_TN64.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\FT_TN8.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\HYST.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\HYST_1.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\HYST_2.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\HYST_3.TcPOU" />
+    <Compile Include="POUs\Engineering\Control\INTEGRATE.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\ASTRO.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\BFT_TO_MS.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\C_TO_F.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\C_TO_K.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\DEG_TO_DIR.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\DIR_TO_DEG.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\ENERGY.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\F_TO_C.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\F_TO_OM.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\F_TO_PT.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\GEO_TO_DEG.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\KMH_TO_MS.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\K_TO_C.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\LENGTH.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\MS_TO_BFT.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\MS_TO_KMH.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\OM_TO_F.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\PRESSURE.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\PT_TO_F.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\SPEED.TcPOU" />
+    <Compile Include="POUs\Engineering\CO_Nversion\TEMPERATURE.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\ALARM_2.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\BAR_GRAPH.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\CALIBRATE.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\CYCLE_TIME.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\DT_SIMU.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\FLOW_METER.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\METER.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\METER_STAT.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\M_D.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\M_T.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\M_TX.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\ONTIME.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\TC_MS.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\TC_S.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\TC_US.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\T_PLC_MS.TcPOU" />
+    <Compile Include="POUs\Engineering\measurements\T_PLC_US.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\MULTI_IN.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\RES_NI.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\RES_NTC.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\RES_PT.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\RES_SI.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\SENSOR_INT.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\TEMP_NI.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\TEMP_NTC.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\TEMP_PT.TcPOU" />
+    <Compile Include="POUs\Engineering\sensor\TEMP_SI.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_PULSE.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_PW2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_RDM.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_RDT.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_RMP.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_SIN.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\GEN_SQR.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\PWM_DC.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\PWM_PW.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\RMP_B.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\RMP_SOFT.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\RMP_W.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\_RMP_B.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\_RMP_NEXT.TcPOU" />
+    <Compile Include="POUs\Engineering\signal generators\_RMP_W.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\AIN.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\AIN1.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\AOUT.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\AOUT1.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\BYTE_TO_RANGE.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\DELAY.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\DELAY_4.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FADE.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FILTER_DW.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FILTER_I.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FILTER_MAV_DW.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FILTER_MAV_W.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FILTER_W.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\FILTER_WAV.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\MIX.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\MUX_R2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\MUX_R4.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\OFFSET.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\OFFSET2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\OVERRIDE.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\RANGE_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\RANGE_TO_WORD.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_B.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_B2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_B4.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_B8.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_D.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_R.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_X2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_X4.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SCALE_X8.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SEL2_OF_3.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SEL2_OF_3B.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SH.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SH_1.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SH_2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\SH_T.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\STAIR.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\STAIR2.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\TREND.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\TREND_DW.TcPOU" />
+    <Compile Include="POUs\Engineering\signal processing\WORD_TO_RANGE.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_ADD.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_CLEAN.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_GET.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_INSERT.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_LEN.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_NEXT.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_RETRIEVE.TcPOU" />
+    <Compile Include="POUs\List Processing\LIST_RETRIEVE_LAST.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\COUNT_BR.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\COUNT_DR.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\FF_D2E.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\FF_D4E.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\FF_DRE.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\FF_JKE.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\FF_RSE.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\SELECT_8.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\SHR_4E.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\SHR_4UDE.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\SHR_8PLE.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\SHR_8UDE.TcPOU" />
+    <Compile Include="POUs\Logic\FF edge triggered\TOGGLE.TcPOU" />
+    <Compile Include="POUs\Logic\FF pulse triggered\LTCH.TcPOU" />
+    <Compile Include="POUs\Logic\FF pulse triggered\LTCH_4.TcPOU" />
+    <Compile Include="POUs\Logic\FF pulse triggered\STORE_8.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BCDC_TO_INT.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_COUNT.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_LOAD_B.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_LOAD_B2.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_LOAD_DW.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_LOAD_DW2.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_LOAD_W.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_LOAD_W2.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_OF_DWORD.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_TOGGLE_B.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_TOGGLE_DW.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BIT_TOGGLE_W.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BYTE_OF_BIT.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BYTE_OF_DWORD.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BYTE_TO_BITS.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\BYTE_TO_GRAY.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\CHECK_PARITY.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\CHK_REAL.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\DEC_2.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\DEC_4.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\DEC_8.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\DWORD_OF_BYTE.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\DWORD_OF_WORD.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\DW_TO_REAL.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\GRAY_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\INT_TO_BCDC.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\MUX_2.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\MUX_4.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\PARITY.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\REAL_TO_DW.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\REFLECT.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\REVERSE.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\SHL1.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\SHR1.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\SWAP_BYTE.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\SWAP_BYTE2.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\WORD_OF_BYTE.TcPOU" />
+    <Compile Include="POUs\Logic\gate logic\WORD_OF_DWORD.TcPOU" />
+    <Compile Include="POUs\Logic\generators\A_TRIG.TcPOU" />
+    <Compile Include="POUs\Logic\generators\B_TRIG.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CLICK_CNT.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CLICK_DEC.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CLK_DIV.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CLK_N.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CLK_PRG.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CLK_PULSE.TcPOU" />
+    <Compile Include="POUs\Logic\generators\CYCLE_4.TcPOU" />
+    <Compile Include="POUs\Logic\generators\D_TRIG.TcPOU" />
+    <Compile Include="POUs\Logic\generators\GEN_BIT.TcPOU" />
+    <Compile Include="POUs\Logic\generators\GEN_SQ.TcPOU" />
+    <Compile Include="POUs\Logic\generators\SCHEDULER.TcPOU" />
+    <Compile Include="POUs\Logic\generators\SCHEDULER_2.TcPOU" />
+    <Compile Include="POUs\Logic\generators\SEQUENCE_4.TcPOU" />
+    <Compile Include="POUs\Logic\generators\SEQUENCE_64.TcPOU" />
+    <Compile Include="POUs\Logic\generators\SEQUENCE_8.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TMAX.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TMIN.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TOF_1.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TONOF.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TP_1.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TP_1D.TcPOU" />
+    <Compile Include="POUs\Logic\generators\TP_X.TcPOU" />
+    <Compile Include="POUs\Logic\memory\FIFO_16.TcPOU" />
+    <Compile Include="POUs\Logic\memory\FIFO_32.TcPOU" />
+    <Compile Include="POUs\Logic\memory\STACK_16.TcPOU" />
+    <Compile Include="POUs\Logic\memory\STACK_32.TcPOU" />
+    <Compile Include="POUs\Logic\Others\CRC_GEN.TcPOU" />
+    <Compile Include="POUs\Logic\Others\MATRIX.TcPOU" />
+    <Compile Include="POUs\Logic\Others\PIN_CODE.TcPOU" />
+    <Compile Include="POUs\Mathematical\ACOSH.TcPOU" />
+    <Compile Include="POUs\Mathematical\ACOTH.TcPOU" />
+    <Compile Include="POUs\Mathematical\AGDF.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_AVG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_GAV.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_HAV.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_MAX.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_MIN.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_SDV.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_SPR.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_SUM.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_TREND.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\ARRAY_VAR.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\IS_SORTED.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_ABS.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_ADD.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_INIT.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_MEDIAN.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_MUL.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_SHUFFLE.TcPOU" />
+    <Compile Include="POUs\Mathematical\Array\_ARRAY_SORT.TcPOU" />
+    <Compile Include="POUs\Mathematical\ASINH.TcPOU" />
+    <Compile Include="POUs\Mathematical\ATAN2.TcPOU" />
+    <Compile Include="POUs\Mathematical\ATANH.TcPOU" />
+    <Compile Include="POUs\Mathematical\BETA.TcPOU" />
+    <Compile Include="POUs\Mathematical\BINOM.TcPOU" />
+    <Compile Include="POUs\Mathematical\CAUCHY.TcPOU" />
+    <Compile Include="POUs\Mathematical\CAUCHYCD.TcPOU" />
+    <Compile Include="POUs\Mathematical\CEIL.TcPOU" />
+    <Compile Include="POUs\Mathematical\CEIL2.TcPOU" />
+    <Compile Include="POUs\Mathematical\CMP.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CABS.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CACOS.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CACOSH.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CADD.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CARG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CASIN.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CASINH.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CATAN.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CATANH.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CCON.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CCOS.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CCOSH.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CDIV.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CEXP.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CINV.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CLOG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CMUL.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CPOL.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CPOW.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CSET.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CSIN.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CSINH.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CSQRT.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CSUB.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CTAN.TcPOU" />
+    <Compile Include="POUs\Mathematical\Complex\CTANH.TcPOU" />
+    <Compile Include="POUs\Mathematical\COSH.TcPOU" />
+    <Compile Include="POUs\Mathematical\COTH.TcPOU" />
+    <Compile Include="POUs\Mathematical\DEC1.TcPOU" />
+    <Compile Include="POUs\Mathematical\DEG.TcPOU" />
+    <Compile Include="POUs\Mathematical\DIFFER.TcPOU" />
+    <Compile Include="POUs\Mathematical\Double Precision\R2_ABS.TcPOU" />
+    <Compile Include="POUs\Mathematical\Double Precision\R2_ADD.TcPOU" />
+    <Compile Include="POUs\Mathematical\Double Precision\R2_ADD2.TcPOU" />
+    <Compile Include="POUs\Mathematical\Double Precision\R2_MUL.TcPOU" />
+    <Compile Include="POUs\Mathematical\Double Precision\R2_SET.TcPOU" />
+    <Compile Include="POUs\Mathematical\D_TRUNC.TcPOU" />
+    <Compile Include="POUs\Mathematical\ERF.TcPOU" />
+    <Compile Include="POUs\Mathematical\ERFC.TcPOU" />
+    <Compile Include="POUs\Mathematical\EVEN.TcPOU" />
+    <Compile Include="POUs\Mathematical\EXP10.TcPOU" />
+    <Compile Include="POUs\Mathematical\EXPN.TcPOU" />
+    <Compile Include="POUs\Mathematical\FACT.TcPOU" />
+    <Compile Include="POUs\Mathematical\FIB.TcPOU" />
+    <Compile Include="POUs\Mathematical\FLOOR.TcPOU" />
+    <Compile Include="POUs\Mathematical\FLOOR2.TcPOU" />
+    <Compile Include="POUs\Mathematical\FRACT.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\FRMP_B.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\FT_AVG.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\FT_MIN_MAX.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\FT_RMP.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\F_LIN.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\F_LIN2.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\F_POLY.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\F_POWER.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\F_QUAD.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\LINEAR_INT.TcPOU" />
+    <Compile Include="POUs\Mathematical\functions\POLYNOM_INT.TcPOU" />
+    <Compile Include="POUs\Mathematical\GAMMA.TcPOU" />
+    <Compile Include="POUs\Mathematical\GAUSS.TcPOU" />
+    <Compile Include="POUs\Mathematical\GAUSSCD.TcPOU" />
+    <Compile Include="POUs\Mathematical\GCD.TcPOU" />
+    <Compile Include="POUs\Mathematical\GDF.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\CIRCLE_A.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\CIRCLE_C.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\CIRCLE_SEG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\CONE_V.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\ELLIPSE_A.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\ELLIPSE_C.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\SPHERE_V.TcPOU" />
+    <Compile Include="POUs\Mathematical\Geometry\TRIANGLE_A.TcPOU" />
+    <Compile Include="POUs\Mathematical\GOLD.TcPOU" />
+    <Compile Include="POUs\Mathematical\HYPOT.TcPOU" />
+    <Compile Include="POUs\Mathematical\INC.TcPOU" />
+    <Compile Include="POUs\Mathematical\INC1.TcPOU" />
+    <Compile Include="POUs\Mathematical\INC2.TcPOU" />
+    <Compile Include="POUs\Mathematical\INV.TcPOU" />
+    <Compile Include="POUs\Mathematical\LAMBERT_W.TcPOU" />
+    <Compile Include="POUs\Mathematical\LANGEVIN.TcPOU" />
+    <Compile Include="POUs\Mathematical\MAX3.TcPOU" />
+    <Compile Include="POUs\Mathematical\MID3.TcPOU" />
+    <Compile Include="POUs\Mathematical\MIN3.TcPOU" />
+    <Compile Include="POUs\Mathematical\MODR.TcPOU" />
+    <Compile Include="POUs\Mathematical\MUL_ADD.TcPOU" />
+    <Compile Include="POUs\Mathematical\NEGX.TcPOU" />
+    <Compile Include="POUs\Mathematical\RAD.TcPOU" />
+    <Compile Include="POUs\Mathematical\RDM.TcPOU" />
+    <Compile Include="POUs\Mathematical\RDM2.TcPOU" />
+    <Compile Include="POUs\Mathematical\RDMDW.TcPOU" />
+    <Compile Include="POUs\Mathematical\REAL_TO_FRAC.TcPOU" />
+    <Compile Include="POUs\Mathematical\RND.TcPOU" />
+    <Compile Include="POUs\Mathematical\ROUND.TcPOU" />
+    <Compile Include="POUs\Mathematical\SGN.TcPOU" />
+    <Compile Include="POUs\Mathematical\SIGMOID.TcPOU" />
+    <Compile Include="POUs\Mathematical\SIGN_I.TcPOU" />
+    <Compile Include="POUs\Mathematical\SIGN_R.TcPOU" />
+    <Compile Include="POUs\Mathematical\SINC.TcPOU" />
+    <Compile Include="POUs\Mathematical\SINH.TcPOU" />
+    <Compile Include="POUs\Mathematical\SQRTN.TcPOU" />
+    <Compile Include="POUs\Mathematical\TANC.TcPOU" />
+    <Compile Include="POUs\Mathematical\TANH.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_ABS.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_ADD.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_ANG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_DPRO.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_NORM.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_NUL.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_PAR.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_REV.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_SMUL.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_SUB.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_XANG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_XPRO.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_YANG.TcPOU" />
+    <Compile Include="POUs\Mathematical\Vektormathematik\V3_ZANG.TcPOU" />
+    <Compile Include="POUs\Mathematical\WINDOW.TcPOU" />
+    <Compile Include="POUs\Mathematical\WINDOW2.TcPOU" />
+    <Compile Include="POUs\Other\ESR_COLLECT.TcPOU" />
+    <Compile Include="POUs\Other\ESR_MON_B8.TcPOU" />
+    <Compile Include="POUs\Other\ESR_MON_R4.TcPOU" />
+    <Compile Include="POUs\Other\ESR_MON_X8.TcPOU" />
+    <Compile Include="POUs\Other\OSCAT_VERSION.TcPOU" />
+    <Compile Include="POUs\Other\STATUS_TO_ESR.TcPOU" />
+    <Compile Include="POUs\String\BIN_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\String\BIN_TO_DWORD.TcPOU" />
+    <Compile Include="POUs\String\BYTE_TO_STRB.TcPOU" />
+    <Compile Include="POUs\String\BYTE_TO_STRH.TcPOU" />
+    <Compile Include="POUs\String\CAPITALIZE.TcPOU" />
+    <Compile Include="POUs\String\CHARCODE.TcPOU" />
+    <Compile Include="POUs\String\CHARNAME.TcPOU" />
+    <Compile Include="POUs\String\CHR_TO_STRING.TcPOU" />
+    <Compile Include="POUs\String\CLEAN.TcPOU" />
+    <Compile Include="POUs\String\CODE.TcPOU" />
+    <Compile Include="POUs\String\COUNT_CHAR.TcPOU" />
+    <Compile Include="POUs\String\COUNT_SUBSTRING.TcPOU" />
+    <Compile Include="POUs\String\DEC_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\String\DEC_TO_DWORD.TcPOU" />
+    <Compile Include="POUs\String\DEC_TO_INT.TcPOU" />
+    <Compile Include="POUs\String\DEL_CHARS.TcPOU" />
+    <Compile Include="POUs\String\DT_TO_STRF.TcPOU" />
+    <Compile Include="POUs\String\DWORD_TO_STRB.TcPOU" />
+    <Compile Include="POUs\String\DWORD_TO_STRF.TcPOU" />
+    <Compile Include="POUs\String\DWORD_TO_STRH.TcPOU" />
+    <Compile Include="POUs\String\EXEC.TcPOU" />
+    <Compile Include="POUs\String\FILL.TcPOU" />
+    <Compile Include="POUs\String\FINDB.TcPOU" />
+    <Compile Include="POUs\String\FINDB_NONUM.TcPOU" />
+    <Compile Include="POUs\String\FINDB_NUM.TcPOU" />
+    <Compile Include="POUs\String\FINDP.TcPOU" />
+    <Compile Include="POUs\String\FIND_CHAR.TcPOU" />
+    <Compile Include="POUs\String\FIND_CTRL.TcPOU" />
+    <Compile Include="POUs\String\FIND_NONUM.TcPOU" />
+    <Compile Include="POUs\String\FIND_NUM.TcPOU" />
+    <Compile Include="POUs\String\FIX.TcPOU" />
+    <Compile Include="POUs\String\FLOAT_TO_REAL.TcPOU" />
+    <Compile Include="POUs\String\FSTRING_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\String\FSTRING_TO_DT.TcPOU" />
+    <Compile Include="POUs\String\FSTRING_TO_DWORD.TcPOU" />
+    <Compile Include="POUs\String\FSTRING_TO_MONTH.TcPOU" />
+    <Compile Include="POUs\String\FSTRING_TO_WEEK.TcPOU" />
+    <Compile Include="POUs\String\FSTRING_TO_WEEKDAY.TcPOU" />
+    <Compile Include="POUs\String\HEX_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\String\HEX_TO_DWORD.TcPOU" />
+    <Compile Include="POUs\String\ISC_ALPHA.TcPOU" />
+    <Compile Include="POUs\String\ISC_CTRL.TcPOU" />
+    <Compile Include="POUs\String\ISC_HEX.TcPOU" />
+    <Compile Include="POUs\String\ISC_LOWER.TcPOU" />
+    <Compile Include="POUs\String\ISC_NUM.TcPOU" />
+    <Compile Include="POUs\String\ISC_UPPER.TcPOU" />
+    <Compile Include="POUs\String\IS_ALNUM.TcPOU" />
+    <Compile Include="POUs\String\IS_ALPHA.TcPOU" />
+    <Compile Include="POUs\String\IS_CC.TcPOU" />
+    <Compile Include="POUs\String\IS_CTRL.TcPOU" />
+    <Compile Include="POUs\String\IS_HEX.TcPOU" />
+    <Compile Include="POUs\String\IS_LOWER.TcPOU" />
+    <Compile Include="POUs\String\IS_NCC.TcPOU" />
+    <Compile Include="POUs\String\IS_NUM.TcPOU" />
+    <Compile Include="POUs\String\IS_UPPER.TcPOU" />
+    <Compile Include="POUs\String\LOWERCASE.TcPOU" />
+    <Compile Include="POUs\String\MESSAGE_4R.TcPOU" />
+    <Compile Include="POUs\String\MESSAGE_8.TcPOU" />
+    <Compile Include="POUs\String\MIRROR.TcPOU" />
+    <Compile Include="POUs\String\MONTH_TO_STRING.TcPOU" />
+    <Compile Include="POUs\String\OCT_TO_BYTE.TcPOU" />
+    <Compile Include="POUs\String\OCT_TO_DWORD.TcPOU" />
+    <Compile Include="POUs\String\REAL_TO_STRF.TcPOU" />
+    <Compile Include="POUs\String\REPLACE_ALL.TcPOU" />
+    <Compile Include="POUs\String\REPLACE_CHARS.TcPOU" />
+    <Compile Include="POUs\String\REPLACE_UML.TcPOU" />
+    <Compile Include="POUs\String\TICKER.TcPOU" />
+    <Compile Include="POUs\String\TO_LOWER.TcPOU" />
+    <Compile Include="POUs\String\TO_UML.TcPOU" />
+    <Compile Include="POUs\String\TO_UPPER.TcPOU" />
+    <Compile Include="POUs\String\TRIM.TcPOU" />
+    <Compile Include="POUs\String\TRIM1.TcPOU" />
+    <Compile Include="POUs\String\TRIME.TcPOU" />
+    <Compile Include="POUs\String\UPPERCASE.TcPOU" />
+    <Compile Include="POUs\String\WEEKDAY_TO_STRING.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\CALENDAR_CALC.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DATE_ADD.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAYS_DELTA.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAYS_IN_MONTH.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAYS_IN_YEAR.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAY_OF_DATE.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAY_OF_MONTH.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAY_OF_WEEK.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAY_OF_YEAR.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DAY_TO_TIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DCF77.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DST.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DT2_TO_SDT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\DT_TO_SDT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\EASTER.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\EVENTS.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\HOLIDAY.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\HOUR.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\HOUR_OF_DT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\HOUR_TO_TIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\HOUR_TO_TOD.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\JD2000.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\LEAP_DAY.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\LEAP_OF_DATE.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\LEAP_YEAR.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\LTIME_TO_UTC.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MINUTE.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MINUTE_OF_DT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MINUTE_TO_TIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MONTH_BEGIN.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MONTH_END.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MONTH_OF_DATE.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\MULTIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\PERIOD.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\PERIOD2.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\REFRACTION.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\RTC_2.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\RTC_MS.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SDT_TO_DATE.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SDT_TO_DT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SDT_TO_TOD.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SECOND.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SECOND_OF_DT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SECOND_TO_TIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SET_DATE.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SET_DT.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SET_TOD.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SUN_MIDDAY.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SUN_POS.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\SUN_TIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\TIMECHECK.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\UTC_TO_LTIME.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\WORK_WEEK.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\YEAR_BEGIN.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\YEAR_END.TcPOU" />
+    <Compile Include="POUs\Time&amp;Date\YEAR_OF_DATE.TcPOU" />
+    <Compile Include="Version\Global_Version.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="oscat_basic_333.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
+        <o>
+          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
+        <o>
+          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
+          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>Rules</v>
+            <o>
+              <v n="Name">"Rules"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+          </d>
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
+        <o>
+          <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String">
+            <v>ActiveVisuExtensionsLength</v>
+            <v>0</v>
+            <v>ActiveVisuProfile</v>
+            <v>"IR0whWr8bwfyBwAAHf+pawAAAABVAgAADnffSgAAAAABAAAAAAAAAAEaUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwACTHsAZgA5ADUAYgBiADQAMgA2AC0ANQA1ADIANAAtADQAYgA0ADUALQA5ADQAMAAwAC0AZgBiADAAZgAyAGUANwA3AGUANQAxAGIAfQADCE4AYQBtAGUABDJUAHcAaQBuAEMAQQBUACAAMwAuADEAIABCAHUAaQBsAGQAIAA0ADAAMgAyAC4AMQAwAAUWUAByAG8AZgBpAGwAZQBEAGEAdABhAAZMewAxADYAZQA1ADUAYgA2ADAALQA3ADAANAAzAC0ANABhADYAMwAtAGIANgA1AGIALQA2ADEANAA3ADEAMwA4ADcAOABkADQAMgB9AAcSTABpAGIAcgBhAHIAaQBlAHMACEx7ADMAYgBmAGQANQA0ADUAOQAtAGIAMAA3AGYALQA0AGQANgBlAC0AYQBlADEAYQAtAGEAOAAzADMANQA2AGEANQA1ADEANAAyAH0ACUx7ADkAYwA5ADUAOAA5ADYAOAAtADIAYwA4ADUALQA0ADEAYgBiAC0AOAA4ADcAMQAtADgAOQA1AGYAZgAxAGYAZQBkAGUAMQBhAH0ACg5WAGUAcgBzAGkAbwBuAAsGaQBuAHQADApVAHMAYQBnAGUADQpUAGkAdABsAGUADhpWAGkAcwB1AEUAbABlAG0ATQBlAHQAZQByAA8OQwBvAG0AcABhAG4AeQAQDFMAeQBzAHQAZQBtABESVgBpAHMAdQBFAGwAZQBtAHMAEjBWAGkAcwB1AEUAbABlAG0AcwBTAHAAZQBjAGkAYQBsAEMAbwBuAHQAcgBvAGwAcwATKFYAaQBzAHUARQBsAGUAbQBzAFcAaQBuAEMAbwBuAHQAcgBvAGwAcwAUJFYAaQBzAHUARQBsAGUAbQBUAGUAeAB0AEUAZABpAHQAbwByABUiVgBpAHMAdQBOAGEAdABpAHYAZQBDAG8AbgB0AHIAbwBsABYUdgBpAHMAdQBpAG4AcAB1AHQAcwAXDHMAeQBzAHQAZQBtABgYVgBpAHMAdQBFAGwAZQBtAEIAYQBzAGUAGSZEAGUAdgBQAGwAYQBjAGUAaABvAGwAZABlAHIAcwBVAHMAZQBkABoIYgBvAG8AbAAbIlAAbAB1AGcAaQBuAEMAbwBuAHMAdAByAGEAaQBuAHQAcwAcTHsANAAzAGQANQAyAGIAYwBlAC0AOQA0ADIAYwAtADQANABkADcALQA5AGUAOQA0AC0AMQBiAGYAZABmADMAMQAwAGUANgAzAGMAfQAdHEEAdABMAGUAYQBzAHQAVgBlAHIAcwBpAG8AbgAeFFAAbAB1AGcAaQBuAEcAdQBpAGQAHxZTAHkAcwB0AGUAbQAuAEcAdQBpAGQAIEhhAGYAYwBkADUANAA0ADYALQA0ADkAMQA0AC0ANABmAGUANwAtAGIAYgA3ADgALQA5AGIAZgBmAGUAYgA3ADAAZgBkADEANwAhFFUAcABkAGEAdABlAEkAbgBmAG8AIkx7AGIAMAAzADMANgA2AGEAOAAtAGIANQBjADAALQA0AGIAOQBhAC0AYQAwADAAZQAtAGUAYgA4ADYAMAAxADEAMQAwADQAYwAzAH0AIw5VAHAAZABhAHQAZQBzACRMewAxADgANgA4AGYAZgBjADkALQBlADQAZgBjAC0ANAA1ADMAMgAtAGEAYwAwADYALQAxAGUAMwA5AGIAYgA1ADUANwBiADYAOQB9ACVMewBhADUAYgBkADQAOABjADMALQAwAGQAMQA3AC0ANAAxAGIANQAtAGIAMQA2ADQALQA1AGYAYwA2AGEAZAAyAGIAOQA2AGIANwB9ACYWTwBiAGoAZQBjAHQAcwBUAHkAcABlACdUVQBwAGQAYQB0AGUATABhAG4AZwB1AGEAZwBlAE0AbwBkAGUAbABGAG8AcgBDAG8AbgB2AGUAcgB0AGkAYgBsAGUATABpAGIAcgBhAHIAaQBlAHMAKBBMAGkAYgBUAGkAdABsAGUAKRRMAGkAYgBDAG8AbQBwAGEAbgB5ACoeVQBwAGQAYQB0AGUAUAByAG8AdgBpAGQAZQByAHMAKzhTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEgAYQBzAGgAdABhAGIAbABlACwSdgBpAHMAdQBlAGwAZQBtAHMALUg2AGMAYgAxAGMAZABlADEALQBkADUAZABjAC0ANABhADMAYgAtADkAMAA1ADQALQAyADEAZgBhADcANQA2AGEAMwBmAGEANAAuKEkAbgB0AGUAcgBmAGEAYwBlAFYAZQByAHMAaQBvAG4ASQBuAGYAbwAvTHsAYwA2ADEAMQBlADQAMAAwAC0ANwBmAGIAOQAtADQAYwAzADUALQBiADkAYQBjAC0ANABlADMAMQA0AGIANQA5ADkANgA0ADMAfQAwGE0AYQBqAG8AcgBWAGUAcgBzAGkAbwBuADEYTQBpAG4AbwByAFYAZQByAHMAaQBvAG4AMgxMAGUAZwBhAGMAeQAzMEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwAVgBlAHIAcwBpAG8AbgBJAG4AZgBvADQwTABvAGEAZABMAGkAYgByAGEAcgBpAGUAcwBJAG4AdABvAFAAcgBvAGoAZQBjAHQANRpDAG8AbQBwAGEAdABpAGIAaQBsAGkAdAB5ANAAAhoD0AMBLQTQBQYaB9AHCBoBRQcJCNAACRoERQoLBAMAAAAFAAAACgAAAAAAAADQDAutAgAAANANAS0O0A8BLRDQAAkaBEUKCwQDAAAABQAAAAoAAAAoAAAA0AwLrQEAAADQDQEtEdAPAS0Q0AAJGgRFCgsEAwAAAAUAAAAKAAAAAAAAANAMC60CAAAA0A0BLRLQDwEtENAACRoERQoLBAMAAAAFAAAACgAAACgAAADQDAutAgAAANANAS0T0A8BLRDQAAkaBEUKCwQDAAAABQAAAAoAAAAKAAAA0AwLrQIAAADQDQEtFNAPAS0Q0AAJGgRFCgsEAwAAAAUAAAAKAAAAKAAAANAMC60CAAAA0A0BLRXQDwEtENAACRoERQoLBAMAAAAFAAAACgAAAAAAAADQDAutAgAAANANAS0W0A8BLRfQAAkaBEUKCwQDAAAABQAAAAoAAAAoAAAA0AwLrQQAAADQDQEtGNAPAS0Q0BkarQFFGxwB0AAcGgJFHQsEAwAAAAUAAAAKAAAAAAAAANAeHy0g0CEiGgJFIyQC0AAlGgVFCgsEAwAAAAMAAAAAAAAACgAAANAmC60AAAAA0AMBLSfQKAEtEdApAS0Q0AAlGgVFCgsEAwAAAAMAAAAAAAAACgAAANAmC60BAAAA0AMBLSfQKAEtEdApAS0QmiorAUUAAQLQAAEtLNAAAS0X0AAfLS3QLi8aA9AwC60BAAAA0DELrRMAAADQMhqtANAzLxoD0DALrQIAAADQMQutAwAAANAyGq0A0DQarQDQNRqtAA=="</v>
+          </d>
+        </o>
+        <v>{A3BBA713-63D7-4de6-BEC2-E3BAAD8789F8}</v>
+        <o>
+          <v n="Name">"{A3BBA713-63D7-4de6-BEC2-E3BAAD8789F8}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{C70B7845-2722-4a9b-A0EA-88C877A4B36F}</v>
+        <o>
+          <v n="Name">"{C70B7845-2722-4a9b-A0EA-88C877A4B36F}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String">
+            <v>MaxAuthenticationTrials</v>
+            <v>3</v>
+            <v>UserList</v>
+            <o t="UserList">
+              <a n="Users" cet="User">
+                <o>
+                  <v n="Id">{ecab9160-c92b-4316-997c-1ff7f73d8a46}</v>
+                  <v n="Name">"Owner"</v>
+                  <v n="FullName">""</v>
+                  <v n="Description">""</v>
+                  <v n="Active">true</v>
+                </o>
+              </a>
+            </o>
+            <v>MaxTimeOfInactivity</v>
+            <v>10</v>
+            <v>EnableMaxTimeOfInactivity</v>
+            <v>true</v>
+            <v>EnableNewHashFormat</v>
+            <v>false</v>
+            <v>GroupList</v>
+            <o t="GroupList">
+              <a n="Groups" cet="Group">
+                <o>
+                  <v n="Id">{085ca0ce-6b46-4392-b215-351c53b76162}</v>
+                  <v n="Name">"Owner"</v>
+                  <v n="Description">""</v>
+                  <v n="IsEveryoneGroup">false</v>
+                  <v n="IsOwnerGroup">true</v>
+                  <l n="UserMembers" t="ArrayList" cet="Guid">
+                    <v>ecab9160-c92b-4316-997c-1ff7f73d8a46</v>
+                  </l>
+                  <l n="GroupMembers" t="ArrayList" />
+                </o>
+                <o>
+                  <v n="Id">{1ab18826-7f83-4176-bc6b-c4643df1d8aa}</v>
+                  <v n="Name">"Everyone"</v>
+                  <v n="Description">""</v>
+                  <v n="IsEveryoneGroup">true</v>
+                  <v n="IsOwnerGroup">false</v>
+                  <l n="UserMembers" t="ArrayList" cet="Guid">
+                    <v>ecab9160-c92b-4316-997c-1ff7f73d8a46</v>
+                  </l>
+                  <l n="GroupMembers" t="ArrayList" />
+                </o>
+              </a>
+            </o>
+            <v>UserAuthentication</v>
+            <o t="UserAuthentication">
+              <d n="UserToPasswordHash" t="Hashtable" ckt="Guid" cvt="String">
+                <v>ecab9160-c92b-4316-997c-1ff7f73d8a46</v>
+                <v>d41d8cd98f00b204e9800998ecf8427e</v>
+              </d>
+            </o>
+            <v>EnableMaxAuthenticationTrials</v>
+            <v>true</v>
+          </d>
+        </o>
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+      </d>
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="ArrayList">System.Collections.ArrayList</Type>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Group">{daecd4be-1e2b-4335-a125-4a1ac83ea49f}</Type>
+          <Type n="GroupList">{bf4dffda-f055-446d-9d7a-5f126720896b}</Type>
+          <Type n="Guid">System.Guid</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="Int32">System.Int32</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+          <Type n="User">{cd83029e-13b0-491e-9e4b-921adda0d86b}</Type>
+          <Type n="UserAuthentication">{3635a671-97f5-41bb-9e29-0ebb9795975c}</Type>
+          <Type n="UserList">{9fe6b547-6bc8-4f11-b589-b517860c5891}</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

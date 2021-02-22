@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DT2_TO_SDT" Id="{881e4c95-03e1-4a7c-952f-fca9e9567c56}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DT2_TO_SDT : SDT
+VAR_INPUT
+	DI : DATE;
+	TI : TOD;
+END_VAR
+
+
+(*
+version 1.0	18. oct 2008
+programmer 	hugo
+tested by	oscat
+
+converts date and time of day to Structured date time (SDT)
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DT2_TO_SDT.YEAR := YEAR_OF_DATE(di);
+DT2_TO_SDT.MONTH := MONTH_OF_DATE(di);
+DT2_TO_SDT.DAY := DAY_OF_MONTH(di);
+DT2_TO_SDT.WEEKDAY := DAY_OF_WEEK(di);
+DT2_TO_SDT.MS := DWORD_TO_INT(TOD_TO_DWORD(ti) MOD 1000);
+DT2_TO_SDT.SECOND := DWORD_TO_INT((TOD_TO_DWORD(ti) / 1000) MOD 60);
+DT2_TO_SDT.MINUTE := DWORD_TO_INT((TOD_TO_DWORD(ti) / 60000) MOD 60);
+DT2_TO_SDT.HOUR := DWORD_TO_INT(TOD_TO_DWORD(ti) / 3600000);
+
+(* revision history
+
+hm 18. oct. 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DT2_TO_SDT">
+      <LineId Id="16" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

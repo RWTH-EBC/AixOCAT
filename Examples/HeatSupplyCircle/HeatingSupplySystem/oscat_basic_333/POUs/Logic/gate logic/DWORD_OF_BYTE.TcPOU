@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DWORD_OF_BYTE" Id="{0b60021b-3f0e-4ffc-a30c-e9b53d656aba}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DWORD_OF_BYTE : DWORD
+VAR_INPUT
+	B3 : BYTE;
+	B2 : BYTE;
+	B1 : BYTE;
+	B0 : BYTE;
+END_VAR
+
+
+(*
+version 1.3	18. jul. 2009
+programmer 	hugo
+tested by		tobias
+
+this function creates a Dword from 4 individual bytes
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DWORD_OF_BYTE := SHL(SHL(SHL(BYTE_TO_DWORD(B3),8) OR BYTE_TO_DWORD(B2),8) OR BYTE_TO_DWORD(B1),8) OR BYTE_TO_DWORD(B0);
+
+
+(* revision history
+hm	24. jan 2007	rev 1.0
+	original version
+
+hm 2. jan 2008	rev 1.1
+	inproved performance
+
+hm	23. apr. 2008	rev 1.2
+	reverse order of inputs to be more logical
+
+hm	18. jul. 2009	rev 1.3
+	added type conversions for compatibility reasons
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DWORD_OF_BYTE">
+      <LineId Id="17" Count="15" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

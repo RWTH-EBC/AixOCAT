@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FSTRING_TO_MONTH" Id="{3c6993e0-55b5-4130-9cab-f291bb660e54}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FSTRING_TO_MONTH : INT
+VAR_INPUT
+	MTH : STRING(20);
+	LANG : INT;
+END_VAR
+VAR
+	lx: INT;
+END_VAR
+
+
+(*
+version 1.2	25. oct 2008
+programmer 	hugo
+tested by	oscat
+
+FSTRING_TO_MONTH converts a string into a month, the string can be a name for the month or a number.
+the function is language sensitve when LANG > 1 and checks for all languages when LANG = 0
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF LANG = 0 THEN lx := LANGUAGE.DEFAULT; ELSE lx := MIN(LANG, LANGUAGE.LMAX); END_IF;
+MTH := TRIM(mth);
+MTH := CAPITALIZE(LOWERCASE(MTH));
+
+FOR FSTRING_TO_MONTH := 1 TO 12 DO
+	IF MTH = language.MONTHS[lx, FSTRING_TO_MONTH] THEN RETURN; END_IF;
+	IF MTH = language.MONTHS3[lx, FSTRING_TO_MONTH] THEN RETURN; END_IF;
+END_FOR;
+
+(* since no name matched try to decode as integer *)
+FSTRING_TO_MONTH := STRING_TO_INT(MTH);
+
+
+
+
+(* revision histroy
+hm	25. sep. 2008	rev 1.0
+	original release
+
+hm	19. oct. 2008	rev 1.1
+	changed language setup constants
+
+hm	25. oct. 2008	rev 1.2
+	optimized code
+*)	
+]]></ST>
+    </Implementation>
+    <LineIds Name="FSTRING_TO_MONTH">
+      <LineId Id="19" Count="25" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

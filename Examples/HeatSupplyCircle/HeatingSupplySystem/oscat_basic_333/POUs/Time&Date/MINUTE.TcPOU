@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MINUTE" Id="{3a6f3f41-a6d3-4048-a015-9a2317825513}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MINUTE : INT
+VAR_INPUT
+	itod : TOD;
+END_VAR
+
+
+(*
+version 1.1	2 oct 2006
+programmer 	hugo
+tested by	tobias
+
+extracts the minutes out of TOD truncating the seconds 
+
+*)  ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[MINUTE := DWORD_TO_INT(TOD_TO_DWORD(itod) / 60000 - TOD_TO_DWORD(itod) / 3600000 * 60);
+
+
+(* change history
+
+2.10.2006 changes name of input to itod
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MINUTE">
+      <LineId Id="14" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

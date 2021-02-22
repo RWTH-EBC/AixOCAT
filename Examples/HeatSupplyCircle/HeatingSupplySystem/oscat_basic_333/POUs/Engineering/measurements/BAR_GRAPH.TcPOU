@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BAR_GRAPH" Id="{a2ce7d26-fe7b-4471-b549-75a8bb038b88}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK BAR_GRAPH
+VAR_INPUT
+	X : REAL;
+	rst : BOOL;
+END_VAR
+VAR_INPUT CONSTANT
+	trigger_Low : REAL;
+	trigger_High : REAL;
+	Alarm_low : BOOL;
+	Alarm_high : BOOL;
+	log_scale : BOOL;
+END_VAR
+VAR_OUTPUT
+	LOW, Q1, Q2, Q3, Q4, Q5, Q6, HIGH : BOOL;
+	Alarm : BOOL;
+	Status : BYTE;
+END_VAR
+VAR
+	init : BOOL;
+	T1, T2, T3, T4, T5 : REAL;
+END_VAR
+VAR
+	temp : REAL;
+END_VAR
+
+(*
+	version 1.2	6 jan 2008
+	programmer 	hugo
+	tested BY	hans
+
+bar graph is a muti window comparator which displays an analog input signal on 8 digital outputs.
+only one output is active a any given time depending on the value of the input signal.
+the output can be of linear or logarithmic scale.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT init THEN
+	init := TRUE;
+	IF log_scale THEN
+		temp := EXP(LN(Trigger_high / Trigger_low) * 0.166666666666666666666);
+		T1 := trigger_low * temp;
+		T2 := T1 * temp;
+		T3 := T2 * temp;
+		T4 := T3 * temp;
+		T5 := T4 * temp;
+	ELSE
+		temp := (trigger_high - trigger_low) * 0.142857142;
+		T1 := trigger_low + temp;
+		T2 := T1 + temp;
+		T3 := T2 + temp;
+		T4 := T3 + temp;
+		T5 := T4 + temp;
+	END_IF;
+END_IF;
+
+(* clear outputs before checking *)
+Q1 := FALSE;
+Q2 := FALSE;
+Q3 := FALSE;
+Q4 := FALSE;
+Q5 := FALSE;
+Q6 := FALSE;
+status := 110;
+
+(* low, high and alarm can only be cleared with rst depending on alarm_low and alarm_high *)
+IF NOT alarm_low THEN low := FALSE; END_IF;
+IF NOT alarm_high THEN high := FALSE; END_IF;
+IF rst THEN
+	alarm := FALSE;
+	low := FALSE;
+	high := FALSE;
+END_IF;
+
+(* check and set outputs *)
+IF X < trigger_low THEN
+	Low := TRUE;
+	status := 111;
+	IF alarm_low THEN
+		alarm := TRUE;
+		status := 1;
+	END_IF;
+ELSIF X < T1 THEN
+	Q1 := TRUE;
+ELSIF x < t2 THEN
+	Q2 := TRUE;
+ELSIF x < t3 THEN
+	Q3 := TRUE;
+ELSIF x < T4 THEN
+	Q4 := TRUE;
+ELSIF x < T5 THEN
+	q5 := TRUE;
+ELSIF x < trigger_high THEN
+	q6 := TRUE;
+ELSE
+	high := TRUE;
+	status := 112;
+	IF alarm_high THEN
+		alarm := TRUE;
+		status := 2;
+	END_IF;
+END_IF;
+
+(* revision history
+hm	22. feb 2007	rev 1.0
+	original version
+
+hm	2. dec 2007		rev 1.1
+	chaged code for better performance
+
+hm	6. jan 2008		rev 1.2
+	further performance improvement
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BAR_GRAPH">
+      <LineId Id="35" Count="76" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

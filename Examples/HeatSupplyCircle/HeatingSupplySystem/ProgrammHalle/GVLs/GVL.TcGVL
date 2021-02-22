@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GVL Name="GVL" Id="{c5996781-8aea-4ea9-a72f-3835ff63cbbb}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//Ambient air datapoints
+	fTempAmbAir		AT %I*	: REAL	:= 10;
+	fTemperatureAmbientADS	AT %I*	: REAL	:= -273;
+		
+	//Temperature sensor datapoints
+	fHSSTempSupSet			: REAL;
+	fHSSTempSupPrim 		: REAL;
+	fHSSTempRetPrim 		: REAL;
+	fHSSTempSup 			: REAL;
+	fHSSTempRet 			: REAL;
+	//Valve datapoints
+	bHSSValveError			: BOOL;
+	fHSSValveAct 			: REAL;
+	fHSSValveSet 			: REAL;
+	//Pump datapoints
+	eHSSPumpContMode 		: E_PumpControlMode;
+	bHSSPumpError			: BOOL;
+	bHSSPumpOperating 		: BOOL;
+	fHSSPumpPower			: REAL;
+	fHSSPumpPressure 		: REAL;
+	bHSSPumpSetOn			: BOOL;
+	fHSSPumpSetpoint		: REAL;
+	fHSSPumpSpeed			: REAL;
+	fHSSPumpVolFlow		: REAL;
+
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BCDC_TO_INT" Id="{49346dbd-4b6a-4f8c-a417-cddad16f47e2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BCDC_TO_INT : INT
+VAR_INPUT
+	IN : BYTE;
+END_VAR
+
+
+(*
+version 1.1 30. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+this function converts a two digit bcd number into an integer.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BCDC_TO_INT := (in AND 16#0F) + (SHR(in,4) * 10);
+
+(* revision history
+hm	13.12.2007	rev 1.0
+	original version
+
+hm	30.6.2008	rev 1.1
+	changed name BCD_TO_INT to BCDC_TO_INT to avoid collision with util.lib
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BCDC_TO_INT">
+      <LineId Id="15" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

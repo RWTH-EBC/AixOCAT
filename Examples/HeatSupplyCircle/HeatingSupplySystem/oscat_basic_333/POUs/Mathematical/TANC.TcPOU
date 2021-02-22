@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TANC" Id="{87cff2cc-fc34-430e-806d-bc84462526a5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION TANC : REAL
+VAR_INPUT
+	X : REAL;
+END_VAR
+
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+this function calculates the tanc function.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF X = 0.0 THEN
+	TANC := 1.0;
+ELSE
+	TANC := TAN(x) / x;
+END_IF;
+
+
+(* revision histroy
+hm	23. oct. 2008	rev 1.0
+	original version
+
+hm 10. mar. 2009	rev 1.1
+	real constants updated to new systax using dot																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TANC">
+      <LineId Id="14" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

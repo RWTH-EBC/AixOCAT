@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DAY_TO_TIME" Id="{2ff97037-da33-4c67-ae64-292ff3e65258}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DAY_TO_TIME : TIME
+VAR_INPUT
+	IN : REAL;
+END_VAR
+
+
+(*
+version 1.1	24. feb. 2009
+programmer 	hugo
+tested by		tobias
+
+converts an amount of days in real to time 
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DAY_TO_TIME := DWORD_TO_TIME(REAL_TO_DWORD(IN * 86400000.0));
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original release
+
+hm	24. feb. 2009	rev 1.1
+	renamed input to IN
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DAY_TO_TIME">
+      <LineId Id="13" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CLICK_MODE" Id="{2871b407-140f-4c6a-ae76-d2b9eb5e59e8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CLICK_MODE
+VAR_INPUT
+	IN : BOOL;
+END_VAR
+VAR_OUTPUT
+	SINGLE : BOOL;
+	DOUBLE : BOOL;
+	LONG : BOOL;
+	TP_LONG : BOOL;
+END_VAR
+VAR_INPUT CONSTANT
+	T_LONG : TIME := t#500ms;
+END_VAR
+VAR
+	Timer : TP;
+	cnt : INT;
+	last : BOOL;
+END_VAR
+
+
+(*
+version 1.0	13. nov. 2008
+programmer 	oscat
+tested by	hugo
+
+click_mode decodes an input for single, double or long click and sets the corresponding output single, doulbe or long.
+the input configures itself to be high or low active depending on which state the input stays longer than t_reconfig.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* when input goes high start the timer to decode pulses *)
+timer(in := IN, PT := T_LONG);
+single := FALSE;
+double := FALSE;
+
+IF timer.Q THEN
+	(* decode pulses while the timer is active *)
+	IF NOT in AND last THEN	cnt := cnt + 1; END_IF;
+ELSE
+	CASE cnt OF
+		1 : single := TRUE;
+		2 : double := TRUE;
+	END_CASE;
+	cnt := 0;
+END_IF;
+last := in;
+TP_LONG := NOT timer.Q AND (NOT LONG) AND IN;
+LONG := NOT timer.Q AND in;
+
+
+
+
+(* revision history
+
+hm	13. nov. 2008	rev 1.0
+	original release
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CLICK_MODE">
+      <LineId Id="29" Count="27" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BLIND_CONTROL" Id="{cf931af6-74b9-4428-9906-83eab377e62e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK BLIND_CONTROL
+VAR_INPUT
+	UP, DN : BOOL;
+	S_IN : BYTE;
+	PI : BYTE;
+	AI : BYTE;
+	T_UD, T_ANGLE : TIME;
+END_VAR
+VAR_INPUT CONSTANT
+	SENS : BYTE := 5;
+	T_LOCKOUT: TIME := T#100ms;
+END_VAR
+VAR_OUTPUT
+	POS, ANG : BYTE;
+	MU, MD : BOOL;
+	STATUS : BYTE;
+END_VAR
+VAR
+	act : BLIND_ACTUATOR;
+	delta : BYTE;
+	bTimeTest:BOOL:=FALSE;
+	iPos:BYTE;
+	iAngel:BYTE;
+END_VAR
+
+(*
+version 1.5		8. mar 2011
+programmer 		AE
+tested by		AE
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bTimeTest THEN
+	PI:=iPos;
+	AI:=iAngel;
+	UP:=TRUE;
+	DN:=TRUE;
+END_IF
+
+(* Check Position*)
+act(T_UD:=T_UD, T_ANGLE:=T_ANGLE, T_lockout := T_Lockout);
+
+IF UP AND DN THEN
+	(* automatic modus detected *)
+	(* first find correct position *)
+	IF BYTE_TO_INT(act.pos) < BYTE_TO_INT(pi) - delta THEN
+		act.UP := TRUE;
+		act.DN := FALSE;
+		delta := 0;
+		STATUS := 121;
+	ELSIF BYTE_TO_INT(act.pos) > BYTE_TO_INT(pi) + delta THEN
+		act.UP := FALSE;
+		act.DN := TRUE;
+		delta := 0;
+		STATUS := 122;
+	(* regulate angle *)
+	ELSIF BYTE_TO_INT(act.ang) < BYTE_TO_INT(ai) - delta AND T_angle > T#100ms THEN
+		act.UP := TRUE;
+		act.DN := FALSE;
+		delta := sens/2;
+		STATUS := 123;
+	ELSIF BYTE_TO_INT(act.ang) > BYTE_TO_INT(ai) + delta AND T_angle > T#100ms THEN
+		act.UP := FALSE;
+		act.DN := TRUE;
+		delta := sens/2;
+		STATUS := 124;
+	(* correct position reached *)
+	ELSE
+		act.UP := FALSE;
+		act.DN := FALSE;
+		delta := sens;
+		STATUS := S_IN;
+	END_IF;
+ELSE
+	act.UP := UP;
+	act.DN := DN;
+	STATUS := S_IN;
+END_IF;
+
+(* blind control calls blind_actuator *)
+act(T_UD:=T_UD, T_ANGLE:=T_ANGLE, T_lockout := T_Lockout);
+pos := act.pos;
+ang := act.ang;
+MU := act.QU;
+md := act.QD;
+status := act.status;
+
+(* revision history
+hm	29. sep 2007	rev 1.0
+	original release
+
+hm	6. oct 2007	rev 1.1
+	rearranged outputs
+	integrated blind_actuator into blind_control
+
+hm	16. oct 2007	rev 1.2
+	ignore angle when t_angle = 0
+
+hm 29. oct 2007	rev 1.3
+	added lockout configuration time for motor direction change
+	sens has a setup value of 5
+
+hm	27. jul. 2009	rev 1.4
+	changed status handling
+
+ae	08. mar. 2010	rev 1.5
+	at aPosition bevor control
+	at tolerance "delta := sens/2;"
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BLIND_CONTROL">
+      <LineId Id="32" Count="77" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

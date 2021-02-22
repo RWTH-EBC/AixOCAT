@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ISC_LOWER" Id="{a1f1e085-2779-4557-9a22-3a505bba90d7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ISC_LOWER : BOOL
+VAR_INPUT
+	IN : BYTE;
+END_VAR
+
+
+(*
+version 1.1	19. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+isc_lower checks if a character is lowercase.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF setup.EXTENDED_ASCII THEN
+	ISC_LOWER := ((in > 96) AND (in < 123)) OR ((in > 222) AND (in <> 247));
+ELSE
+	ISC_LOWER := ((in > 96) AND (in < 123));
+END_IF;
+
+(* revision history
+hm	6. mar. 2008	rev 1.0
+	original version
+
+hm	19. oct. 2008	rev 1.1
+	changes setup constants
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="ISC_LOWER">
+      <LineId Id="14" Count="12" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

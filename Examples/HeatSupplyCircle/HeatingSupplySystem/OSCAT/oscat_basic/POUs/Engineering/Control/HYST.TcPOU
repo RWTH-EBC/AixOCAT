@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="HYST" Id="{8bb15e69-fa1d-4db1-bea8-52c6c807f34d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK HYST
+VAR_INPUT
+	In : REAL;
+	ON : REAL;
+	OFF : REAL;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+	win : BOOL;
+END_VAR
+
+
+(*
+version 1.0	2. jun. 2008
+programmer 	hugo
+tested BY	oscat
+
+This Hystereses function has two modes:
+1. if on > off then Q will be switched high when in > on and switched low when in < off.
+2. if on < off then Q will be switched high when in < on and switched low when in > off.
+the output win will be high when in is between low and high.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF ON >= OFF THEN
+	IF IN < OFF THEN
+		Q := FALSE;
+		WIN := FALSE;
+	ELSIF  IN > ON THEN
+		Q := TRUE;
+		WIN := FALSE;
+	ELSE
+		WIN := TRUE;
+	END_IF;
+ELSE
+	IF IN > OFF THEN
+		Q := FALSE;
+		WIN := FALSE;
+	ELSIF  IN < ON THEN
+		Q := TRUE;
+		WIN := FALSE;
+	ELSE
+		WIN := TRUE;
+	END_IF;
+END_IF;
+
+
+(* revision history
+hm		2.  jun 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="HYST">
+      <LineId Id="23" Count="27" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

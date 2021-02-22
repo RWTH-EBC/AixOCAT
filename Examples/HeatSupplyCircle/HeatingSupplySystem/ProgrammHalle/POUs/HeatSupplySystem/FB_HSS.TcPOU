@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_HSS" Id="{f613316f-4912-4f57-a234-55fa2c33a10a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HSS
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Properties
+	bError 			: BOOL 				:= FALSE;
+	eMode 			: E_ControlMode 	:= E_ControlMode.Off;	
+	//Components
+	//Valve
+	fbValve 		:	FB_Valve_4_20A;
+	//Pump with BACnet client
+	fbPump 			:	FB_PumpBACnet2 :=(fbClient:=(nDeviceInstance:=16));
+	//Temperature sensors
+	fbTempSupPrim 	: 	FB_TempSensPt100;
+	fbTempRetPrim 	: 	FB_TempSensPt100;
+	fbTempSup 		: 	FB_TempSensPt100;
+	fbTempRet 		: 	FB_TempSensPt100;
+	//Controller
+	fbControl 		: 	FB_HSSController;
+	//Hydraulic circuit
+	fbHydCir		: FB_HydMixCir := (	iPump 			:= fbPump,
+										iValve			:= fbValve,
+										iTempSupPrim 	:= fbTempSupPrim,
+										iTempRetPrim 	:= fbTempRetPrim,
+										iTempSup 		:= fbTempSup,
+										iTempRet 		:= fbTempRet,
+										iControl 		:= fbControl);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{54c15d29-9597-417d-9336-3f1c72e395f4}">
+      <Declaration><![CDATA[PROPERTY PUBLIC Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{33e45848-4417-41f9-a7c2-8ee070bc23bf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{877eb2c9-1dc1-42f0-ad6e-6056f8e97d0a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Mode" Id="{9ef373a3-05f4-40b5-9ff9-f7219466711f}">
+      <Declaration><![CDATA[PROPERTY PUBLIC Mode : E_ControlMode]]></Declaration>
+      <Get Name="Get" Id="{5277489e-5a2c-4c6d-a112-29174d780764}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Mode := THIS^.eMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{29c0739e-0473-45be-8ffd-d53e17702b3c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.eMode := Mode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{0a45c8f2-945d-452f-aab3-9b4bc6b97b97}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Execute hydraulic circuit with its control routine
+fbHydCir.Mode := eMode;
+fbHydCir.Run();
+
+//Write values to GVL
+//Temperature datapoints
+GVL.fHSSTempSupPrim 	:= fbTempSupPrim.Temperature;
+GVL.fHSSTempRetPrim 	:= fbTempRetPrim.Temperature;
+GVL.fHSSTempSup 		:= fbTempSup.Temperature;
+GVL.fHSSTempRet 		:= fbTempRet.Temperature;
+//ADS
+ADS.fHSSTempSupPrimADS 	:= fbTempSupPrim.Temperature;
+ADS.fHSSTempRetPrimADS 	:= fbTempRetPrim.Temperature;
+ADS.fHSSTempSupADS 		:= fbTempSup.Temperature;
+ADS.fHSSTempRetADS 		:= fbTempRet.Temperature;
+
+
+//Valve datapoints
+GVL.bHSSValveError 	:= fbValve.Error;
+GVL.fHSSValveSet 		:= fbValve.OpeningSetpoint;
+GVL.fHSSValveAct 		:= fbValve.OpeningActual;
+//ADS
+ADS.fHSSValveActADS 	:= fbValve.OpeningActual;
+
+
+//Pump datapoints
+GVL.eHSSPumpContMode	:= fbPump.ControlMode;
+GVL.bHSSPumpError 		:= fbPump.Error;
+GVL.bHSSPumpOperating	:= fbPump.Operating;
+GVL.fHSSPumpPower		:= fbPump.PowerRating;
+GVL.fHSSPumpPressure 	:= fbPump.Pressure;
+GVL.bHSSPumpSetOn		:= fbPump.SetOn;
+GVL.fHSSPumpSetpoint	:= fbPump.Setpoint;
+GVL.fHSSPumpSpeed		:= fbPump.Speed;
+GVL.fHSSPumpVolFlow	:= fbPump.VolumeFlow;
+//ADS
+ADS.bHSSPumpErrorADS 		:= fbPump.Error;
+ADS.bHSSPumpOperatingADS	:= fbPump.Operating;
+ADS.fHSSPumpPowerADS		:= fbPump.PowerRating;
+ADS.fHSSPumpPressureADS 	:= fbPump.Pressure;
+ADS.bHSSPumpSetOnADS		:= fbPump.SetOn;
+ADS.fHSSPumpSpeedADS		:= fbPump.Speed;
+ADS.fHSSPumpVolFlowADS		:= fbPump.VolumeFlow;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="TempRet" Id="{1b1a1b91-9d73-4bbc-8dec-ea9f717590b4}">
+      <Declaration><![CDATA[PROPERTY PUBLIC TempRet : REAL]]></Declaration>
+      <Get Name="Get" Id="{040325f7-b529-4c7c-805c-56e25c37ccae}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TempRet:= THIS^.fbTempRet.TempRaw;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c59cf482-93fb-4fa4-aa55-51b6ed2d345c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fbTempRet.TempRaw := TempRet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TempRetPrim" Id="{36bad939-b4a4-4617-ad81-5856c9db414f}">
+      <Declaration><![CDATA[PROPERTY PUBLIC TempRetPrim : REAL]]></Declaration>
+      <Get Name="Get" Id="{b6bd5173-6935-4781-889c-cee99e206eb8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TempRetPrim:= THIS^.fbTempRetPrim.TempRaw;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{33a96492-a8ad-48d5-b45c-9fffdfc1817e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fbTempRetPrim.TempRaw := TempRetPrim;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TempSup" Id="{e9cc9762-480d-4a6b-9f11-180c60a86692}">
+      <Declaration><![CDATA[PROPERTY PUBLIC TempSup : REAL]]></Declaration>
+      <Get Name="Get" Id="{8fa83531-82d0-43dc-9e4f-6a1b0b13a7b8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TempSup := THIS^.fbTempSup.TempRaw;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7214656d-cf9b-44af-a22c-6d1c181929ef}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fbTempSup.TempRaw := TempSup;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TempSupPrim" Id="{99fdb839-1aea-4ece-98e8-28ccb92b41bc}">
+      <Declaration><![CDATA[PROPERTY PUBLIC TempSupPrim : REAL]]></Declaration>
+      <Get Name="Get" Id="{4e2e9bc1-82c1-4ab8-8ec1-39f18b1133b2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TempSupPrim := THIS^.fbTempSupPrim.TempRaw;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{481ccb78-11e9-46a4-a85d-9bfd5f14fd8f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fbTempSupPrim.TempRaw := TempSupPrim;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Valve" Id="{e4ec425f-4b0c-4d81-ae43-cb9479c3bc59}">
+      <Declaration><![CDATA[PROPERTY PUBLIC Valve : REAL]]></Declaration>
+      <Get Name="Get" Id="{222b7711-c12d-45dc-a015-22c66df41b14}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Valve := THIS^.fbValve.nOpeningAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3d0f6c27-93d4-4c45-bc5b-b76d2dbcd8ec}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fbValve.nOpeningAct := Valve;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_HSS">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Mode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Mode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Run">
+      <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="2" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="33" Count="7" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="61" Count="4" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="59" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempRet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempRet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempRetPrim.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempRetPrim.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempSup.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempSup.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempSupPrim.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.TempSupPrim.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Valve.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSS.Valve.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

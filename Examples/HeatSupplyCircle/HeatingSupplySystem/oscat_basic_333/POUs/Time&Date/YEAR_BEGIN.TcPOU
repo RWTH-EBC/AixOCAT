@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="YEAR_BEGIN" Id="{72664b45-9bef-4948-81c1-eef9831c36b6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION YEAR_BEGIN : DATE
+VAR_INPUT
+	y : INT;
+END_VAR
+
+
+(*
+version 1.2	7. Apr. 2008
+programmer 	hugo
+tested by	tobias
+
+returs the date of january 1st for the given year  
+the function works for dates from 1970 - 2099 
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[YEAR_BEGIN := DWORD_TO_DATE(SHR(INT_TO_DWORD(y) * 1461 - 2878169,2) * 86400);
+
+
+
+(* revision history
+hm	19. dec 2007	rev 1.0
+	original version
+
+hm	4. jan 2008		rev 1.1
+	formula for step7 was incorrect during leap years
+
+hm	7. apr. 2008	rev 1.2
+	deleted unused step7 code
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="YEAR_BEGIN">
+      <LineId Id="15" Count="14" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

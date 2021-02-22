@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DEAD_ZONE" Id="{5017d86f-1bfc-4fcb-9699-759283f28a72}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DEAD_ZONE : REAL
+VAR_INPUT
+	X : REAL;
+	L : REAL;
+END_VAR
+
+
+(*
+version 1.2	11. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+dead_zone2 is a linear transfer function which follows a linear function except for x is close to 0.
+Y = X if abs(x) > L otherwise its 0.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF ABS(x) > L THEN
+	dead_zone := X;
+ELSE
+	DEAD_ZONE := 0.0;
+END_IF;
+
+(* revision history
+hm	12. feb. 2007	rev 1.0
+	original version
+
+hm	14. jun. 2008	rev 1.1
+	improved performance
+
+hm	11. mar. 2009	rev 1.2
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DEAD_ZONE">
+      <LineId Id="16" Count="16" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

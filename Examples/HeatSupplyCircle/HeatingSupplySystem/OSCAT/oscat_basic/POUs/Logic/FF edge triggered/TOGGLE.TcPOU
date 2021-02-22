@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TOGGLE" Id="{c57f7df0-4cf6-4910-a4df-38c1a3f94491}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TOGGLE
+VAR_INPUT
+	CLK : BOOL;
+	rst : BOOL;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+END_VAR
+VAR
+	edge : BOOL;
+END_VAR
+
+(*
+version 1.1	30. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+toggle flip flop the output changes state with every rising edge of clk.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF rst THEN
+	q := 0;
+ELSIF clk AND NOT edge THEN
+	Q := NOT Q;
+END_IF;
+edge := clk;
+
+(* revision history
+
+hm	13.9.2007		rev 1.0
+	original version
+
+hm	30. oct. 2008	rev 1.1
+	deleted unnecessary init
+
+*)
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="TOGGLE">
+      <LineId Id="21" Count="19" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

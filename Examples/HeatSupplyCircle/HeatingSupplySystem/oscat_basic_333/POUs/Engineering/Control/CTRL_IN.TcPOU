@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CTRL_IN" Id="{5c9d1289-5163-4d3b-8c6d-0694feb9e0d3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CTRL_IN : REAL
+VAR_INPUT
+	SET_POINT, ACTUAL, NOISE : REAL;
+END_VAR
+
+
+(*
+version 1.0	2. jun 2008
+programmer 	hugo
+tested by		tobias
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* calculate the process error DIFF *)
+CTRL_IN := DEAD_ZONE(SET_POINT - ACTUAL, NOISE);
+
+
+(* revision history
+hm 	2. jun. 2008 	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CTRL_IN">
+      <LineId Id="14" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CEXP" Id="{85fcdafa-5c78-4f67-ad5b-a88b407e22a3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CEXP : complex
+VAR_INPUT
+	X : complex;
+END_VAR
+VAR
+	Temp : REAL;
+END_VAR
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex exponent
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[temp := EXP(X.re);
+CEXP.re := temp * COS(X.im);
+CEXP.im := temp * SIN(X.im);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CEXP">
+      <LineId Id="16" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

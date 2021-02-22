@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CTAN" Id="{16b3df26-f172-463f-bed6-7c8005f31aa4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CTAN : complex
+VAR_INPUT
+	X : complex;
+END_VAR
+VAR
+	temp : REAL;
+	xi2: REAL;
+	xr2: REAL;
+END_VAR
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+this function calculates the tangens function of a complex number
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[xi2 := 2.0 * x.im;
+xr2 := 2.0 * x.re;
+temp := 1.0 / (COS(xr2) + COSH( xi2));
+CTAN.re := temp * SIN(xr2);
+CTAN.im := temp * SINH(xi2);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+hm	10. mar 2009	rev 1.1
+	faster code
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CTAN">
+      <LineId Id="18" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

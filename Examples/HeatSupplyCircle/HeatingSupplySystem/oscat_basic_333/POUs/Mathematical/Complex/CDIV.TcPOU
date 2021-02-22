@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CDIV" Id="{35b413a8-cd58-447a-ac31-1bfc4d621f95}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CDIV : complex
+VAR_INPUT
+	X, Y : complex;
+END_VAR
+VAR
+	Temp : REAL;
+END_VAR
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function divides two complex numbers
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[temp := Y.re * Y.re + Y.im * Y.im;
+CDIV.re := (X.re * Y.re + X.im * Y.im) / temp;
+CDIV.im := (X.im * Y.re - X.re * Y.im) / temp;
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CDIV">
+      <LineId Id="16" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

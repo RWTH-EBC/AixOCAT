@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="RDM2" Id="{222f212b-cf6d-4718-a525-36d915b94114}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION RDM2 : INT
+VAR_INPUT
+	last : INT;
+	low : INT;
+	high : INT;
+END_VAR
+
+
+(*
+version 1.1	18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function calculates an integer pseudo random number
+the random number will be in the range of low <= rdm2 <= high.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[RDM2 := TRUNC_INT(RDM(FRACT(last * math.PI)) * (high - low + 1)) + low;
+
+(* revision history
+hm		29. feb 2008		rev 1.0
+	original version
+
+hm		18. oct. 2008		rev 1.1
+	using math constants
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="RDM2">
+      <LineId Id="17" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

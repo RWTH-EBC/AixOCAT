@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="HYPOT" Id="{6157272a-0b3f-4c48-8fca-f223a1494606}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION HYPOT : REAL
+VAR_INPUT
+	X : REAL;
+	Y : REAL;
+END_VAR
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the pythagorean function
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[HYPOT := SQRT(x*x + y*y);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="HYPOT">
+      <LineId Id="15" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

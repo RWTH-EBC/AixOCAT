@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BYTE_TO_GRAY" Id="{c5c98d14-88a6-4acb-bf83-5a9d7c39b51a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BYTE_TO_GRAY : BYTE
+VAR_INPUT
+	IN : BYTE;
+END_VAR
+
+
+(*
+version 1.0	9. nov. 2009
+programmer 	hugo
+tested by		oscat
+
+this function converts a binary to gray code
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BYTE_TO_GRAY := IN XOR SHR(IN,1);
+
+(* revision history
+hm	9. nov. 2009	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="BYTE_TO_GRAY">
+      <LineId Id="15" Count="6" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

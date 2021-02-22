@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_VFCModbus2" Id="{7bb26802-ec16-4cae-86ee-6536cfe67ecc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VFCModbus2 IMPLEMENTS I_VolumeFlowController
+VAR_INPUT CONSTANT
+	fbModbusMaster	:	POINTER TO FB_TVJModbusMaster;
+	nUnitID			:	BYTE;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Properties
+	bError 			: 	BOOL := FALSE;
+	fNominalVolFlow	: 	REAL := 8820;
+	fVolFlowSet 	: 	REAL := 0;
+	fVolFlowAct		: 	REAL;
+	
+	bFinish 		:	BOOL;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{1e4d4fc0-1e4f-413d-9dda-bd74b12fddbe}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{c781e559-36b8-480d-b359-30ec89c68d51}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fe1e28b0-7779-4aaa-b5cd-477382304475}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="NominalVolumeFlow" Id="{22c2ccc8-abc0-4ab4-bbf3-11f46e572420}">
+      <Declaration><![CDATA[PROPERTY NominalVolumeFlow : REAL]]></Declaration>
+      <Get Name="Get" Id="{80e4a7d2-fa89-4683-91d1-735c93010f42}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[NominalVolumeFlow := THIS^.fNominalVolFlow;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9e6dedcc-3c18-4bcd-924c-487c1b328cf1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fNominalVolFlow := NominalVolumeFlow;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{edcc6de9-5878-481b-977b-59be4c6b2d3f}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Write properties to master
+fbModbusMaster^.NominalVolumeFlow := fNominalVolFlow;
+fbModbusMaster^.VolumeFlowSetpoint := fVolFlowSet;
+fbModbusMaster^.UnitID := nUnitID;
+
+//Execute modbus master
+bFinish := fbModbusMaster^.Run();
+
+//Read properties from master
+bError := fbModbusMaster^.Error;
+IF bFinish THEN
+	fVolFlowAct := fbModbusMaster^.VolumeFlowActual;
+END_IF
+
+Run := bFinish;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="UnitID" Id="{f74f62f6-22f1-4d66-bc95-6b3a6aeffe06}">
+      <Declaration><![CDATA[PROPERTY UnitID : BYTE]]></Declaration>
+      <Get Name="Get" Id="{3263f6eb-a789-47df-957c-f0d6a3ed8912}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[UnitID := THIS^.nUnitID;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{040e9948-d15b-447c-ba31-3e136cd610f5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.nUnitID := UnitID;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="VolumeFlowActual" Id="{9d30cb86-ad58-4bee-bf0f-49522bab7892}">
+      <Declaration><![CDATA[PROPERTY VolumeFlowActual : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{1760fb0e-19af-47be-8367-6ea31b0fb933}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[VolumeFlowActual := THIS^.fVolFlowAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{363d9a41-e0c9-42bf-8321-1ba45f6393d2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fVolFlowAct := VolumeFlowActual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="VolumeFlowSetpoint" Id="{7b13ff72-b881-4065-97b0-46ae419b213c}">
+      <Declaration><![CDATA[PROPERTY VolumeFlowSetpoint : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{3db50d7c-53fa-4e4f-b962-0217b3baee58}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[VolumeFlowSetpoint := THIS^.fVolFlowSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{46124e2b-c604-4d67-960c-72d3bc0c1234}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fVolFlowSet := VolumeFlowSetpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_VFCModbus2">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.NominalVolumeFlow.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.NominalVolumeFlow.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.Run">
+      <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.UnitID.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.UnitID.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.VolumeFlowActual.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.VolumeFlowActual.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.VolumeFlowSetpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VFCModbus2.VolumeFlowSetpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

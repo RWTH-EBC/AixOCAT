@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_Integrate" Id="{78b5c855-9b36-4e73-9f6e-2cf75411e118}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Integrate
+VAR_INPUT
+	run : BOOL 	:= TRUE;	// Set true for running integration
+	in 	: REAL;				// integrated value
+	K 	: REAL 	:= 1.0;		// factor
+	RST	: BOOL  :=FALSE;	// set true for reinitialization
+	inStart : REAL :=0; 		// start value
+END_VAR
+
+VAR_OUTPUT
+	out 	: REAL;
+END_VAR
+
+VAR
+	in_last : REAL;
+	init: BOOL;
+	last: TIME;
+	tx: TIME;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*read system time *)
+tx := TIME();
+
+//reset integration
+IF RST = TRUE THEN
+	init := FALSE;	
+	out := inStart;
+END_IF
+
+IF NOT init THEN	//init last_in and skip integration for the first run
+	init := TRUE;
+	in_last := in;
+	out := inStart;
+ELSIF run THEN
+	out := (in + in_last) * 0.5E-3 * TIME_TO_REAL(tx-last) * K + out;	//integration with trapezoidal rule
+	in_last := in;
+END_IF;
+last := tx;	//save last time
+
+(*
+aku 24.09.2019: first implementation
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Integrate">
+      <LineId Id="25" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="27" Count="3" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="31" Count="4" />
+      <LineId Id="84" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

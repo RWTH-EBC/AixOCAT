@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_HydThrotCir" Id="{a08dfd34-b530-4a85-834a-60efe2b62698}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HydThrotCir
+VAR_INPUT
+	//Pump
+	iPump			:	I_Pump;
+	//Valve
+	iValve			:	I_Valve;
+	//Temperatures
+	iTempSup		:	I_TemperatureSensor;
+	iTempRet		:	I_TemperatureSensor;
+	//Controller
+	iControl		:	I_HydraulicThrottlingControl;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	eMode : E_ControlMode := E_ControlMode.Off;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Mode" Id="{8a6f300b-1743-49da-b5be-0af8720be441}">
+      <Declaration><![CDATA[PROPERTY Mode : E_ControlMode]]></Declaration>
+      <Get Name="Get" Id="{0aaab11e-c34e-4522-8daa-fa16ac86c01e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Mode := THIS^.eMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{79159cb7-35c9-48ec-957d-b23c5fcfd959}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.eMode := Mode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{a57fc3d9-2cf3-4a7e-ab94-c5107eb69223}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Update temperatures
+iTempSup.Run();
+iTempRet.Run();
+
+//Run components
+iPump.Run();
+iValve.Run();
+
+//Run controller
+iControl.Mode := eMode;
+iControl.TemperatureSupAct := iTempRet.Temperature;
+iControl.Run();
+
+//Pump set properties
+IF eMode = E_ControlMode.Off THEN
+	iPump.SetOn := FALSE;
+ELSE
+	iPump.SetOn := TRUE;
+END_IF
+iPump.ControlMode := iControl.PumpMode;
+iPump.Setpoint := iControl.PumpSet;
+
+//Valve set properties
+iValve.OpeningSetpoint := iControl.ValveSet;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_HydThrotCir">
+      <LineId Id="36" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HydThrotCir.Mode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HydThrotCir.Mode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HydThrotCir.Run">
+      <LineId Id="6" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="11" Count="16" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

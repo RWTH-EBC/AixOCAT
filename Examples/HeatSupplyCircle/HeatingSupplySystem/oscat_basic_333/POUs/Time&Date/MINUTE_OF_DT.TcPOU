@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MINUTE_OF_DT" Id="{2f923bec-ae48-4d1d-af61-8ce2dccf66a9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MINUTE_OF_DT : INT
+VAR_INPUT
+	XDT : DT;
+END_VAR
+
+
+(*
+	version 1.0	6. jun. 2008
+	programmer 	oscat
+	tested BY	oscat
+
+MINUTE_OF_DT returns the current minute (minute of the hour) of a DT variable
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[MINUTE_OF_DT := DWORD_TO_INT(DT_TO_DWORD(XDT) MOD 3600) / 60;
+
+
+(* revision history
+hm		6.9.2008	rev 1.0
+	original version
+
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MINUTE_OF_DT">
+      <LineId Id="14" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

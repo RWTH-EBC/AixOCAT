@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="WCT" Id="{99541f53-0671-4c2a-b727-27fd217ce56f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION WCT : REAL
+VAR_INPUT
+	T : REAL;
+	V : REAL;
+END_VAR
+
+
+(*
+version 1.2	13. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the wind chill temperature
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF V < 5.0 OR T > 10.0 THEN
+	WCT := T;
+ELSE
+	WCT := 13.12 + 0.6215 * T +(0.3965 * T - 11.37) * EXP(LN(v) * 0.16);
+END_IF;
+
+
+(* revision history
+hm	7 feb 2007		rev 1.0
+	original version
+
+hm	7 dec 2007	rev 1.1
+	changed code for better performance
+
+hm	13. mar. 2009	rev 1.2
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="WCT">
+      <LineId Id="15" Count="17" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

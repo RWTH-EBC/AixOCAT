@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SHR_8PLE" Id="{a6ece6d3-699a-4ce8-bb40-1b4f2a8991ab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SHR_8PLE
+VAR_INPUT
+	Din : BOOL;
+	Dload : BYTE;
+	CLK: BOOL;
+	UP: BOOL :=1;
+	load : BOOL;
+	RST: BOOL;
+END_VAR
+VAR_OUTPUT
+	DOut: BOOL;
+END_VAR
+VAR
+	edge : BOOL :=1;
+	register : BYTE;
+END_VAR
+
+(*
+version 1.0	4 aug 2006
+programmer 	hugo
+tested by	oscat
+
+8 bit shift register with reset and parallel load
+the register can shift up or down
+it also has a serial input.
+the Din input is on Bit0 for up shift and on bit 7 for down shift
+the Dout output is on Bit7 for up shift and on bit 0 for down shift
+paralle clock is performed clock synchron while a shift is performed first and then the register is reloaded
+
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* flankenerkennung clk wird high und edge war high reset ist nicht aktiv und set ist nicht aktiv *)
+IF CLK AND edge AND NOT rst THEN
+	edge := FALSE;	(* flanke wurde erkannt und weitere flankenerkennung wird verhindert bis edge wieder true ist *)
+	(* hier ist der code für das flankenevent *)
+	IF UP THEN						(*shift up *)
+		register := SHL(register,1);
+		register.0 := Din;
+		Dout := register.7;
+	ELSE								(* shift down *);
+		register := SHR(register,1);
+		register.7 := Din;
+		Dout := register.0;
+	END_IF;
+	IF load THEN							(* the byte on Din will be loaded if load = true *)
+		register := Dload;
+		IF up THEN Dout := register.7; ELSE Dout := register.0; END_IF;
+	END_IF;
+END_IF;
+IF NOT clk THEN edge := TRUE; END_IF;	(* sobald clk wieder low wird warten auf nächste flanke *)
+IF rst THEN									(* wenn reset aktiv dann ausgang rücksetzen *)
+	register := 0;
+	Dout := FALSE;
+END_IF;
+]]></ST>
+    </Implementation>
+    <LineIds Name="SHR_8PLE">
+      <LineId Id="31" Count="23" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

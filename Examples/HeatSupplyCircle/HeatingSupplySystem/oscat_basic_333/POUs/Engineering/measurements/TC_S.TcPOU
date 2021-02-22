@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="TC_S" Id="{4049750c-aa31-42c5-b375-e6ab1d410250}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TC_S
+
+VAR_OUTPUT
+	TC : REAL;
+END_VAR
+VAR
+	init: BOOL;
+	tx: DWORD;
+	last: DWORD;
+END_VAR
+
+(*
+	version 1.2	11. mar. 2009
+	programmer 	hugo
+	tested by		tobias
+
+TC_S delivers the time it was last called on the output TC in seconds.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* read system timer *)
+tx := T_PLC_US();
+
+IF NOT init THEN
+	init := TRUE;
+	TC := 0.0;
+ELSE
+	tc := DWORD_TO_REAL(tx - last)*1.0E-6;
+END_IF;
+last := tx;
+
+(* revision history
+hm	13. mar. 2008	rev 1.0
+	original version
+
+hm	16. mar 2008	rev 1.1
+	added type conversion to avoid warnings under codesys 3.0
+
+hm	11. mar. 2009	rev 1.2
+	changed real constants to use dot syntax
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="TC_S">
+      <LineId Id="19" Count="22" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

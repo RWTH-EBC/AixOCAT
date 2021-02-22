@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="R2_ADD" Id="{9763b35b-788c-491b-a15f-56bc35adb84a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION R2_ADD : REAL2
+VAR_INPUT
+	X : Real2;
+	Y : REAL;
+END_VAR
+VAR
+	temp: REAL;
+END_VAR
+
+(*
+version 1.0	20. mar. 2008
+programmer 	hugo
+tested by	tobias
+
+R2_add adds a real to a double real which extends the accuracy of a real to twice as many digits
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[temp := X.RX;
+R2_ADD.RX := Y + X.R1 + X.RX;
+R2_ADD.R1 := temp - R2_ADD.RX + Y + X.R1;
+
+
+(* revision history
+hm		20.3.2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="R2_ADD">
+      <LineId Id="17" Count="9" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="BIT_TOGGLE_DW" Id="{23a9eecc-c829-41fc-bffb-c10e32e57f0c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION BIT_TOGGLE_DW : DWORD
+VAR_INPUT
+	IN : DWORD;
+	POS : INT;
+END_VAR
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function toggles a bit of a WORD at position pos.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BIT_TOGGLE_DW := SHL(DWORD#1, POS) XOR IN;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="BIT_TOGGLE_DW">
+      <LineId Id="15" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

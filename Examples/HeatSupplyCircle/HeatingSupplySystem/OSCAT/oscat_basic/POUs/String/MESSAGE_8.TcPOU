@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MESSAGE_8" Id="{757ffb49-0991-41c2-8d78-d22217ccbd7c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MESSAGE_8
+VAR_INPUT
+	IN1 : BOOL;
+	IN2 : BOOL;
+	IN3 : BOOL;
+	IN4 : BOOL;
+	IN5 : BOOL;
+	IN6 : BOOL;
+	IN7 : BOOL;
+	IN8 : BOOL;
+END_VAR
+VAR_INPUT CONSTANT
+	S1 : STRING(STRING_LENGTH);
+	S2 : STRING(STRING_LENGTH);
+	S3 : STRING(STRING_LENGTH);
+	S4 : STRING(STRING_LENGTH);
+	S5 : STRING(STRING_LENGTH);
+	S6 : STRING(STRING_LENGTH);
+	S7 : STRING(STRING_LENGTH);
+	S8 : STRING(STRING_LENGTH);
+END_VAR
+VAR_OUTPUT
+	M : STRING(STRING_LENGTH);
+END_VAR
+
+
+(*
+version 1.1	29. mar. 2008
+programmer 	hugo
+tested by	tobias
+
+this function generates one out of 4 messages specified by S1 .. S8.
+the selected message will be presented at the output M.
+In1 has higher priority then In2 which has higher priority then IN3 and in8 has the lowest priority.
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* check if an alarm is present if yes set the output M otherwise clear M *)
+IF in1 THEN
+	M := S1;
+ELSIF in2 THEN
+	M := S2;
+ELSIF in3 THEN
+	M := S3;
+ELSIF in4 THEN
+	M := S4;
+ELSIF in5 THEN
+	M := S5;
+ELSIF in6 THEN
+	M := S6;
+ELSIF in7 THEN
+	M := S7;
+ELSIF in8 THEN
+	M := S8;
+ELSE
+	M := '';
+END_IF;
+
+(* revision history
+hm	26.12.2007		rev 1.0
+	original version
+
+hm	29. mar. 2008	rev 1.1
+	changed STRING to STRING(STRING_LENGTH)
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="MESSAGE_8">
+      <LineId Id="36" Count="28" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

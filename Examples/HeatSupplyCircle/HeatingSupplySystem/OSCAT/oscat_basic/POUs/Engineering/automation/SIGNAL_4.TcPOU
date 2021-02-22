@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SIGNAL_4" Id="{5c22d7bd-bc0b-4a24-a9ce-2a70de5f173c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SIGNAL_4
+VAR_INPUT
+	IN1 : BOOL;
+	IN2 : BOOL;
+	IN3 : BOOL;
+	IN4 : BOOL;
+	TS : TIME;
+END_VAR
+VAR_INPUT CONSTANT
+	S1 : BYTE := 2#1111_1111;
+	S2 : BYTE := 2#1111_0000;
+	S3 : BYTE := 2#1010_1010;
+	S4 : BYTE := 2#1010_0000;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+END_VAR
+VAR
+	sig : SIGNAL;
+END_VAR
+
+(*
+version 1.0	13 dec 2007
+programmer 	hugo
+tested by		tobias
+
+this function generates one out of 4 signals specified by bit patterns S1 .. S4.
+the selected pattern will be shifted with the step time TS.
+In1 has higher priority then In2 which has higher priority then IN3 and in4 has the lowest priority.
+ts defaults to 128 ms if not specified.
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* an alarm is present read system time first *)
+(* check if an alarm is present if yes set sig to the alarm pattern otherwise exit the routine *)
+IF in1 THEN
+	sig(in := TRUE, sig := s1, TS := TS);
+ELSIF in2 THEN
+	sig(in := TRUE, sig := s2, TS := TS);
+ELSIF in3 THEN
+	sig(in := TRUE, sig := s3, TS := TS);
+ELSIF in4 THEN
+	sig(in := TRUE, sig := s4, TS := TS);
+ELSE
+	sig(in := FALSE);
+END_IF;
+
+(* set the output *)
+Q := sig.Q;
+
+
+(* revision history
+hm	13.12.2007		rev 1.0
+	original version
+
+*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="SIGNAL_4">
+      <LineId Id="32" Count="23" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <GVL Name="WCState" Id="{3714fa38-3849-4ee1-a2a2-11f7090d2d07}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//WC state bits of all terminals
+	
+	//Gerät 1
+	WCState2	AT	%I*	:	BOOL;	//WC state of terminal 2 (EL3214)
+	WCState3	AT	%I*	:	BOOL;	//WC state of terminal 3 (EL3214)
+	WCState4	AT	%I*	:	BOOL;	//WC state of terminal 4 (EL3214)
+	WCState5	AT	%I*	:	BOOL;	//WC state of terminal 5 (EL3214)
+	WCState6	AT	%I*	:	BOOL;	//WC state of terminal 6 (EL6021)
+	WCState7	AT	%I*	:	BOOL;	//WC state of terminal 7 (EL6021)
+	WCState8	AT	%I*	:	BOOL;	//WC state of terminal 8 (EL6021)
+	WCState9	AT	%I*	:	BOOL;	//WC state of terminal 9 (EL4008)
+	WCState10	AT	%I*	:	BOOL;	//WC state of terminal 10 (EL3174)
+	WCState11	AT	%I*	:	BOOL;	//WC state of terminal 11 (EL3024)
+	WCState12	AT	%I*	:	BOOL;	//WC state of terminal 12 (EL3024)
+	WCState13	AT	%I*	:	BOOL;	//WC state of terminal 13 (EL3024)
+	WCState14	AT	%I*	:	BOOL;	//WC state of terminal 14 (EL4018)
+	WCState17	AT	%I*	:	BOOL;	//WC state of terminal 17 (EL3214)
+	WCState18	AT	%I*	:	BOOL;	//WC state of terminal 18 (EL3214)
+	WCState19	AT	%I*	:	BOOL;	//WC state of terminal 19 (EL3214)
+	WCState20	AT	%I*	:	BOOL;	//WC state of terminal 20 (EL3214)
+	WCState38	AT	%I*	:	BOOL;	//WC state of terminal 38 (EL4008)
+	WCState39	AT	%I*	:	BOOL;	//WC state of terminal 39 (EL1008)
+	WCState42	AT	%I*	:	BOOL;	//WC state of terminal 42 (EL3068)
+	WCState48	AT	%I*	:	BOOL;	//WC state of terminal 48 (EL4008)
+	WCState51	AT	%I*	:	BOOL;	//WC state of terminal 51 (EL3068)
+	
+	//Gerät 7
+	WCState27	AT	%I*	:	BOOL;	//WC state of terminal 27 (EL3214)
+	
+	WCState29	AT	%I*	:	BOOL;	//WC state of terminal 29 (EL4018)
+	
+	WCState30	AT	%I*	:	BOOL;	//WC state of terminal 30 (EL1008)
+	
+	WCState21	AT	%I*	:	BOOL;	//WC state of terminal 21 (EL3008)
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

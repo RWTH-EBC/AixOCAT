@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="MUX_R2" Id="{e8b3340f-07d3-4545-8b66-64b82664c98a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MUX_R2 : REAL
+VAR_INPUT
+	IN0 : REAL;
+	IN1 : REAL;
+	A : BOOL;
+END_VAR
+
+
+(*
+version 1.1	16. oct. 2008
+programmer 	oscat
+tested by	oscat
+
+MUX_R2 is an analog Multiplexer.
+one of 2 real inputs are selected and put through to out.
+The Adress input A selects between 2 Real inputs IN0 and IN1, A=0 > In0, A=1 > in1.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[MUX_R2 := SEL(A, IN0, IN1);
+
+
+(* revision history
+hm	19. jan. 2007	rev 1.0
+	original version
+
+hm	16. oct. 2008	rev 1.1
+	improved performance
+
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MUX_R2">
+      <LineId Id="18" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

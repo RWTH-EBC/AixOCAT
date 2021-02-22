@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DEC_TO_INT" Id="{66027381-5788-46d7-9975-1e9f86379eb9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DEC_TO_INT : INT
+VAR_INPUT
+	DEC : STRING(10);
+END_VAR
+VAR
+	pt : POINTER TO BYTE;
+	i: INT;
+	X: BYTE;
+	sign: BOOL;
+	stop: INT;
+END_VAR
+
+(*
+version 1.1	30. sep. 2008
+programmer 	hugo
+tested by	oscat
+
+DEC_TO_INT converts a decimal string into an Integer.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[pt := ADR(dec);
+stop := LEN(dec);
+FOR I := 1 TO stop DO
+	(* read the first character and subtract 48 to get value in decimal 0 = 48 *)
+	x := pt^;
+	(* calculate the value of the digit *)
+	IF X > 47 AND x < 58 THEN
+		DEC_TO_INT := DEC_TO_INT * 10 + X - 48;
+	ELSIF X = 45 AND DEC_TO_INT = 0 THEN
+		sign := TRUE;
+	END_IF;
+	pt := pt + 1;
+END_FOR;
+IF sign THEN DEC_TO_INT := -DEC_TO_INT; END_IF;
+
+
+(* revision histroy
+hm	20. jun. 2008	rev 1.0
+	original release
+
+hm	30. sep. 2008	rev 1.1
+	changed length of input string from 20 to 10
+	corrected an error where decoding of characters 8 and 9 would fail
+*)	
+]]></ST>
+    </Implementation>
+    <LineIds Name="DEC_TO_INT">
+      <LineId Id="20" Count="24" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

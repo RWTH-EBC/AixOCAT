@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SCALE_R" Id="{ae31b245-cf50-4525-82db-b471efa647ff}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SCALE_R : REAL
+VAR_INPUT
+	X : REAL;
+	I_LO : REAL;
+	I_HI : REAL;
+	O_LO : REAL;
+	O_HI : REAL;
+END_VAR
+
+
+(*
+version 1.2	11. jan. 2011
+programmer 	hugo
+tested by		oscat
+
+Scale_R is used to translate and scale a REAL input x to a real output.
+the input is limited to I_LO <= X <= I_HI.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF I_LO = I_HI THEN
+	SCALE_R := O_LO;
+ELSE
+	SCALE_R := (O_HI - O_LO) / (I_HI - I_LO) * (LIMIT(I_LO, X, I_HI) - I_LO) + O_LO;
+END_IF;
+
+
+(* revision history
+hm	18. may. 2008	rev 1.0
+	original version
+
+hm	13. nov. 2008	rev 1.1
+	corrected formula for negative gradient
+
+hm	11. jan 2011	rev 1.2
+	avoid division by 0
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SCALE_R">
+      <LineId Id="20" Count="17" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

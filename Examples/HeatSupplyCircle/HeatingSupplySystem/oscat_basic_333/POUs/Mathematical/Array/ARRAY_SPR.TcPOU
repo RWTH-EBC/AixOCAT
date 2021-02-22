@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="ARRAY_SPR" Id="{47ec057b-5f0c-4112-8b18-0f496c5b4962}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ARRAY_SPR : REAL
+VAR_INPUT
+	pt : POINTER TO ARRAY[0..32000] OF REAL;
+	size : UINT;
+END_VAR
+VAR
+	i: UINT;
+	stop: UINT;
+	array_max : REAL;
+	array_min : REAL;
+END_VAR
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the spread of a given array.
+the function needs to be called:	array_spr(adr("array"),sizeof("array"));
+for example: spread of [12,0,4,1,7] is 12 - 0 = 12.
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stop := (size -SIZEOF(pt)) / SIZEOF(pt);
+array_min := pt^[0];
+array_max := pt^[0];
+FOR i := 1 TO stop DO
+	IF pt^[i] > array_max THEN array_max := pt^[i];
+	ELSIF pt^[i] < array_min THEN array_min := pt^[i];
+	END_IF;
+END_FOR;
+array_spr := array_max - array_min;
+
+
+(* revision history
+hm 	2. oct. 2006	rev 1.0
+	original version
+
+hm	16. mar. 2008	rev 1.1
+	changed type of input size to uint
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="ARRAY_SPR">
+      <LineId Id="23" Count="18" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

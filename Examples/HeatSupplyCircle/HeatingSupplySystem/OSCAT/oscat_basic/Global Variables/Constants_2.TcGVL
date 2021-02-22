@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <GVL Name="Constants_2" Id="{06663279-ac8e-4bfb-be96-4dd8e9791db0}">
+    <Declaration><![CDATA[{attribute 'Tc2GvlVarNames'}
+VAR_GLOBAL CONSTANT
+	STRING_LENGTH : INT := 250;
+	LIST_LENGTH : INT := 250;
+END_VAR
+
+
+
+
+(* revisionhistory
+hm 3. mar. 2007
+	extended accuracy of pi2
+	renamed T0 to Tk for better compatibility with other libraries
+	renamed C t0 c0 for better compatibility
+
+hm	2. may. 2007
+	added RU universal gas constant
+
+hm	1. oct. 2007
+	added setup parameter STEP7
+
+hm 31. oct. 2007
+	added PN
+
+hm	6. mar. 2008
+	added setup Parameter EXTENDED_ASCII
+
+hm	28. Mar. 2008
+	added setup parameter STRING_LENGTH
+
+hm	7. apr. 2008
+	Deleted unused setup parameter Step7
+
+hm	19. apr. 2008
+	added setup parameter NETWORK_BUFFER_SIZE
+
+hm	27. apr. 2008
+	added PI05 and PI025
+
+hm	18. may. 2008
+	added charname lists
+	renamed E to E1
+
+hm	30. jun. 2008
+	reduced size of string constants to 253 to avoid problems with target aixia DCUF
+
+hm	21. sep. 2008
+	added section language setup
+	added section location setup
+
+hm	20. oct. 2008
+	changed to structured constants
+
+hm	16. nov. 2008
+	moved structured constants to global vars for compatibility reasons
+
+hm	13. nov. 2009
+	added network_buffer_short_size
+	renamed network_buffer_long_size
+	changed string length to 250
+
+hm	20. jan. 2011
+	removed network buffers
+	added list_length
+*)]]></Declaration>
+  </GVL>
+</TcPlcObject>

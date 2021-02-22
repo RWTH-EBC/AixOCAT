@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="OCT_TO_BYTE" Id="{6d11070a-7e76-4da3-a946-6fc3dd8dd1c6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION OCT_TO_BYTE : BYTE
+VAR_INPUT
+	OCT : STRING(10);
+END_VAR
+VAR
+	pt : POINTER TO BYTE;
+	i: INT;
+	X: BYTE;
+	stop: INT;
+END_VAR
+
+(*
+version 1.1	20. sep. 2008
+programmer 	hugo
+tested by		oscat
+
+OCT_TO_BYTE converts a octagonal string into a byte.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[pt := ADR(oct);
+stop := LEN(oct);
+FOR I := 1 TO stop DO
+	(* read the first character and subtract 48 to get value in decimal 0 = 48 *)
+	x := pt^;
+	(* calculate the value of the digit *)
+	IF X > 47 AND x < 56 THEN
+		OCT_TO_BYTE := SHL(OCT_TO_BYTE,3) + X - 48;
+	END_IF;
+	pt := pt + 1;
+END_FOR;
+
+
+
+(* revision histroy
+hm	18. jun. 2008	rev 1.0
+	original release
+
+hm	20. sep. 2008	rev 1.1
+	changed length of input string from 20 to 10
+
+*)	
+]]></ST>
+    </Implementation>
+    <LineIds Name="OCT_TO_BYTE">
+      <LineId Id="19" Count="22" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

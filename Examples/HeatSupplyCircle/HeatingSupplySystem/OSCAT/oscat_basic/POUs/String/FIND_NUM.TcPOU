@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FIND_NUM" Id="{e96ba534-71a7-4cff-9765-4c4a9d4ba065}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FIND_NUM : INT
+VAR_INPUT
+	str : STRING(STRING_LENGTH);
+	pos : INT;
+END_VAR
+VAR
+	i : INT;
+	pt : POINTER TO ARRAY[1..255] OF BYTE;
+	stop : INT;
+	X: BYTE;
+END_VAR
+
+(*
+version 1.2	29. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+find_Num searches str and returns the starting position of a number
+a number is characterized by a letter "0..9" or "."
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[pt := ADR(str);
+stop := LEN(str);
+FOR i := MAX(pos,1) TO stop DO;
+	X := pt^[i];
+	IF (X > 47 AND X < 58) OR X = 46 THEN
+		FIND_NUM := i;
+		RETURN;
+	END_IF;
+END_FOR;
+FIND_NUM := 0;
+
+
+(* revision history
+hm	6. oct. 2006	rev 1.0
+	original version
+
+hm	29. feb 2008	rev 1.1
+	added input pos to start search at position
+
+hm	29. mar. 2008	rev 1.2
+	changed STRING to STRING(STRING_LENGTH)
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="FIND_NUM">
+      <LineId Id="21" Count="22" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

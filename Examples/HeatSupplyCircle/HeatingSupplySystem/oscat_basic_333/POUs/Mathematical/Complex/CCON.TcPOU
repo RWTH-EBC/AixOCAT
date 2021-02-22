@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="CCON" Id="{63a7bec1-365d-4a6e-9fb1-290dd978bcb2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CCON : complex
+VAR_INPUT
+	X : complex;
+END_VAR
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calcucates the conjugation of a complex number
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CCON.re := x.re;
+CCON.im := -x.im;
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="CCON">
+      <LineId Id="14" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

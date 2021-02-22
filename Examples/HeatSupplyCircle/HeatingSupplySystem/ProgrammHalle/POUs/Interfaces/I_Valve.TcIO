@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <Itf Name="I_Valve" Id="{4cab4434-0ff2-463c-97d2-f53a68202f0c}">
+    <Declaration><![CDATA[INTERFACE I_Valve
+]]></Declaration>
+    <Property Name="Error" Id="{86a70818-06b2-47a6-9e69-4d16243b0647}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{41ea2990-43cc-4e51-8cb0-2213c484ddcc}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{547892e8-2b81-4095-8e60-79c061a964c7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="OpeningActual" Id="{f78afc7a-c45b-4606-9d33-64d307f40524}">
+      <Declaration><![CDATA[PROPERTY OpeningActual : REAL]]></Declaration>
+      <Get Name="Get" Id="{ff6cce24-ddbc-423d-9108-08fb867a819b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{4fead4e0-ccdd-4903-9e7c-a61473ede478}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="OpeningSetpoint" Id="{64ee94a4-7af2-40f1-87be-5fc9dfbc99df}">
+      <Declaration><![CDATA[PROPERTY OpeningSetpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{27ca2882-4156-4781-aef3-5f7f4e12ba13}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{adc15932-790f-4bc7-b5f0-96902ebc8d9b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{af639dba-9bd2-40ad-bf55-1ad6e0146b5d}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

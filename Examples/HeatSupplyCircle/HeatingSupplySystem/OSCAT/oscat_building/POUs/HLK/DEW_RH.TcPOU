@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DEW_RH" Id="{28ba8c78-508d-4d4c-9b34-56d6a1072a3e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DEW_RH : REAL
+VAR_INPUT
+	VC : REAL;
+	T : REAL;
+END_VAR
+
+(*
+version 1.2	13. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function calculates the relative humidity in air for a given temperature in °C and vapor concentration in Kg/m³..
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DEW_RH := LIMIT(0.0, VC / DEW_CON(1.0, T), 100.0);
+
+(* code before rev 1.1
+dew_rh := VC / dew_con(100,T) * 100;
+IF dew_rh > 100 THEN dew_rh := 100; END_IF;
+*)
+
+(* revision history
+hm	29. apr 2007	rev 1.0
+	original version
+
+hm	2. 12. 2007	rev 1.1
+	new code for better performance
+
+hm	13. mar. 2009	rev 1.2
+	real constants updated to new systax using dot
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DEW_RH">
+      <LineId Id="14" Count="17" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

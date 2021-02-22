@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="DWORD_OF_WORD" Id="{ea36b0e5-5cb7-4520-977c-ca15e84b7d18}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION DWORD_OF_WORD : DWORD
+VAR_INPUT
+	W1 : WORD;
+	W0 : WORD;
+END_VAR
+
+
+(*
+version 1.0	18. jul. 2009
+programmer 	hugo
+tested by		tobias
+
+this function creates a Dword from 2 individual Words
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DWORD_OF_WORD := SHL(WORD_TO_DWORD(W1),16) OR WORD_TO_DWORD(W0);
+
+
+(* revision history
+
+hm	18. jul. 2009	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DWORD_OF_WORD">
+      <LineId Id="15" Count="8" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

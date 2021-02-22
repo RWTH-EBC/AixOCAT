@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="SCALE_D" Id="{50616a84-b175-4d81-b72d-7fe168698024}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION SCALE_D : REAL
+VAR_INPUT
+	X : DWORD;
+	I_LO : DWORD;
+	I_HI : DWORD;
+	O_LO : REAL;
+	O_HI : REAL;
+END_VAR
+
+
+(*
+version 1.2	11. jan. 2011
+programmer 	hugo
+tested by		oscat
+
+Scale_D is used to translate and scale a DWORD input x to a real output.
+the input is limited to I_LO <= X <= I_HI.
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF I_HI = I_LO THEN
+	SCALE_D := O_LO;
+ELSE
+	SCALE_D := (O_HI - O_LO) / DWORD_TO_REAL(I_HI - I_LO) * DWORD_TO_REAL(LIMIT(I_LO, X, I_HI) - I_LO) + O_LO;
+END_IF;
+
+(* revision history
+hm	18. may. 2008	rev 1.0
+	original version
+
+hm	13. nov. 2008	rev 1.1
+	corrected formula for negative gradient
+
+hm	11. jan 2011	rev 1.2
+	avoid division by 0
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SCALE_D">
+      <LineId Id="20" Count="15" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
