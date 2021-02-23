@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="SYS_LOG" Id="{7bd35183-5932-43cb-8017-db9e8545b0d8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SYS_LOG
+VAR_IN_OUT
+	IP_C : IP_C; (* IP_Control Verwaltungsstruktur *)
+	S_BUF : NETWORK_BUFFER;
+	R_BUF : NETWORK_BUFFER;
+END_VAR
+VAR_INPUT
+	ACTIVATE : BOOL;
+	LDT : DT;
+	SERVER_IP4 : DWORD;
+	PORT : WORD;
+	FACILITY : BYTE;
+	SEVERITY : BYTE;
+	TAG : STRING(32);
+	HOSTNAME : STRING;
+	MESSAGE : STRING(STRING_LENGTH);
+	OPTION : BYTE;
+END_VAR
+VAR_OUTPUT
+	DONE_P : BOOL;
+	ERROR : DWORD;
+END_VAR
+VAR
+	ip_state : BYTE;
+	ip_id : BYTE;
+	IP_FIFO : IP_FIFO;
+	activate_last : BOOL;
+	state : INT;
+	s1 : STRING(20);
+	i : INT;
+
+	(*LOG_MSG : LOG_MSG;
+	_debug_enable : BOOL := TRUE;*)
+
+END_VAR
+
+(*
+version 1.1		20. jun. 2009
+programmer 		ks
+tested by		ks
+
+SYSLOG versendet Meldungen auf Basis des SYSLOG-Standards
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE state OF
+00: (* auf positive Flanke SET warten *)
+	IF ACTIVATE AND NOT ACTIVATE_LAST THEN
+		state := 10;
+		ERROR := DWORD#0;
+		IP_STATE := BYTE#1; (* Anmelden *)
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+    		(*IF _debug_enable THEN
+      			LOG_CL.NEW_MSG := 'SYS_LOG: S00 START /IP_ID ~4';
+      			LOG_CL.PRINTF[4]  := BYTE_TO_STRING(IP_ID);
+      			LOG_MSG();
+    		END_IF;*)
+    		(*########################################################################*)
+	END_IF;
+	DONE_P := FALSE;
+
+10: (* Bei IP_Control anmelden und auf freigabe warten *)
+	IF IP_STATE = BYTE#3 THEN
+		(* Sendedaten aufbereiten *)
+		i := 0;
+		IF (OPTION AND BYTE#0000_0001) = BYTE#00 THEN (* Option: no priority Code *)
+			(* Priority:  '<xx>' als dezimalwert *)
+			(* BYTE: xxxx x...  = Facility *)
+			(*       .... .xxx  = Level *)
+			s1 := REPLACE('<P>',BYTE_TO_STRING(SHL(FACILITY,3) OR (SEVERITY AND BYTE#0000_0111)),1,2);
+		ELSE
+			s1 := '';
+		END_IF;
+
+		IF (OPTION AND BYTE#0000_0010) = BYTE#00 THEN (* Option: No Use Syslog RFC Header *)
+			(* 'month day hh:mm:ss ' *)
+			s1 := CONCAT(s1,DT_TO_STRF(DTI:=LDT,MS:=0,FMT:='#E #W #N:#R:#T ',LANG:=1));
+			_STRING_TO_BUFFER(STR:=s1,POS:=i,PT:=ADR(S_BUF.BUFFER),SIZE:=UINT#1024);
+			i := i + LEN(s1);
+			(* ' sourcename eintragen *)
+			_STRING_TO_BUFFER(STR:=HOSTNAME,POS:=i,PT:=ADR(S_BUF.BUFFER),SIZE:=UINT#1024);
+			i := i + LEN(HOSTNAME);
+			S_BUF.BUFFER[i] := BYTE#32; (* leerzeichen einfuegen *)
+			i := i + 1;
+			(* ' tag eintragen *)
+			_STRING_TO_BUFFER(STR:=TAG,POS:=i,PT:=ADR(S_BUF.BUFFER),SIZE:=UINT#1024);
+			i := i + LEN(TAG);
+			S_BUF.BUFFER[i] := BYTE#32; (* leerzeichen einfuegen *)
+			i := i + 1;
+		END_IF;
+
+		(* ' message eintragen *)
+		_STRING_TO_BUFFER(STR:=MESSAGE,POS:=i,PT:=ADR(S_BUF.BUFFER),SIZE:=UINT#1024);
+		i := i + LEN(MESSAGE);
+
+		IF (OPTION AND BYTE#0000_0100) > BYTE#00 THEN (* Option: Add a CR & LF to end of message *)
+			S_BUF.BUFFER[i] := BYTE#13; (* Carriage Return einfuegen *)
+			i := i + 1;
+			S_BUF.BUFFER[i] := BYTE#10; (* Linefeed einfuegen *)
+			i := i + 1;
+		END_IF;
+
+		state := 30;
+
+		(* IP Datenverkehr einrichten *)
+		IF (OPTION AND BYTE#2#0000_1000) > BYTE#00 THEN (* Option: TCP Mode *)
+			IP_C.C_MODE := BYTE#0; (* Mode: TCP/AKTIV *)
+		ELSE
+			IP_C.C_MODE := BYTE#1; (* Mode: UDP/AKTIV *)
+		END_IF;
+
+		IF PORT = WORD#0 THEN (* keine Portnummer vorgegeben ? *)
+			IF IP_C.C_MODE = BYTE#0 THEN (* Modus bestimmen  TCP oder UDP ? *)
+				IP_C.C_PORT := WORD#1468; (* Standard Portnummer für Syslog over TCP *)
+			ELSE
+				IP_C.C_PORT := WORD#514; (* Standard Portnummer für Syslog over UDP *)
+			END_IF;
+		ELSE
+			IP_C.C_PORT := PORT; (* uebergebene Portnummer eintragen *)
+		END_IF;
+
+		IP_C.C_IP := SERVER_IP4; (* IP eintragen *)
+		IP_C.C_ENABLE := TRUE; (* Verbindungsaufbau freigeben *)
+		IP_C.TIME_RESET := TRUE; (* Zeitueberwachung rücksetzen *)
+		IP_C.R_OBSERVE := FALSE; (* Datenempfang ueberwachen *)
+		S_BUF.SIZE := INT_TO_UINT(i); (* Sendelänge eintragen *)
+		R_BUF.SIZE := UINT#0; (* Empfangslänge rücksetzen *)
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+    		(*IF _debug_enable THEN
+      			LOG_CL.NEW_MSG := 'SYS_LOG: S20 SEND /IP_ID ~4';
+      			LOG_CL.PRINTF[4]  := BYTE_TO_STRING(IP_ID);
+      			LOG_MSG();
+    		END_IF;*)
+    		(*########################################################################*)
+	END_IF;
+
+30:
+	IF IP_C.ERROR <> DWORD#00 THEN
+		ERROR := IP_C.ERROR;
+		state := 0;
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+    		(*IF _debug_enable THEN
+      			LOG_CL.NEW_MSG := 'SYS_LOG: S30 ERROR ~1 IP_ID ~4';
+      			LOG_CL.PRINTF[1]  := DWORD_TO_STRING(ERROR);
+      			LOG_CL.PRINTF[4]  := BYTE_TO_STRING(IP_ID);
+      			LOG_MSG();
+    		END_IF;*)
+    		(*########################################################################*)
+	ELSIF S_BUF.SIZE = UINT#0 THEN (* warten bis alle daten gesendet sind *)
+		DONE_P := TRUE;
+		state := 0;
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+    		(*IF _debug_enable THEN
+      			LOG_CL.NEW_MSG := 'SYS_LOG: S30 OK /IP_ID ~4';
+      			LOG_CL.PRINTF[4]  := BYTE_TO_STRING(IP_ID);
+      			LOG_MSG();
+    		END_IF;*)
+    		(*########################################################################*)
+	END_IF;
+
+	IF state = 0 THEN (* Verbindung freigeben *)
+		IP_STATE := BYTE#4;
+	END_IF;
+
+END_CASE;
+
+ACTIVATE_LAST := ACTIVATE; (* letzten Status sichern zur Flankenerkennung *)
+
+(* IP_FIFO *)
+IP_FIFO(FIFO:=IP_C.FIFO,STATE:=ip_state,ID:=IP_ID);
+
+(* revision history
+ks	18. oct. 2008	rev 1.0
+	original version
+
+ks	20. jun. 2009	rev 1.1
+	Networkbuffer und Buffer-funktionen auf Basis 0
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="SYS_LOG">
+      <LineId Id="45" Count="133" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="us_TN_SCREEN" Id="{6e0f2067-f8ee-40b5-8886-5dc7e1ceb64e}">
+    <Declaration><![CDATA[TYPE us_TN_SCREEN :
+STRUCT
+	bya_CHAR: ARRAY [0..1919] OF BYTE;
+	bya_COLOR: ARRAY [0..1919] OF BYTE;
+	bya_BACKUP: ARRAY [0..1919] OF BYTE;
+	bya_Line_Update: ARRAY [0..23] OF BOOL;
+	by_Input_Exten_Code: BYTE;
+	by_Input_ASCII_Code: BYTE;
+	bo_Input_ASCII_IsNum: BOOL;
+	in_Page_Number: INT; (* aktive Seiten-Nr. *)
+	in_Cursor_X: INT; (* Cursor X-Position *)
+	in_Cursor_Y: INT; (* Cursor Y-Position *)
+	in_EOS_Offset: INT; (* End of String Offset *)
+	by_Clear_Screen_Attr: BYTE; (* Clear-Screen Attr *)
+	bo_Clear_Screen: BOOL; (* Clear-Screen auslösen *)
+	bo_Modal_Dialog: BOOL; (* Modaler Dialog ist aktiv *)
+	bo_Menue_Bar_Dialog: BOOL; (* Menue Dialog ist aktiv *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

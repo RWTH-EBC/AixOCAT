@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="IRTRANS_RCV_1_1" Id="{576fddb0-e859-4fc9-8713-7b8b081fc74f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK IRTRANS_RCV_1_1
+VAR_INPUT CONSTANT
+	DEV_CODE : STRING;
+	KEY_CODE : STRING;
+END_VAR
+VAR_INPUT
+	CMD : BOOL;
+END_VAR
+VAR_IN_OUT
+	DEV : STRING;
+	KEY : STRING;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;
+END_VAR
+
+
+(*
+
+version 1.3	06. dec. 2009
+programmer 	hugo
+tested by		oscat
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Q := cmd AND dev_code = dev AND key_code = key;
+
+(* revision history
+hm	2. jan 2008		rev 1.0
+	original version
+
+hm	20. 6. 2008		rev 1.1
+	performance improvement
+
+hm	19. oct. 2008	rev 1.2
+	changed input device_code to dev_code and device to dev for compatibility reasons
+
+hm	06. dec. 2008	rev 1.3
+	IRTRANS_1 renamed to IRTRANS_RCV_1
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="IRTRANS_RCV_1_1">
+      <LineId Id="25" Count="15" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

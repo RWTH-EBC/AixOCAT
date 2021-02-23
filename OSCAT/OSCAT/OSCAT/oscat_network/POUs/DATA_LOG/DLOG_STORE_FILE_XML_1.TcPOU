@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="DLOG_STORE_FILE_XML_1" Id="{61cfadd7-a831-4735-96e0-2274f0dbda0b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DLOG_STORE_FILE_XML_1
+VAR_IN_OUT
+	X : DLOG_DATA;
+END_VAR
+VAR_INPUT
+	ENABLE : BOOL;
+	TRIG_M : BOOL;
+	TRIG_T : UDINT;
+	FILENAME : STRING;
+	DTI : DT;
+END_VAR
+VAR_OUTPUT
+	ERROR_C : DWORD;
+	ERROR_T : BYTE;
+END_VAR
+VAR
+	FS : FILE_SERVER;
+	FSD : FILE_SERVER_DATA;
+	PT : NETWORK_BUFFER;
+	UCB : UNI_CIRCULAR_BUFFER;
+	ra : BOOL;
+	trig_m_last : BOOL;
+	dti_last : DT := DT#2070-02-06-06:28:15;
+	enable_last : BOOL;
+	fn_last : STRING;
+	str : STRING(STRING_LENGTH);
+	fn : STRING;
+	init : BOOL;
+	step: INT;
+	idx : INT;
+	log_state : USINT;
+	n : INT;
+END_VAR
+
+(*
+version 1.0		25. july. 2011
+programmer		ks
+tested by			ks
+
+DLOG_STORE_FILE_XML schreibt die DLOG Parameter in einen lokale Datei im XML-Format 
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[X.DTI := DTI; (* Datum / Zeit eintragen *)
+IF DTI <> dti_last THEN
+	X.CLOCK_TRIG := TRUE;
+	dti_last := DTI;
+	X.STORE_TYPE := 3;
+ELSE
+	X.CLOCK_TRIG := FALSE;
+END_IF;
+
+IF X.ADD_HEADER = FALSE THEN (* wenn add-header und add-data gleichzeitig ansteht, dann add-data einen zyklus länger anstehen lassen *)
+	X.ADD_DATA := FALSE;
+END_IF;
+X.ADD_HEADER := FALSE;
+
+IF ENABLE THEN
+	IF X.CLOCK_TRIG THEN
+		fn := DT_TO_STRF(DTI, 0, FILENAME, 0); (* automatische Dateinamen generierung *)
+		IF TRIG_T > 0 THEN (* automatischer Trigger *)
+			ra := DT_TO_UDINT(DTI) MOD TRIG_T = 0;
+		END_IF;
+	ELSE
+		ra := FALSE;
+	END_IF;
+	IF (TRIG_M AND NOT trig_m_last) OR ra OR X.ADD_DATA_REQ THEN (* manueller, automatischer oder externer Trigger *)
+		X.ADD_DATA := TRUE; (* Daten loggen *)
+	END_IF;
+	IF NOT init THEN
+		init := TRUE;
+		X.ADD_HEADER := TRUE; (* Spaltenüberschriften übernehmen *)
+	END_IF;
+END_IF;
+X.ADD_DATA_REQ := FALSE; (* externe Anforderung rücksetzen *)
+
+IF (NOT ENABLE AND enable_last) OR (fn <> fn_last AND step > 0) THEN (* Neg. Flanke ENABLE - Log Stop *)
+	fn_last := fn;
+	X.UCB.D_HEAD := WORD#16#FF00;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Element schreiben *)
+	X.ADD_HEADER := TRUE; (* Spaltenüberschriften übernehmen *)
+END_IF;
+
+CASE step OF
+
+00:	IF ENABLE THEN
+		fn_last := fn;
+		FSD.FILENAME := fn; (* Dateiname *)
+		FSD.OFFSET := 0; (* Start bei Dateianfang *)
+		FSD.AUTO_CLOSE := T#0s; (* Auto-Close *)
+		step := 10;
+	END_IF;
+
+10:	(* Headerdaten schreiben *)
+	str := '<?xml version="1.0" encoding="UTF-8"?><table>';
+	_STRING_TO_BUFFER(STR:=str, POS:=idx, PT:=ADR(PT.BUFFER), SIZE:=SIZEOF(PT.BUFFER));
+	idx := idx + LEN(str);
+	step := 20;
+
+20:	IF log_state = 254 THEN
+		log_state := 255;
+		str := '</table>';
+		_STRING_TO_BUFFER(STR:=str, POS:=idx, PT:=ADR(PT.BUFFER), SIZE:=SIZEOF(PT.BUFFER));
+		idx := idx + LEN(str);
+		step := 40; (* Daten schreiben *)
+
+	ELSIF X.UCB.BUF_COUNT > 0 THEN (* Einträge vorhanden *)
+		X.UCB.D_MODE := 10;
+		UCB(DATA:=X.UCB); (* Element lesen , aber noch nicht entfernen *)
+
+		IF X.UCB.D_HEAD = WORD#16#FF00 THEN (* LOG_STOP Command *)
+			X.UCB.D_MODE := 11;
+			UCB(DATA:=X.UCB); (* Element entfernen *)
+			log_state := 254;
+
+		ELSIF idx + LEN(X.UCB.D_STRING) + 120 < SIZEOF(PT) THEN (* Platz für Element vorhanden ? *)
+			X.UCB.D_MODE := 11;
+			UCB(DATA:=X.UCB); (* Element entfernen *)
+
+			IF log_state = 0 THEN
+				str := '<row><entry>';
+			ELSE
+				str := '<entry>';
+			END_IF;
+
+			_STRING_TO_BUFFER(STR:=str, POS:=idx, PT:=ADR(PT.BUFFER), SIZE:=SIZEOF(PT.BUFFER));
+			idx := idx + LEN(str);
+			log_state := log_state + 1;
+
+			_STRING_TO_BUFFER(STR:=X.UCB.D_STRING, POS:=idx, PT:=ADR(PT.BUFFER), SIZE:=SIZEOF(PT.BUFFER));
+			idx := idx + LEN(X.UCB.D_STRING);
+
+			n := n + 1;
+			IF n = X.ID_MAX THEN
+				n := 0;
+				str := '</entry></row>';
+				log_state := 0;
+			ELSE
+				str := '</entry>';
+			END_IF;
+			_STRING_TO_BUFFER(STR:=str, POS:=idx, PT:=ADR(PT.BUFFER), SIZE:=SIZEOF(PT.BUFFER));
+			idx := idx + LEN(str);
+		END_IF;
+		step := 40; (* Daten schreiben *)
+	END_IF;
+
+40:	IF idx > 0 THEN (* Daten schreiben *)
+		FSD.MODE := 3; (* create + write *)
+		PT.SIZE := idx; (* Datenlänge eintragen *)
+		idx := 0;
+	END_IF;
+	step := 60;
+
+60:	IF FSD.MODE = 0 THEN
+		IF log_state = 255 THEN
+			log_state := 0;
+			FSD.MODE := 5; (* Datei schliessen *)
+			X.NEW_FILE := FSD.FILENAME;
+			X.NEW_FILE_RTRIG := FALSE;
+			step := 80;
+		ELSE
+			step := 20;
+		END_IF;
+	END_IF;
+
+80:	IF FSD.MODE = 0 THEN (* Datei schliessen beendet *)
+		X.NEW_FILE_RTRIG := TRUE;
+		step := 0;
+	END_IF;
+
+END_CASE;
+
+trig_m_last := TRIG_M;
+enable_last := ENABLE;
+FS(FSD:=FSD,PT:=PT); (* FILE_SERVER *)
+
+ERROR_C := FSD.ERROR;
+ERROR_T := SEL(FSD.ERROR > 0,0,1);
+
+(* revision history
+ks	25. july. 2011	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DLOG_STORE_FILE_XML_1">
+      <LineId Id="43" Count="141" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

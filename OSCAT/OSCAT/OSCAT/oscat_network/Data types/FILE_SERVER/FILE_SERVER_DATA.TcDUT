@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="FILE_SERVER_DATA" Id="{ada6823c-d99f-40ce-a15f-c504691a09c3}">
+    <Declaration><![CDATA[TYPE FILE_SERVER_DATA :
+STRUCT
+	FILE_OPEN : BOOL;
+	FILENAME : STRING;
+	MODE : BYTE;
+	OFFSET : UDINT;
+	FILE_SIZE : UDINT;
+	AUTO_CLOSE : TIME;
+	ERROR : BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

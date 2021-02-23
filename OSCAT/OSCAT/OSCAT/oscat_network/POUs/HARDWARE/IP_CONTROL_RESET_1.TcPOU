@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="IP_CONTROL_RESET_1" Id="{f02afee6-3768-43fc-b4df-90315c9ea7ea}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK IP_CONTROL_RESET_1
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	READY : BOOL;
+END_VAR
+VAR
+	fbSocketCloseAll : FB_SocketCloseAll;
+	step : BYTE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* On PLC reset or program download close all old connections *)
+
+CASE TCP_SERVER_RESET OF
+
+2:	READY := TRUE;
+	RETURN;
+
+1:	IF step = 0 THEN
+		RETURN;
+	END_IF;
+
+0:	TCP_SERVER_RESET := 1; (* Reset ist aktiv *)
+	step := 1;
+
+END_CASE;
+
+CASE step OF
+
+0:	RETURN;
+
+1:	fbSocketCloseAll(sSrvNetId:= '', bExecute:= TRUE, tTimeout:= T#10s );
+	step := 2;
+
+2:	fbSocketCloseAll(bExecute:= FALSE);
+	IF fbSocketCloseAll.bBusy = FALSE THEN
+		step := 0;
+		TCP_SERVER_RESET := 2; (* Reset durchgeführt , Bereit zur Verwendung *)
+	END_IF;
+
+END_CASE;]]></ST>
+    </Implementation>
+    <LineIds Name="IP_CONTROL_RESET_1">
+      <LineId Id="10" Count="29" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

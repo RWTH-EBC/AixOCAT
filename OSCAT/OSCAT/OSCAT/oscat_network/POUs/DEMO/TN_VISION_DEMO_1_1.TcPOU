@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="TN_VISION_DEMO_1_1" Id="{490e2fbf-c9bc-4a35-9b1c-da9ac1d96818}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM TN_VISION_DEMO_1_1
+VAR
+	FB_TN_FRAMEWORK : TN_FRAMEWORK;
+	FB_LOG_MESSAGE : LOG_MSG;
+	FB_LOG_VIEWPORT : LOG_VIEWPORT;
+	FB_TN_SC_LINE : TN_SC_LINE;
+	FB_TN_SC_FILL : TN_SC_FILL;
+	FB_TN_SC_WRITE_C : TN_SC_WRITE_C;
+	FB_TN_SC_BOX : TN_SC_BOX;
+	FB_TN_SC_ADD_SHADOW : TN_SC_ADD_SHADOW;
+	FB_TN_SC_WRITE : TN_SC_WRITE;
+	FB_TN_SC_VIEWPORT : TN_SC_VIEWPORT;
+	Xus_TN_MENU : us_TN_MENU;
+	Xus_TN_INPUT_CONTROL : us_TN_INPUT_CONTROL;
+	Xus_TN_SCREEN : us_TN_SCREEN;
+	us_LOG_VIEWPORT : us_LOG_VIEWPORT;
+	S_BUF : NETWORK_BUFFER;
+	R_BUF : NETWORK_BUFFER;
+	IP_C : IP_C;
+	Gst_SysLog_Command : STRING;
+	in_index : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FB_TN_FRAMEWORK(
+	us_TN_INPUT_CONTROL := Xus_TN_INPUT_CONTROL ,
+	us_TN_SCREEN := Xus_TN_SCREEN ,
+	us_TN_MENU := Xus_TN_MENU ,
+	S_BUF := S_BUF ,
+	R_BUF:= R_BUF ,
+	IP_C:= IP_C );
+
+(* Modaler Dialog aktiv ? *)
+IF (Xus_TN_SCREEN.bo_Modal_Dialog = TRUE) THEN RETURN; END_IF;
+
+IF Xus_TN_MENU.in_Menu_Selected > 0 THEN
+
+	CASE Xus_TN_MENU.in_Menu_Selected OF
+
+	41: (* Seite LOGIN aufrufen *)
+		Xus_TN_SCREEN.in_Page_Number := INT#00;
+		(* Gedächtnis löschen *)
+		Xus_TN_MENU.bo_Destroy := TRUE;
+
+	END_CASE;
+
+	(* Echo Menu-Auswahl *)
+	Gst_SysLog_Command := CONCAT('MENU_SELECT: ',INT_TO_STRING(Xus_TN_MENU.in_Menu_Selected));
+
+	(* Menu-Auswahl löschen *)
+	Xus_TN_MENU.in_Menu_Selected := 0;
+
+END_IF;
+
+(* Initialisierung der Daten und Strukturen *)
+IF (Xus_TN_SCREEN.in_Page_Number = INT#00 ) THEN
+	Xus_TN_SCREEN.in_Page_Number := INT#01;
+
+	(* Clear-Screen (Farbe setzen + Display löschen) *)
+	Xus_TN_SCREEN.by_Clear_Screen_Attr := BYTE#16#00;
+	Xus_TN_SCREEN.bo_Clear_Screen := TRUE;
+
+	(* Screen initialisieren (mit Leerzeichen füllen) *)
+	FB_TN_SC_FILL(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#00,
+					Iin_X2 := INT#79,
+					Iin_Y2 := INT#23,
+					Iby_CHAR := BYTE#179,
+					Iby_Attr := BYTE#16#76,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Titlezeile zeichnen *)
+	FB_TN_SC_FILL(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#00,
+					Iin_X2 := INT#79,
+					Iin_Y2 := INT#00,
+					Iby_CHAR := BYTE#32,
+					Iby_Attr := BYTE#16#07,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Title zeichnen *)
+	FB_TN_SC_WRITE(	Iin_X := INT#00,
+					Iin_Y := INT#00,
+					Iby_ATTR := BYTE#16#77,
+					Ist_STRING := ' TELNET-VISION BIOS v1.0',
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Fusszeile zeichnen *)
+	FB_TN_SC_FILL(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#23,
+					Iin_X2 := INT#79,
+					Iin_Y2 := INT#23,
+					Iby_CHAR := BYTE#32,
+					Iby_Attr := BYTE#16#37,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Rahmen für Viewport zeichnen *)
+	FB_TN_SC_BOX(	Iin_X1 := INT#03,
+					Iin_Y1 := INT#03,
+					Iin_X2 := INT#75,
+					Iin_Y2 := INT#19,
+					Iby_FILL := BYTE#16#20, (* Füllung *)
+					Iin_BORDER := INT#02, (* Double-Line Border *)
+					Iby_ATTR := BYTE#16#74, (* Weiss , Blau *)
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Shadow für Rahmen von Viewport zeichnen *)
+	FB_TN_SC_ADD_SHADOW(	Iin_X1 := INT#04,
+							Iin_Y1 := INT#04,
+							Iin_X2 := INT#76,
+							Iin_Y2 := INT#20,
+							Iin_OPTION := INT#00,
+							Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Title Viewport zeichnen *)
+	FB_TN_SC_WRITE(	Iin_X := INT#31,
+					Iin_Y := INT#03,
+					Iby_ATTR := BYTE#16#74,
+					Ist_STRING := '[ LOGIN-DIALOG ]',
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* LOGO Zeilen zeichnen *)
+	FOR in_index := 5 TO 16 DO
+
+		CASE in_index OF
+
+		05: FB_TN_SC_WRITE.Ist_STRING := 'ÛÛÛÛÛÛÛÛ» ÛÛÛÛÛÛÛ» ÛÛ»      ÛÛÛ»   ÛÛ» ÛÛÛÛÛÛÛ» ÛÛÛÛÛÛÛÛ»';
+		06: FB_TN_SC_WRITE.Ist_STRING := 'ÈÍÍÛÛÉÍÍ¼ ÛÛÉÍÍÍÍ¼ ÛÛº      ÛÛÛÛ»  ÛÛº ÛÛÉÍÍÍÍ¼ ÈÍÍÛÛÉÍÍ¼';
+		07: FB_TN_SC_WRITE.Ist_STRING := '   ÛÛº    ÛÛÛÛÛ»   ÛÛº      ÛÛÉÛÛ» ÛÛº ÛÛÛÛÛ»      ÛÛº';
+		08: FB_TN_SC_WRITE.Ist_STRING := '   ÛÛº    ÛÛÉÍÍ¼   ÛÛº      ÛÛºÈÛÛ»ÛÛº ÛÛÉÍÍ¼      ÛÛº';
+		09: FB_TN_SC_WRITE.Ist_STRING := '   ÛÛº    ÛÛÛÛÛÛÛ» ÛÛÛÛÛÛÛ» ÛÛº ÈÛÛÛÛº ÛÛÛÛÛÛÛ»    ÛÛº';
+		10: FB_TN_SC_WRITE.Ist_STRING := '   ÈÍ¼    ÈÍÍÍÍÍÍ¼ ÈÍÍÍÍÍÍ¼ ÈÍ¼  ÈÍÍÍ¼ ÈÍÍÍÍÍÍ¼    ÈÍ¼';
+		11: FB_TN_SC_WRITE.Ist_STRING := '     ÛÛ»   ÛÛ» ÛÛ» ÛÛÛÛÛÛÛ» ÛÛ»  ÛÛÛÛÛÛ»  ÛÛÛ»   ÛÛ»';
+		12: FB_TN_SC_WRITE.Ist_STRING := '     ÛÛº   ÛÛº ÛÛº ÛÛÉÍÍÍÍ¼ ÛÛº ÛÛÉÍÍÍÛÛ» ÛÛÛÛ»  ÛÛº';
+		13: FB_TN_SC_WRITE.Ist_STRING := '     ÛÛº   ÛÛº ÛÛº ÛÛÛÛÛÛÛ» ÛÛº ÛÛº   ÛÛº ÛÛÉÛÛ» ÛÛº';
+		14: FB_TN_SC_WRITE.Ist_STRING := '     ÈÛÛ» ÛÛÉ¼ ÛÛº ÈÍÍÍÍÛÛº ÛÛº ÛÛº   ÛÛº ÛÛºÈÛÛ»ÛÛº';
+		15: FB_TN_SC_WRITE.Ist_STRING := '      ÈÛÛÛÛÉ¼  ÛÛº ÛÛÛÛÛÛÛº ÛÛº ÈÛÛÛÛÛÛÉ¼ ÛÛº ÈÛÛÛÛº';
+		16: FB_TN_SC_WRITE.Ist_STRING := '       ÈÍÍÍ¼   ÈÍ¼ ÈÍÍÍÍÍÍ¼ ÈÍ¼  ÈÍÍÍÍÍ¼  ÈÍ¼  ÈÍÍÍ¼';
+
+		END_CASE;
+
+		FB_TN_SC_WRITE(	Iin_Y := in_index,
+						Iin_X := INT#11,
+						Iby_ATTR := BYTE#16#34,
+						Xus_TN_SCREEN := Xus_TN_SCREEN);
+	END_FOR;
+
+	(* Trennlinie zeichnen *)
+	FB_TN_SC_LINE(	Iin_X1 := INT#03,
+					Iin_Y1 := INT#17,
+					Iin_X2 := INT#75,
+					Iin_Y2 := INT#17,
+					Iby_ATTR := BYTE#16#74,
+					Iby_BORDER := BYTE#02,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Alle Input-Controls initialisieren *)
+
+	Xus_TN_INPUT_CONTROL.bo_Enable := FALSE;
+
+	(* Initialisierung der Eingabe-Zeile *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Type := INT#01;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Y := INT#18;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_X := INT#49;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].by_Attr_mF := BYTE#16#17;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].by_Attr_oF := BYTE#16#47;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Cursor_Pos := INT#0;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Only_Num := FALSE;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Hidden := TRUE;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_Mask := '                ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_Data := Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_Mask;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_ToolTip := ' enter password | press enter to login     |';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Input_Option := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Title_Y_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Title_X_Offset := -12;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].by_Title_Attr := BYTE#16#34;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Title_String := 'password:  [                ]';
+
+	(* Initialisierung Selection Text *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Type := INT#03;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Y := INT#18;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_X := INT#18;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].by_Attr_mF := BYTE#16#17;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].by_Attr_oF := BYTE#16#47;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_ToolTip := ' select user       | press enter to select |';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Input_Option := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Title_Y_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Title_X_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].by_Title_Attr := BYTE#16#34;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Title_String := ' user ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_Mask := '           ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_Data := 'admin#guest#maintenance';
+
+	(* Control-Tool-Tip *)
+	Xus_TN_INPUT_CONTROL.in_ToolTip_Y := INT#23;
+	Xus_TN_INPUT_CONTROL.in_ToolTip_X := INT#00;
+	Xus_TN_INPUT_CONTROL.by_ToolTip_Attr := BYTE#16#37;
+	Xus_TN_INPUT_CONTROL.in_ToolTip_Size := INT#80;
+
+	(* Control-Verwaltung initialisieren *)
+	Xus_TN_INPUT_CONTROL.in_Count := INT#02;
+	Xus_TN_INPUT_CONTROL.bo_Enable := TRUE;
+	Xus_TN_INPUT_CONTROL.bo_Reset_Fokus := TRUE;
+
+END_IF;
+
+IF (Xus_TN_SCREEN.in_Page_Number = INT#01) THEN
+	(* eingegebenen String übernehmen *)
+	IF Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Entered = TRUE THEN
+
+		Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Entered := FALSE;
+		Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_String :=
+			LOWERCASE(str:=Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_String);
+
+		IF Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_String = 'oscat' THEN
+			Xus_TN_SCREEN.in_Page_Number := INT#10;
+
+			Gst_SysLog_Command := CONCAT('LOGON: USER-',Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_String);
+
+		ELSE
+			FB_TN_SC_WRITE_C(	Iin_X := Xus_TN_INPUT_CONTROL.in_ToolTip_X,
+								Iin_Y := Xus_TN_INPUT_CONTROL.in_ToolTip_Y,
+								Iby_ATTR := BYTE#16#F1,
+								Iin_OPTION := INT#02, (* Center-String *)
+								Iin_LENGTH := Xus_TN_INPUT_CONTROL.in_ToolTip_Size,
+								Ist_STRING := 'Password Failed   ',
+								Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+			Gst_SysLog_Command := CONCAT('LOGON: ',FB_TN_SC_WRITE_C.Ist_STRING);
+
+		END_IF;
+	END_IF;
+END_IF;
+
+(* Initialisierung der Daten und Strukturen *)
+IF (Xus_TN_SCREEN.in_Page_Number = INT#10 ) THEN
+	Xus_TN_SCREEN.in_Page_Number := INT#11;
+
+	(* Clear-Screen (Farbe setzen + Display löschen) *)
+	Xus_TN_SCREEN.by_Clear_Screen_Attr := BYTE#16#00;
+	Xus_TN_SCREEN.bo_Clear_Screen := TRUE;
+
+	(* Screen initialisieren (mit Leerzeichen füllen) *)
+	FB_TN_SC_FILL(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#00,
+					Iin_X2 := INT#79,
+					Iin_Y2 := INT#23,
+					Iby_CHAR := BYTE#179,
+					Iby_Attr := BYTE#16#76,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Titlezeile zeichnen *)
+	FB_TN_SC_FILL(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#00,
+					Iin_X2 := INT#79,
+					Iin_Y2 := INT#00,
+					Iby_CHAR := BYTE#32,
+					Iby_Attr := BYTE#16#07,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Fusszeile zeichnen *)
+	FB_TN_SC_FILL(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#23,
+					Iin_X2 := INT#79,
+					Iin_Y2 := INT#23,
+					Iby_CHAR := BYTE#32,
+					Iby_Attr := BYTE#16#37,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Rahmen für Viewport zeichnen *)
+	FB_TN_SC_BOX(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#01,
+					Iin_X2 := INT#77,
+					Iin_Y2 := INT#17,
+					Iby_FILL := BYTE#16#00, (* keine Füllung *)
+					Iin_BORDER := INT#02, (* Double-Line Border *)
+					Iby_ATTR := BYTE#16#74, (* Weiss , Blau *)
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Shadow für Rahmen von Viewport zeichnen *)
+	FB_TN_SC_ADD_SHADOW(Iin_X1 := INT#01,
+						Iin_Y1 := INT#02,
+						Iin_X2 := INT#78,
+						Iin_Y2 := INT#18,
+						Iin_OPTION := INT#00,
+						Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Trennlinie Viewport_Data und Commandline zeichnen *)
+	FB_TN_SC_LINE(	Iin_X1 := INT#00,
+					Iin_Y1 := INT#15,
+					Iin_X2 := INT#77,
+					Iin_Y2 := INT#15,
+					Iby_ATTR := BYTE#16#74,
+					Iby_BORDER := BYTE#02,
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Title Viewport zeichnen *)
+	FB_TN_SC_WRITE(	Iin_X := INT#29,
+					Iin_Y := INT#01,
+					Iby_ATTR := BYTE#16#74,
+					Ist_STRING := '[ SYSTEM-CONSOLE ]',
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Rahmen für Parameter-Feld zeichnen *)
+	FB_TN_SC_BOX(	Iin_X1 := INT#02,
+					Iin_Y1 := INT#19,
+					Iin_X2 := INT#74,
+					Iin_Y2 := INT#21,
+					Iby_FILL := BYTE#16#20,
+					Iin_BORDER := INT#01, (* Double-Line Border *)
+					Iby_ATTR := BYTE#16#74, (* Weiss , Blau *)
+					Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Shadow für Rahmen von Parameter-Feld zeichnen *)
+	FB_TN_SC_ADD_SHADOW(Iin_X1 := INT#03,
+						Iin_Y1 := INT#20,
+						Iin_X2 := INT#75,
+						Iin_Y2 := INT#22,
+						Iin_OPTION := INT#00,
+						Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+	(* Alle Input-Controls initialisieren *)
+
+	Xus_TN_INPUT_CONTROL.bo_Enable := FALSE;
+
+	(* Initialisierung der Eingabe-Zeile *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Type := INT#01;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Y := INT#16;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_X := INT#09;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].by_Attr_mF := BYTE#16#72; (* Weiss, Grün *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].by_Attr_oF := BYTE#16#74; (* Weiss, Blau *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Cursor_Pos := INT#0;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Only_Num := FALSE;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Hidden := FALSE;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_Mask := '                                                                    ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_Data := Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_Mask;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_ToolTip := 'Eingabezeile aktiv       | SCROLL F1/F2/F3/F4 |';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Input_Option := INT#02;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Title_Y_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].in_Title_X_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].by_Title_Attr := BYTE#16#34;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Title_String := 'Befehl: ';
+
+	(* Initialisierung Selection Text *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Type := INT#03;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Y := INT#20;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_X := INT#18;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].by_Attr_mF := BYTE#16#17;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].by_Attr_oF := BYTE#16#47;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_ToolTip := ' aktuellen LOG-Level aendern     | press enter to select |';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Input_Option := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Title_Y_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].in_Title_X_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].by_Title_Attr := BYTE#16#34;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Title_String := ' LOG-Level ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_Mask := '  ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_Data := '01#02#03#04#05#06#07#08#09#10#11#12#13#14#15';
+
+	(* Initialisierung Selection Text *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].in_Type := INT#02;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].in_Y := INT#20;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].in_X := INT#37;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].by_Attr_mF := BYTE#16#17;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].by_Attr_oF := BYTE#16#47;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].st_Input_ToolTip := ' Optionline aktiv      | press space to select |';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].in_Input_Option := INT#02;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].in_Title_Y_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].in_Title_X_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].by_Title_Attr := BYTE#16#34;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].st_Title_String := '  Selektion  ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].st_Input_Mask := '     ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[3].st_Input_Data := '[ ]#[x]';
+
+	(* Initialisierung Selection Text *)
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].in_Type := INT#02;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].in_Y := INT#20;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].in_X := INT#58;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].by_Attr_mF := BYTE#16#17;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].by_Attr_oF := BYTE#16#47;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].st_Input_ToolTip := ' Selektion-Text aktiv      | press space to select |';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].in_Input_Option := INT#02;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].in_Title_Y_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].in_Title_X_Offset := INT#00;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].by_Title_Attr := BYTE#16#34;
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].st_Title_String := ' Betriebsart ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].st_Input_Mask := '               ';
+	Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[4].st_Input_Data := '<Auto>#<Hand>#<Einzelschritt>#<Stop>#<Restart>';
+
+	(* Control-Tool-Tip *)
+	Xus_TN_INPUT_CONTROL.in_ToolTip_Y := INT#23;
+	Xus_TN_INPUT_CONTROL.in_ToolTip_X := INT#00;
+	Xus_TN_INPUT_CONTROL.by_ToolTip_Attr := BYTE#16#37;
+	Xus_TN_INPUT_CONTROL.in_ToolTip_Size := INT#60;
+
+	(* Control-Verwaltung initialisieren *)
+	Xus_TN_INPUT_CONTROL.in_Count := INT#04;
+	Xus_TN_INPUT_CONTROL.bo_Enable := TRUE;
+	Xus_TN_INPUT_CONTROL.bo_Reset_Fokus := TRUE;
+
+	(* LOG-Viewport initialisieren und Neuzeichnen auslösen *)
+	us_LOG_VIEWPORT.COUNT := 13;
+	us_LOG_VIEWPORT.UPDATE := TRUE;
+
+	(* Menu initialisieren *)
+	Xus_TN_MENU.in_X := INT#00;
+	Xus_TN_MENU.in_Y := INT#00;
+	Xus_TN_MENU.by_Attr_mF := BYTE#16#33; (* yellow + brown *)
+	Xus_TN_MENU.by_Attr_oF := BYTE#16#0F; (* schwarz + grau *)
+	Xus_TN_MENU.st_MENU_TEXT := 'Datei#Bearbeiten#Ansicht#Ende';
+	Xus_TN_MENU.st_MENU_TEXT := CONCAT(Xus_TN_MENU.st_MENU_TEXT,'%oeffnen#-#speichern#beenden%loeschen#-#einfuegen#-#kopieren');
+	Xus_TN_MENU.st_MENU_TEXT := CONCAT(Xus_TN_MENU.st_MENU_TEXT,'%alles#detail#kopieren%Logout');
+	Xus_TN_MENU.bo_Create := TRUE;
+
+END_IF;
+
+IF (Xus_TN_SCREEN.in_Page_Number = INT#11) THEN
+
+	(* Eingabezeile: Befehl -> eingegebenen String übernehmen *)
+	IF (Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Entered = TRUE) THEN
+
+		Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].bo_Input_Entered := FALSE;
+		Gst_SysLog_Command := Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[1].st_Input_String;
+
+	END_IF;
+
+	(* Eingabezeile: LOG_LEVEL -> eingegebenen String übernehmen *)
+	IF (Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].bo_Input_Entered = TRUE) THEN
+
+		Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].bo_Input_Entered := FALSE;
+		Gst_SysLog_Command := CONCAT('LOG_LEVEL ',Xus_TN_INPUT_CONTROL.usa_TN_INPUT_CONTROL_DATA[2].st_Input_String);
+
+	END_IF;
+
+	(* LOG-Viewport - Scroll Funktionen *)
+	IF (Xus_TN_INPUT_CONTROL.in_Focus_at = INT#01) THEN
+		CASE BYTE_TO_INT(Xus_TN_SCREEN.by_Input_Exten_Code) OF
+		80: (* F1 Taste *)
+			us_LOG_VIEWPORT.MOVE_TO_X := 30001; (* Scrollen zum Listenanfang *)
+		81: (* F2 Taste *)
+			us_LOG_VIEWPORT.MOVE_TO_X := us_LOG_VIEWPORT.COUNT; (* Scrollen eine Seite nach oben *)
+		82: (* F3 Taste *)
+			us_LOG_VIEWPORT.MOVE_TO_X := 0 - us_LOG_VIEWPORT.COUNT;
+		83: (* F4 Taste *)
+			us_LOG_VIEWPORT.MOVE_TO_X := 30000; (* Scrollen zum Listenende *)
+		END_CASE;
+	END_IF;
+
+	(* LOG-Viewport Updaten *)
+	FB_LOG_VIEWPORT(LC := LOG_CL,
+					LV := us_LOG_VIEWPORT);
+
+	(* LOG-Viewport zeichnen *)
+	FB_TN_SC_VIEWPORT(	Xus_LOG_VIEWPORT := us_LOG_VIEWPORT,
+						Xus_LOG_CONTROL := LOG_CL,
+						Xus_TN_SCREEN := Xus_TN_SCREEN,
+						Iin_X := INT#01,
+						Iin_Y := INT#02,
+						Iin_Width := INT#76,
+						Idw_ATTR_1 := DWORD#16#64542434, (* Color + Level 3:2:1:0 *)
+						Idw_ATTR_2 := DWORD#16#94047414, (* Color + Level 7:6:5:4 *)
+						Iti_TIME := TIME#100ms);
+END_IF;
+
+IF LEN(Gst_SysLog_Command) > 0 THEN
+
+	(* Kommando echo *)
+	LOG_CL.NEW_MSG := CONCAT('ACTION: ',Gst_SysLog_Command);
+	LOG_CL.NEW_MSG_OPTION := 0;
+	FB_LOG_MESSAGE();
+
+	Gst_SysLog_Command := '';
+
+END_IF;]]></ST>
+    </Implementation>
+    <LineIds Name="TN_VISION_DEMO_1_1">
+      <LineId Id="23" Count="448" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
