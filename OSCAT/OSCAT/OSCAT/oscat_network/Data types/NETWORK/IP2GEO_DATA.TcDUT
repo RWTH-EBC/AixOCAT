@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="IP2GEO_DATA" Id="{f996a54c-2332-408d-b0f0-3dd36809aebe}">
+    <Declaration><![CDATA[TYPE IP2GEO_DATA :
+STRUCT
+	STATE : BOOL;
+	IP4 : DWORD;
+	COUNTRY_CODE : STRING(2);
+	COUNTRY_NAME : STRING(20);
+	REGION_CODE : STRING(2);
+	REGION_NAME : STRING(20);
+	CITY : STRING(20);
+	GEO_LATITUDE : REAL;
+	GEO_LONGITUDE : REAL;
+	TIME_ZONE_NAME : STRING(20);
+	GMT_OFFSET : INT;
+	IS_DST : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

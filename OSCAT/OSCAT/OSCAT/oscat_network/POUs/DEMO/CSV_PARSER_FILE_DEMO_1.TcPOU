@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="CSV_PARSER_FILE_DEMO_1" Id="{1bf70199-28ee-499d-ab41-27e4c67e00b3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM CSV_PARSER_FILE_DEMO_1
+VAR CONSTANT
+	 line_cnt : INT:=2;
+	 col_cnt : INT:=4;
+END_VAR
+VAR
+	CPF : CSV_PARSER_FILE;
+	FS : FILE_SERVER;
+	FSD : FILE_SERVER_DATA;
+	PT : NETWORK_BUFFER;
+	filename : STRING;
+	value :	STRING(STRING_LENGTH);
+	sep : BYTE;
+	step : INT;
+	result : BYTE;
+	offset : UDINT;
+	run : BYTE;
+	done : BOOL;
+	value_real : REAL;
+	cnt : INT;
+	line : INT;
+	idx : INT;
+	data : ARRAY [1..line_cnt, 1..col_cnt] OF REAL;
+
+	(*LOG_MSG : LOG_MSG;
+	_debug_enable : BOOL := TRUE;*)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Demo-Programm: CSV-Datei mittels Enumeration auswerten
+
+die groesse des arrays kann mittels konstanten line_cnt und col_cnt angepasst werden
+
+ ----- den nachfolgenden Textblock als datei "csv.txt" auf der sps ablegen ---
+10.45,20,30,40.8
+115,3450.2123,456,123.1
+---------------------------------------------------------------------------------*)
+
+CASE step OF
+
+00:	IF NOT done THEN
+		filename := 'csv.txt'; (* File_Daten einrichten *)
+		OFFSET := 0; (* Start Offset vorgeben *)
+		FSD.AUTO_CLOSE := T#0ms; (* kein Automatisches schliessen *)
+		sep :=44; (* Trennzeichen , *)
+		run := 1; (* Element suchen *)
+		cnt := 0;
+		step := 20;
+	END_IF;
+
+20:	IF run = 0 THEN (* kein Befehl mehr aktiv ? *)
+		(* ---------------------- Debug-Message ----------------------------*)
+		(*IF _debug_enable THEN
+			LOG_CL.NEW_MSG := 'CPFD: /value >~2< /offset ~3 /Run ~4 /Result ~5';
+			LOG_CL.PRINTF[2] := value;
+			LOG_CL.PRINTF[3] := UDINT_TO_STRING(OFFSET);
+			LOG_CL.PRINTF[4] := BYTE_TO_STRING(run);
+			LOG_CL.PRINTF[5] := BYTE_TO_STRING(result);
+			LOG_MSG();
+		END_IF;*)
+		(* -----------------------------------------------------------------*)
+
+		run := 1; (*  nächstes Element suchen  *)
+
+		IF result = 1 OR result = 2 THEN
+			(* automatische konvertierung in real ausführen *)
+			IF LEN(value) <= 20 THEN
+				value_real := FLOAT_TO_REAL(FLT:=value);
+			ELSE
+				value_real := 0.0;
+			END_IF;
+
+			cnt := cnt + 1;
+			IF cnt <= line_cnt * col_cnt THEN
+				line := (cnt / col_cnt) + 1;
+				idx := (cnt MOD col_cnt);
+				data[line,idx] := value_real; (* Daten in Array eintragen *)
+			END_IF;
+
+		ELSIF result = 10 THEN (* nichts mehr gefunden *)
+			run := 0; (* keine weitere INI Auswertung erwünscht *)
+			FSD.MODE := 5; (* Datei schliessen *)
+			step := 30;
+		END_IF;
+	END_IF;
+
+30:	IF FSD.MODE = 0 THEN (* Befehl Datei schliessen beendet *)
+		step := 0;
+		done := TRUE;
+	END_IF;
+
+END_CASE;
+
+CPF(SEP:=sep,FILENAME:=FILENAME,FSD:=FSD,RUN:=run,OFFSET:=OFFSET,VALUE:=value,PT:=PT,RESULT=>result); (* CSV PARAMETER FILE *)
+FS(FSD:=FSD,PT:=PT); (* FILE_SERVER *)]]></ST>
+    </Implementation>
+    <LineIds Name="CSV_PARSER_FILE_DEMO_1">
+      <LineId Id="28" Count="65" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

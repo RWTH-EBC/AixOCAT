@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="WORLD_WEATHER_ICON_OSCAT" Id="{b631e233-d083-45b3-8e9e-7db20b2ec311}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK WORLD_WEATHER_ICON_OSCAT
+VAR_IN_OUT
+	WW : WORLD_WEATHER_DATA;
+END_VAR
+VAR_INPUT
+	ACTIVATE : BOOL;
+END_VAR
+VAR
+	dat : ARRAY[0..41] OF INT := 0,14,12,9,9,0,7,7,0,2,2,3,3,1,0,0,17,4,4,3,3,1,0,0,17,2,2,3,3,1,0,0,17,2,4,3,3,1,0,0,17,0;
+	act_last : BOOL;
+	x : INT;
+	i : INT;
+END_VAR
+
+(*
+
+version 1.0		04. may. 2011
+programmer 		ks
+tested by			ks
+
+WORLD_WEATHER_ICON_OSCAT ändert die ICON Nummer auf den OSCAT-Standard um
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF ACTIVATE AND act_last = FALSE THEN
+	x := LIMIT(0,WW.CUR.WEATHER_ICON,41);
+	WW.CUR.WEATHER_ICON := dat[x];
+	FOR i := 0 TO 4 DO
+		x := LIMIT(0,WW.DAY[i].WEATHER_ICON,41);
+		WW.DAY[i].WEATHER_ICON := dat[x];
+	END_FOR;
+END_IF;
+act_last := ACTIVATE;
+
+(* revision history
+ks	04. may. 2011	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="WORLD_WEATHER_ICON_OSCAT">
+      <LineId Id="23" Count="13" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

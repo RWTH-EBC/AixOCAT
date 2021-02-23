@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="IP4_CHECK_1" Id="{5ebf3705-edc9-41a0-84e9-a187edaad26c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION IP4_CHECK_1 : BOOL
+VAR_INPUT
+	NIP : DWORD;
+	LIP : DWORD;
+	SM : DWORD;
+END_VAR
+
+
+(*
+version 1.0	4. mar 2008
+programmer 	hugo
+tested by		oscat
+
+IP4_CHECK testet ob eine Network IP und Local_IP im selben Subnet sind.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IP4_CHECK := (NIP AND sm) = (LIP AND SM);
+
+
+(* revision history
+hm		4. mar 2008	rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="IP4_CHECK_1">
+      <LineId Id="16" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

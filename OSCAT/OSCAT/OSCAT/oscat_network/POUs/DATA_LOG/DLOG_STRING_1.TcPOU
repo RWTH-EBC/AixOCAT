@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="DLOG_STRING_1" Id="{b325e4d3-feb8-4f16-a87f-bb7f6fc8482d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DLOG_STRING_1
+VAR_IN_OUT
+	X : DLOG_DATA;
+END_VAR
+VAR_INPUT
+	STR : STRING;
+	COLUMN : STRING(40);
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	UCB : UNI_CIRCULAR_BUFFER;
+	init : BOOL;
+	id : WORD;
+	str_last : STRING;
+END_VAR
+
+(*
+version 1.2		25. july. 2011
+programmer		ks
+tested by			ks
+
+DLOG_STRING legt den STRING im FIFO-RING-Buffer ab um diesen mit den Baustein DLOG_STORE_*  aufzuzeichnen
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT init THEN
+	init := TRUE;
+	X.ID_MAX := X.ID_MAX + 1;
+	id := WORD#16#0101; (* Quelltype STRING , Zieltype STRING *)
+END_IF;
+
+IF X.ADD_HEADER THEN
+	X.UCB.D_STRING := COLUMN;
+	X.UCB.D_HEAD := id;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Daten eintragen *)
+ELSIF X.ADD_DATA THEN
+	X.UCB.D_STRING := str_last;
+	X.UCB.D_HEAD := id;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Daten eintragen *)
+END_IF;
+str_last := STR;
+
+(* revision history
+ks	01. jan. 2011	rev 1.0
+	original version
+
+ks	17. may. 2011	rev 1.1
+	COLUMN STRING(40)
+
+ks	25. july.   2011	rev 1.2
+	neue head information
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DLOG_STRING_1">
+      <LineId Id="25" Count="28" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="TN_SC_WRITE_C" Id="{d9ec8780-6ce6-484a-a678-d8986b2f4ea9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TN_SC_WRITE_C
+VAR
+	FB_TN_SC_WRITE : TN_SC_WRITE;
+END_VAR
+VAR_INPUT
+	Iin_Y : INT;
+	Iin_X : INT;
+	Iby_ATTR : BYTE;
+	Ist_STRING : STRING;
+	Iin_LENGTH : INT;
+	Iin_OPTION : INT;
+END_VAR
+VAR_IN_OUT
+	Xus_TN_SCREEN : us_TN_SCREEN;
+END_VAR
+
+(*
+version 1.0		10. mai 2010
+programmer		ks
+tested by		ks
+
+TN_SC_WRITE_C korrigiert die Textlänge und schreibt den Text an die angegebenen Koordinate
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Text ausgeben *)
+FB_TN_SC_WRITE( Iin_Y := Iin_Y,
+				Iin_X := Iin_X,
+				Iby_ATTR := Iby_ATTR,
+				Ist_STRING := FIX(str:=Ist_STRING,L:=Iin_LENGTH,C:=BYTE#32,M:=Iin_OPTION),
+				Xus_TN_SCREEN := Xus_TN_SCREEN);
+
+(* revision history
+ks	10. mai. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TN_SC_WRITE_C">
+      <LineId Id="24" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

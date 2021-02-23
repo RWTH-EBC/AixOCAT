@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="LOG_CONTROL" Id="{32369933-c490-45ea-b0e6-2b02f2b09c66}">
+    <Declaration><![CDATA[TYPE LOG_CONTROL :
+STRUCT
+	NEW_MSG : STRING(LOG_SIZE); (* neue Nachricht für den Datenbuffer *)
+	NEW_MSG_OPTION : DWORD;
+	LEVEL : BYTE;
+	SIZE : INT := LOG_MAX; (* Anzahl der Strings im LOG_DATA *)
+	RESET : BOOL; (* Nachrichtenbuffer löschen *)
+	PRINTF : PRINTF_DATA; (* Array PRINTF Parameter *)
+	MSG : ARRAY [0..LOG_MAX] OF STRING(LOG_SIZE); (* Array Message *)
+	MSG_OPTION : ARRAY [0..LOG_MAX] OF DWORD; (* Array Options *)
+	UPDATE_COUNT : UINT; (* Updatezähler *)
+	IDX : INT; (* aktueller Nachrichten-Index *)
+	RING_MODE : BOOL; (* Bufferüberlauf erkannt *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

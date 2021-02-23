@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="VMAP_DATA" Id="{6c7fc717-0eb3-4dd1-b4cd-b587a3b83385}">
+    <Declaration><![CDATA[TYPE VMAP_DATA :
+STRUCT
+	FC : DWORD;
+	V_ADR : INT;
+	V_SIZE : INT;
+	P_ADR : INT;
+	TIME_OUT : TIME;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

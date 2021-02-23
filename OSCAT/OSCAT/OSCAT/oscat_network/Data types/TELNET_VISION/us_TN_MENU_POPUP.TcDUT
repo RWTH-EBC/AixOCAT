@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="us_TN_MENU_POPUP" Id="{ccd23c05-bfe7-405f-8cf3-a4c7a7f67140}">
+    <Declaration><![CDATA[TYPE us_TN_MENU_POPUP :
+STRUCT
+	st_Menu_Text: STRING(STRING_LENGTH); (* X Menue Texte *)
+	in_Menu_E_Count: INT; (* Menue Elemente Anzahl *)
+	in_X: INT; (* X Menue X-Position *)
+	in_Y: INT; (* X Menue Y-Position *)
+	in_Cols: INT; (* Menue Spaltenanzahl *)
+	in_Rows: INT; (* Menue Zeilenanzahl *)
+	in_Cur_Item: INT; (* X aktuelles Sub-Menue *)
+	by_Attr_mF: BYTE; (* X Text Attribute mit Fokus	*)
+	by_Attr_oF: BYTE; (* X Text Attribute ohne Fokus *)
+	by_Input_Exten_Code: BYTE; (* X Tastencode: Sondertasten *)
+	bo_Create: BOOL; (* X Popup-Menu erzeugen *)
+	bo_Destroy: BOOL; (* X Popup-Menu entfernen *)
+	bo_Update: BOOL; (* X Popup-Menu updaten *)
+	bo_Activ: BOOL; (*   Popup-Menu ist aktiv *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
