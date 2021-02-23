@@ -59,11 +59,11 @@ END_IF
 IF Y < LimLow AND NOT RST THEN
 	Y := LimLow;
 	LIM := TRUE;
-	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
+	fbIntegrate(RST:=TRUE, inStart:=((Y-yOffset)/Kp - e)*Ti);
 ELSIF Y > LimHigh AND NOT RST THEN
 	Y := LimHigh;
 	LIM := TRUE;
-	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
+	fbIntegrate(RST:=TRUE, inStart:=((Y-yOffset)/Kp - e)*Ti);
 ELSE
 	LIM := FALSE;	
 END_IF
