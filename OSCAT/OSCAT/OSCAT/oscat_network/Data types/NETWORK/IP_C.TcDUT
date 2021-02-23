@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="IP_C" Id="{a9106e0b-fd5c-4d8c-a513-59a58ae99047}">
+    <Declaration><![CDATA[TYPE IP_C :
+STRUCT
+	C_MODE : BYTE;						(*W Mode: TCP/UCP AKTIV/PASSIV                               *)
+	C_PORT : WORD;						(*W Portnummer                                               *)
+	C_IP : DWORD;						(*W IP-Adresse gepackt wwxxyyzz = www.xxx.yyy.zzz            *)
+	C_STATE : BYTE;						(*R Verbindungsstatus ON/OFF + Flanke ON/OFF                 *)
+	C_ENABLE : BOOL;					(*W Freigabe für Connect                                     *)
+	R_OBSERVE : BOOL;					(*W Empfang ueberwachen                                      *)
+	TIME_RESET : BOOL;					(*W Alle Timer ruecksetzen                                   *)
+	ERROR : DWORD;					(*R vvwwxxyy (vv = CON_ERROR, ww = SEN_ERROR, xx = REC_ERROR *)
+	FIFO : IP_FIFO_DATA;					(*I IP FIFO Struktur                                         *)
+	MAILBOX : ARRAY [1..16] OF BYTE;	(*I Mailbox: Datenbereich für Bausteindatenaustausch         *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

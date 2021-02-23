@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <DUT Name="E_ContTempSel" Id="{549c57b2-8c28-4573-b45b-84a53631c2b0}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ContTempSel :
+(
+	TempSup := 0,
+	TempRet := 1,
+	TempSupPrim := 2,
+	TempRetPrim := 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

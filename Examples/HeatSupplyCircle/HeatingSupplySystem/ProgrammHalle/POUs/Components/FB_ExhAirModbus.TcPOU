@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_ExhAirModbus" Id="{a1f22dcb-b8fd-44f1-a25d-afe2803e67d0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ExhAirModbus
+VAR_INPUT
+	nSet	:	WORD;	//Setpoint in hundreds of a percent
+END_VAR
+VAR_OUTPUT
+	nAct	:	Array[11..12] of WORD;	//Actual volume flow in m^3/h
+END_VAR
+VAR
+	Step	:	INT		:=	1;
+	ModAdr	:	BYTE	:=	11;
+	
+	nZwang	:	WORD;
+	bZwang	:	BOOL	:=	FALSE;
+	
+	fbModK6		:	ModbusRtuMaster_KL6x22B;
+	bModErr		:	BOOL;
+	ErrID		:	MODBUS_ERRORS;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Step OF
+	
+	1:	//start writing setpoint to nozzle
+		IF nSet = 65535 THEN
+			Step	:=	20;	//Control override
+			bZwang	:=	TRUE;
+		ELSE
+			IF bZwang THEN
+				Step :=	30;
+			ELSE
+				fbModK6.WriteSingleRegister(
+						UnitID		:=	ModAdr,	//Modbus address of slave
+						MBAddr		:=	0,	//Register address
+						Quantity	:=	1,	//Number of registers to be written
+						pMemoryAddr	:=	ADR(nSet),		//Pointer to write data
+						cbLength	:=	SIZEOF(nSet),	//Size of write data
+						Timeout		:=	T#5S,			//Time to wait for the slave to respond
+						Execute		:=	TRUE
+					);
+					Step	:=	2;
+			END_IF
+		END_IF
+		
+	2:	//finish writing process
+		fbModK6.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK6.BUSY THEN
+			Step	:=	3;	//go to next step when writing process has finished
+		END_IF
+		IF fbModK6.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	3:	//start reading volume flow
+		fbModK6.ReadRegs(
+			UnitID		:=	ModAdr,	//Modbus address of slave
+			MBAddr		:=	7,	//Register address
+			Quantity	:=	1,	//Number of registers to be read
+			pMemoryAddr	:=	ADR(nAct[ModAdr]),		//Pointer to read data
+			cbLength	:=	SIZEOF(nAct[ModAdr]),	//Size of read data
+			Timeout		:=	T#5S,			//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	4;
+		
+	4:	//finish reading process
+		fbModK6.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK6.BUSY THEN
+			Step	:=	5;	//go to next step when reading process has finished
+		END_IF
+		IF fbModK6.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	5:	//go to next nozzle or finish operation
+		ModAdr	:=	ModAdr+1;
+		IF ModAdr <= 12 THEN
+			Step	:=	1;	//start process for other actuator
+		ELSE
+			Step	:=	6;
+		END_IF
+		
+	6:	//prepare next operation
+		ModAdr	:=	11;
+		Step	:=	1;
+		
+	20: //Activate control override for actuator 1
+		nZwang	:=	2;
+		fbModK6.WriteSingleRegister(
+			UnitID		:=	11,	//Modbus address of slave
+			MBAddr		:=	1,	//Regster address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+			cbLength	:=	SIZEOF(nZwang),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	21;
+	
+	21:	//finish writing process
+		fbModK6.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK6.BUSY THEN
+			Step	:=	22;	//go to next step when writing process has finished
+		END_IF
+		IF fbModK6.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	22: //Activate control override for actuator 2		
+		nZwang	:=	2;
+		fbModK6.WriteSingleRegister(
+			UnitID		:=	12,	//Modbus address of slave
+			MBAddr		:=	1,	//Regster address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+			cbLength	:=	SIZEOF(nZwang),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	23;
+	
+	23:	//finish writing process
+		fbModK6.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK6.BUSY THEN
+			Step	:=	3;	//go to next step when writing process has finished
+		END_IF
+		IF fbModK6.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	30: //End control override for actuator 1
+		nZwang	:=	0;
+		fbModK6.WriteSingleRegister(
+			UnitID		:=	11,	//Modbus address of slave
+			MBAddr		:=	1,	//Register address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+			cbLength	:=	SIZEOF(nZwang),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	31;
+	
+	31:	//finish writing process
+		fbModK6.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK6.BUSY THEN
+			bZwang	:=	FALSE;
+			Step	:=	32;
+		END_IF
+		IF fbModK6.Error THEN
+			Step	:=	99;
+		END_IF
+		
+	32: //End control override for actuator 2
+		nZwang	:=	0;
+		fbModK6.WriteSingleRegister(
+			UnitID		:=	12,	//Modbus address of slave
+			MBAddr		:=	1,	//Register address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+			cbLength	:=	SIZEOF(nZwang),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+		Step	:=	33;
+	
+	33:	//finish writing process
+		fbModK6.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK6.BUSY THEN
+			bZwang	:=	FALSE;
+			Step	:=	1;	//start normal writing process
+		END_IF
+		IF fbModK6.Error THEN
+			Step	:=	99;
+		END_IF
+				
+	99:	//Error
+		
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ExhAirModbus">
+      <LineId Id="21" Count="9" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="43" Count="7" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="58" Count="6" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="78" Count="8" />
+      <LineId Id="98" Count="3" />
+      <LineId Id="103" Count="5" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="119" Count="9" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="131" Count="1" />
+      <LineId Id="134" Count="8" />
+      <LineId Id="154" Count="2" />
+      <LineId Id="166" Count="6" />
+      <LineId Id="246" Count="1" />
+      <LineId Id="227" Count="18" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="174" Count="2" />
+      <LineId Id="188" Count="9" />
+      <LineId Id="199" Count="1" />
+      <LineId Id="211" Count="7" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="251" Count="20" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="221" Count="1" />
+      <LineId Id="130" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

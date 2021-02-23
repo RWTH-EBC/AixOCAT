@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_VVS_JN" Id="{f6c35c88-71d7-4dd7-8a3a-d9826cd4e4bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VVS_JN
+VAR_INPUT
+	fSet	:	ARRAY [1..10] OF REAL;	//Volume flow setpoint for each nozzle
+	Init	:	BOOL;
+END_VAR
+VAR_OUTPUT
+	fAct	:	ARRAY [1..10] OF ST_JNData;	//Actual volume flows
+	InitSuccess	:	BOOL;
+END_VAR
+VAR	
+	Step	:	INT		:=	1;
+	i		:	USINT	:=	1;
+	
+	i_init	:	USINT	:=	1;
+	Step_init	:	INT	:=	1;
+	
+	//Volume flow in percentage
+	fVolFlowNorm	:	REAL	:=	3690;
+	fVolFlowMin		:	REAL;
+	fPercMax		:	WORD		:=	10000;
+	fPercMin		:	WORD		:=	1024;
+	fSetPerc		:	ARRAY[1..10] OF WORD;
+	indVolFlow		:	INT;
+	sErrMess		:	STRING;
+	
+	nZwang	:	WORD	:=	2;
+	bZwang	:	Array[1..10] of  BOOL;
+	
+	//Modbus masters
+	fbModK7		:	ModbusRtuMaster_KL6x22B;	//Nozzles 1,3,5,7 on terminal 7
+	fbModK8		:	ModbusRtuMaster_KL6x22B;	//Nozzles 2,4,6,8,9,10 on terminal 8
+	bModErr		:	BOOL;
+	ErrID		:	MODBUS_ERRORS;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Init THEN	//Remove control override
+	CASE Step_init OF
+	
+	1:
+	nZwang	:=	0;
+	IF (i_init=1) OR (i_init=3) OR (i_init=5) OR (i_init=7) THEN
+		fbModK7.WriteSingleRegister(
+			UnitID		:=	i_init,	//Modbus address of slave
+			MBAddr		:=	1,	//Register address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+			cbLength	:=	SIZEOF(nZwang),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+	ELSE
+		fbModK8.WriteSingleRegister(
+			UnitID		:=	i_init,	//Modbus address of slave
+			MBAddr		:=	1,	//Register address
+			Quantity	:=	1,	//Number of registers to be written
+			pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+			cbLength	:=	SIZEOF(nZwang),	//Size of write data
+			Timeout		:=	T#5S,				//Time to wait for the slave to respond
+			Execute		:=	TRUE
+		);
+	END_IF
+	Step_init	:=	2;
+	
+	2:
+	IF (i_init=1) OR (i_init=3) OR (i_init=5) OR (i_init=7) THEN
+		fbModK7.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK7.BUSY THEN
+			bZwang[i_init]	:=	FALSE;
+			i_init		:=	i_init	+ 1;
+			Step_init	:=	1;
+			IF i_init > 10 THEN
+				i_init	:=	1;
+				Step_init :=	1;
+				Init	:=	FALSE;
+				InitSuccess	:=	TRUE;
+			END_IF
+		END_IF
+	ELSE
+		fbModK8.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+		IF NOT fbModK8.BUSY THEN
+			bZwang[i_init]	:=	FALSE;
+			i_init		:=	i_init	+ 1;
+			Step_init	:=	1;
+			IF i_init > 10 THEN
+				i_init	:=	1;
+				Step_init :=	1;
+				Init	:=	FALSE;
+				InitSuccess	:=	TRUE;
+			END_IF
+		END_IF
+	END_IF
+
+	END_CASE
+ELSE
+
+	fVolFlowMin	:=	fVolFlowNorm*fPercMin/10000;
+	FOR indVolFlow := 1 TO 10 DO
+		fAct[indVolFlow].SetFlow	:=	fSet[indVolFlow];
+		fSetPerc[indVolFlow]	:=	REAL_TO_WORD(10000*(fSet[indVolFlow]-fVolFlowMin)/(fVolFlowNorm-fVolFlowMin)); //in hundreds of a percent between min and max
+		IF fSet[indVolFlow] = 0 THEN
+			sErrMess	:=	'Force Close';
+			fSetPerc[indVolFlow]	:=	65535;	//Zwangssteuerung aus
+		ELSIF fSetPerc[indVolFlow] > fPercMax THEN
+			sErrMess	:=	'Requested volume flow larger than maximum. Setting value to maximum.';
+			fSetPerc[indVolFlow]	:=	fPercMax;
+		ELSIF fSetPerc[indVolFlow] < 0 AND fSet[indVolFlow] <> 0 THEN
+			sErrMess	:=	'Requested volume flow smaller than minimum. Setting value to minimum.';
+			fSetPerc[indVolFlow]	:=	0;		
+		ELSE
+			sErrMess	:=	'';
+		END_IF
+		fAct[indVolFlow].SetPerc	:=	fSetPerc[indVolFlow];
+	END_FOR
+	
+	
+	CASE Step OF
+		
+		1:	//start writing setpoint to nozzle
+			IF fSetPerc[i] = 65535 THEN
+				Step	:=	20;	//Control override
+				bZwang[i]	:=	TRUE;
+			ELSE
+				IF bZwang[i] THEN
+					Step :=	30;
+				ELSE
+					IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+						fbModK7.WriteSingleRegister(
+							UnitID		:=	i,	//Modbus address of slave
+							MBAddr		:=	0,	//Register address
+							Quantity	:=	1,	//Number of registers to be written
+							pMemoryAddr	:=	ADR(fSetPerc[i]),		//Pointer to write data
+							cbLength	:=	SIZEOF(fSetPerc[i]),	//Size of write data
+							Timeout		:=	T#5S,				//Time to wait for the slave to respond
+							Execute		:=	TRUE
+						);
+					ELSE
+						fbModK8.WriteSingleRegister(
+							UnitID		:=	i,	//Modbus address of slave
+							MBAddr		:=	0,	//Register address
+							Quantity	:=	1,	//Number of registers to be written
+							pMemoryAddr	:=	ADR(fSetPerc[i]),		//Pointer to write data
+							cbLength	:=	SIZEOF(fSetPerc[i]),	//Size of write data
+							Timeout		:=	T#5S,				//Time to wait for the slave to respond
+							Execute		:=	TRUE
+						);
+					END_IF
+				Step	:=	2;
+				END_IF
+			END_IF
+			
+		2:	//finish writing process
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					Step	:=	3;	//go to next step when writing process has finished
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					Step	:=	3;	//go to next step when writing process has finished
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF
+			
+		3:	//start reading relative position
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	4,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].PosRel),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].PosRel),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			ELSE
+				fbModK8.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	4,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].PosRel),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].PosRel),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			END_IF
+			Step	:=	4;
+			
+		4:	//finish reading process
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					Step	:=	5;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					Step	:=	5;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF
+			
+		5:	//start reading absolute position
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	5,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].PosAbs),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].PosAbs),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			ELSE
+				fbModK8.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	5,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].PosAbs),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].PosAbs),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			END_IF
+			Step	:=	6;
+			
+		6:	//finish reading process
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					Step	:=	7;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					Step	:=	7;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF
+		
+		7:	//start reading relative volume flow
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	6,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].FlowRel),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].FlowRel),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			ELSE
+				fbModK8.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	6,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].FlowRel),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].FlowRel),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			END_IF
+			Step	:=	8;
+			
+		8:	//finish reading process
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					Step	:=	9;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					Step	:=	9;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF
+	
+		9:	//start reading absolute volume flow
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	7,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].FlowAbs),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].FlowAbs),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			ELSE
+				fbModK8.ReadRegs(
+					UnitID		:=	i,	//Modbus address of slave
+					MBAddr		:=	7,	//Register address
+					Quantity	:=	1,	//Number of registers to be read
+					pMemoryAddr	:=	ADR(fAct[i].FlowAbs),		//Pointer to read data
+					cbLength	:=	SIZEOF(fAct[i].FlowAbs),	//Size of read data
+					Timeout		:=	T#5S,				//Time to wait for the slave to respond
+					Execute		:=	TRUE
+				);
+			END_IF
+			Step	:=	10;
+			
+		10:	//finish reading process
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					Step	:=	11;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					Step	:=	11;	//go to next step when reading process has finished
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF	
+				
+		11:	//go to next nozzle or finish operation
+			i	:=	i+1;
+			IF i <= 10 THEN
+				Step	:=	1;	//start process for next nozzle
+			ELSE
+				Step	:=	12;
+			END_IF
+			
+		12:	//prepare next operation
+			i		:=	1;
+			Step	:=	1;
+			
+		20: //Control override
+			nZwang	:=	2;
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+					fbModK7.WriteSingleRegister(
+						UnitID		:=	i,	//Modbus address of slave
+						MBAddr		:=	1,	//Register address
+						Quantity	:=	1,	//Number of registers to be written
+						pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+						cbLength	:=	SIZEOF(nZwang),	//Size of write data
+						Timeout		:=	T#5S,				//Time to wait for the slave to respond
+						Execute		:=	TRUE
+					);
+				ELSE
+					fbModK8.WriteSingleRegister(
+						UnitID		:=	i,	//Modbus address of slave
+						MBAddr		:=	1,	//Register address
+						Quantity	:=	1,	//Number of registers to be written
+						pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+						cbLength	:=	SIZEOF(nZwang),	//Size of write data
+						Timeout		:=	T#5S,				//Time to wait for the slave to respond
+						Execute		:=	TRUE
+					);
+				END_IF
+				Step	:=	21;
+		
+			21:
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					Step	:=	3;	//go to next step when writing process has finished
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					Step	:=	3;	//go to next step when writing process has finished
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF
+			
+			30: //End control override
+				nZwang	:=	0;
+				IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+					fbModK7.WriteSingleRegister(
+						UnitID		:=	i,	//Modbus address of slave
+						MBAddr		:=	1,	//Register address
+						Quantity	:=	1,	//Number of registers to be written
+						pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+						cbLength	:=	SIZEOF(nZwang),	//Size of write data
+						Timeout		:=	T#5S,				//Time to wait for the slave to respond
+						Execute		:=	TRUE
+					);
+				ELSE
+					fbModK8.WriteSingleRegister(
+						UnitID		:=	i,	//Modbus address of slave
+						MBAddr		:=	1,	//Register address
+						Quantity	:=	1,	//Number of registers to be written
+						pMemoryAddr	:=	ADR(nZwang),		//Pointer to write data
+						cbLength	:=	SIZEOF(nZwang),	//Size of write data
+						Timeout		:=	T#5S,				//Time to wait for the slave to respond
+						Execute		:=	TRUE
+					);
+				END_IF
+				Step	:=	31;
+		
+			31:
+			IF (i=1) OR (i=3) OR (i=5) OR (i=7) THEN
+				fbModK7.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK7.BUSY THEN
+					bZwang[i]	:=	FALSE;
+					Step	:=	1;	//start normal writing process
+				END_IF
+				IF fbModK7.Error THEN
+					Step	:=	99;
+				END_IF
+			ELSE
+				fbModK8.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModK8.BUSY THEN
+					bZwang[i]	:=	FALSE;
+					Step	:=	1;	//start normal writing process
+				END_IF
+				IF fbModK8.Error THEN
+					Step	:=	99;
+				END_IF
+			END_IF
+			
+		99:	//Error
+			
+	END_CASE
+
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_VVS_JN">
+      <LineId Id="791" Count="0" />
+      <LineId Id="825" Count="0" />
+      <LineId Id="801" Count="0" />
+      <LineId Id="827" Count="0" />
+      <LineId Id="826" Count="0" />
+      <LineId Id="802" Count="19" />
+      <LineId Id="793" Count="0" />
+      <LineId Id="828" Count="2" />
+      <LineId Id="832" Count="3" />
+      <LineId Id="850" Count="0" />
+      <LineId Id="854" Count="0" />
+      <LineId Id="851" Count="0" />
+      <LineId Id="864" Count="1" />
+      <LineId Id="852" Count="0" />
+      <LineId Id="855" Count="0" />
+      <LineId Id="853" Count="0" />
+      <LineId Id="837" Count="0" />
+      <LineId Id="841" Count="2" />
+      <LineId Id="857" Count="3" />
+      <LineId Id="863" Count="0" />
+      <LineId Id="866" Count="0" />
+      <LineId Id="861" Count="1" />
+      <LineId Id="844" Count="0" />
+      <LineId Id="846" Count="0" />
+      <LineId Id="831" Count="0" />
+      <LineId Id="822" Count="1" />
+      <LineId Id="795" Count="0" />
+      <LineId Id="792" Count="0" />
+      <LineId Id="725" Count="0" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="530" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="758" Count="1" />
+      <LineId Id="757" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="333" Count="0" />
+      <LineId Id="335" Count="0" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="722" Count="0" />
+      <LineId Id="692" Count="0" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="531" Count="0" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="369" Count="0" />
+      <LineId Id="327" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="395" Count="1" />
+      <LineId Id="447" Count="0" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="446" Count="0" />
+      <LineId Id="448" Count="0" />
+      <LineId Id="450" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="194" Count="7" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="212" Count="7" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="451" Count="0" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="499" Count="0" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="202" Count="1" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="225" Count="2" />
+      <LineId Id="286" Count="2" />
+      <LineId Id="222" Count="1" />
+      <LineId Id="230" Count="1" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="290" Count="1" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="232" Count="1" />
+      <LineId Id="235" Count="6" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="243" Count="12" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="256" Count="1" />
+      <LineId Id="259" Count="4" />
+      <LineId Id="293" Count="1" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="264" Count="4" />
+      <LineId Id="296" Count="1" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="532" Count="0" />
+      <LineId Id="534" Count="40" />
+      <LineId Id="533" Count="0" />
+      <LineId Id="575" Count="0" />
+      <LineId Id="579" Count="40" />
+      <LineId Id="578" Count="0" />
+      <LineId Id="621" Count="41" />
+      <LineId Id="620" Count="0" />
+      <LineId Id="576" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="277" Count="1" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="279" Count="3" />
+      <LineId Id="400" Count="1" />
+      <LineId Id="497" Count="0" />
+      <LineId Id="403" Count="19" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="425" Count="2" />
+      <LineId Id="429" Count="15" />
+      <LineId Id="428" Count="0" />
+      <LineId Id="452" Count="0" />
+      <LineId Id="454" Count="0" />
+      <LineId Id="495" Count="1" />
+      <LineId Id="456" Count="25" />
+      <LineId Id="501" Count="0" />
+      <LineId Id="482" Count="7" />
+      <LineId Id="500" Count="0" />
+      <LineId Id="490" Count="4" />
+      <LineId Id="453" Count="0" />
+      <LineId Id="283" Count="1" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="798" Count="0" />
+      <LineId Id="797" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

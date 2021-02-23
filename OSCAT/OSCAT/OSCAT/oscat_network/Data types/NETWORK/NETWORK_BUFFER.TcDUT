@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="NETWORK_BUFFER" Id="{08baa488-b9ac-437e-b268-47f09d55837f}">
+    <Declaration><![CDATA[TYPE NETWORK_BUFFER :
+STRUCT
+	SIZE : UINT;
+	BUFFER : NW_BUF_LONG;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

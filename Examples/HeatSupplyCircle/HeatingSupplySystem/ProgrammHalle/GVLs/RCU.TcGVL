@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <GVL Name="RCU" Id="{6129dd9e-c037-4348-aa6d-d7ea2372ab30}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//Room control unit hall 1
+	H1fSet		:	REAL	:=	0;
+	H1Temp		:	REAL	:=	20;
+	
+	//Room control unit hall 2
+	H2bOn		:	BOOL	:=	TRUE;
+	H2fSet		:	REAL	:=	0;
+	H2Temp		:	REAL	:=	20;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

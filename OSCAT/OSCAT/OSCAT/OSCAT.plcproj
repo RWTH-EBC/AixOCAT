@@ -16,7 +16,7 @@
     <LibraryReferences>{fd789346-d196-4941-98dd-ac5ca986e047}</LibraryReferences>
     <CombineIds>false</CombineIds>
     <Released>false</Released>
-    <ProjectVersion>1.0.2</ProjectVersion>
+    <ProjectVersion>1.0.5</ProjectVersion>
     <Company>RWTH Aachen University - E.ON Energy Research Center</Company>
     <Title>OSCAT</Title>
     <Description>This library is based on the OSCAT library (http://www.oscat.de/)</Description>
@@ -25,6 +25,7 @@
     <AssemblyName>MyApplication</AssemblyName>-->
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="oscat_network" />
     <Folder Include="oscat_basic\Data types" />
     <Folder Include="oscat_basic\Global Variables" />
     <Folder Include="oscat_basic\POUs" />
@@ -64,6 +65,26 @@
     <Folder Include="oscat_building\POUs\HLK" />
     <Folder Include="oscat_building\POUs\Jalousie" />
     <Folder Include="oscat_building\POUs\Other" />
+    <Folder Include="oscat_network\Data types" />
+    <Folder Include="oscat_network\Data types\DATA_LOG" />
+    <Folder Include="oscat_network\Data types\FILE_SERVER" />
+    <Folder Include="oscat_network\Data types\NET_VAR" />
+    <Folder Include="oscat_network\Data types\NETWORK" />
+    <Folder Include="oscat_network\Data types\WEATHER" />
+    <Folder Include="oscat_network\Data types\TELNET_VISION" />
+    <Folder Include="oscat_network\Global Variables" />
+    <Folder Include="oscat_network\POUs" />
+    <Folder Include="oscat_network\POUs\CO_NVERT" />
+    <Folder Include="oscat_network\POUs\DATA_LOG" />
+    <Folder Include="oscat_network\POUs\DEMO" />
+    <Folder Include="oscat_network\POUs\DRIVER" />
+    <Folder Include="oscat_network\POUs\FILE" />
+    <Folder Include="oscat_network\POUs\HARDWARE" />
+    <Folder Include="oscat_network\POUs\NETWORK" />
+    <Folder Include="oscat_network\POUs\NET_VAR" />
+    <Folder Include="oscat_network\POUs\OTHER" />
+    <Folder Include="oscat_network\POUs\TELNET_VISION" />
+    <Folder Include="oscat_network\POUs\WEATHER" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="oscat_basic\Data types\CALENDAR.TcDUT">
@@ -502,6 +523,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY_200.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\DELAY_4.TcPOU">
@@ -1927,6 +1951,561 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_building\POUs\Other\BUILDING_VERSION.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\DATA_LOG\DLOG_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\DATA_LOG\LOG_CONTROL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\DATA_LOG\MYSQL_COM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\DATA_LOG\PRINTF_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\DATA_LOG\UNI_CIRCULAR_BUFFER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\DATA_LOG\us_LOG_VIEWPORT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\FILE_SERVER\FILE_PATH_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\FILE_SERVER\FILE_SERVER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\IP2GEO_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\IP_C.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\IP_FIFO_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\NETWORK_BUFFER.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\NETWORK_BUFFER_SHORT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\NW_BUF_LONG.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\NW_BUF_SHORT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\URL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\VMAP_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NETWORK\XML_CONTROL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\NET_VAR\NET_VAR_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\TELNET_VISION\us_TN_INPUT_CONTROL.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\TELNET_VISION\us_TN_INPUT_CONTROL_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\TELNET_VISION\us_TN_MENU.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\TELNET_VISION\us_TN_MENU_POPUP.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\TELNET_VISION\us_TN_SCREEN.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\WEATHER\WORLD_WEATHER_CUR.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\WEATHER\WORLD_WEATHER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\WEATHER\WORLD_WEATHER_DAY.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Data types\WEATHER\YAHOO_WEATHER_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Global Variables\Constants_1.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\Global Variables\Globale_Variablen_1.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\BASE64_DECODE_STREAM_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\BASE64_DECODE_STR_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\BASE64_ENCODE_STREAM_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\BASE64_ENCODE_STR_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\HTML_DECODE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\HTML_ENCODE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\IP4_CHECK_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\IP4_DECODE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\IP4_TO_STRING_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\IS_IP4_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\IS_URLCHR_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\MD5_AUX_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\MD5_CRAM_AUTH_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\MD5_STREAM_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\MD5_STR_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\MD5_TO_STRH_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\RC4_CRYPT_STREAM_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\SHA1_STREAM_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\SHA1_STR_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\SHA1_TO_STRH_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\STRING_TO_URL_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\URL_DECODE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\URL_ENCODE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\CO_NVERT\URL_TO_STRING_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_BOOL_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_DINT_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_DT_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_FILE_TO_FTP_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_FILE_TO_SMTP_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_REAL_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_STORE_FILE_CSV_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_STORE_FILE_HTML_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_STORE_FILE_XML_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_STORE_RRD_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\DLOG_STRING_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DATA_LOG\UNI_CIRCULAR_BUFFER_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\BASE64_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\CSV_PARSER_BUF_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\CSV_PARSER_FILE_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DLOG_FILE_CSV_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DLOG_FILE_CSV_FTP_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DLOG_FILE_CSV_SMTP_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DLOG_FILE_HTML_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DLOG_FILE_XML_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DLOG_RRD_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DNS_DYN_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DNS_REV_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\DNS_SNTP_SYSLOG_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\FILE_BLOCK_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\FTP_CLIENT_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\GET_WAN_IP_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\HTTP_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\INI_PARSER_BUF_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\INI_PARSER_FILE_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\IP2GEO_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\IRTRANS_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\MB_CLIENT_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\MB_SERVER_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\MD5_CRAM_AUTH_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\NET_VAR_MASTER_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\NET_VAR_SLAVE_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\RC4_CRYPT_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\SHA1_MD5_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\SMTP_CLIENT_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\SPIDER_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\TELNET_LOG_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\TELNET_PRINT_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\TN_VISION_DEMO_1_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\TN_VISION_DEMO_2_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\WORLD_WEATHER_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DEMO\YAHOO_WEATHER_DEMO_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_DECODE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_RCV_1_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_RCV_4_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_RCV_8_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_SERVER_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_SND_1_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_SND_4_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\DRIVER\IRTRANS_SND_8_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\FILE\CSV_PARSER_BUF_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\FILE\CSV_PARSER_FILE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\FILE\FILE_BLOCK_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\FILE\FILE_PATH_SPLIT_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\FILE\INI_PARSER_BUF_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\FILE\INI_PARSER_FILE_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\HARDWARE\FILE_SERVER_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\HARDWARE\IP_CONTROL2_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\HARDWARE\IP_CONTROL_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\HARDWARE\IP_CONTROL_RESET_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\DNS_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\DNS_DYN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\DNS_REV_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\FTP_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\GET_WAN_IP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\HTTP_GET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\IP2GEO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\IP_FIFO.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\LOG_MSG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\LOG_VIEWPORT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\MB_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\MB_SERVER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\MB_VMAP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\PRINT_SF.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\READ_HTTP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\SMTP_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\SNTP_CLIENT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\SNTP_SERVER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\SPIDER_ACCESS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\SYS_LOG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\TELNET_LOG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\TELNET_PRINT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NETWORK\XML_READER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_BOOL8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_BUFFER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_DWORD8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_REAL8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_STRING.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\NET_VAR\NET_VAR_X8.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\OTHER\ELEMENT_COUNT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\OTHER\ELEMENT_GET.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\OTHER\NETWORK_VERSION.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_FRAMEWORK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_INPUT_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_INPUT_EDIT_LINE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_INPUT_MENU_BAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_INPUT_MENU_POPUP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_INPUT_SELECT_POPUP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_INPUT_SELECT_TEXT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_RECEIVE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_ADD_SHADOW.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_AREA_RESTORE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_AREA_SAVE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_BOX.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_FILL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_LINE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_READ_ATTR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_READ_CHAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_SHADOW_ATTR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_VIEWPORT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_WRITE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_WRITE_ATTR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_WRITE_C.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_WRITE_CHAR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_WRITE_EOS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_XY2_ERROR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SC_XY_ERROR.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\TELNET_VISION\TN_SEND_ROWS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\MOON_PHASE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\WORLD_WEATHER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\WORLD_WEATHER_DESC_GE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\WORLD_WEATHER_ICON_OSCAT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\YAHOO_WEATHER.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\YAHOO_WEATHER_DESC_GE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_network\POUs\WEATHER\YAHOO_WEATHER_ICON_OSCAT.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

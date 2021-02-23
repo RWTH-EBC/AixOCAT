@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <GVL Name="Constants_1" Id="{e19e7208-5db8-45b3-afd3-dd181d8a7717}">
+    <Declaration><![CDATA[{attribute 'Tc2GvlVarNames'}
+VAR_GLOBAL CONSTANT
+	NETWORK_BUFFER_LONG_SIZE : UINT := 4095;
+	NETWORK_BUFFER_SHORT_SIZE : UINT := 1407;
+	LOG_MAX : INT := 40;
+	LOG_SIZE : INT := 80;
+	ELEMENT_LENGTH : INT := 250;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

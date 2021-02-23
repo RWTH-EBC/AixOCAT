@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_PumpBACnet2" Id="{165c6dd0-ac9a-42e2-8614-3ed8dafaefcb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PumpBACnet2 IMPLEMENTS I_Pump
+VAR_INPUT CONSTANT
+	fbClient : FB_BACnet_Client;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Properties
+	eControlMode : E_PumpControlMode := E_PumpControlMode.OFF;
+	bError : BOOL;
+	bOperating : BOOL;
+	fPowerRating : REAL;
+	fPressure : REAL;
+	bSetOn : BOOL := FALSE;
+	fSetpoint : REAL := 0;
+	fSpeed : REAL;
+	fVolumeFlow : REAL;	
+
+	//BACnet parameters
+	nPriority : BYTE := 12;
+	
+	//BACnet Mapping
+	ContModeBAC		:	FB_BACnetRM_MO := (Client := fbClient, nObjectInstance :=0);		//Pump Control mode (speed, var/const pressure)
+	ErrorBAC		:	FB_BACnetRM_BI := (Client := fbClient, nObjectInstance :=13);		//Error
+	OperatingBAC	:	FB_BACnetRM_BI := (Client := fbClient, nObjectInstance :=10);		//Operation active/inactive
+	PowerRatingBAC	:	FB_BACnetRM_AI := (Client := fbClient, nObjectInstance :=4);		//Current power
+	PressureBAC		:	FB_BACnetRM_AI := (Client := fbClient, nObjectInstance :=3);		//Estimated pressure difference
+	SetpointBAC		:	FB_BACnetRM_AO := (Client := fbClient, nObjectInstance :=0);		//Setpoint
+	SetOnBAC		:	FB_BACnetRM_BO := (Client := fbClient, nObjectInstance :=0);		//Turn on/off
+	SpeedBAC		:	FB_BACnetRM_AI := (Client := fbClient, nObjectInstance :=1);		//Estimated speed
+	VolumeFlowBAC	:	FB_BACnetRM_AI := (Client := fbClient, nObjectInstance :=2);		//Estimated volume flow
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ControlMode" Id="{5c3b4501-6c3e-4417-b93b-fd3c7ff3ea59}">
+      <Declaration><![CDATA[PROPERTY ControlMode : E_PumpControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{e302f8c0-109c-4c40-851f-660acf7b9cad}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ControlMode := THIS^.eControlMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9d554b36-8089-4c0b-8b9d-64d4ce524955}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.eControlMode := ControlMode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{e5122c8e-94ab-4cba-ae19-ae45af740a89}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{cc535b96-e743-423e-b470-607a2f3049cc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6458b08e-0e8c-4e48-a1d6-12dfeffb0857}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Operating" Id="{4dc4cd74-ff44-4c4d-ae00-0059778e3b78}">
+      <Declaration><![CDATA[PROPERTY Operating : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{9d18471a-002f-4da4-bdb9-a2ff14fd88ea}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Operating := THIS^.bOperating;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{76eed797-f462-4cc4-8ee7-189919e0df46}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bOperating := Operating;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="PowerRating" Id="{fd9c959a-95fc-4efa-bf87-37672456dc97}">
+      <Declaration><![CDATA[PROPERTY PowerRating : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{7cc7fa91-301e-458a-8eae-fb4b54c237bb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[PowerRating := THIS^.fPowerRating;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e2fa6912-5b3c-43b8-a28f-cd65a1f5169e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fPowerRating := PowerRating;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Pressure" Id="{2f49c6af-8df9-4a62-a963-9bc0e13a5e56}">
+      <Declaration><![CDATA[PROPERTY Pressure : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{2dc70fd3-df75-4433-9ff8-17f4ea0196c6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Pressure := THIS^.fPressure;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6e692c93-cc69-406b-a9b0-4b53b0568d4a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fPressure := Pressure;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{28d90e17-304c-4e46-b3c3-3ac8fce7188c}">
+      <Declaration><![CDATA[METHOD Run
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Run BACnet Client
+(*fbClient();
+
+//Read BACnet values
+ErrorBAC(bPresentValue=>bError);
+OperatingBAC(bPresentValue=>bOperating);
+PowerRatingBAC(fPresentValue=>fPowerRating);
+PressureBAC(fPresentValue=>fPressure);
+SpeedBAC(fPresentValue=>fSpeed);
+VolumeFlowBAC(fPresentValue=>fVolumeFlow);
+
+//Write BACnet values
+//Set pump values depending on defined ControlMode
+IF eControlMode = E_PumpControlMode.OFF THEN
+	//Set pump to off
+	SetOnBAC(bPv:=FALSE,bEnablePv:=TRUE,ePriority:=nPriority);
+	ContModeBAC(nPv:=eControlMode,bEnablePv:=TRUE,ePriority:=nPriority);
+	SetpointBAC(fPv:=0,bEnablePv:=TRUE,ePriority:=nPriority);
+ELSIF eControlMode = E_PumpControlMode.NONE THEN
+	//Release
+	SetOnBAC(bNullPv:=TRUE,ePriority:=nPriority); 	//Clear entry
+	ContModeBAC(bNullPv:=TRUE,ePriority:=nPriority); //Clear entry
+	SetpointBAC(bNullPv:=TRUE,ePriority:=nPriority); //Clear entry
+ELSE
+	//Set pump to on and set setpoint
+	SetOnBAC(bPV:=TRUE,bEnablePv:=TRUE,ePriority:=nPriority);
+	ContModeBAC(nPV:=eControlMode,bEnablePv:=TRUE,ePriority:=nPriority);
+	SetpointBAC(fPV:=fSetpoint,bEnablePv:=TRUE,ePriority:=nPriority);
+END_IF
+
+*)]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SetOn" Id="{01a277b9-2e24-41b1-8ccd-9da4fa529386}">
+      <Declaration><![CDATA[PROPERTY SetOn : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{4e844d26-9fae-486c-9cb3-2d7d92db1f75}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SetOn := THIS^.bSetOn;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{42046a70-5cf9-4c45-ad02-f660564abfdd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bSetOn := SetOn;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Setpoint" Id="{5f5aac7c-29c2-43fd-bc1e-5660741af6e4}">
+      <Declaration><![CDATA[PROPERTY Setpoint : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{9ac4a73d-c19f-4730-b934-7926dc5c2380}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Setpoint := THIS^.fSetpoint;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{5274a693-3a8d-415a-bdcd-a16f9d7fc971}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fSetpoint := Setpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Speed" Id="{ebe85331-e5bb-45bb-b572-320627f2bf26}">
+      <Declaration><![CDATA[PROPERTY Speed : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{5c3a3e93-c9f8-42ea-904a-7168b79f5ccc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Speed := THIS^.fSpeed;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{43a3fcf9-5680-4333-bd26-91c9a1baebab}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fSpeed := Speed;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="VolumeFlow" Id="{ac0e2c43-67a7-493d-b60d-ad1224890df9}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{4a44909c-da5f-4859-8d1d-8771c6c92698}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[VolumeFlow := THIS^.fVolumeFlow;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9cb5baa2-dbf1-4b5c-8af5-31d6839add17}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fVolumeFlow := VolumeFlow;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_PumpBACnet2">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.ControlMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.ControlMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Operating.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Operating.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.PowerRating.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.PowerRating.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Pressure.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Pressure.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Run">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="14" Count="2" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="5" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="42" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.SetOn.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.SetOn.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Setpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Setpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Speed.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.Speed.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.VolumeFlow.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet2.VolumeFlow.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

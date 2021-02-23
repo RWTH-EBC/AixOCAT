@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FB_PumpWiloIF" Id="{bfc48d86-882f-4851-bde4-ee00fa243df4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PumpWiloIF
+VAR_INPUT
+	SetPoint 	AT %Q*	: REAL;  // Set point in %, depending on control mode; Connect with BacNet 'Bus Setpoint / Outputs / PresentValue'
+END_VAR
+VAR_OUTPUT
+	mode		AT %I*	: UDINT;// Actual modes: n-c (const_speed) = 1, dp_c = 6, dp-v = 7; Connect with BacNet 'System Control Mode / Inputs / PresentValue'
+	Speed 		AT %I*	: REAL;	// Actual Speed; Connect with 'Speed / Inputs / PresentValue'
+	EstimFlow	AT %I*	: REAL;	// Estimated Flow; Connect with 'Estimated Flow / Inputs / PresentValue'
+	dp			AT %I*	: REAL; // (Estimated) Pressure; Connect with '(Estimated) Pressure / Inputs / PresentValue'
+	T			AT %I*	: REAL; // Medium Temperature; Connect with Bacnet 'Medium Temperature / Inputs /
+	Operating	AT %I*	: WORD;	// Pump Operating; Connect with 'Status Pump is operating / Inputs / PresentValue'
+	Power		AT %I*	: REAL;	//Power consumption; 'Power Rating / Inputs / PresentValue'
+	Error		AT %I*	: WORD;	// Connect with 'Status Error Present / Inputs / PresentValue'
+END_VAR
+VAR	
+	pumpOnSet	AT %Q*  : BOOL;  // True if pump is set on; Connect with BacNet 'Bus Command Pump on / Outputs / PresentValue'
+	modeSet	 	AT %Q*	: UDINT; // modes: n-c (const_speed) = 1, dp_c = 6, dp-v = 7; Connect with BacNet 'Bus Control Mode / Outputs / PresentValue'
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="dp_c" Id="{d2f0e947-d9e6-4e6a-8c6b-9db7dbfbfa66}">
+      <Declaration><![CDATA[METHOD dp_c : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[modeSet := 6;
+pumpOnSet := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="dp_v" Id="{ac533b2d-e775-4277-9eb9-0e2ce88e930a}">
+      <Declaration><![CDATA[METHOD dp_v : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[modeSet := 7;
+pumpOnSet := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="n_c" Id="{b0b898e9-0ef2-41c6-afd3-899f9f24883d}">
+      <Declaration><![CDATA[METHOD n_c : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[modeSet := 1;
+pumpOnSet := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Off" Id="{e03a8fe0-1ae2-4ea1-a38d-006b4e6bf768}">
+      <Declaration><![CDATA[METHOD Off : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pumpOnSet := False;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_PumpWiloIF">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpWiloIF.dp_c">
+      <LineId Id="9" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpWiloIF.dp_v">
+      <LineId Id="9" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpWiloIF.n_c">
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpWiloIF.Off">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

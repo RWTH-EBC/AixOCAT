@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="DLOG_DT_1" Id="{72bd90d4-7eb3-493e-a76f-a1eb1b98692b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DLOG_DT_1
+VAR_IN_OUT
+	X : DLOG_DATA;
+END_VAR
+VAR_INPUT
+	FMT : STRING := '#A-#D-#H #N:#R:#T';
+	COLUMN : STRING(40);
+	DELTA : UDINT;
+END_VAR
+
+VAR_OUTPUT
+END_VAR
+VAR
+	UCB : UNI_CIRCULAR_BUFFER;
+	init : BOOL;
+	id : WORD;
+	delta_last : DT;
+END_VAR
+
+(*
+version 1.2		25. july. 2011
+programmer		ks
+tested by			ks
+
+DLOG_DT legt den formatierten DT String im FIFO-RING-Buffer ab um diesen mit den Baustein DLOG_STORE_*  aufzuzeichnen
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT init THEN
+	init := TRUE;
+	X.ID_MAX := X.ID_MAX + 1;
+	id := WORD#16#0D01; (* Quelltype DT , Zieltype STRING *)
+END_IF;
+
+IF X.ADD_HEADER THEN
+	X.UCB.D_STRING := COLUMN;
+	X.UCB.D_HEAD := id;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Daten eintragen *)
+ELSIF X.ADD_DATA THEN
+	X.UCB.D_STRING := DT_TO_STRF(DTI:=X.DTI,MS:=0,FMT:=FMT,LANG:=0);
+	X.UCB.D_HEAD := id;
+	X.UCB.D_MODE := 1;
+	UCB(DATA:=X.UCB); (* Daten eintragen *)
+	delta_last := X.DTI;
+ELSIF DELTA <> 0 THEN
+	IF DT_TO_UDINT(X.DTI) >= (DT_TO_UDINT(delta_last) + DELTA) THEN
+		X.ADD_DATA_REQ := TRUE;
+		delta_last := X.DTI;
+	END_IF;
+END_IF;
+
+(* revision history
+ks	01. jan. 2011	rev 1.0
+	original version
+
+ks	17. may. 2011	rev 1.1
+	COLUMN STRING(40), delta
+
+ks	25. july.   2011	rev 1.2
+	neue head information
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="DLOG_DT_1">
+      <LineId Id="27" Count="33" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

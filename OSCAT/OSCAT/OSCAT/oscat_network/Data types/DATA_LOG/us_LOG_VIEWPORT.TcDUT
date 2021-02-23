@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="us_LOG_VIEWPORT" Id="{f1df9103-992a-48cc-8638-64ccb26961e0}">
+    <Declaration><![CDATA[TYPE us_LOG_VIEWPORT :
+STRUCT
+	LINE_ARRAY : ARRAY [1..40] OF INT;
+	COUNT : INT; (* Anzahl der sichtbaren Nachtrichten *)
+	UPDATE_COUNT : UINT; (* Updatezähler *)
+	MOVE_TO_X : INT; (* Steuerung der Nachrichtenanzeige *)
+	UPDATE : BOOL; (* Daten wurden geändert -> neuzeichnen *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="TN_SC_READ_CHAR" Id="{e000c181-0e4c-4b19-ad99-6fc2bf352104}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TN_SC_READ_CHAR
+VAR
+	in_Offset : INT;
+END_VAR
+VAR_INPUT
+	Iin_Y : INT;
+	Iin_X : INT;
+END_VAR
+VAR_OUTPUT
+	Oby_CHAR : BYTE;
+END_VAR
+VAR_IN_OUT
+	Xus_TN_SCREEN : us_TN_SCREEN;
+END_VAR
+
+(*
+version 1.0		10. mai 2010
+programmer		ks
+tested by		ks
+
+TN_SC_READ_CHAR gibt das Zeichen einer Koordinate vom Bildschirm aus
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF TN_SC_XY_ERROR(Iin_X,Iin_Y) THEN RETURN; END_IF;
+in_Offset := (Iin_Y * 80) + Iin_X;
+Oby_CHAR := Xus_TN_SCREEN.bya_CHAR[in_Offset]; (* Charakter auslesen *)
+
+(* revision history
+ks	10. mai. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="TN_SC_READ_CHAR">
+      <LineId Id="23" Count="7" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

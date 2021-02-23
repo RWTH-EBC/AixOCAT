@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="IS_IP4_1" Id="{fd39df6d-444b-475e-a0f5-12d56b7b7410}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION IS_IP4_1 : BOOL
+VAR_INPUT
+	str : STRING;
+END_VAR
+
+
+(*
+version 1.1	10. mar 2009
+programmer 	kurt
+tested by		hugo
+
+IS_IP4 testet ob ein string eine gültige IPv4 Adresse enthält.
+
+*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IS_IP4 := COUNT_CHAR(str, 46) = 3;
+
+
+(* revision history
+hm	1. mar. 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1
+	new code
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="IS_IP4_1">
+      <LineId Id="14" Count="10" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

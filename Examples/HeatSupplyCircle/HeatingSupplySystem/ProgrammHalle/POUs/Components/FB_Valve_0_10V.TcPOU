@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_Valve_0_10V" Id="{1e12148b-6fe4-4147-8e61-fbd5c548397a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve_0_10V IMPLEMENTS I_Valve
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+		//Properties
+	bError : BOOL := FALSE;
+	fOpeningActual : REAL;
+	fOpeningSetpoint : REAL := 0;
+	//Raw values
+	nOpeningSet AT %Q* : INT;
+	nOpeningAct AT %I* : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{2fed5cb7-e454-4e37-8408-6f50394c5994}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{27aff8c1-86ec-4cf2-b6ca-d0f91c1153dd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{90539a20-3ee7-40c1-8025-084bf51c696a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpeningActual" Id="{e6bcae82-10a5-4eb7-a50c-69eb697d2e4e}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY OpeningActual : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{57218f8f-c451-492f-92ac-205af2d952b0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpeningActual := THIS^.fOpeningActual;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b28651fa-d17d-4be8-a0e7-7daf35ea411a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fOpeningActual := OpeningActual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpeningSetpoint" Id="{7646cfd6-c0a4-408b-9d4e-2b2eae0d8ef1}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY OpeningSetpoint : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{f304f1c1-d23b-45de-b1d6-ce2625ccbe72}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpeningSetpoint := THIS^.fOpeningSetpoint;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fae38abd-5d53-43a9-ad6b-25320fa19904}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fOpeningSetpoint := OpeningSetpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{e66636cb-76a0-483f-9013-19ae960a28da}">
+      <Declaration><![CDATA[{warning 'Methodenimplementierung hinzufügen'}
+METHOD Run
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Read feedback for opening position
+fOpeningActual := FC_Voltage0_10Raw_TO_Percentage(nOpeningAct);
+
+//Write setpoint for opening position
+nOpeningSet := FC_Percentage_TO_Voltage0_10Raw(fOpeningSetpoint);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Valve_0_10V">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.OpeningActual.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.OpeningActual.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.OpeningSetpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.OpeningSetpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_0_10V.Run">
+      <LineId Id="5" Count="3" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

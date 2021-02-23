@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="FB_PID" Id="{9148ddd9-4f6e-4c4f-98a6-9a43459fe84e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PID
 VAR_INPUT
@@ -12,6 +12,7 @@ VAR_INPUT
 		
 	LimLow	:	REAL; 	// lower limit of output
 	LimHigh	: 	REAL; 	// upper limit of output
+	StartY	:	REAL;	// Y to use as offset
 	
 	bReverseActing 	:	BOOL;	// True for reverse acting
 	
@@ -23,60 +24,71 @@ VAR_OUTPUT
 END_VAR
 VAR
 	e			:  REAL;		// control difference
-		
+	yOffset		:  REAL	:= 0;		// constant offset used on Y	
 	fbDerivative :  FT_DERIV; 	// function block for derivation
 	fbIntegrate  :	FB_Integrate;	// function block for integration
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//determine direct or reverse acting
+      <ST><![CDATA[IF StartY <> yOffset THEN
+	yOffset := StartY;
+	IF RST THEN
+		fbIntegrate(RST:=TRUE, inStart:=0);
+	END_IF
+END_IF
+
+//determine direct or reverse acting
 IF bReverseActing THEN
 	e := xAct - xSet;
 ELSE
 	e := xSet - xAct;	
 END_IF;
 
-
-
-
 IF Ti>0 THEN
 	//derivative and integral calculation
 	fbDerivative(in:=e,run:=TRUE);
 	fbIntegrate(run:= TRUE, in := e, RST:=RST);
-	Y := Kp * (e + 1/Ti * fbIntegrate.out + Td * fbDerivative.out);
+	Y := Kp * (e + 1/Ti * fbIntegrate.out + Td * fbDerivative.out) + yOffset;
 ELSE
 	//derivative  calculation
 	fbDerivative(in:=e,run:=TRUE);
-	Y := Kp * (e + Td * fbDerivative.out);		
+	Y := Kp * (e + Td * fbDerivative.out) + yOffset;
 END_IF
 
-
 //Check limits and Anti-wind up
-IF Y < LimLow  THEN
+IF Y < LimLow AND NOT RST THEN
 	Y := LimLow;
 	LIM := TRUE;
-	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
-ELSIF Y > LimHigh THEN
+	fbIntegrate(RST:=TRUE, inStart:=((Y-yOffset)/Kp - e)*Ti);
+ELSIF Y > LimHigh AND NOT RST THEN
 	Y := LimHigh;
 	LIM := TRUE;
-	fbIntegrate(RST:=TRUE, inStart:=(Y/Kp - e)*Ti);
+	fbIntegrate(RST:=TRUE, inStart:=((Y-yOffset)/Kp - e)*Ti);
 ELSE
 	LIM := FALSE;	
 END_IF
 
 (*
+pos 23.10.2020:
+- no anti-wind up on reset
+- possibility to provide an offset value for Y
+
 aku 24.09.2019: first implementation
 *)]]></ST>
     </Implementation>
     <LineIds Name="FB_PID">
+      <LineId Id="205" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="206" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="36" Count="1" />
       <LineId Id="35" Count="0" />
-      <LineId Id="73" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="75" Count="0" />
       <LineId Id="77" Count="0" />
       <LineId Id="76" Count="0" />
       <LineId Id="106" Count="0" />
@@ -86,7 +98,6 @@ aku 24.09.2019: first implementation
       <LineId Id="107" Count="1" />
       <LineId Id="83" Count="0" />
       <LineId Id="79" Count="0" />
-      <LineId Id="74" Count="0" />
       <LineId Id="84" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="85" Count="1" />
@@ -100,6 +111,8 @@ aku 24.09.2019: first implementation
       <LineId Id="87" Count="0" />
       <LineId Id="99" Count="0" />
       <LineId Id="169" Count="0" />
+      <LineId Id="201" Count="2" />
+      <LineId Id="200" Count="0" />
       <LineId Id="172" Count="1" />
     </LineIds>
   </POU>

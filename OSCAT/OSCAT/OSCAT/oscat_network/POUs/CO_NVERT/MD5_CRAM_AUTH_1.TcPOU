@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="MD5_CRAM_AUTH_1" Id="{747a6c37-3da5-48d8-ac20-9a3d6630d800}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MD5_CRAM_AUTH_1
+VAR_IN_OUT
+	RUN : BOOL;
+	USERNAME : STRING(64);
+	PASSWORD : STRING(64);
+	B64_TS : STRING(64);  (* Base64 coded ServerTimeStamp *)
+	AUTH_KEY : STRING(192);
+END_VAR
+VAR
+	BASE64_DECODE_STR : BASE64_DECODE_STR;
+	BASE64_ENCODE_STR : BASE64_ENCODE_STR;
+	MD5_STREAM : MD5_STREAM;
+	step : INT;
+	md5_mode : INT;
+	buf : ARRAY [0..63] OF BYTE;
+	md5 : ARRAY [0..15] OF BYTE;
+	md5_first : ARRAY [0..15] OF BYTE;
+	md5_str1 : STRING(64);
+	md5_str2 : STRING(64);
+	size : UDINT;
+	n1 : INT;
+	n2 : INT;
+	pos : UDINT;
+	b64d_run : BOOL;
+	b64d_done : BOOL;
+	b64e_run : BOOL;
+	b64e_done : BOOL;
+	str_192 : STRING(192);
+	str_144 : STRING(144);
+	xpad : BYTE;
+	pt : POINTER TO BYTE;
+END_VAR
+
+(*
+version 1.0		10. may 2010
+programmer 	ks
+tested by		ks
+
+Der Baustein MD5_CRAM_AUTH (Challenge-Response Authentication Mechanism, Message Digest 5) benutzt
+das Authentifizierungsverfahren nach dem Challenge-Response-Prinzip auf der Basis des MD5-HMAC-Algorithmus.
+Es wird beispielsweise zur Authentifizierung gegenüber SMTP- oder IMAP-Servern eingesetzt, da es die Übertragung des Passworts im Klartext vermeidet.
+Durch dieses Verfahren kann auch über unverschlüsselte Kanäle eine sichere Authentifizierung gegenüber einem Server erfolgen
+
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE step OF
+
+0:	IF RUN THEN
+		step := 5;
+		str_192 := B64_TS;
+		b64d_run := TRUE;
+	END_IF;
+
+5: IF B64D_DONE THEN (* IPAD Zyklus *)
+		b64d_run := FALSE;
+		xpad := 16#36;
+		md5_str1 := PASSWORD;
+		md5_str2 := str_144;
+		size := 64 + LEN(md5_str2);
+		md5_mode := 1;
+		step := 10;
+	END_IF;
+
+10: IF md5_mode = 3 THEN (* OPAD Zyklus *)
+		md5_first := md5; (* md5 array vom IPAD sichern *)
+		xpad := 16#5C;
+		size := 64 + 16;
+		md5_mode := 1;
+		step := 20;
+	END_IF;
+
+20: IF md5_mode = 3 THEN
+		md5_mode := 0;
+		str_144 := CONCAT(USERNAME , ' ');
+		str_144 := CONCAT(str_144 , MD5_TO_STRH(md5));
+		b64e_run := TRUE;
+		step := 30;
+	END_IF;
+
+30: IF B64E_DONE THEN
+		AUTH_KEY := str_192;
+		b64e_run := FALSE;
+		RUN := FALSE;
+		step := 0; (* alles beendet !! *)
+	END_IF;
+
+END_CASE;
+
+(* ----------- md5 -------------- *)
+CASE md5_mode OF
+
+1:	n2 := LEN(md5_str1) - 1;
+	pt := ADR(md5_str1);
+	FOR n1 := 0 TO n2 DO (* string in buf kopieren *)
+		buf[n1] := pt^ XOR xpad;
+		pt := pt + 1;
+	END_FOR;
+	FOR n1 := n2 + 1 TO 63 DO (* mit ipad füllen *)
+		buf[n1] := xpad;
+	END_FOR;
+
+2:	(* Data copy and Calc *)
+	IF size > 0 AND pos >= 64 THEN
+		IF step = 20 THEN
+			FOR n1 := 0 TO 15 DO
+				buf[n1] := md5_first[n1];
+			END_FOR;
+		ELSE
+			n2 := LEN(md5_str2) - 1;
+			pt := ADR(md5_str2);
+			FOR n1 := 0 TO n2 DO (* string in buf kopieren *)
+				buf[n1] := pt^;
+				pt := pt + 1;
+			END_FOR;
+		END_IF;
+	END_IF;
+
+END_CASE;
+
+IF md5_mode > 0 THEN
+	MD5_STREAM(SIZE:=size, MODE:=md5_mode, BUF:=buf, MD5:=md5, POS=>pos);
+END_IF;
+
+BASE64_DECODE_STR(RUN:=b64d_run, STR1:=str_192, STR2:=str_144, DONE=>b64d_done);
+BASE64_ENCODE_STR(RUN:=b64e_run, STR1:=str_144, STR2:=str_192, DONE=>b64e_done);
+
+(* revision history
+
+hm		10. mai. 2010	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MD5_CRAM_AUTH_1">
+      <LineId Id="46" Count="85" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

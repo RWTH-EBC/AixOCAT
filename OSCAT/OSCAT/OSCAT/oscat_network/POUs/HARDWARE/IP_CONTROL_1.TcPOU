@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="IP_CONTROL_1" Id="{b47a95ed-faed-4414-9508-bee0218ec051}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK IP_CONTROL_1
+VAR_IN_OUT
+	IP_C : IP_C; (* IP_Control Verwaltungsstruktur *)
+	S_BUF : NETWORK_BUFFER; (* Externer Sendbuffer *)
+	R_BUF : NETWORK_BUFFER; (* Externer Receivebuffer *)
+END_VAR
+VAR_INPUT
+	IP : DWORD; (* IP Adresse *)
+	PORT : WORD; (* Port Nummer *)
+	TIME_OUT : TIME; (* Ueberwachungszeit Connect / Send / Receive *)
+END_VAR
+VAR
+	c_time : UDINT; (* CONNECT-Time (Zeit bei nicht vorhandener Verbindung) *)
+	s_time : UDINT; (* SEND-Time    (Zeit seit letzten Datensenden) *)
+	r_time : UDINT; (* RECEIVE-Time (Zeit seit letztem Datenempfang) *)
+
+	c_enable : BOOL; (* Connect: freigabe *)
+	c_ip : DWORD; (* Connect: aktuelle IP-Adresse *)
+	c_ip_str : STRING(15);
+	c_port : WORD; (* Connect: aktuelle Port-Nummer *)
+	c_mode : BYTE; (* Connect: aktueller Mode UDP/TCP...... *)
+	c_status : BYTE; (* Connect: Status (Errorcode) *)
+	c_ready : BOOL; (* Connect: Verbindung aufgebaut *)
+	c_ready_old : BOOL; (* Connect: letzter Zustand von c_ready für Flankenauswertung *)
+
+	s_total : INT; (* Send: Gesamtanzahl Bytes zum senden *)
+	s_cur_pos : INT; (* Send: aktuelle Sendeposition *)
+	s_cur_size : INT; (* Send: aktuelle Sendegroesse *)
+	s_max_size : INT; (* Send: maximale Telegrammlänge fuer Senden *)
+	s_active : BOOL; (* Send: Daten senden ist aktiv *)
+	s_status : BYTE; (* Send: Status (Errorcodes) *)
+	s_ip_str : STRING(15);
+	s_ip_exist : BOOL;
+
+	r_status : BYTE; (* Receive: Status (Errorcodes) *)
+	r_count : INT; (* Receive: Anzahl empfangener Bytes *)
+	r_offset : INT; (* Receive: aktuelle Position in externen Receivebuffer *)
+	r_max_size : INT; (* Receive: groesse des externen Empfangbuffers*)
+
+	new_connection : BOOL; (* Neue Verbindungsparameter vorhanden *)
+	tx : DWORD; (* letzter zeitwert *)
+	error_time : DWORD; (* aktueller Timeout-Wert *)
+
+	state: BYTE; (* schrittmerker für connect *)
+	bytes_received : DINT;
+	udp_mode : BOOL;
+
+	socket : T_HSOCKET;
+	server : T_HSOCKET;
+	fbCreate	: FB_SocketUdpCreate;
+	fbConnect : FB_SocketConnect;
+	fbClose : FB_SocketClose;
+	fbSendTo : FB_SocketUdpSendTo;
+	fbReceiveFrom : FB_SocketUdpReceiveFrom;
+	fbSend : FB_SocketSend;
+	fbReceive : FB_SocketReceive;
+	fbListen : FB_SocketListen;
+	fbAccept : FB_SocketAccept;
+	nErrId : UDINT;
+	Send_Busy : BOOL;
+	Send_Error : BOOL;
+	Send_ErrId : UDINT;
+
+	IPCR : IP_CONTROL_RESET;
+
+	(*LOG_MSG : LOG_MSG;
+	_debug_enable : BOOL := TRUE;
+	debug_index : INT;
+	debug_ID : INT;
+	debug_lasterror : DWORD;
+	state_last : INT;
+	debug_last_id : INT := 255;*)
+
+END_VAR
+
+VAR CONSTANT
+	STOP : BYTE := 0;
+	UDP_INIT : BYTE:= 31;
+	UDP_INIT_WAIT : BYTE:= 32;
+	TC_INIT : BYTE := 51;
+	TC_CONNECT : BYTE:= 52;
+	TS_INIT : BYTE:= 53;
+	TS_LISTEN_WAIT : BYTE:= 54;
+	TS_ACCEPT : BYTE:= 55;
+	TS_ACCEPT_WAIT : BYTE:= 56;
+	C_CLOSE : BYTE := 190;
+	C_CLOSE_WAIT : BYTE:= 191;
+	C_CLOSE2 : BYTE := 192;
+	C_CLOSE_WAIT2 : BYTE:= 193;
+	C_WAIT : BYTE := 200;
+	C_REC : BYTE := 210;
+	C_REC_WAIT : BYTE := 211;
+	C_SND : BYTE := 220;
+	C_SND_WAIT1 : BYTE := 221;
+	C_SND_WAIT2 : BYTE := 222;
+END_VAR
+
+(*
+
+version 1.8		26. july. 2011
+programmer 		ks
+tested by			ks
+
+IP_CONTROL ist ein Wrapper-Baustein um eine Hersteller neutrale Schnittstelle zum Ethernet zu schaffen
+
+
+
+TYP 	TCP / UDP 	Aktiv / Passiv 		Port-Nummer erforderlich 	IP-Adresse erforderlich
+0 		TCP 		Aktiv 			Ja 						Ja
+1 		UDP 		Aktiv 			Ja 						Ja
+2 		TCP 		Passiv 			Ja 						Ja (Adresse des aktiven Partners)
+3 		UDP 		Passiv 			Ja 						Ja (Adresse des aktiven Partners)
+4 		TCP 		Passiv 			Ja 						Nein (beliebiger aktiver Partner wird akzeptiert)
+5 		UDP 		Passiv 			Ja 						Nein (beliebiger aktiver Partner wird akzeptiert)
+
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Bei PLC reset oder Programm Download werden alle alten Verbindungen geschlossen *)
+IPCR();
+IF NOT IPCR.READY THEN RETURN; END_IF;
+
+(*####################  DEBUG-MESSAGE  ###################################*)
+(*IF _debug_enable THEN
+	IF IP_C.FIFO.ID > BYTE#0 THEN (* nur wenn Teilnehmer ID's vorhanden sind *)
+		debug_index := IP_C.FIFO.NR;
+		debug_ID := BYTE_TO_INT(IP_C.FIFO.X[debug_index]);
+	END_IF;
+END_IF;*)
+(*########################################################################*)
+
+(* read system time *)
+tx := T_PLC_MS();
+
+IF IP_C.C_PORT = 0 THEN
+	IP_C.C_PORT := PORT; (* uebergebenen PORT durch parametrierten PORT ersetzen *)
+END_IF;
+IF IP_C.C_IP = 0 AND IP_C.C_MODE < 4 THEN
+	IP_C.C_IP := IP; (* uebergebene IP durch paramtrierte IP ersetzen *)
+END_IF;
+
+new_connection := c_ip <> IP_C.C_IP OR c_mode <> IP_C.C_MODE OR c_port <> IP_C.C_PORT; (* neue Verbindungs erwünscht ? *)
+c_enable := IP_C.C_ENABLE AND NOT new_connection;
+
+IF IP_C.C_ENABLE AND IP_C.ERROR = 0 AND state = STOP THEN (* Freigabe,kein Fehler,kein Socket offen *)
+	c_ip   := IP_C.C_IP;
+	c_mode := IP_C.C_MODE;
+	c_port := IP_C.C_PORT;
+	c_ip_str := IP4_TO_STRING(c_ip);
+	udp_mode := C_MODE.0; (* Mode 1,3,5 = udp *)
+
+	error_time := TIME_TO_DWORD(MAX(T#200ms,TIME_OUT));
+	IP_C.TIME_RESET := TRUE; (* Alle Timer ruecksetzen *)
+	r_max_size := SIZEOF(R_BUF.BUFFER);
+	s_max_size := SIZEOF(S_BUF.BUFFER);
+
+	IF udp_mode THEN (* Mode: 1,3,5 = UDP CLIENT/SERVER *)
+		state := UDP_INIT;
+	ELSIF c_mode = 0 THEN (* Mode: 0 = TCP CLIENT *)
+		state := TC_INIT;
+	ELSE
+		state := TS_INIT; (* Mode: 2,4 = TCP SERVER *)
+	END_IF;
+
+	IF c_mode < 5 THEN (* Empfänger-IP vorgeben *)
+		s_ip_str := c_ip_str;
+		s_ip_exist := TRUE;
+	ELSE
+		s_ip_str := '';
+		s_ip_exist := FALSE;
+	END_IF;
+
+    	(*####################  DEBUG-MESSAGE  ###################################*)
+	(*IF _debug_enable THEN
+		LOG_CL.NEW_MSG := 'IP_CON: MODE ~1 / IP ~2 / PORT ~3 /ID ~6';
+		LOG_CL.PRINTF[1] := BYTE_TO_STRING(C_MODE);
+		LOG_CL.PRINTF[2] := IP4_TO_STRING(c_ip);
+		LOG_CL.PRINTF[3] := WORD_TO_STRING(c_port);
+		LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+		LOG_MSG();
+	END_IF;*)
+	(*########################################################################*)
+
+END_IF;
+
+(*####################  DEBUG-MESSAGE  ###################################*)
+(*IF  _debug_enable THEN
+	IF state <> state_last THEN
+		LOG_CL.NEW_MSG := 'IP_STEP ~1 -IP_ID ~6';
+		LOG_CL.PRINTF[1] := BYTE_TO_STRING(state);
+		LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+		LOG_MSG();
+		state_last := state;
+	END_IF;
+END_IF;*)
+(*########################################################################*)
+
+IF IP_C.TIME_RESET THEN (* Alle Timer ruecksetzen *)
+	IP_C.TIME_RESET := FALSE; (* Reset rücksetzen *)
+	c_time := tx; (* Connect Timer ruecksetzen *)
+	s_time := tx; (* Send Timer ruecksetzen *)
+	r_time := tx; (* Receive Timer ruecksetzen *)
+
+	c_status := BYTE#0; (* letzten Connect Fehler rücksetzen *)
+	s_status := BYTE#0; (* letzten Send Fehler rücksetzen *)
+	r_status := BYTE#0; (* letzten Receive Fehler rücksetzen *)
+END_IF;
+
+(* ---------------------------------------------- *)
+
+CASE state OF
+
+UDP_INIT: (* UDP_CLIENT + SERVER *)
+	(* 1. bei UDP-Client wird als lokalport 0 vorgegeben, damit das System automatisch einen freien lokalen Port sucht
+	    2. bei UDP Server muss der gewüschte lokalport verwendet werden *)
+
+	fbCreate(bExecute := FALSE);
+	fbCreate(	bExecute := TRUE , sSrvNetId := '', sLocalHost := '', nLocalPort := SEL(c_mode = 1,c_port,0) , tTimeOut := TIME_OUT);
+	fbCreate.bExecute := FALSE; (* vorbelegung *)
+	state := UDP_INIT_WAIT;
+
+UDP_INIT_WAIT:
+	fbCreate();
+	IF NOT fbCreate.bBusy THEN
+		IF NOT fbCreate.bError THEN
+			socket := fbCreate.hSocket;
+			c_ready := TRUE; (* Connected *)
+			state := C_WAIT;
+		ELSE
+			c_status := 1; (* FB_SocketUdpCreate failed *)
+			nErrId := fbCreate.nErrId;
+			state := C_CLOSE;
+		END_IF;
+	END_IF;
+
+(* ---------------------------------------------- *)
+TC_INIT: (* TCP-CLIENT (AKTIV) *)
+	fbConnect(bExecute := FALSE);
+	fbConnect(bExecute := TRUE, sSrvNetId := '', sRemoteHost := c_ip_str, nRemotePort := c_port, tTimeout := TIME_OUT);
+	fbConnect.bExecute := FALSE; (* vorbelegung *)
+	state := TC_CONNECT;
+
+(* ---------------------------------------------- *)
+TC_CONNECT:
+	IF NOT c_enable OR c_status = 255 THEN (* keine freigabe oder connect timeout *)
+		state := C_CLOSE;
+	END_IF;
+
+	fbConnect();
+	IF NOT fbConnect.bBusy THEN
+		IF fbConnect.bError THEN
+			nErrID := fbConnect.nErrId;
+			state :=TC_INIT; (* Nochmals versuchen *)
+		ELSE
+			socket := fbConnect.hSocket;
+			c_ready := TRUE; (* Connected *)
+			state := C_WAIT;
+		END_IF;
+	END_IF;
+(* ---------------------------------------------- *)
+TS_INIT: (* TCP-SERVER (PASSIV) *)
+	fbListen(bExecute := FALSE);
+	fbListen(bExecute := TRUE , sSrvNetId:= '' , sLocalHost:= '' , nLocalPort:= c_port , tTimeout:= TIME_OUT);
+	fbListen.bExecute := FALSE;
+	state := TS_LISTEN_WAIT;
+(* ---------------------------------------------- *)
+TS_LISTEN_WAIT:
+	fbListen();
+	IF NOT fbListen.bBusy THEN
+		IF fbListen.bError THEN
+			c_status := 3; (* FB_SocketListen failed *)
+			nErrID := fbListen.nErrId;
+			state := C_CLOSE;
+		ELSE
+			server := fbListen.hListener;
+			state := TS_ACCEPT;
+		END_IF;
+	END_IF;
+(* ---------------------------------------------- *)
+TS_ACCEPT:
+	fbAccept(bExecute := FALSE);
+	fbAccept(bExecute := TRUE, sSrvNetId := '', hListener := server, tTimeout := TIME_OUT);
+	fbAccept.bExecute := FALSE;
+	state := TS_ACCEPT_WAIT;
+(* ---------------------------------------------- *)
+TS_ACCEPT_WAIT:
+	fbAccept();
+	IF NOT fbAccept.bBusy THEN
+
+		state := TS_ACCEPT; (* vorbelegung  *)
+
+		IF fbAccept.bError THEN
+			c_status := 4; (* FB_SocketAccept failed *)
+			nErrID := fbAccept.nErrId;
+			state := C_CLOSE;
+		ELSE (* no error *)
+			IF fbAccept.bAccepted THEN
+				socket := fbAccept.hSocket;
+				IF socket.remoteAddr.sAddr  <> c_ip_str AND c_mode <> 4 THEN
+					state := C_CLOSE; (* Remote ablehnen - Verbindung beenden *)
+				ELSE
+					state := C_WAIT;
+					c_ready := TRUE; (* Connected *)
+				END_IF;
+			END_IF; (* fbAccept.bAccepted *)
+		END_IF; (* NOT fbAccept.bError *)
+	END_IF; (*  NOT fbAccept.bBusy *)
+(* ---------------------------------------------- *)
+C_CLOSE:
+	c_ready := FALSE;
+	IF socket.handle > 0 THEN
+		fbClose(bExecute := FALSE );
+		fbClose(bExecute := TRUE, sSrvNetId := '',	hSocket := socket);
+		fbClose.bExecute := FALSE;
+		state := C_CLOSE_WAIT;
+	ELSE
+		state:= C_CLOSE2;
+	END_IF;
+
+C_CLOSE_WAIT:
+	fbClose();
+	IF NOT fbClose.bBusy THEN
+		socket := TCPADS_NULL_HSOCKET; (* Socket rücksetzen *)
+		nErrId:= SEL(fbClose.bError,0,fbClose.nErrId);
+		state:= C_CLOSE2;
+	END_IF;
+
+C_CLOSE2:
+	IF server.handle > 0 THEN
+		fbClose(bExecute := FALSE );
+		fbClose(bExecute := TRUE, sSrvNetId := '',	hSocket := server);
+		fbClose.bExecute := FALSE;
+		state := C_CLOSE_WAIT2;
+	ELSE
+		state:= STOP;
+	END_IF;
+
+C_CLOSE_WAIT2:
+	fbClose();
+	IF NOT fbClose.bBusy THEN
+		server := TCPADS_NULL_HSOCKET; (* Socket rücksetzen *)
+		nErrId:= SEL(fbClose.bError,0,fbClose.nErrId);
+		state:= STOP;
+	END_IF;
+
+(* ---------------------------------------------- *)
+
+C_WAIT: (* Warten auf Anforderung für Beenden *)
+	IF NOT c_enable OR NOT c_ready THEN
+		state:= C_CLOSE;
+	ELSIF S_BUF.SIZE > 0 AND IP_C.MAILBOX[2] = 0 AND s_ip_exist THEN
+		state:= C_SND;
+	ELSIF IP_C.MAILBOX[3] = 0 THEN
+		state:= C_REC;
+	END_IF;
+
+(* ---------------------------------------------- *)
+
+C_REC: (* Daten empfangen *)
+	IF R_BUF.SIZE >= INT_TO_UINT(r_max_size) THEN
+		R_BUF.SIZE := UINT#0;
+		r_status := 254; (* Empfangsbuffer wegen Überlauf rückgesetzt *)
+	END_IF;
+
+	r_offset := SEL(udp_mode,UINT_TO_INT(R_BUF.SIZE),0);
+	r_count := r_max_size - r_offset;
+	bytes_received := 0;
+
+	IF udp_mode THEN
+		fbReceiveFrom(bExecute := FALSE );
+		fbReceiveFrom(bExecute:= TRUE, sSrvNetId := '', hSocket:= socket, cbLen := r_count, pDest:= ADR(R_BUF.BUFFER), tTimeout:= TIME_OUT);
+		fbReceiveFrom.bExecute := FALSE; (* Vorbelegung *)
+	ELSE
+		fbReceive(bExecute:= FALSE);
+		fbReceive(bExecute:= TRUE, sSrvNetId := '' , hSocket:= socket , cbLen:= r_count, pDest:= ADR(R_BUF.BUFFER[r_offset]) , tTimeout:= TIME_OUT);
+		fbReceive.bExecute:= FALSE;
+	END_IF;
+	state := C_REC_WAIT;
+
+C_REC_WAIT:
+	IF udp_mode THEN
+		fbReceiveFrom(); (* UDP Mode *)
+		IF NOT fbReceiveFrom.bBusy THEN
+			IF NOT fbReceiveFrom.bError THEN
+				IF fbReceiveFrom.nRecBytes > 0 THEN
+					IF c_mode <> BYTE#5 AND fbReceiveFrom.sRemoteHost  <> c_ip_str THEN
+						R_BUF.SIZE := UINT#0;
+					ELSE
+						bytes_received := fbReceiveFrom.nRecBytes;
+						IF NOT s_ip_exist THEN
+							s_ip_str := fbReceiveFrom.sRemoteHost;
+							s_ip_exist := TRUE;
+						END_IF;
+					END_IF;
+				END_IF;
+				state := C_WAIT;
+			ELSIF fbReceiveFrom.nErrId = 16#80072746 THEN (* Verbindung vom Remote beendet *)
+				c_status := 253;
+				c_ready := FALSE;
+				state := C_WAIT;
+			ELSE
+				nErrId := fbReceiveFrom.nErrId;
+				state := C_WAIT;
+			END_IF;
+		END_IF;
+	ELSE
+		fbReceive(); (* TCP Mode *)
+		IF NOT fbReceive.bBusy THEN
+			IF NOT fbReceive.bError THEN
+				IF fbReceive.nRecBytes > 0 THEN
+					bytes_received := fbReceive.nRecBytes;
+				END_IF;
+			ELSIF fbReceive.nErrId = 16#8004 THEN (* Verbindung vom Remote beendet *)
+				c_status := 253;
+				c_ready := FALSE;
+			ELSE
+				nErrId := fbReceive.nErrId;
+			END_IF;
+			state := C_WAIT;
+		END_IF;
+	END_IF;
+
+	IF bytes_received > 0 THEN
+		r_time := tx; (* Receive Timer ruecksetzen *)
+		R_BUF.SIZE := INT_TO_UINT(r_offset + DINT_TO_UINT(bytes_received)); (* aktuelle buffersize eintragen *)
+		IP_C.MAILBOX[1] := IP_C.MAILBOX[1] + 1; (* Receive Info *)
+		IF IP_C.MAILBOX[1] = 0 THEN IP_C.MAILBOX[1] := 1; END_IF;
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+		(*IF _debug_enable THEN
+			LOG_CL.NEW_MSG := 'IP_REC DATA: POS: ~1 : SIZE: ~2 TOTAL ~3 -IP_ID ~6';
+			LOG_CL.PRINTF[1] := INT_TO_STRING(r_offset);
+			LOG_CL.PRINTF[2] := INT_TO_STRING(r_count);
+			LOG_CL.PRINTF[3] := UINT_TO_STRING(R_BUF.SIZE);
+			LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+			LOG_MSG();
+		END_IF;*)
+		(*########################################################################*)
+	END_IF;
+
+(* ---------------------------------------------- *)
+C_SND:
+	IF S_BUF.SIZE > 0 THEN
+		IF c_ready AND c_enable THEN
+			IF NOT s_active THEN
+				s_total := LIMIT(0,UINT_TO_INT(S_BUF.SIZE),r_max_size); (* Gesamtanzahl an Bytes limitieren und uebergeben *)
+				s_cur_pos  := 0;
+				s_cur_size := 0;
+				s_active := TRUE; (* Sende-Betrieb aktivieren *)
+			END_IF;
+
+			s_cur_pos := s_cur_pos + s_cur_size; (* neue Sende-Datenposition bestimmen *)
+			IF s_total > s_cur_pos THEN (* weitere Daten zum senden vorhanden ? *)
+				s_cur_size := s_total - s_cur_pos;
+				s_cur_size := LIMIT(0, s_cur_size, s_max_size); (* Telegrammlänge begrenzen *)
+				s_time := tx; (* Send Timer ruecksetzen *)
+				r_time := tx; (* Receive Timer ruecksetzen *)
+				state := C_SND_WAIT1;
+			ELSE (* keine weitere Sendedaten vorhanden -> Senden beenden *)
+				s_active := FALSE;
+				S_BUF.SIZE := 0;
+				state := C_WAIT;
+			END_IF;
+		END_IF;
+	END_IF;
+
+C_SND_WAIT1:
+	IF udp_mode THEN
+		fbSendTo(bExecute := FALSE );
+		fbSendTo(bExecute := TRUE, sSrvNetId := '', hSocket := socket , cbLen := s_cur_size, pSrc := ADR(S_BUF.BUFFER[s_cur_pos]), sRemoteHost := s_ip_str, nRemotePort := c_port, tTimeout:= TIME_OUT);
+		fbSendTo.bExecute := FALSE;
+	ELSE
+		fbSend(bExecute := FALSE);
+		fbSend(bExecute := TRUE, sSrvNetId := '', hSocket := socket , cbLen:= s_cur_size, pSrc:=ADR(S_BUF.BUFFER[s_cur_pos]), tTimeout:= TIME_OUT);
+		fbSend.bExecute := FALSE;
+	END_IF;
+	state := C_SND_WAIT2;
+
+C_SND_WAIT2:
+	IF udp_mode THEN
+		fbSendTo();
+		Send_Busy := fbSendTo.bBusy;
+		Send_Error := fbSendTo.bError;
+		Send_ErrId := fbSendTo.nErrId;
+	ELSE
+		fbSend();
+		Send_Busy := fbSend.bBusy;
+		Send_Error := fbSend.bError;
+		Send_ErrId := fbSend.nErrId;
+	END_IF;
+
+	IF NOT Send_Busy THEN
+		IF NOT Send_Error THEN
+    			(*####################  DEBUG-MESSAGE  ###################################*)
+			(*IF _debug_enable THEN
+				LOG_CL.NEW_MSG := 'IP_SEN SEND_COUNT ~1 -IP_ID ~6';
+				LOG_CL.PRINTF[1] := DINT_TO_STRING(s_cur_size);
+				LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+				LOG_MSG();
+			END_IF;*)
+			(*########################################################################*)
+			state := C_SND;
+		ELSE
+			nErrId := Send_ErrId;
+			state := C_WAIT;
+    			(*####################  DEBUG-MESSAGE  ###################################*)
+			(*IF _debug_enable THEN
+				LOG_CL.NEW_MSG := 'IP_SEN SEND ERROR ~1 -IP_ID ~6';
+				LOG_CL.PRINTF[1] := UDINT_TO_STRING(nErrId);
+				LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+				LOG_MSG();
+			END_IF;*)
+			(*########################################################################*)
+		END_IF;
+	END_IF;
+
+END_CASE;
+
+(* ---------------------------------------------- *)
+
+IF c_ready THEN
+	IF NOT c_ready_old THEN (* Verbindung aufgebaut - positive Flanke erkannt *)
+		IP_C.C_STATE := 254;
+		IP_C.TIME_RESET := TRUE; (* Alle Timer ruecksetzen *)
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+		(*IF _debug_enable THEN
+			LOG_CL.NEW_MSG := 'IP_CON: CONNECTED -IP_ID ~6';
+			LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+			LOG_MSG();
+		END_IF;*)
+		(*########################################################################*)
+	ELSE
+		IP_C.C_STATE := 255; (* Verbindung ist aufgebaut *)
+	END_IF;
+ELSE
+	IF c_ready_old THEN (* Verbindung abgebaut - negative Flanke erkannt *)
+		IP_C.C_STATE := 1;
+		IP_C.MAILBOX[1] := 0; (* Receive Info rücksetzen *)
+		IP_C.MAILBOX[2] := 0; (* Send-Pause rücksetzen *)
+		IP_C.MAILBOX[3] := 0; (* Receive-Pause rücksetzen *)
+		IF NOT new_connection THEN
+			s_active := FALSE; (* Sendeaktivitäten stoppen *)
+			S_BUF.SIZE := 0; (* Sendelänge löschen *)
+			(*IP_C.TIME_RESET := TRUE; *) (* Alle Timer ruecksetzen *)
+		END_IF;
+    		(*####################  DEBUG-MESSAGE  ###################################*)
+		(*IF _debug_enable THEN
+			LOG_CL.NEW_MSG := 'IP_CON: DISCONNECTED';
+			LOG_MSG();
+		END_IF;*)
+		(*########################################################################*)
+
+	ELSE
+		IP_C.C_STATE := 0; (* Verbindung ist abgebaut *)
+	END_IF;
+END_IF;
+
+c_ready_old := c_ready;
+
+(* ---------------------------------------------- *)
+
+IF IP_C.R_OBSERVE = FALSE OR s_active THEN
+    r_time := tx;
+END_IF;
+
+IF c_status = 0 AND tx - c_time > error_time AND c_enable AND NOT c_ready AND c_mode < 2 THEN (* Connect Timeout *)
+	c_status := 255; (* Timeout-Fehler ausgeben *)
+END_IF;
+IF s_status = 0 AND tx - s_time > error_time AND s_active THEN (* Send Timeout *)
+	s_status := 255; (* Timeout-Fehler ausgeben *)
+END_IF;
+IF r_status = 0 AND tx - r_time > error_time AND c_ready AND IP_C.R_OBSERVE THEN (* Receive Timeout *)
+	r_status := 255; (* Timeout-Fehler ausgeben *)
+END_IF;
+
+IP_C.ERROR := DWORD_OF_BYTE(c_status,s_status,r_status,0);
+
+(*####################  DEBUG-MESSAGE  ###################################*)
+(*IF  _debug_enable THEN
+	IF (IP_C.ERROR <> debug_lasterror) THEN
+		LOG_CL.NEW_MSG := 'IP_ERROR ~1 -IP_ID ~6';
+		LOG_CL.PRINTF[1] := DWORD_TO_STRING(IP_C.ERROR);
+		LOG_CL.PRINTF[6] := INT_TO_STRING(debug_ID);
+		LOG_MSG();
+
+		debug_lasterror := IP_C.ERROR;
+		debug_last_id := debug_ID;
+	END_IF;
+END_IF;*)
+(*########################################################################*)
+
+(* revision history
+ks	18. oct. 2008	rev 1.0
+	original version
+ks	05. jan. 2009	rev 1.1
+	zusätzlichen Parameter "Port" hinzugefügt, und Code bei Verbindungsaufbau angepasst
+ks	28. feb. 2009	rev 1.2
+	connect code angepasst und verkürzung der zyklen bei Send
+ks	20. oct. 2009	rev 1.3
+	network_buffer basis 0
+ks	06. dec. 2009	rev 1.4
+	receive_count MAILBOX[1]
+ks	10. nov. 2010	rev 1.5
+	send_pause MAILBOX[2] and receive_pause MAILBOX[3] 
+ks	07. feb. 2011	rev 1.6
+	Fehlercode 253 bei Remote-Verbindungsabbruch 
+ks	30. may. 2011	rev 1.7
+	Fehler bei Empfangsüberwachung
+ks	26. july. 2011	rev 1.8
+	Error-Reset, diverse optimierungen 
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="IP_CONTROL_1">
+      <LineId Id="117" Count="492" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

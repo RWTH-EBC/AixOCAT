@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_JetNozzle2" Id="{5812933b-cab8-4002-bdfb-a7669d9feb5f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_JetNozzle2
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Properties
+	bError 					: BOOL := FALSE;
+	fAngleActual 			: REAL;
+	fAngleSetpoint 			: REAL := 50;
+	//Raw values
+	nAngleActual AT %I*		: INT;
+	nAngleSetpoint AT %Q* 	: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="AngleActual" Id="{14f03dc7-a61e-460f-a470-c6e6a22fb447}">
+      <Declaration><![CDATA[PROPERTY AngleActual : REAL]]></Declaration>
+      <Get Name="Get" Id="{cbde43a0-23a6-4cc6-9b7c-1883e580da6e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[AngleActual := THIS^.fAngleActual;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{30a477b6-7501-41e2-9534-9e86af5679fc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fAngleActual := AngleActual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="AngleSetpoint" Id="{6e580ee8-d0f1-433b-8fc9-f5d39e71c251}">
+      <Declaration><![CDATA[PROPERTY AngleSetpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{42622766-6952-44e9-b94b-e19474cc1992}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[AngleSetpoint := THIS^.fAngleSetpoint;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ba6f40da-b997-4399-a96d-d622c86d37be}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fAngleSetpoint := AngleSetpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{2ea5aa42-99dc-4caa-a5e0-eb2913c1c8cd}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9ea0242f-3427-4c66-9b20-2fea983566fb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9bdf0e08-c9a2-4798-b8dd-01f334df07ba}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{566a8166-3349-479f-b942-9ffe250e1651}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Read feedback for opening position
+fAngleActual := FC_Voltage2_10Raw_TO_Percentage(nAngleActual);
+
+//Write setpoint for opening position
+nAngleSetpoint := FC_Percentage_TO_Voltage2_10Raw(fAngleSetpoint);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_JetNozzle2">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.AngleActual.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.AngleActual.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.AngleSetpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.AngleSetpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_JetNozzle2.Run">
+      <LineId Id="7" Count="3" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

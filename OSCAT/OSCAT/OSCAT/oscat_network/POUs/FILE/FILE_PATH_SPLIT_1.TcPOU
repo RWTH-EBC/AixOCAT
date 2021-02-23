@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FILE_PATH_SPLIT_1" Id="{849023a0-7953-4afb-9c57-e27411c9a6b5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FILE_PATH_SPLIT_1 : BOOL
+VAR_INPUT
+	FILENAME : STRING(STRING_LENGTH);
+END_VAR
+VAR_IN_OUT
+	X : FILE_PATH_DATA;
+END_VAR
+VAR
+	b : INT;
+	c : INT;
+	d : STRING(1);
+	p1 : INT;
+	p2 : INT;
+END_VAR
+
+(*
+version 1.0		01. jan. 2011
+programmer		ks
+tested by			ks
+
+FILE_PATH_SPLIT zerlegt einen Dateipfad in einzelne Elemente und legt diese in einer Datenstruktur ab.
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[X.DRIVE := '';
+X.DIRECTORY := '';
+X.FILENAME := '';
+c := LEN(FILENAME);
+IF c = 0 THEN
+	FILE_PATH_SPLIT := FALSE;
+	RETURN;
+END_IF;
+
+FOR b := 1 TO c DO
+	d := MID(FILENAME, 1, b);
+	IF d = ':' THEN
+		p1 := b;
+	ELSIF d = '/' OR d = '\' THEN
+		p2 := b;
+	END_IF;
+END_FOR;
+
+IF p1 = 2 THEN
+	X.DRIVE := LEFT(FILENAME,p1);
+END_IF;
+
+IF p2 > 0 AND p2 > p1 THEN
+	X.DIRECTORY := MID(FILENAME,p2 - p1,p1+1); (* len , pos *)
+END_IF;
+
+X.FILENAME := RIGHT(FILENAME,c - MAX (p1,p2));
+FILE_PATH_SPLIT := TRUE;
+
+(* revision history
+ks	01. jan. 2011	rev 1.0
+	original version
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="FILE_PATH_SPLIT_1">
+      <LineId Id="23" Count="32" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

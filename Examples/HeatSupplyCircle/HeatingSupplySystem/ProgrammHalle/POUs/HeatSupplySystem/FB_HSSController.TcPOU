@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_HSSController" Id="{048ccbd4-7cc8-4766-ac9c-957fc8886059}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HSSController IMPLEMENTS I_HydraulicMixingControl
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Properties
+	bError 			: BOOL 				:= FALSE;
+	eMode 			: E_ControlMode 	:= E_ControlMode.Off;
+	ePumpMode 		: E_PumpControlMode := E_PumpControlMode.OFF;
+	fPumpSet 		: REAL 				:= 0;
+	fTemperatureAct : REAL              := 18;
+	fTemperatureSet : REAL				:= 45;
+	fValveSet 		: REAL 				:= 0;
+	
+	//PID
+	fbPID : FB_PID; //Set PID parameters (Kp, Ti, ...) in Auto method
+	
+	//Manual mode
+	eManualPumpMode	: E_PumpControlMode := E_PumpControlMode.NONE;
+	fManualPumpSet	: REAL 				:= fPumpSet;
+	fManualValveSet : REAL 				:= fValveSet;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Auto" Id="{583c682a-938e-4181-98c5-029b87793184}">
+      <Declaration><![CDATA[METHOD Auto
+VAR
+	//PID params
+	Kp		:	REAL	:=	1.4;	//Proportional gain
+	Ti		:	REAL	:=	80;		//Integral time
+	Td		:	REAL	:=	0;		//Derivative time
+	LimLow	:	REAL	:=	0;		//Low limit of output
+	LimHigh	:	REAL	:=	100;	//High limit of output
+	bReverseActing	:	BOOL := FALSE;
+	
+	//Heating Curve
+	fSlope	: 	REAL	:= 	-1.0;
+	fOffset	: 	REAL	:= 	45.0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//TROX controls heating power via throttle circuit
+//Calculate supply water set temperature from heating curve, 45 °C at 0 °C ambient temperature
+
+fTemperatureSet := FC_HeatingCurve(	fTempAmb := GVL.fTempAmbAir,
+									fSlope := fSlope,
+									fOffset := fOffset);
+
+//PID control for valve
+fbPID(
+	xSet:= fTemperatureSet, 
+	xAct:= fTemperatureAct, 
+	Kp:= Kp, 
+	Ti:= Ti, 
+	Td:= Td, 
+	LimLow:= LimLow, 
+	LimHigh:= LimHigh, 
+	bReverseActing:= bReverseActing, 
+	RST:= FALSE, 
+	Y=> fValveSet
+	);
+
+//Pump setpoint just constant for now
+fPumpSet 	:= 60; //60 % of nominal power
+ePumpMode 	:= E_PumpControlMode.CONST_DIFFPRESS;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Error" Id="{180141a3-3cf2-45cf-9e99-4a8eef933947}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{4bd89ef3-ee54-489b-8d94-8a87a7b8043c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{714c0069-575c-4c6f-bc78-122738092186}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="ExternalADSControl" Id="{357d61c9-1b6c-4126-969f-606af2eba9d5}">
+      <Declaration><![CDATA[METHOD ExternalADSControl
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Set Valve position according to ADS command
+fValveSet := ADS.fHSSValveSetADS;
+
+//Set pump operation and set point to ADS command
+fPumpSet 	:= ADS.fHSSPumpSetpointADS; // % of nominal power
+ePumpMode 	:= ADS.eHSSPumpContModeADS;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{8a22dabf-7d63-456f-b1c1-b275299923ac}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Init : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Manual" Id="{25e4144a-b453-44b7-a3eb-5ddb8b7b4501}">
+      <Declaration><![CDATA[METHOD Manual]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ePumpMode 	:= eManualPumpMode;
+fPumpSet 	:= fManualPumpSet;
+fValveSet 	:= fManualValveSet;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Mode" Id="{163be683-95ac-4ed0-8631-30e429c6e96c}">
+      <Declaration><![CDATA[PROPERTY Mode : E_ControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{73d6d545-3fdb-4bfa-9eb4-6bf9b7ff45a5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Mode := THIS^.eMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3045bf94-5c9a-4203-bbb1-0c8deda7e4eb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.eMode := Mode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Off" Id="{5e246dea-33fd-446a-8df7-4a4bd250c053}">
+      <Declaration><![CDATA[METHOD Off
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fPumpSet	:=	0;
+ePumpMode	:=	E_PumpControlMode.OFF;
+fValveSet 	:=	0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OperationTest" Id="{fa6e2932-63a5-4e65-b417-dc0aaa4d4bcc}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD OperationTest : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="PumpMode" Id="{0a436de6-a19e-4c0c-b426-cf524e061545}">
+      <Declaration><![CDATA[PROPERTY PumpMode : E_PumpControlMode
+]]></Declaration>
+      <Get Name="Get" Id="{b373e47a-5046-4b72-8648-bf7a07d972f3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[PumpMode := THIS^.ePumpMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b4b1c6f4-bd41-4cb7-bb02-09ea2f4fa04b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.ePumpMode := PumpMode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="PumpSet" Id="{dca9e9f8-dcad-4d11-9a47-00a61b59f42f}">
+      <Declaration><![CDATA[PROPERTY PumpSet : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{1a87bc90-cd31-41fb-b0c2-8ebaf870c7c2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[PumpSet := THIS^.fPumpSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ea81d5d1-f3d8-4fb6-a93f-8dc9750ce396}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fPumpSet := PumpSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{cc816fbe-aca6-4acb-9b51-3927954539ff}">
+      <Declaration><![CDATA[METHOD Run
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Run control routine according to mode set
+CASE eMode OF
+	E_ControlMode.Off:		   			Off();
+	E_ControlMode.Init:		   			Init();
+	E_ControlMode.OperationTest:	    OperationTest();
+	E_ControlMode.Auto:   				Auto();
+	E_ControlMode.Manual:				Manual();
+	E_ControlMode.ExternalADSControl:	ExternalADSControl();
+END_CASE
+
+//Write temperature supply setpoint to GVL
+GVL.fHSSTempSupSet := THIS^.TemperatureSupSet;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="TemperatureSupAct" Id="{9de2feb8-f0be-4aa6-8f93-c7cb522d7a15}">
+      <Declaration><![CDATA[PROPERTY TemperatureSupAct : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{3df50ce9-44b0-49ff-ba39-70ed9b8485bd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TemperatureSupAct := THIS^.fTemperatureAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{301194e1-b939-4ce9-8461-fe6af9a53234}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fTemperatureAct := TemperatureSupAct;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TemperatureSupSet" Id="{515fdf1d-d6ed-485e-af64-9ac743bc86e4}">
+      <Declaration><![CDATA[PROPERTY TemperatureSupSet : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{ac1fdfa8-afe1-45cd-b6fb-6df60c663836}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TemperatureSupSet := THIS^.fTemperatureSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{af7bdacb-0df8-4d36-942d-507fb97727b5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fTemperatureSet := TemperatureSupSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ValveSet" Id="{3c8859be-1b44-46f8-a8a6-7e5fbf5bdeb1}">
+      <Declaration><![CDATA[PROPERTY ValveSet : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{4a480c83-f7e2-4927-85ec-d320ceef74d6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValveSet := THIS^.fValveSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f2fba49f-c614-44ea-8cd0-bb97f3c85320}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fValveSet := ValveSet;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_HSSController">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Auto">
+      <LineId Id="26" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="14" Count="10" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="29" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.ExternalADSControl">
+      <LineId Id="6" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Init">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Manual">
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Mode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Mode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Off">
+      <LineId Id="5" Count="1" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.OperationTest">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.PumpMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.PumpMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.PumpSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.PumpSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.Run">
+      <LineId Id="5" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.TemperatureSupAct.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.TemperatureSupAct.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.TemperatureSupSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.TemperatureSupSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.ValveSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController.ValveSet.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

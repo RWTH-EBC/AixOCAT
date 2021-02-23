@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="MD5_TO_STRH_1" Id="{11e4a336-01ea-4f05-993e-38ba579ca3ed}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MD5_TO_STRH_1 : STRING(32)
+VAR_INPUT
+	MD5 : ARRAY [0..15] OF BYTE;
+END_VAR
+VAR
+	i : INT;
+	tmp : BYTE;
+	pt : POINTER TO BYTE;
+END_VAR
+(*
+version 1.0	06. dec. 2009
+programmer 	ks
+tested BY	ks
+
+MD5_TO_STRH konvertiert das MD5 Hash Array in einen HEX-String
+*)
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[pt := ADR(MD5_TO_STRH); (* read output adress to pointer *)
+
+FOR i := 0 TO 15 DO; (* write the 8 hex characters backwards *)
+	tmp := SHR(MD5[i],4);
+	PT^ := tmp + SEL(tmp <= 9,87,48);
+	pt := pt + 1; (* decrement the pointer *)
+	tmp := MD5[i] AND 2#1111;
+	PT^ := tmp + SEL(tmp <= 9,87,48);
+	pt := pt + 1; (* decrement the pointer *)
+END_FOR;
+pt^:= 0; (* write the closing byte for the string *)
+
+(* revision history
+
+ks	6. dec. 2009 rev 1.0
+	original version
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MD5_TO_STRH_1">
+      <LineId Id="17" Count="17" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
