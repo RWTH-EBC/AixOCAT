@@ -40,7 +40,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[THIS^.fTemperature := Temperature;]]></ST>
         </Implementation>
       </Set>
     </Property>
