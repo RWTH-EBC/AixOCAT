@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
+	<LicenseInfo>
+		<SystemId>{3957FF09-8F0B-DBE1-E0E3-DE4018D7F8AE}</SystemId>
+		<IssueTime>2021-02-23T07:12:00</IssueTime>
+		<ExpireTime>2021-03-03T00:00:00</ExpireTime>
+		<LicenseKey>ecad2fa08a7d0337798c1de6853e6bd5fd896f7d8d11c3f0caeb599755f7fc1e396a5c21a409a4f7618d0b65fab0ffd2c65137a3fcbb773d6f3fa226389d4f1ba0a9c88a14ee01f132f8173a81580dc05f9c5dc61b64938c6ac6489dd589dfb1b4bcc527864b2ec0a9fcd3870171187d93125c8a044154651ae3599e79adcfccb4e601107450e49c2ce16a24da6024bdfc47dbeb3d2e440fde7b1f7c03a58557ce011ca7c908996e1aeedfd8b3509e217941b5f8979a54f7b8747e516a58cfedc0c814fe267b1ad03a505ce988eaeb2cf3e6800a51fa1f030dc2d647cb9fb09182216fe761954cc3db826d0f999922ca261a2f96e502decccf9d3a5e85fed998</LicenseKey>
+		<License>
+			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
+			<Name>TC3 ADS</Name>
+			<OrderNo>TC1000</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{3FF18E97-7754-401B-93FB-70544DE28A13}</LicenseId>
+			<Name>TC3 IO</Name>
+			<OrderNo>TC1100</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{66689887-CCBD-452C-AC9A-039D997C6E66}</LicenseId>
+			<Name>TC3 PLC</Name>
+			<OrderNo>TC1200</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{A1AF8A04-C08D-4853-A5A0-0E6C3A278A8C}</LicenseId>
+			<Name>TC3 Modbus-RTU</Name>
+			<OrderNo>TF6255</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{973BA0B1-AADD-41C1-B518-302802473922}</LicenseId>
+			<Name>TC3 IoT MQTT Protocol</Name>
+		</License>
+		<License>
+			<LicenseId>{02AC2825-C3C7-4D15-AAF6-4EB45EFAA2D0}</LicenseId>
+			<Name>TC3 Analytics Logger</Name>
+			<OrderNo>TF3500</OrderNo>
+		</License>
+	</LicenseInfo>
+</TcLicenseInfo>

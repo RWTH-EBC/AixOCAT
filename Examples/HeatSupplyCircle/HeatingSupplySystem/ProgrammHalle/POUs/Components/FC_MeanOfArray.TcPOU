@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FC_MeanOfArray" Id="{f0241d9d-3185-4cdb-ac24-bed62ae8bcca}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_MeanOfArray : REAL
+VAR_INPUT CONSTANT
+	n 		: INT;
+	aArray 	: ARRAY [1..n] OF REAL;
+END_VAR
+VAR
+	i 		: INT;
+	fTemp 	: REAL	:= 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i := 1 TO n DO
+	fTemp := fTemp + aArray[i];
+END_FOR
+
+FC_MeanOfArray := fTemp / n;]]></ST>
+    </Implementation>
+    <LineIds Name="FC_MeanOfArray">
+      <LineId Id="7" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

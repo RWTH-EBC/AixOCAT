@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FC_Percentage_TO_Current4_20Raw" Id="{225bd0aa-1131-465c-819c-c641e65bd6ce}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_Percentage_TO_Current4_20Raw : INT
+VAR_INPUT
+	f : REAL;
+END_VAR
+VAR
+	nIntMax : INT := 32767;
+	nIntMin : INT := 6553;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FC_Percentage_TO_Current4_20Raw := REAL_TO_INT(nIntMin + (f/100)*(nIntMax-nIntMin));]]></ST>
+    </Implementation>
+    <LineIds Name="FC_Percentage_TO_Current4_20Raw">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

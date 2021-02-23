@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <Itf Name="I_HydraulicThrottlingControl" Id="{8b67e85f-c909-4fb9-a8e4-051e15f01975}">
+    <Declaration><![CDATA[INTERFACE I_HydraulicThrottlingControl EXTENDS I_Controller
+]]></Declaration>
+    <Property Name="PumpMode" Id="{6443cd4a-b8ee-43c2-bc81-b6835159787f}">
+      <Declaration><![CDATA[PROPERTY PumpMode : E_PumpControlMode]]></Declaration>
+      <Get Name="Get" Id="{86c1e3dd-855a-48d4-a1c8-d57c9d9bf711}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ef9985be-c2a5-43f7-aa46-093083bc580b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="PumpSet" Id="{6bc9730e-6f2e-4f4d-96ee-00eec811559a}">
+      <Declaration><![CDATA[PROPERTY PumpSet : REAL]]></Declaration>
+      <Get Name="Get" Id="{def03880-bb6b-4c09-aec1-5abed1ecff8b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{0f5e1f02-eac2-45f8-9aea-e674dcb63fe2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="TemperatureSupAct" Id="{d0a36477-3348-43de-a4de-b27a08029073}">
+      <Declaration><![CDATA[PROPERTY TemperatureSupAct : REAL]]></Declaration>
+      <Get Name="Get" Id="{c17c3d32-458f-4247-9943-cdccbc75d78e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{a271b99c-f60c-4fe2-93d0-3ab5cb9e4e61}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="TemperatureSupSet" Id="{6c2a527f-0bf4-41a5-a87a-dcbd7ae60dd0}">
+      <Declaration><![CDATA[PROPERTY TemperatureSupSet : REAL]]></Declaration>
+      <Get Name="Get" Id="{518b0bed-d484-434e-bb9a-0d087fd42f95}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{261ed97c-45b6-466b-9fe2-1cb04333f511}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ValveSet" Id="{03b010ca-0db0-4176-89ca-c04b0d7a04a5}">
+      <Declaration><![CDATA[PROPERTY ValveSet : REAL]]></Declaration>
+      <Get Name="Get" Id="{7f589539-f08a-4086-b78a-5f67d80daad9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{d46eae57-457c-44e7-8b37-1eb494daf33f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

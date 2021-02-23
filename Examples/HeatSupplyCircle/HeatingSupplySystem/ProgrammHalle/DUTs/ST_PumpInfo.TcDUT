@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <DUT Name="ST_PumpInfo" Id="{c45268a4-a4f4-4d5b-83c3-ad08f388c546}">
+    <Declaration><![CDATA[TYPE ST_PumpInfo :
+STRUCT
+	bOperating	:	BOOL;
+	fPower		:	REAL;
+	fSpeed		:	REAL;
+	fPressDiff	:	REAL;
+	fVolFlow	:	REAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

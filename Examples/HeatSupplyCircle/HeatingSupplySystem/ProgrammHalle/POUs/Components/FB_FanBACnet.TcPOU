@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FB_FanBACnet" Id="{598b8ee1-b330-4ff7-993a-aa20a91932a7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_FanBACnet
+VAR_INPUT
+	fSet	:	REAL;	//Setpoint 0-100%
+END_VAR
+VAR_OUTPUT
+	bErr	:	BOOL;
+END_VAR
+VAR
+	ManSetSpeed		:	FB_BACnet_RemoteAnalogOutput_EX;
+	ManRelease		:	FB_BACnet_RemoteBinaryOutput_EX;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ManSetSpeed(RemoteDevice:=AHU_Bacnet.DevAHU,fPV:=fSet,bEnablePV:=TRUE);
+ManRelease(RemoteDevice:=AHU_Bacnet.DevAHU,bPV:=TRUE,bEnablePV:=TRUE);
+IF ManSetSpeed.bError OR ManRelease.bError	THEN
+	bErr	:=	TRUE;
+ELSE
+	bErr	:=	FALSE;		
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_FanBACnet">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

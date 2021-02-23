@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <Itf Name="I_VolumeFlowController" Id="{3e9714a2-8102-406d-bdd7-76b774ef37ff}">
+    <Declaration><![CDATA[INTERFACE I_VolumeFlowController
+]]></Declaration>
+    <Property Name="Error" Id="{0a30ef2f-7548-4dfa-b994-bf245a046028}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{e8ea9cf5-e839-4f73-a693-8a38aa5a5390}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{737dc09b-3aaf-4bfe-9024-bfcffdf46b35}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{9f5bee67-5b89-4245-8540-2f9156157eb3}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="VolumeFlowActual" Id="{0002fad8-fef2-4c99-b015-31c4d7bab25a}">
+      <Declaration><![CDATA[PROPERTY VolumeFlowActual : REAL]]></Declaration>
+      <Get Name="Get" Id="{3aa684af-078b-4c05-8224-28f31fdad097}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{a129d950-8d39-4787-b4f3-5f37472a5456}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="VolumeFlowSetpoint" Id="{62267535-019e-4e05-b11c-3a3b0f2b2f02}">
+      <Declaration><![CDATA[PROPERTY VolumeFlowSetpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{27b70a78-754e-45fe-ab04-e3d133f34bea}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{f5befcfd-ec27-4706-a4be-780e2a0657ad}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

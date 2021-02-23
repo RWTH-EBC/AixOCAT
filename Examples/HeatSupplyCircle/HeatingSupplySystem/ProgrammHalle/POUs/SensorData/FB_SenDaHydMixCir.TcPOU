@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_SenDaHydMixCir" Id="{cbc62e4e-66da-48e8-aeac-1f7d2599e33a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SenDaHydMixCir
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	ftemp_sensor : OSCAT.GEN_RMP:= ( PT := T#10S,
+								     AM := 150,
+								     OS := 80,
+								     DL:= 0);
+	fvalve_act : OSCAT.GEN_RMP := ( PT := T#100S,
+								     AM := 52428,
+								     OS := -19661,
+								     DL:= 0);
+// variable for valve, pump
+	fTempSupPrimAct: REAL;
+	fTempRetPrimAct: REAL;
+	fTempSupAct: REAL;
+	fTempRetAct: REAL;
+	
+	fHSSValveAct: REAL;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Run" Id="{48ee032f-032d-4547-89a8-97503bc7a3b8}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+ftemp_sensor();
+fTempSupPrimAct := ftemp_sensor.OUT ;
+fTempRetPrimAct := ftemp_sensor.OUT ;
+fTempSupAct := ftemp_sensor.OUT;
+fTempRetAct := ftemp_sensor.OUT ;
+
+fvalve_act();
+fHSSValveAct := fvalve_act.OUT;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_SenDaHydMixCir">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SenDaHydMixCir.Run">
+      <LineId Id="11" Count="0" />
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

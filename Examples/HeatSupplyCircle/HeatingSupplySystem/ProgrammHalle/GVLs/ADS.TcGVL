@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GVL Name="ADS" Id="{9bd68fd7-0199-48a3-ac8e-88727708b5cd}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	//Modes
+	eModeMainControlModeADS	AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
+	
+	eModeHSSADS			AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
+	
+
+	//Ambient air datapoints
+	fTempAmbAirADS				AT %Q* 	: REAL;
+	fTemperatureAmbientMeanADS 	AT %Q*	: REAL;
+
+	
+	//HSS  datapoints
+	//Temperature sensor datapoints
+	fHSSTempSupPrimADS 	AT %Q*	: REAL;
+	fHSSTempRetPrimADS 	AT %Q*	: REAL;
+	fHSSTempSupADS 		AT %Q*	: REAL;
+	fHSSTempRetADS 		AT %Q*	: REAL;
+	//Valve datapoints
+	fHSSValveActADS 		AT %Q*	: REAL;
+	fHSSValveSetADS 		AT %I*	: REAL;								//W
+	//Pump datapoints
+	eHSSPumpContModeADS 	AT %I*	: E_PumpControlMode;				//W
+	bHSSPumpErrorADS		AT %Q*	: BOOL;
+	bHSSPumpOperatingADS 	AT %Q*	: BOOL;
+	fHSSPumpPowerADS		AT %Q*	: REAL;
+	fHSSPumpPressureADS 	AT %Q*	: REAL;
+	bHSSPumpSetOnADS		AT %Q*	: BOOL;
+	fHSSPumpSetpointADS	AT %I*	: REAL;								//W
+	fHSSPumpSpeedADS		AT %Q*	: REAL;
+	fHSSPumpVolFlowADS		AT %Q*	: REAL;
+	
+	
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

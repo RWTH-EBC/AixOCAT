@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <Itf Name="I_Controller" Id="{740ca180-aa21-4a42-a251-bd76d55996ea}">
+    <Declaration><![CDATA[INTERFACE I_Controller
+]]></Declaration>
+    <Method Name="Auto" Id="{1c9ec7f1-f6d0-4d72-a520-fae895337145}">
+      <Declaration><![CDATA[METHOD Auto
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Error" Id="{36daf20e-43bc-4f3f-987c-778cb1b6d7bf}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{8161dd48-d5c8-4ad6-a66b-185296c23149}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{22199c3f-bac7-483c-8d6c-499588aaa150}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Init" Id="{826a7cdb-e9b9-4794-af63-b87a1f7833c6}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Manual" Id="{3aaf6c4b-9c33-407d-b7dd-757b5f27ff88}">
+      <Declaration><![CDATA[METHOD Manual
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Mode" Id="{f207765e-b05f-4960-a16b-3d77e49ab629}">
+      <Declaration><![CDATA[PROPERTY Mode : E_ControlMode]]></Declaration>
+      <Get Name="Get" Id="{ffff0b8e-03ca-407d-b422-984d38e92b53}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{bc90e767-6510-4ff7-9505-75454838d4a2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Off" Id="{dec2e242-dde5-41ca-a249-e829027fa7d7}">
+      <Declaration><![CDATA[METHOD Off
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="OperationTest" Id="{ada3f3a2-7656-4a39-b127-408ce5ba258d}">
+      <Declaration><![CDATA[METHOD OperationTest : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Run" Id="{79918f9b-ec4b-463e-9880-9502a5639904}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

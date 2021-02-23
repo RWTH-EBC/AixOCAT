@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <DUT Name="ST_PIDParams" Id="{8a948b83-7dec-46ce-a690-cba0d67b8970}">
+    <Declaration><![CDATA[TYPE ST_PIDParams :
+STRUCT
+	K		:	REAL	:=	1;		//Proportional gain
+	Ti		:	REAL	:=	9999;	//Integral time
+	Td		:	REAL	:=	0;		//Derivative time
+	LimLow	:	REAL	:=	0;		//Low limit of output
+	LimHigh	:	REAL	:=	100;	//High limit of output
+	bReverseActing	:	BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

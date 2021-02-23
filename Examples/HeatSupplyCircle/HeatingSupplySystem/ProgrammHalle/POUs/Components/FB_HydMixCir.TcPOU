@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_HydMixCir" Id="{bf69e14a-3468-49db-9e18-f972a718c19a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HydMixCir
+VAR_INPUT
+	//Pump
+	iPump			:	I_Pump;
+	//Valve
+	iValve			:	I_Valve;
+	//Temperatures
+	iTempSupPrim	:	I_TemperatureSensor;
+	iTempRetPrim	:	I_TemperatureSensor;
+	iTempSup		:	I_TemperatureSensor;
+	iTempRet		:	I_TemperatureSensor;
+	//Controller
+	iControl		:	I_HydraulicMixingControl;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	eMode : E_ControlMode := E_ControlMode.Off;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Mode" Id="{70e12eae-b206-485e-83ad-672f3b39b70b}">
+      <Declaration><![CDATA[PROPERTY Mode : E_ControlMode]]></Declaration>
+      <Get Name="Get" Id="{2bbe612f-3140-48f7-b2ad-c7901abcc897}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Mode := THIS^.eMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d6e6093c-70de-4d6b-b7e6-96e291088501}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.eMode := Mode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{11164a5a-f7c1-43f5-8f73-4ba44b0ac571}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Update temperatures
+iTempSupPrim.Run();
+iTempRetPrim.Run();
+iTempSup.Run();
+iTempRet.Run();
+
+//Run components
+iPump.Run();
+iValve.Run();
+
+//Run controller
+iControl.Mode := eMode;
+iControl.TemperatureSupAct := iTempSup.Temperature;
+iControl.Run();
+
+//Pump set properties
+IF eMode = E_ControlMode.Off THEN
+	iPump.SetOn := FALSE;
+ELSE
+	iPump.SetOn := TRUE;
+END_IF
+iPump.ControlMode := iControl.PumpMode;
+iPump.Setpoint := iControl.PumpSet;
+
+//Valve set properties
+iValve.OpeningSetpoint := iControl.ValveSet;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_HydMixCir">
+      <LineId Id="36" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HydMixCir.Mode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HydMixCir.Mode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HydMixCir.Run">
+      <LineId Id="6" Count="4" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="11" Count="16" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

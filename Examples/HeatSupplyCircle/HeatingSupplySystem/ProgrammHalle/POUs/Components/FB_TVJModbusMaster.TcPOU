@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_TVJModbusMaster" Id="{f7bd7a18-30f4-4697-99f3-29f35344eb26}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TVJModbusMaster
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbModbusRTUMaster : ModbusRtuMaster_KL6x22B;	//Modbus RTU Master
+	
+	nUnitID			:	BYTE :=	0;	//Modbus device ID
+	
+	//Modbus Registers
+	nRegSetpoint	:	WORD := 0;
+	nRegForce		:	WORD := 1;
+	nRegActual		:	WORD := 7;
+	
+	//Properties
+	bError 			: 	BOOL := FALSE;
+	fNominalVolFlow	: 	REAL := 8820;
+	fVolFlowSet 	: 	REAL := 0;
+	fVolFlowAct		: 	REAL;
+	
+	//Internal vars
+	bFlagForce		:	BOOL := FALSE;
+	bModErr 		: 	BOOL;
+	ErrID 			: 	MODBUS_ERRORS;
+	fRelFlowMax		:	WORD := 10000;
+	fRelFlowMin		:	WORD := 2000;
+	nForce			:	WORD := 0;
+	fSetModbus		:	WORD := fRelFlowMin;
+	sVolFlowAct		: 	WORD;
+	
+	//Timer
+	Tim			:	TON;
+	
+	//State
+	nState		:	INT	:= 1;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{3bbcdc77-e347-465e-897a-cdfe732b83be}">
+      <Declaration><![CDATA[PROPERTY Error : Bool]]></Declaration>
+      <Get Name="Get" Id="{67f7a768-ff85-486f-9a87-2f6732a22f01}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3bb934a7-a0d3-4b79-8560-1c3d312ce563}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="NominalVolumeFlow" Id="{34cb5f45-796b-41f5-934a-722f3ed9044f}">
+      <Declaration><![CDATA[PROPERTY NominalVolumeFlow : REAL]]></Declaration>
+      <Get Name="Get" Id="{d49767eb-7991-4eb0-ab7b-a21c9eec75c5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[NominalVolumeFlow := THIS^.fNominalVolFlow;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6795fb36-2f7a-4523-bc93-04bbb6d90ed6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fNominalVolFlow := NominalVolumeFlow;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{5fc3e7af-229f-4f5e-9aa4-2e885f677fb6}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+
+VAR
+	END_I: INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Tim(PT:=T#100MS,IN:=TRUE);
+	IF Tim.Q THEN
+		Tim(IN:=FALSE);
+
+		CASE nState OF
+			//Force or release force
+			1: //Initialize writing force or release
+				IF NOT fbModbusRTUMaster.BUSY THEN
+					//IF setpoint is 0, force close ELSE release force mode
+					IF fVolFlowSet = 0 OR bFlagForce = TRUE THEN
+						//Force close
+						nForce := 2;
+						//Initialize writing process
+						fbModbusRTUMaster.WriteSingleRegister(	UnitID		:=	nUnitID,				//Modbus ID of device
+																MBAddr		:=	nRegForce,				//Register address,
+																Quantity	:=	1,						//Number of registers to be written
+																pMemoryAddr	:=	ADR(nForce),			//Pointer to write data
+																cbLength	:=	SIZEOF(fVolFlowSet),	//Size of write data
+																Timeout		:=	T#5S,					//Time to wait for the slave to respond
+																Execute		:=	TRUE
+															);
+					ELSE
+						//Release force close
+						nForce := 0;
+						//Initialize writing process
+						fbModbusRTUMaster.WriteSingleRegister(	UnitID		:=	nUnitID,				//Modbus ID of device
+																MBAddr		:=	nRegForce,				//Register address,
+																Quantity	:=	1,						//Number of registers to be written
+																pMemoryAddr	:=	ADR(nForce),			//Pointer to write data
+																cbLength	:=	SIZEOF(fVolFlowSet),	//Size of write data
+																Timeout		:=	T#5S,					//Time to wait for the slave to respond
+																Execute		:=	TRUE
+															);
+					END_IF
+				END_IF
+				nState := 2;
+				Run := FALSE;
+				
+			2:	//Finish writing force or release
+				fbModbusRTUMaster.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModbusRTUMaster.BUSY THEN
+					nState := 3;
+				END_IF
+				Run := FALSE;
+				
+			3:	//Setpoint writing
+				IF NOT fbModbusRTUMaster.BUSY THEN
+					//Check operational limits
+					IF fVolFlowSet < fRelFlowMin/fRelFlowMax*fNominalVolFlow THEN
+						fVolFlowSet := fRelFlowMin/fRelFlowMax*fNominalVolFlow; //Set to minimum allowed volume flow
+					ELSIF fVolFlowSet > fNominalVolFlow THEN
+						fVolFlowSet := fNominalVolFlow; //Set to maximum allowed volumen flow
+					ELSE
+						//do nothing
+					END_IF
+					//Write setpoint
+					//fSetModbus := REAL_TO_WORD(fRelFlowMax*(fVolFlowSet-(fRelFlowMin/fRelFlowMax*fNominalVolFlow))/(fNominalVolFlow-fRelFlowMin));
+					fSetModbus := REAL_TO_WORD(fRelFlowMax*fVolFlowSet/fNominalVolFlow);
+					//Initialize writing process
+					fbModbusRTUMaster.WriteSingleRegister(	UnitID		:=	nUnitID,				//Modbus ID of device
+															MBAddr		:=	nRegSetpoint,			//Register address
+															Quantity	:=	1,						//Number of registers to be written
+															pMemoryAddr	:=	ADR(fSetModbus),		//Pointer to write data
+															cbLength	:=	SIZEOF(fSetModbus),		//Size of write data
+															Timeout		:=	T#5S,					//Time to wait for the slave to respond
+															Execute		:=	TRUE
+														);
+				END_IF
+				nState := 4;
+				Run := FALSE;
+
+			4: //Finish writing	
+				fbModbusRTUMaster.WriteSingleRegister(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModbusRTUMaster.BUSY THEN
+					nState := 5;
+				END_IF
+				Run := FALSE;
+					
+			5: //Start reading
+				IF NOT fbModbusRTUMaster.BUSY THEN
+					//Initialize reading process
+					fbModbusRTUMaster.ReadRegs(	UnitID		:=	nUnitID,				//Modbus ID of device
+												MBAddr		:=	nRegActual,				//Register address
+												Quantity	:=	1,						//Number of registers to be read
+												pMemoryAddr	:=	ADR(sVolFlowAct),		//Pointer to read data
+												cbLength	:=	SIZEOF(sVolFlowAct),	//Size of read data
+												Timeout		:=	T#5S,					//Time to wait for the slave to respond
+												Execute		:=	TRUE
+												);
+				ELSE
+					//do nothing
+				END_IF
+				nState := 6;
+				Run := FALSE;
+				
+			6: //Finish reading
+				fbModbusRTUMaster.ReadRegs(Execute:=FALSE, Error=>bModErr, ErrorID=>ErrID);
+				IF NOT fbModbusRTUMaster.BUSY THEN
+					fVolFlowAct := WORD_TO_REAL(sVolFlowAct);
+					nState := 1;
+					Run := TRUE;
+				ELSE
+					Run := FALSE;
+				END_IF
+				
+		END_CASE
+		
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="UnitID" Id="{1713ee97-2d5a-4b38-a7a1-07f465352e67}">
+      <Declaration><![CDATA[PROPERTY UnitID : BYTE]]></Declaration>
+      <Get Name="Get" Id="{8496032b-1e27-4df3-b557-063d288b42bb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[UnitID := THIS^.nUnitID;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bc4835b2-e75f-4f7a-8c0e-66a8d91cdd1e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.nUnitID := UnitID;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="VolumeFlowActual" Id="{d6e1fc53-2489-47dd-975b-1b352243b3fc}">
+      <Declaration><![CDATA[PROPERTY VolumeFlowActual : REAL]]></Declaration>
+      <Get Name="Get" Id="{eb935b11-39e3-4595-8528-55460acf2bec}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[VolumeFlowActual := THIS^.fVolFlowAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fe9ca4b0-d827-4602-80d0-07a9496c0339}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fVolFlowAct := VolumeFlowActual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="VolumeFlowSetpoint" Id="{3baecb7d-0f9d-4bef-a0e5-fb0a8545f6b2}">
+      <Declaration><![CDATA[PROPERTY VolumeFlowSetpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{5b7ed78d-99dd-4f2f-a42b-c8c0aa85cb49}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[VolumeFlowSetpoint := THIS^.fVolFlowSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{daa9dcb5-0c2e-46f9-a665-0b36335cb780}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fVolFlowSet := VolumeFlowSetpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_TVJModbusMaster">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.NominalVolumeFlow.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.NominalVolumeFlow.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.Run">
+      <LineId Id="249" Count="1" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="275" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="279" Count="9" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="302" Count="9" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="291" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="314" Count="0" />
+      <LineId Id="312" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="297" Count="2" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="160" Count="5" />
+      <LineId Id="320" Count="1" />
+      <LineId Id="166" Count="1" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="168" Count="8" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="223" Count="1" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="239" Count="1" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="192" Count="12" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="229" Count="1" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="245" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="265" Count="1" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="251" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.UnitID.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.UnitID.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.VolumeFlowActual.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.VolumeFlowActual.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.VolumeFlowSetpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TVJModbusMaster.VolumeFlowSetpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

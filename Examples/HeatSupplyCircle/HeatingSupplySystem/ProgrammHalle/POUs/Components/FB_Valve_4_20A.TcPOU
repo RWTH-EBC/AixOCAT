@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_Valve_4_20A" Id="{ce6af1ba-4132-41aa-8a85-00fbaedb61ae}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve_4_20A IMPLEMENTS I_Valve
+VAR_INPUT
+	nOpeningAct AT %I* : REAL;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+		//Properties
+	bError : BOOL := FALSE;
+	fOpeningActual : REAL;
+	fOpeningSetpoint : REAL := 0;
+	//Raw values
+	nOpeningSet AT %Q* : INT;
+	//nOpeningAct AT %I* : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{0bda6983-9627-4240-83f0-dbd93527f96b}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0fe5cdb3-bba7-4923-99c8-d73c1afaa548}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6f61d443-4960-4ded-974a-6d3e5dd78c10}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpeningActual" Id="{fa7c68c9-d6f0-481c-a92e-0d4aeb2e6b8f}">
+      <Declaration><![CDATA[PROPERTY OpeningActual : REAL]]></Declaration>
+      <Get Name="Get" Id="{04441374-f5b1-4c60-847c-04925f381feb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpeningActual := THIS^.fOpeningActual;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a9331692-55df-472d-ad3d-f775d5027073}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fOpeningActual := OpeningActual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpeningSetpoint" Id="{e361ac6c-ac03-4f95-8661-35094b61ee8e}">
+      <Declaration><![CDATA[PROPERTY OpeningSetpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{ec903a68-f30c-4df2-bb80-8fd8b60c8f22}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpeningSetpoint := THIS^.fOpeningSetpoint;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{405f689d-785a-490e-aed7-1678db059bd7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fOpeningSetpoint := OpeningSetpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{fdeed6fd-d672-4a1a-87aa-548838114324}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Read feedback for opening position
+fOpeningActual := FC_Current4_20Raw_TO_Percentage(nOpeningAct);
+
+//Write setpoint for opening position
+nOpeningSet := FC_Percentage_TO_Current4_20Raw(fOpeningSetpoint);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Valve_4_20A">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.OpeningActual.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.OpeningActual.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.OpeningSetpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.OpeningSetpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve_4_20A.Run">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

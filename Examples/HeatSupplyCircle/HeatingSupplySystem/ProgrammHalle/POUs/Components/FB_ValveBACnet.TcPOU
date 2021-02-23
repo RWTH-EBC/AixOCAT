@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_ValveBACnet" Id="{fbac7a6f-6bf1-4c62-bf13-aa77322e1ad6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveBACnet IMPLEMENTS I_Valve
+VAR_INPUT
+	//fbClient : FB_BACnet_Client;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Properties
+	bError 					: BOOL := FALSE;
+	fOpeningActual 			: REAL;
+	fOpeningSetpoint 		: REAL := 0;
+
+(*	
+	//BACnet parameters
+	nPriority : BYTE := 12;
+	
+	//BACnet Mapping
+	//Only one Client of the same DeviceInstance
+*)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{b622cc49-f082-48d2-a34b-232699e631f3}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{5e152892-1fe3-4d2d-ba3a-91400c750133}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f664bff5-e8c4-42e2-9116-3346517e9ed1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpeningActual" Id="{bbd2e403-df54-4f37-9282-9e7c5daf91da}">
+      <Declaration><![CDATA[PROPERTY OpeningActual : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{37041df0-9180-49a2-88ec-1f7ed50086c8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpeningActual := THIS^.fOpeningActual;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{13cc65df-1f61-4914-af9d-043bac32b708}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fOpeningActual := OpeningActual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OpeningSetpoint" Id="{2ff0074e-565b-4f4e-8913-c2d4f8f0d9f9}">
+      <Declaration><![CDATA[PROPERTY OpeningSetpoint : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{5ba05b76-37a9-4be7-ba2e-f0bfa7c8bb8a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[OpeningSetpoint := THIS^.fOpeningSetpoint;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9bdf2aca-2516-489d-a382-dfdcf83dcf27}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fOpeningSetpoint := OpeningSetpoint;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{f67494f0-daa5-4eab-a51c-88990ff06733}">
+      <Declaration><![CDATA[METHOD Run
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(*
+//Run BACnet client
+fbClient();
+
+//Read BACnet values
+ReheaterValActBAC(fPresentValue=>fOpeningActual);
+
+//Write BACnet values
+ReheaterValSetBAC(fPV:=fOpeningSetpoint,bEnablePv:=TRUE,nPriority:=nPriority);
+*)]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ValveBACnet">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.OpeningActual.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.OpeningActual.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.OpeningSetpoint.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.OpeningSetpoint.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBACnet.Run">
+      <LineId Id="26" Count="0" />
+      <LineId Id="19" Count="6" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

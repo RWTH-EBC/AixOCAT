@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.7">
+  <POU Name="FB_SenTempEL321x" Id="{4c3bbe2b-7539-4760-bb75-049cf2b15ebc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SenTempEL321x
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	T : REAL;				// calculated temperature
+END_VAR
+VAR
+	TempRaw  AT %I* : INT;  //Value from Terminal
+		
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[T := INT_TO_REAL(TempRaw) / 10;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_SenTempEL321x">
+      <LineId Id="20" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <Itf Name="I_JetNozzle" Id="{957a5338-7b0f-4496-ac85-67630c9ef268}">
+    <Declaration><![CDATA[INTERFACE I_JetNozzle
+]]></Declaration>
+    <Property Name="AngleActual" Id="{42b562da-d9e1-4653-b8e0-c50c120d16bb}">
+      <Declaration><![CDATA[PROPERTY AngleActual : REAL]]></Declaration>
+      <Get Name="Get" Id="{80248675-dd39-4caf-aaf8-71ab7892b690}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{54e24793-ff03-4512-8057-eb6e65a7ef11}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="AngleSetpoint" Id="{9821977d-f35f-46ea-89a7-f07620092f3c}">
+      <Declaration><![CDATA[PROPERTY AngleSetpoint : REAL]]></Declaration>
+      <Get Name="Get" Id="{68cb91d5-3a59-4c49-a6aa-804ea07eb20d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{c3d66076-4783-4287-9614-bb6dcb5d87ae}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{ec9bb0ec-fc03-4274-aee5-e5a35360bb39}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{47f2ba81-5f3f-4fce-befd-29a79d47e6dd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b682a2e2-53de-473f-b048-e85ddc8efc30}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{d53b7e98-a692-4016-91a7-56fd0eaba035}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

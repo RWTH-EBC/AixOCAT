@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <DUT Name="E_PumpControlMode" Id="{accfb4d5-6249-47ca-ab57-45919546bb8d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_PumpControlMode :
+(
+	OFF := 0,					
+	CONST_SPEED := 1,				
+	CONST_DIFFPRESS := 6,		
+	VAR_DIFFPRESS := 7,
+	NONE := 99
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

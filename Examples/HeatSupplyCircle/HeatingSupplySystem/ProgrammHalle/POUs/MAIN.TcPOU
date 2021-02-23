@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="MAIN" Id="{739250fd-a178-4b07-8586-e950252efe80}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	//Control mode
+	eMode : E_ControlMode := E_ControlMode.Auto;
+	
+	// Heat supply circle
+	fbHSS		: FB_HSS;
+
+	//simulated sensor data
+	fbHSSSenDa	: FB_SenDaHydMixCir;
+	//simulated enviromental temperature
+	fbAmbientAir : FB_AmbientAir;										 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Check main control mode
+eMode := ADS.eModeMainControlModeADS;
+//Set control modes
+IF eMode = E_ControlMode.ExternalADSControl THEN		
+	fbHSS.Mode 	:= ADS.eModeHSSADS;	
+ELSE	
+	fbHSS.Mode 	:= eMode;
+END_IF
+
+//Simulated the sensor tmeprature and enviromental temperature
+ 
+fbHSSSenDa.Run();
+fbAmbientAir.Run();
+
+//Raw temperature input 
+fbHSS.TempSupPrim := fbHSSSenDa.fTempSupPrimAct;
+fbHSS.TempRetPrim := fbHSSSenDa.fTempRetPrimAct;
+fbHSS.TempRet := fbHSSSenDa.fTempRetAct;
+fbHSS.TempSup := fbHSSSenDa.fTempSupAct;
+//Valve input
+fbHSS.Valve := fbHSSSenDa.fHSSValveAct;
+
+//Execute Routine 
+fbHSS.Run();
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="1713" Count="0" />
+      <LineId Id="1715" Count="0" />
+      <LineId Id="1525" Count="0" />
+      <LineId Id="1716" Count="0" />
+      <LineId Id="1731" Count="0" />
+      <LineId Id="1717" Count="0" />
+      <LineId Id="1724" Count="0" />
+      <LineId Id="1718" Count="0" />
+      <LineId Id="1975" Count="0" />
+      <LineId Id="1974" Count="0" />
+      <LineId Id="2009" Count="0" />
+      <LineId Id="1976" Count="0" />
+      <LineId Id="1985" Count="0" />
+      <LineId Id="2056" Count="0" />
+      <LineId Id="1980" Count="0" />
+      <LineId Id="1527" Count="0" />
+      <LineId Id="2030" Count="0" />
+      <LineId Id="2023" Count="0" />
+      <LineId Id="2029" Count="0" />
+      <LineId Id="2027" Count="0" />
+      <LineId Id="1981" Count="0" />
+      <LineId Id="1898" Count="0" />
+      <LineId Id="1921" Count="0" />
+      <LineId Id="1529" Count="0" />
+      <LineId Id="1763" Count="0" />
+      <LineId Id="1658" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

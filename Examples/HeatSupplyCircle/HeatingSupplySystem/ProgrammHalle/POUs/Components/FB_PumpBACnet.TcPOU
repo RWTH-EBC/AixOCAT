@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="FB_PumpBACnet" Id="{4509c24b-a005-4f1a-89e1-3b0c4248d954}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PumpBACnet
+VAR_INPUT
+	fSet		:	REAL	:=	100.0;	//Percentage of maximum
+	Mode		:	E_PumpControlMode;
+	//Control mode: 1 - CONST_SPEED, 5 - CONST_PRESSURE, 6 - CONST_DIFFPRESS, 7 - VAR_DIFFPRESS, 12 - TEMP_VARIABLE, 13 - CONST_CONTROL
+END_VAR
+VAR_OUTPUT
+	stInfo			:	ST_PumpInfo;
+	bInitSuccess	:	BOOL;
+	bError			:	BOOL;
+END_VAR
+VAR
+	fSetRaw		:	REAL;
+	//BACnet client
+	DevPump		:	FB_BACnet_RemoteDevice;
+	//BACnet values
+	Setpoint	:	FB_BACnet_RemoteAnalogOutput_EX;
+	ContMode	:	FB_BACnet_RemoteMultiStateOutput_EX;
+	PumpOn		:	FB_BACnet_RemoteBinaryOutput_EX;
+	Operating	:	FB_BACnet_RemoteBinaryInput_EX;
+	EstFlow		:	FB_BACnet_RemoteAnalogInput_EX;		//Estimated volume flow
+	EstPressure	:	FB_BACnet_RemoteAnalogInput_EX;		//Estimated pressure difference
+	Speed		:	FB_BACnet_RemoteAnalogInput_EX;
+	Power_Act  	:	FB_BACnet_RemoteAnalogInput_EX;
+	PumpError	:	FB_BACnet_RemoteBinaryInput_EX;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Regular operation
+PumpError(RemoteDevice:=DevPump,bPresentValue=>bError);	//Read pump error status
+IF DevPump.bOperational THEN
+	CASE  Mode OF
+	
+	E_PumpControlMode.NONE:
+		PumpOn(RemoteDevice:=DevPump, bNullPV:= TRUE, bEnablePV:=TRUE);		//Release BACnet Value
+		ContMode(RemoteDevice:=DevPump, bNullPV:= TRUE, bEnablePV:=TRUE);	//Release BACnet Value
+	
+  	E_PumpControlMode.OFF:
+		PumpOn(RemoteDevice:=DevPump,bPV:=FALSE,bEnablePV:=TRUE);			// switch pump off
+	
+	ELSE
+		PumpOn(RemoteDevice:=DevPump,bPV:=TRUE,bEnablePV:=TRUE);
+		ContMode(RemoteDevice:=DevPump,nPV:=INT_TO_UDINT(Mode), bNullPV:= FALSE, bEnablePV:=TRUE);	//Set to appropriate control mode
+	END_CASE
+END_IF
+//Error handling
+IF (DevPump.bError) OR (Setpoint.bError) OR (PumpOn.bError) OR (bError) THEN
+		PumpOn(RemoteDevice:=DevPump, bPV:=FALSE, bEnablePV:=TRUE);	//Deactivate Pump in Error
+END_IF
+
+//Write Setpoint value
+Setpoint(RemoteDevice:=DevPump,fPV:=fSet,bEnablePV:=TRUE);	//Setpoint
+
+//current values
+EstFlow(RemoteDevice:=DevPump,fPresentValue=>stInfo.fVolFlow);
+Speed(RemoteDevice:=DevPump,fPresentValue=>stInfo.fSpeed);
+Power_Act(RemoteDevice:=DevPump,fPresentValue=>stInfo.fPower);
+EstPressure(RemoteDevice:=DevPump,fPresentValue=>stInfo.fPressDiff);
+Operating(RemoteDevice:=DevPump,bPresentValue=>stInfo.bOperating);]]></ST>
+    </Implementation>
+    <Method Name="Init" Id="{63fa6b3d-71ea-4a85-821c-2d96ca21ee5f}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Init Device
+DevPump(
+	bReset:=FALSE,
+	bAutoReset:=FALSE,
+	bDisableWOC:=FALSE,
+	bReSubscribeCOV:=FALSE,
+	bAutoResubscribe:=FALSE,
+	bTriggerWOC:=FALSE,
+	bReload:=FALSE
+);
+IF DevPump.bOperational THEN
+	ContMode(RemoteDevice:=DevPump,nPV:=INT_TO_UDINT(1),bEnablePV:=TRUE);	//Set to appropriate control mode
+	//PumpOn(RemoteDevice:=DevPump,fPV:=1,bEnablePV:=TRUE);	//Activate Pump
+	PumpOn(RemoteDevice:=DevPump,bPV:=TRUE,bEnablePV:=TRUE);	//Activate Pump
+	IF (NOT ContMode.bError) AND (NOT PumpOn.bError) THEN
+		bInitSuccess	:=	TRUE;
+	END_IF
+END_IF
+bInitSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_PumpBACnet">
+      <LineId Id="47" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="237" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="275" Count="2" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="238" Count="2" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="374" Count="0" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="234" Count="1" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="250" Count="1" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="297" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PumpBACnet.Init">
+      <LineId Id="6" Count="17" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <GVL Name="PumpInfos" Id="{ff618696-9f95-4d4a-a2c0-c930a5ae3666}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	stPumpCCAInfo		:	ST_PumpInfo;
+	stPumpCPHInfo		:	ST_PumpInfo;
+	stPumpDIDInfo		:	ST_PumpInfo;
+	stPumpAHU_PreHInfo	:	ST_PumpInfo;
+	stPumpAHU_ReHInfo	:	ST_PumpInfo;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

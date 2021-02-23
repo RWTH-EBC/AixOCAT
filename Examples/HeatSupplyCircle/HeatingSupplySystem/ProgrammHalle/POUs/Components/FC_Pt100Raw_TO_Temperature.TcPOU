@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FC_Pt100Raw_TO_Temperature" Id="{6cfe8a6d-d01e-4d22-bc2b-00d23a3d6bc3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_Pt100Raw_TO_Temperature : REAL
+VAR_INPUT
+	i : REAL;
+END_VAR
+VAR
+	ConvFac : REAL := 10;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FC_Pt100Raw_TO_Temperature := (i)/ConvFac;]]></ST>
+    </Implementation>
+    <LineIds Name="FC_Pt100Raw_TO_Temperature">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
