@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+	\path[draw,thick,fill=rwth_blue] (-0.075, 0) -- (-0.075, 0.55) arc (180:0:0.075) -- (0.075, 0);
+	\draw (-0.01, 0.5) -- (0.075, 0.5);
+	\draw (-0.01, 0.4) -- (0.075, 0.4);
+	\draw (-0.01, 0.3) -- (0.075, 0.3);
+	\draw (-0.01, 0.2) -- (0.075, 0.2);
+	\draw (-0.01, 0.1) -- (0.075, 0.1);
+	\path[draw,thick,fill=rwth_blue] (0, 0) circle (0.15);
+\end{tikzpicture}
