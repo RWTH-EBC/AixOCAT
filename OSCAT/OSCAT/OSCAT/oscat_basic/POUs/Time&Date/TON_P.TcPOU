@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="TON_P" Id="{91b59be3-ccf4-4e66-ab2b-71abc5d1e445}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TON_P	// Ton pausabile
+VAR_INPUT
+    IN : BOOL;
+    PT : TIME;
+    PAUSE : BOOL;
+END_VAR
+VAR_OUTPUT
+    Q : BOOL;
+    ET : TIME;
+END_VAR
+VAR
+    rtPause : R_TRIG;
+    tTimePaused : TIME;
+    ton : TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT IN THEN
+    tTimePaused := T#0S;
+END_IF
+
+rtPause(CLK := IN AND PAUSE);
+
+IF rtPause.Q THEN
+    tTimePaused := tTimePaused + ton.ET;
+END_IF
+
+ton(IN := IN AND NOT PAUSE, PT := PT - tTimePaused);
+
+//IF ET >= PT THEN
+//	Q := TRUE;
+//ELSE
+//	Q := FALSE;
+//END_IF
+
+Q := ton.Q;
+
+ET := tTimePaused + ton.ET;
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
