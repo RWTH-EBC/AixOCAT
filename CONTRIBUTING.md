@@ -1,6 +1,6 @@
 # How to contribute
 
-Thanks a lot for contributing to the development of AixOCAT, you help to make the Automation Technology world a bit better!
+Thanks a lot for contributing to the development of AixOCAT. You help to make the Automation Technology world a bit better!
 
 To give you some guidelines and to ensure the quality of AixOCAT's code, we collected our requirements in our wiki:
 
@@ -10,4 +10,4 @@ To give you some guidelines and to ensure the quality of AixOCAT's code, we coll
 | [Git Workflow](https://github.com/RWTH-EBC/AixOCAT/wiki/Git-Workflow)  | How to manage working with Git and AixOCAT |
 | [How to..](https://github.com/RWTH-EBC/AixOCAT/wiki/How-to..) | Divers helpful tutorials |
 
-If you feel that something is missing, confuses you or is not in the right place, don't hesitate to put that in a new Issue!
+If you feel that something is missing, confuses you or is not in the right place, don't hesitate to put that in a new issue!
