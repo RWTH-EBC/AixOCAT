@@ -86,7 +86,7 @@ if __name__ == "__main__":
         except:
             print("Error: unable to start thread")
         while termination.is_set():
-            #keep main thread alive
+            # Keep main thread alive
             pass
     except KeyboardInterrupt:
         print("attempting to close threads.")
