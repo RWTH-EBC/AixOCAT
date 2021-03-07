@@ -1758,6 +1758,9 @@
     <Compile Include="oscat_basic\POUs\Time&amp;Date\TIMECHECK.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\TON_P.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\POUs\Time&amp;Date\UTC_TO_LTIME.TcPOU">
       <SubType>Code</SubType>
     </Compile>
