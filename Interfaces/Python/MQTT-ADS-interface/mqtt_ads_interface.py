@@ -10,6 +10,7 @@ import threading
 import mqtt as mqtt_module
 import ads as ads_module
 import time
+import parsing_and_assignment
 
 #%%
 class mqtt_ads_interface():
@@ -72,7 +73,10 @@ class mqtt_ads_interface():
         
 #%%
 if __name__ == "__main__":
+    # Create ads and mqtt instances
     mqtt_ads = mqtt_ads_interface()
+    # Variables and Parsing
+    pub, sub = parsing_and_assignment.getADSVariables()
     # Create termination event, e.g. keyboardinterrupt
     termination = threading.Event()
     termination.set()
