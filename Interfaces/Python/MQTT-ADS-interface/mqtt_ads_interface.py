@@ -22,20 +22,24 @@ class mqtt_ads_interface():
         self.mqtt = mqtt_module.mqtt()
         self.ads = ads_module.ads()
     
-    def connect_mqtt(self, aedifion=True):
+    def connect_mqtt(self, mqtt_host, mqtt_port, mqtt_keepalive, aedifion=False, credentials=False):
         """"
         Establish connection to MQTT broker:
         1. Set the host address of the broker
         2. Get username and password from your system environment variables
         """
-        self.mqtt.set_host(host='mqtt.ercebc.aedifion.io')
-        self.mqtt.get_credentials(mqtt_user_environment_variable='AED_USER_MQTT',
-                                  mqtt_password_environment_variable='AED_PASSWORD_MQTT')
+        if credentials == True:
+            if aedifion == True:
+                self.mqtt.get_credentials(mqtt_user_environment_variable='AED_USER_MQTT',
+                                          mqtt_password_environment_variable='AED_PASSWORD_MQTT')
         if aedifion == True:
             self.mqtt.connect_aedifion()
         else:
-            self.mqtt.connect()
-    
+            self.mqtt.connect(host=mqtt_host, port=mqtt_port, keepalive=mqtt_keepalive)
+
+    def disconnect_mqtt(self):
+        self.mqtt.disconnect()    
+
     def connect_ads(self, create_route=False):
         if create_route == True:
             self.ads.create_route()
@@ -60,22 +64,32 @@ class mqtt_ads_interface():
         2. Parse data point to send to MQTT message
         3. Publish MQTT message
         """
-        print(f"thread {threadname} sleeps for 8 seconds\n")
-        i = 0
-        temp = False
+        # print(f"thread {threadname} sleeps for 8 seconds\n")
+        # i = 0
+        # temp = False
+        # while termination.is_set():
+        #     if i < 8:
+        #         time.sleep(1)
+        #         i += 1
+        #     elif temp == False:
+        #         print(f"thread {threadname} woke up")
+        #         temp = True
         while termination.is_set():
-            if i < 8:
-                time.sleep(1)
-                i += 1
-            elif temp == False:
-                print(f"thread {threadname} woke up")
-                temp = True
+            print('Publishing GVL..')
+            for i in pub:
+                self.mqtt.publish(message=str(i[1]), topic=i[0])
+            print('Restart publishing.')
+            time.sleep(1)
         
 #%%
 if __name__ == "__main__":
     # Create ads and mqtt instances
     mqtt_ads = mqtt_ads_interface()
+    # Connect MQTT
+    mqtt_ads.connect_mqtt('localhost', 1883, 60)
+    
     # Variables and Parsing
+    # Get ADS variables from variable list
     pub, sub = parsing_and_assignment.getADSVariables()
     # Create termination event, e.g. keyboardinterrupt
     termination = threading.Event()
@@ -98,3 +112,6 @@ if __name__ == "__main__":
         listen.join()
         publish.join()
         print("threads successfully closed")
+        print("Disconnect MQTT")
+        mqtt_ads.disconnect_mqtt()
+        print("MQTT was disconnected")

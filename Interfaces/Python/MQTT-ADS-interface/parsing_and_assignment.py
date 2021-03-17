@@ -6,6 +6,7 @@ Created on Sat Mar  6 12:01:44 2021
 """
 
 import re
+import pyads
 
 #%%
 def getADSVariables(file = "sampleADSGVL.TcGVL"):
@@ -33,19 +34,19 @@ def getADSVariables(file = "sampleADSGVL.TcGVL"):
                     continue
                 if "%I*" in s[1] or "%I*" in s[2] or "%I*" in s[3]:
                     if re.compile("REAL").findall(s[3]) or re.compile("REAL").findall(s[4]):
-                        temptype = "REAL"
+                        temptype = pyads.PLCTYPE_REAL
                     elif re.compile("BOOL").findall(s[3]) or re.compile("BOOL").findall(s[4]):
-                        temptype = "BOOL"
+                        temptype = pyads.PLCTYPE_BOOL
                     else:
-                        temptype = "INT"
+                        temptype = pyads.PLCTYPE_INT
                     subscribe.append([s[0], temptype])
                 else:
                     if re.compile("REAL").findall(s[3]) or re.compile("REAL").findall(s[4]):
-                        temptype = "REAL"
+                        temptype = pyads.PLCTYPE_REAL
                     elif re.compile("BOOL").findall(s[3]) or re.compile("BOOL").findall(s[4]):
-                        temptype = "BOOL"
+                        temptype = pyads.PLCTYPE_BOOL
                     else:
-                        temptype = "INT"
+                        temptype = pyads.PLCTYPE_INT
                     publish.append([s[0], temptype])
                 print(s)
 
