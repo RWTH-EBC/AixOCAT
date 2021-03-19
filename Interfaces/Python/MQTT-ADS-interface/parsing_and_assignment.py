@@ -7,9 +7,10 @@ Created on Sat Mar  6 12:01:44 2021
 
 import re
 import pyads
+import json
 
 #%%
-def getADSVariables(file = "sampleADSGVL.TcGVL"):
+def getADSVariables(file = "TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL"):
     startphrase = 'VAR_GLOBAL'
     endphrase   = 'END_VAR'
     start   = 0
@@ -49,8 +50,12 @@ def getADSVariables(file = "sampleADSGVL.TcGVL"):
                         temptype = pyads.PLCTYPE_INT
                     publish.append([s[0], temptype])
                 print(s)
-
+    print('\n Done gathering data points. \n')
     return publish, subscribe
+
+def parseJSON(name, value, timestamp):
+    res = json.dumps({'name' : name, 'value' : value, 'timestamp' : timestamp}, separators=(',', ':'))
+    return res
 
 if __name__ == "__main__":
     pub, sub = getADSVariables()

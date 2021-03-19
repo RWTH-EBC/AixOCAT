@@ -40,10 +40,13 @@ class mqtt_ads_interface():
     def disconnect_mqtt(self):
         self.mqtt.disconnect()    
 
-    def connect_ads(self, create_route=False):
+    def connect_ads(self, ams_netID, host, create_route=False):
         if create_route == True:
             self.ads.create_route()
-        self.ads.connect(ams_netID="5.53.34.234.1.1", host="134.130.56.144")
+        self.ads.connect(ams_netID, host)
+    
+    def disconnect_ads(self):
+        self.ads.disconnect()
     
     def listen(self, threadname, termination):
         """"
@@ -53,11 +56,11 @@ class mqtt_ads_interface():
         """
         i = 0 
         while termination.is_set():       
-            print(f"thread {threadname} lives for {i} seconds\n")
+            print(f"\n >>> {threadname} \n Thread {threadname} lives for {i} seconds >>> \n")
             time.sleep(1)
             i += 1
     
-    def publish(self, threadname, termination):
+    def publish(self, threadname, termination, pub_format='simple_json'):
         """"
         Loop through PLC data points to send
         1. Get data point to send from PLC
@@ -75,10 +78,16 @@ class mqtt_ads_interface():
         #         print(f"thread {threadname} woke up")
         #         temp = True
         while termination.is_set():
-            print('Publishing GVL..')
+            print(f"\n >>> {threadname} >>>")
+            # print('Publishing GVL..')
             for i in pub:
-                self.mqtt.publish(message=str(i[1]), topic=i[0])
-            print('Restart publishing.')
+                value = self.ads.read('sampleADSGVL.'+i[0])
+                if pub_format == 'simple_json':
+                    timestamp = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
+                    json = parsing_and_assignment.parseJSON(i[0], value, timestamp)
+                    print(json)
+                    self.mqtt.publish(message=json, topic='general')
+            # print('Restart publishing.')
             time.sleep(1)
         
 #%%
@@ -87,10 +96,15 @@ if __name__ == "__main__":
     mqtt_ads = mqtt_ads_interface()
     # Connect MQTT
     mqtt_ads.connect_mqtt('localhost', 1883, 60)
+    # Connect ADS
+    try:
+        mqtt_ads.connect_ads(ams_netID='192.168.0.2.1.1', host='192.168.0.2')
+    except:
+        print('Could not create ADS connection to target system.')
     
     # Variables and Parsing
     # Get ADS variables from variable list
-    pub, sub = parsing_and_assignment.getADSVariables()
+    pub, sub = parsing_and_assignment.getADSVariables(file='TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL')
     # Create termination event, e.g. keyboardinterrupt
     termination = threading.Event()
     termination.set()
@@ -112,6 +126,9 @@ if __name__ == "__main__":
         listen.join()
         publish.join()
         print("threads successfully closed")
-        print("Disconnect MQTT")
+        print("Disconnect MQTT..")
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")
+        print('Disconnect ADS..')
+        mqtt_ads.disconnect_ads()
+        print('ADS was disconnected')

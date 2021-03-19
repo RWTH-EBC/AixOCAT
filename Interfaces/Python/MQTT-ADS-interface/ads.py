@@ -30,8 +30,14 @@ class ads():
         self.plc = pyads.Connection(
             ams_net_id= ams_netID,
             ams_net_port=self.port, 
-            ip_address=host)
-        
-        self.plc.open() 
+            ip_address=host)   
+        self.plc.open()
+    
+    def disconnect(self):
+        self.plc.close()
+    
+    def read(self, var):
+        res = self.plc.read_by_name(var)
+        return res
     
 #%%
