@@ -95,12 +95,15 @@ if __name__ == "__main__":
     # Create ads and mqtt instances
     mqtt_ads = mqtt_ads_interface()
     # Connect MQTT
-    mqtt_ads.connect_mqtt('localhost', 1883, 60)
+    try:
+        mqtt_ads.connect_mqtt('localhost', 1883, 60)
+    except:
+        print('\n ****************************************** \n Could not create MQTT connection to broker. \n ****************************************** \n')
     # Connect ADS
     try:
         mqtt_ads.connect_ads(ams_netID='192.168.0.2.1.1', host='192.168.0.2')
     except:
-        print('Could not create ADS connection to target system.')
+        print('\n ****************************************** \n Could not create ADS connection to target system. \n ****************************************** \n')
     
     # Variables and Parsing
     # Get ADS variables from variable list
@@ -121,11 +124,11 @@ if __name__ == "__main__":
             # Keep main thread alive
             pass
     except KeyboardInterrupt:
-        print("attempting to close threads.")
+        print("Attempting to close threads.")
         termination.clear()
         listen.join()
         publish.join()
-        print("threads successfully closed")
+        print("Threads successfully closed")
         print("Disconnect MQTT..")
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")
