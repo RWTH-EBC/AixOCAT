@@ -49,11 +49,14 @@ class mqtt():
         else:
             print("Bad connection, return code=",rc)
    
-    def connect(self, client=None, host=None, port=None, keepalive=None):
+    def connect(self, client=None, host=None, port=None, keepalive=None, clientID=None):
         if not client:
             if not self.mqtt_username:
                 self.mqtt_username = 'test-user'
-            self.client = PahoMQTTClient(client_id=f"{self.mqtt_username}-{str(time.localtime())}", protocol=MQTTv31, clean_session=True)
+            if clientID:
+                self.client = PahoMQTTClient(client_id=clientID, protocol=MQTTv31, clean_session=True)
+            else:
+                self.client = PahoMQTTClient(client_id=f"{self.mqtt_username}", protocol=MQTTv31, clean_session=True)
             self.client.connected_flag = False #create connection flag
             self.client.on_connect = self.on_connect  #bind call back function
         if not host:
