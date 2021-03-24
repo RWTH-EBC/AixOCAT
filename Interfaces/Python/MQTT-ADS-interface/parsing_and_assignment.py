@@ -10,13 +10,13 @@ import pyads
 import json
 
 #%%
-def getADSVariables(file = "TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL"):
+def getADSVariables(file="TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL"):
     startphrase = 'VAR_GLOBAL'
     endphrase   = 'END_VAR'
     start   = 0
     finish  = 0
-    publish = []
-    subscribe = []
+    publish = {}
+    subscribe = {}
     with open(file) as f:
         for num, line in enumerate(f, 1):
             if startphrase in line:
@@ -40,7 +40,7 @@ def getADSVariables(file = "TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sam
                         temptype = pyads.PLCTYPE_BOOL
                     else:
                         temptype = pyads.PLCTYPE_INT
-                    subscribe.append([s[0], temptype])
+                    subscribe[s[0]] = temptype
                 else:
                     if re.compile("REAL").findall(s[3]) or re.compile("REAL").findall(s[4]):
                         temptype = pyads.PLCTYPE_REAL
@@ -48,14 +48,40 @@ def getADSVariables(file = "TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sam
                         temptype = pyads.PLCTYPE_BOOL
                     else:
                         temptype = pyads.PLCTYPE_INT
-                    publish.append([s[0], temptype])
-                print(s)
-    print('\n Done gathering data points. \n')
+                    publish[s[0]] = temptype
+                # print(s)
+    # Add control / set point variables to be monitored as well
+    # publish.update(subscribe)
+    print('Done gathering data points. \n')
     return publish, subscribe
 
-def parseJSON(name, value, timestamp):
+def getADSvarsFromSymbols(ads):
+    ads_list    = ads.plc.get_all_symbols()
+    # var_list    = {}
+    publish     = {}
+    subscribe   = {}
+    for i in ads_list:
+        # var_list[i.name] = (i.symbol_type, i.index_group)
+        if i.symbol_type == 'BOOL':
+            temptype = pyads.PLCTYPE_BOOL
+        elif i.symbol_type == 'REAL':
+            temptype = pyads.PLCTYPE_REAL
+        else:
+            temptype = pyads.PLCTYPE_INT
+        if i.index_group == 61472:
+            subscribe[i.name] = (temptype, ads.plc.get_handle(i.name))
+        elif i.index_group == 61488:
+            publish[i.name] = (temptype, ads.plc.get_handle(i.name))
+    print('Done gathering data points. \n')
+    return publish, subscribe
+
+def parseJSONpublish(name, value, timestamp):
     res = json.dumps({'name' : name, 'value' : value, 'timestamp' : timestamp}, separators=(',', ':'))
     return res
+
+def parseJSONsubscribe(payload):
+    temp = json.loads(payload)
+    return temp['name'], temp['value']
 
 if __name__ == "__main__":
     pub, sub = getADSVariables()

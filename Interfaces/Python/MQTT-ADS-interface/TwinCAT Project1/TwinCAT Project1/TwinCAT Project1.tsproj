@@ -111,6 +111,11 @@
 							<Type GUID="{A77DD582-54D2-00CF-0D27-2A53472DBBA9}">E_ControlMode</Type>
 						</Var>
 						<Var>
+							<Name>sampleADSGVL.eCCAPumpContModeADS</Name>
+							<Comment><![CDATA[W]]></Comment>
+							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
+						</Var>
+						<Var>
 							<Name>sampleADSGVL.fDHSPowSetADS</Name>
 							<Comment><![CDATA[W]]></Comment>
 							<Type>REAL</Type>
@@ -119,16 +124,6 @@
 							<Name>sampleADSGVL.fCCAValveSetADS</Name>
 							<Comment><![CDATA[W]]></Comment>
 							<Type>REAL</Type>
-						</Var>
-						<Var>
-							<Name>sampleADSGVL.eCCAPumpContModeADS</Name>
-							<Comment><![CDATA[W]]></Comment>
-							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
-						</Var>
-						<Var>
-							<Name>sampleADSGVL.eAHUPHPumpContModeADS</Name>
-							<Comment><![CDATA[W]]></Comment>
-							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fCCAPumpSetpointADS</Name>
@@ -171,6 +166,16 @@
 							<Type>REAL</Type>
 						</Var>
 						<Var>
+							<Name>sampleADSGVL.eAHUPHPumpContModeADS</Name>
+							<Comment><![CDATA[W]]></Comment>
+							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
+						</Var>
+						<Var>
+							<Name>sampleADSGVL.eAHUCOPumpContModeADS</Name>
+							<Comment><![CDATA[W]]></Comment>
+							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
+						</Var>
+						<Var>
 							<Name>sampleADSGVL.fAHUPHPumpSetpointADS</Name>
 							<Comment><![CDATA[W]]></Comment>
 							<Type>REAL</Type>
@@ -190,7 +195,7 @@
 							<Type>REAL</Type>
 						</Var>
 						<Var>
-							<Name>sampleADSGVL.eAHUCOPumpContModeADS</Name>
+							<Name>sampleADSGVL.eAHURHPumpContModeADS</Name>
 							<Comment><![CDATA[W]]></Comment>
 							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
 						</Var>
@@ -203,11 +208,6 @@
 							<Name>sampleADSGVL.fAHURHValveSetADS</Name>
 							<Comment><![CDATA[W]]></Comment>
 							<Type>REAL</Type>
-						</Var>
-						<Var>
-							<Name>sampleADSGVL.eAHURHPumpContModeADS</Name>
-							<Comment><![CDATA[W]]></Comment>
-							<Type GUID="{DCC4CBF6-3F4D-2377-AE7B-96706A43B753}">E_PumpControlMode</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fAHURHPumpSetpointADS</Name>
@@ -273,14 +273,6 @@ Temperature sensor datapoints]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>sampleADSGVL.fCCAPumpPowerADS</Name>
-							<Type>REAL</Type>
-						</Var>
-						<Var>
-							<Name>sampleADSGVL.fCCAPumpPressureADS</Name>
-							<Type>REAL</Type>
-						</Var>
-						<Var>
 							<Name>sampleADSGVL.bCCAPumpSetOnADS</Name>
 							<Type>BOOL</Type>
 						</Var>
@@ -288,6 +280,14 @@ Temperature sensor datapoints]]></Comment>
 							<Name>sampleADSGVL.bAHUFrostProtADS</Name>
 							<Comment><![CDATA[Frost protection sensor datapoints]]></Comment>
 							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>sampleADSGVL.fCCAPumpPowerADS</Name>
+							<Type>REAL</Type>
+						</Var>
+						<Var>
+							<Name>sampleADSGVL.fCCAPumpPressureADS</Name>
+							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fCCAPumpSpeedADS</Name>
@@ -407,20 +407,20 @@ Temperature sensor datapoints]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>sampleADSGVL.bAHUPHPumpSetOnADS</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>sampleADSGVL.bAHUCOPumpErrorADS</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>sampleADSGVL.fAHUPHPumpPowerADS</Name>
 							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fAHUPHPumpPressureADS</Name>
 							<Type>REAL</Type>
+						</Var>
+						<Var>
+							<Name>sampleADSGVL.bAHUPHPumpSetOnADS</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>sampleADSGVL.bAHUCOPumpErrorADS</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fAHUPHPumpSpeedADS</Name>
@@ -526,16 +526,16 @@ Temperature sensor datapoints]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>sampleADSGVL.bAHURHPumpSetOnADS</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>sampleADSGVL.fAHURHPumpPowerADS</Name>
 							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fAHURHPumpPressureADS</Name>
 							<Type>REAL</Type>
-						</Var>
-						<Var>
-							<Name>sampleADSGVL.bAHURHPumpSetOnADS</Name>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fAHURHPumpSpeedADS</Name>

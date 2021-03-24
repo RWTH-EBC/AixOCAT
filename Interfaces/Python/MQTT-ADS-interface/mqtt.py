@@ -9,16 +9,18 @@ from paho.mqtt.client import Client as PahoMQTTClient, MQTTv31
 import os
 import ssl
 import time
+import certifi
+import random
 
 #%%
 class mqtt():
     
     def __init__(self, host=None, port=None, keepalive=None, mqtt_user=None, mqtt_password=None):
-        self.host = host
-        self.port = port
-        self.keepalive = keepalive
-        self.mqtt_username = mqtt_user
-        self.mqtt_password = mqtt_password
+        self.host           = host
+        self.port           = port
+        self.keepalive      = keepalive
+        self.mqtt_username  = mqtt_user
+        self.mqtt_password  = mqtt_password
 
 #%%
     # get credentials from environment variables
@@ -28,6 +30,10 @@ class mqtt():
         """ Get MQTT credentials from environment variables """
         self.mqtt_username = os.getenv(mqtt_user_environment_variable)
         self.mqtt_password = os.getenv(mqtt_password_environment_variable)
+    
+    def set_credentials(self, user, password):
+        self.mqtt_username = user
+        self.mqtt_password = password
     
     def set_host(self, host="mqtt.ercebc.aedifion.io"):
         """" Set MQTT host address """
@@ -41,57 +47,80 @@ class mqtt():
 
 #%%    
     def on_connect(self, client=None, userdata=None, flags=None, rc=None):
-        if not client:
-            client = self.client
-        if rc == 0:
-            client.connected_flag = True #set flag
-            print("MQTT connection was established.")
-        else:
-            print("Bad connection, return code=",rc)
+        if self.client.connected_flag == False:
+            if client:
+                self.client = client
+            if rc == 0:
+                self.client.connected_flag = True #set flag
+                print("MQTT connection was established.")
+            else:
+                print("Bad connection, return code=",rc)
    
     def connect(self, client=None, host=None, port=None, keepalive=None, clientID=None):
-        if not client:
+        # Create MQTT client
+        if client:
+            self.client = client
+        else:
             if not self.mqtt_username:
                 self.mqtt_username = 'test-user'
             if clientID:
                 self.client = PahoMQTTClient(client_id=clientID, protocol=MQTTv31, clean_session=True)
             else:
-                self.client = PahoMQTTClient(client_id=f"{self.mqtt_username}", protocol=MQTTv31, clean_session=True)
-            self.client.connected_flag = False #create connection flag
-            self.client.on_connect = self.on_connect  #bind call back function
-        if not host:
-            if self.host:
-                host = self.host
-            else:
-                host = 'localhost'
-        if not port:
-            if self.port:
-                port = self.port
-            else:
-                port = 1883
-        if not keepalive:
-            if self.keepalive:
-                keepalive = self.keepalive
-            else:
-                keepalive = 60
-        if not client:
-            self.client.connect(host, port, keepalive)
-        else:
-            client.connected_flag = False #create connection flag
-            client.on_connect = self.on_connect  #bind call back function
-            client.connect(host, port, keepalive)
+                clienttime = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
+                self.client = PahoMQTTClient(client_id=f"{self.mqtt_username}-{clienttime}", protocol=MQTTv31, clean_session=True)
+        self.client.connected_flag = False # Create connection flag
+        self.client.on_connect = self.on_connect  # Bind call back function
+        # Get host, port and keepalive
+        if host:
+            self.host = host
+        elif not self.host:
+            self.host = 'localhost'
+        if port:
+            self.port = port
+        elif not self.port:
+            self.port = 1883
+        if keepalive:
+            self.keepalive = keepalive
+        elif not self.keepalive:
+            self.keepalive = 60
+        # Establish connection of client to broker
+        try:
+            self.client.username_pw_set(self.mqtt_username, self.mqtt_password)
+            self.client.connect(self.host, self.port, self.keepalive)
+        except:
+            print('Could not establish connection to the broker with host '+self.host)            
     
-    def connect_aedifion(self, project="NextGenBAT"):
-        self.client = PahoMQTTClient(client_id=f"{self.project}-{str(time.localtime())}", protocol=MQTTv31, clean_session=True)
+    def connect_aedifion(self, project="NextGenBAT", host="mqtt.ercebc.aedifion.io", port=8883):
+        self.client = PahoMQTTClient(client_id=f"{project}-{str(time.localtime())}", protocol=MQTTv31, clean_session=True)
+        self.client.tls_set(ca_certs=certifi.where(), tls_version=ssl.PROTOCOL_TLSv1_2)
+        self.client.username_pw_set(self.mqtt_username, self.mqtt_password)
+        self.client.on_connect = self.on_connect  # Bind call back function
+        # Establish connection to aedifion broker
+        try:
+            self.client.connect(host=host, port=port)
+        except:
+            print('Could not establish connection to the aedifion broker with host '+host)
     
     def disconnect(self, client=None):
-        if not client:
-            client = self.client       
-        client.disconnect()
+        if client:
+            client.disconnect()
+        else:
+            self.client.disconnect()
     
 #%%
-    def on_publish(self, client, userdata, mid):
-        print("mid: "+str(mid))
+    def start_mqtt(self):
+        self.client.on_message = self.on_message # Bind call back function
+        self.client.on_publish = self.on_publish # Bind call back function
+        self.client.loop_start()
+        self.client.subscribe('controls')
+
+    def on_message(self, client=None, userdata=None, msg=None):
+        msg.payload = msg.payload.decode("utf-8")  # All mqtt-topics are coded in utf-8
+        print("Received messagae on topic " + msg.topic+" = "+str(msg.payload))
+
+    def on_publish(self, client, userdata, msg_id):
+        # print("mid: "+str(mid))
+        pass
     
     def publish(self, message, topic, client=None):
         self.client.publish(topic, message, qos=1)
