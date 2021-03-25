@@ -11,6 +11,7 @@ import time
 from datetime import datetime
 import parsing_and_assignment
 import pytz
+from configparser import ConfigParser
 
 #%%
 class mqtt_ads_interface():
@@ -70,7 +71,7 @@ class mqtt_ads_interface():
         messages by the listen method in this class.
 
         If the argument 'mqtt_host', 'mqtt_port' and 'mqtt_keepalive' are not 
-        passed in, default parameters for a local connection are used. This 
+        passed in, default parameters for a local connection are used. Therefore, this 
         connection will require a local mqtt broker to be running when executed.
 
         Parameters
@@ -86,9 +87,18 @@ class mqtt_ads_interface():
             alive while no traffic is registered in either sending or receiving direction
             (deault is 60)
         mqtt_user : str, optional
+            The mqtt username which is used in authentication and as ID
         mqtt_pass : str, optional
+            The mqtt password which is used in authentication
         credentials_env : tuple of str => ('evironment_user','environment_password'), optional
+            A tuple of environment variable entries to fetch the mqtt username 
+            and password from (default is None which means that the credentials 
+            will not be fetched)
         aedifion : bool, optional
+            A bool signalizing if the connected broker will be aedifion which
+            results in specific treatment (e.g. fetching user and password from
+            specific env entries and user different functions for the connection;
+            default is False)
         """
         """
         1. Set username and password from a given tuple/array or from your system environment variables
@@ -118,6 +128,9 @@ class mqtt_ads_interface():
         self.mqtt.client.on_message = self.mqtt.on_message
 
     def disconnect_mqtt(self):
+        """Invokes the disconnect function of the mqtt instance and thus disconnects 
+        the client from the broker.
+        """
         self.mqtt.disconnect()    
 
     def connect_ads(self, ams_netID, host, create_route=False):
@@ -126,6 +139,9 @@ class mqtt_ads_interface():
         self.ads.connect(ams_netID, host)
     
     def disconnect_ads(self):
+        """Invokes the disconnect function of the ads instance and thus disconnects 
+        the client from the plc.
+        """
         self.ads.disconnect()
 
 #%%        
@@ -145,9 +161,14 @@ class mqtt_ads_interface():
             name, value = parsing_and_assignment.parseJSONsubscribe(msg.payload)
             # print(name+' '+str(value)+' '+str(type(value)))
             if name in sub:
-                self.ads.write(name, value, sub[name])
-                # Mirror written value
-                self.mqtt.publish(message=msg.payload, topic='general')
+                try:
+                    self.ads.write(name, value, sub[name][0])
+                    # Mirror written value
+                    # self.mqtt.publish(message=msg.payload, topic='general')
+                except KeyboardInterrupt:
+                    pass
+                except:
+                    print('Something went wrong when trying to apply control on received message of '+name)
     
     def publish(self, pub_format='simple_json', publish_delay=None):
         """"
@@ -158,29 +179,92 @@ class mqtt_ads_interface():
         """
         while True:
             for i in pub:
-                value = self.ads.read(i, pub[i][1])
-                # value = self.ads.read('sampleADSGVL.'+i[0])
-                if pub_format == 'simple_json':
-                    timestamp = pytz.timezone('Europe/Berlin').localize(datetime.today()).isoformat(sep='T', timespec='milliseconds')
-                    json = parsing_and_assignment.parseJSONpublish(i, value, timestamp)
-                    # print(json)
-                    self.mqtt.publish(message=json, topic='general')
+                try:
+                    value = self.ads.read(i, pub[i][1])
+                    # value = self.ads.read('sampleADSGVL.'+i[0])
+                    if pub_format == 'simple_json':
+                        timestamp = pytz.timezone('Europe/Berlin').localize(datetime.today()).isoformat(sep='T', timespec='milliseconds')
+                        json = parsing_and_assignment.parseJSONpublish(i, value, timestamp)
+                        print(json)
+                        self.mqtt.publish(message=json, topic='general')
+                except KeyboardInterrupt:
+                    break
+                except:
+                    print('Error in publishing '+i)
             # time.sleep(1)
+            print('\n Reached the end of publishing list, restarting publishing from beginning. \n')
             if publish_delay:
                 time.sleep(publish_delay)
-        
+
+#%%
+def write_config(f='config.ini', pub=None, sub=None):
+    config = ConfigParser()
+    config.read(f)
+    if not config.has_section('mqtt'):
+        config.add_section('mqtt')
+    config.set('mqtt', 'host', 'localhost')
+    config.set('mqtt', 'port', '1883')
+    config.set('mqtt', 'keepalive', '60')
+    config.set('mqtt', 'user', 'msh')
+    config.set('mqtt', 'password', 'None')
+    config.set('mqtt', 'credentials_env', 'None')
+    config.set('mqtt', 'aedifion', 'False')
+    config.set('mqtt', 'publish_delay', '1')
+    config.set('mqtt', 'publish_encoding', 'simple_json')
+    config.set('mqtt', 'publish_datapoint_list', str(pub))
+    config.set('mqtt', 'subscribe_decoding', 'simple_json')
+    config.set('mqtt', 'subscribe_datapoint_list', str(sub))
+    if not config.has_section('ads'):
+        config.add_section('ads')
+    config.set('ads', 'ams_netID', '192.168.0.2.1.1')
+    config.set('ads', 'host', '192.168.0.2')
+    
+    with open('config.ini', 'w') as f:
+        config.write(f)
+
+def load_config(f='config.ini'):
+    config = ConfigParser()
+    config.read(f)
+    config_dict = {}
+    config_dict['mqtt_host'] = config.get('mqtt', 'host')
+    config_dict['mqtt_port'] = config.getint('mqtt', 'port')
+    config_dict['mqtt_keepalive'] = config.getint('mqtt', 'keepalive')
+    config_dict['mqtt_user'] = config.get('mqtt', 'user')
+    config_dict['mqtt_password'] = config.get('mqtt', 'password')
+    config_dict['mqtt_credentials_env'] = config.get('mqtt', 'credentials_env')
+    config_dict['mqtt_aedifion'] = config.getboolean('mqtt', 'aedifion')
+    config_dict['mqtt_publish_delay'] = config.getfloat('mqtt', 'publish_delay')
+    config_dict['mqtt_publish_encoding'] = config.get('mqtt', 'publish_encoding')
+    config_dict['mqtt_publish_datapoint_list'] = config.get('mqtt', 'publish_datapoint_list')
+    config_dict['mqtt_subscribe_decoding'] = config.get('mqtt', 'subscribe_decoding')
+    config_dict['mqtt_subscribe_datapoint_list'] = config.get('mqtt', 'subscribe_datapoint_list')
+    config_dict['ads_ams_netID'] = config.get('ads', 'ams_netID')
+    config_dict['ads_host'] = config.get('ads', 'host')
+    return config_dict
+
 #%%
 if __name__ == "__main__":
+    # TODO: load config file
+    load_conf=True
+    config = load_config(f='config.ini')
+    
+    #**************************************************************************
     # Create ads and mqtt instances
     mqtt_ads = mqtt_ads_interface()
     # Connect MQTT
     try:
-        mqtt_ads.connect_mqtt('localhost', 1883, 60)
+        if load_conf == True:
+            mqtt_ads.connect_mqtt(config['mqtt_host'], config['mqtt_port'], config['mqtt_keepalive'])
+        else:
+            mqtt_ads.connect_mqtt('localhost', 1883, 60)
     except:
         print('\n ****************************************** \n Could not create MQTT connection to broker. \n ****************************************** \n')
     # Connect ADS
     try:
-        mqtt_ads.connect_ads(ams_netID='192.168.0.2.1.1', host='192.168.0.2')
+        if load_conf == True:
+            mqtt_ads.connect_ads(ams_netID=config['ads_ams_netID'], host=config['ads_host'])
+        else:
+            mqtt_ads.connect_ads(ams_netID='192.168.0.2.1.1', host='192.168.0.2')
     except:
         print('\n ****************************************** \n Could not create ADS connection to target system. \n ****************************************** \n')
     
@@ -188,9 +272,26 @@ if __name__ == "__main__":
     # Get ADS variables from variable list
     # pub, sub = parsing_and_assignment.getADSVariables(file='TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL')
     pub, sub = parsing_and_assignment.getADSvarsFromSymbols(mqtt_ads.ads)
+    #**************************************************************************
+    
+    # TODO: write config file
+    # write_config=False
+    # write_config(pub=pub, sub=sub)
+    
     try:
-        mqtt_ads.start_mqtt(publish_delay=1)
+        if load_conf == True:
+            mqtt_ads.start_mqtt(publish_delay=config['mqtt_publish_delay'])
+        else:
+            mqtt_ads.start_mqtt(publish_delay=1)
     except KeyboardInterrupt:
+        print("Disconnect MQTT..")
+        mqtt_ads.disconnect_mqtt()
+        print("MQTT was disconnected")
+        print('Disconnect ADS..')
+        mqtt_ads.disconnect_ads()
+        print('ADS was disconnected')
+    except:
+        print("Faced an unintentional error, closing connections for safety.")
         print("Disconnect MQTT..")
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")

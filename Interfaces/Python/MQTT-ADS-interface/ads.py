@@ -54,5 +54,6 @@ class ads():
 #%%
 if __name__ == "__main__":
     ads_test = ads()
-    ads_test.connect(ams_netID='192.168.0.2.1.1', host='192.168.0.2')
-    var_list, pub, sub = parsing_and_assignment.getADSvarsFromSymbols(ads_test)
+    ads_test.connect(ams_netID='5.53.34.234.1.1', host='134.130.166.35')
+    # pub, sub = parsing_and_assignment.getADSvarsFromSymbols(ads_test)
+    var_list = parsing_and_assignment.getRawADSVarListFromSymbols(ads_test)

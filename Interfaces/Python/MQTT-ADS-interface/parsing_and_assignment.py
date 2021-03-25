@@ -56,24 +56,42 @@ def getADSVariables(file="TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampl
     return publish, subscribe
 
 def getADSvarsFromSymbols(ads):
-    ads_list    = ads.plc.get_all_symbols()
-    # var_list    = {}
+     # var_list    = {}
     publish     = {}
     subscribe   = {}
-    for i in ads_list:
-        # var_list[i.name] = (i.symbol_type, i.index_group)
-        if i.symbol_type == 'BOOL':
-            temptype = pyads.PLCTYPE_BOOL
-        elif i.symbol_type == 'REAL':
-            temptype = pyads.PLCTYPE_REAL
-        else:
-            temptype = pyads.PLCTYPE_INT
-        if i.index_group == 61472:
-            subscribe[i.name] = (temptype, ads.plc.get_handle(i.name))
-        elif i.index_group == 61488:
-            publish[i.name] = (temptype, ads.plc.get_handle(i.name))
-    print('Done gathering data points. \n')
-    return publish, subscribe
+    try:
+        ads_list    = ads.plc.get_all_symbols()
+        for i in ads_list:
+            # var_list[i.name] = (i.symbol_type, i.index_group)
+            if i.symbol_type == 'BOOL':
+                temptype = pyads.PLCTYPE_BOOL
+            elif i.symbol_type == 'REAL':
+                temptype = pyads.PLCTYPE_REAL
+            else:
+                temptype = pyads.PLCTYPE_INT
+            if "OutData" in i.name:
+                #skip
+                continue
+            if i.index_group == 61472:
+                subscribe[i.name] = (temptype, ads.plc.get_handle(i.name))
+            elif i.index_group == 61488:
+                publish[i.name] = (temptype, ads.plc.get_handle(i.name))
+        print('Done gathering data points. \n')
+        return publish, subscribe
+    except:
+        print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
+        return publish, subscribe
+
+def getRawADSVarListFromSymbols(ads):
+    var_list    = {}
+    try:
+        ads_list    = ads.plc.get_all_symbols()
+        for i in ads_list:
+            var_list[i.name] = (i.symbol_type, i.index_group)
+        return var_list
+    except:
+        print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
+        return var_list
 
 def parseJSONpublish(name, value, timestamp):
     res = json.dumps({'name' : name, 'value' : value, 'timestamp' : timestamp}, separators=(',', ':'))

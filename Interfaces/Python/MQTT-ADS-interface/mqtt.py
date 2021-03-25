@@ -88,7 +88,7 @@ class mqtt():
             self.client.username_pw_set(self.mqtt_username, self.mqtt_password)
             self.client.connect(self.host, self.port, self.keepalive)
         except:
-            print('Could not establish connection to the broker with host '+self.host)            
+            print('Could not establish connection to the broker with host '+self.host+'\n')            
     
     def connect_aedifion(self, project="NextGenBAT", host="mqtt.ercebc.aedifion.io", port=8883):
         self.client = PahoMQTTClient(client_id=f"{project}-{str(time.localtime())}", protocol=MQTTv31, clean_session=True)
