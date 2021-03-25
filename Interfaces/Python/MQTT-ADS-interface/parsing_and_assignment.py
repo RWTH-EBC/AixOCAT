@@ -56,13 +56,11 @@ def getADSVariables(file="TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampl
     return publish, subscribe
 
 def getADSvarsFromSymbols(ads):
-     # var_list    = {}
     publish     = {}
     subscribe   = {}
     try:
         ads_list    = ads.plc.get_all_symbols()
         for i in ads_list:
-            # var_list[i.name] = (i.symbol_type, i.index_group)
             if i.symbol_type == 'BOOL':
                 temptype = pyads.PLCTYPE_BOOL
             elif i.symbol_type == 'REAL':

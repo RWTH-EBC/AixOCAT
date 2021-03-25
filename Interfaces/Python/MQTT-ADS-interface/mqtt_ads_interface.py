@@ -133,9 +133,9 @@ class mqtt_ads_interface():
         """
         self.mqtt.disconnect()    
 
-    def connect_ads(self, ams_netID, host, create_route=False):
+    def connect_ads(self, ams_netID, host, ads_user, ads_password, create_route=False):
         if create_route == True:
-            self.ads.create_route()
+            self.ads.create_route(ams_netID=ams_netID, remote_ip=host, user=ads_user, password=ads_password)
         self.ads.connect(ams_netID, host)
     
     def disconnect_ads(self):
@@ -181,18 +181,16 @@ class mqtt_ads_interface():
             for i in pub:
                 try:
                     value = self.ads.read(i, pub[i][1])
-                    # value = self.ads.read('sampleADSGVL.'+i[0])
                     if pub_format == 'simple_json':
                         timestamp = pytz.timezone('Europe/Berlin').localize(datetime.today()).isoformat(sep='T', timespec='milliseconds')
                         json = parsing_and_assignment.parseJSONpublish(i, value, timestamp)
-                        print(json)
+                        # print(json)
                         self.mqtt.publish(message=json, topic='general')
                 except KeyboardInterrupt:
                     break
                 except:
                     print('Error in publishing '+i)
-            # time.sleep(1)
-            print('\n Reached the end of publishing list, restarting publishing from beginning. \n')
+            # print('\n Reached the end of publishing list, restarting publishing from beginning. \n')
             if publish_delay:
                 time.sleep(publish_delay)
 
@@ -211,13 +209,18 @@ def write_config(f='config.ini', pub=None, sub=None):
     config.set('mqtt', 'aedifion', 'False')
     config.set('mqtt', 'publish_delay', '1')
     config.set('mqtt', 'publish_encoding', 'simple_json')
-    config.set('mqtt', 'publish_datapoint_list', str(pub))
+    if pub:
+        config.set('mqtt', 'publish_datapoint_list', str(pub))
     config.set('mqtt', 'subscribe_decoding', 'simple_json')
-    config.set('mqtt', 'subscribe_datapoint_list', str(sub))
+    if sub:
+        config.set('mqtt', 'subscribe_datapoint_list', str(sub))
     if not config.has_section('ads'):
         config.add_section('ads')
     config.set('ads', 'ams_netID', '192.168.0.2.1.1')
     config.set('ads', 'host', '192.168.0.2')
+    config.set('ads', 'create_route', 'False')
+    config.set('ads', 'remote_user', 'Administrator')
+    config.set('ads', 'remote_password', 'MyPassword')
     
     with open('config.ini', 'w') as f:
         config.write(f)
@@ -240,6 +243,9 @@ def load_config(f='config.ini'):
     config_dict['mqtt_subscribe_datapoint_list'] = config.get('mqtt', 'subscribe_datapoint_list')
     config_dict['ads_ams_netID'] = config.get('ads', 'ams_netID')
     config_dict['ads_host'] = config.get('ads', 'host')
+    config_dict['ads_create_route'] = config.getboolean('ads', 'create_route')
+    config_dict['ads_remote_user'] = config.get('ads', 'remote_user')
+    config_dict['ads_remote_password'] = config.get('ads', 'remote_password')
     return config_dict
 
 #%%
@@ -262,9 +268,11 @@ if __name__ == "__main__":
     # Connect ADS
     try:
         if load_conf == True:
-            mqtt_ads.connect_ads(ams_netID=config['ads_ams_netID'], host=config['ads_host'])
+            mqtt_ads.connect_ads(ams_netID=config['ads_ams_netID'], host=config['ads_host'],
+                                 create_route=config['ads_create_route'], 
+                                 ads_user=config['ads_remote_user'], ads_password=config['ads_remote_password'])
         else:
-            mqtt_ads.connect_ads(ams_netID='192.168.0.2.1.1', host='192.168.0.2')
+            mqtt_ads.connect_ads(ams_netID='192.168.0.2.1.1', host='192.168.0.2', create_route=False)
     except:
         print('\n ****************************************** \n Could not create ADS connection to target system. \n ****************************************** \n')
     
@@ -275,7 +283,7 @@ if __name__ == "__main__":
     #**************************************************************************
     
     # TODO: write config file
-    # write_config=False
+    # write_conf=True
     # write_config(pub=pub, sub=sub)
     
     try:
@@ -288,6 +296,9 @@ if __name__ == "__main__":
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")
         print('Disconnect ADS..')
+        print('Release handles')
+        for i in pub:
+            mqtt_ads.ads.plc.release_handle(pub[i][1])
         mqtt_ads.disconnect_ads()
         print('ADS was disconnected')
     except:
@@ -296,5 +307,8 @@ if __name__ == "__main__":
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")
         print('Disconnect ADS..')
+        print('Release handles')
+        for i in pub:
+            mqtt_ads.ads.plc.release_handle(pub[i][1])
         mqtt_ads.disconnect_ads()
         print('ADS was disconnected')

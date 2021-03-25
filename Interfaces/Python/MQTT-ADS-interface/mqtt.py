@@ -35,14 +35,14 @@ class mqtt():
         self.mqtt_username = user
         self.mqtt_password = password
     
-    def set_host(self, host="mqtt.ercebc.aedifion.io"):
+    def set_host(self, host):
         """" Set MQTT host address """
         self.host = host
     
-    def set_port(self, port=8883):
+    def set_port(self, port):
         self.port = port
     
-    def set_keepalive(self, keepalive=60):
+    def set_keepalive(self, keepalive):
         self.keepalive = keepalive
 
 #%%    
@@ -90,7 +90,7 @@ class mqtt():
         except:
             print('Could not establish connection to the broker with host '+self.host+'\n')            
     
-    def connect_aedifion(self, project="NextGenBAT", host="mqtt.ercebc.aedifion.io", port=8883):
+    def connect_aedifion(self, project=None, host=None, port=8883):
         self.client = PahoMQTTClient(client_id=f"{project}-{str(time.localtime())}", protocol=MQTTv31, clean_session=True)
         self.client.tls_set(ca_certs=certifi.where(), tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(self.mqtt_username, self.mqtt_password)
@@ -119,7 +119,6 @@ class mqtt():
         print("Received messagae on topic " + msg.topic+" = "+str(msg.payload))
 
     def on_publish(self, client, userdata, msg_id):
-        # print("mid: "+str(mid))
         pass
     
     def publish(self, message, topic, client=None):
