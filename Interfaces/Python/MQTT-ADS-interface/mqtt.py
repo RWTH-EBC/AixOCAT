@@ -94,6 +94,7 @@ class mqtt():
         self.client = PahoMQTTClient(client_id=f"{project}-{str(time.localtime())}", protocol=MQTTv31, clean_session=True)
         self.client.tls_set(ca_certs=certifi.where(), tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(self.mqtt_username, self.mqtt_password)
+        self.client.connected_flag = False # Create connection flag
         self.client.on_connect = self.on_connect  # Bind call back function
         # Establish connection to aedifion broker
         try:
@@ -117,6 +118,12 @@ class mqtt():
     def on_message(self, client=None, userdata=None, msg=None):
         msg.payload = msg.payload.decode("utf-8")  # All mqtt-topics are coded in utf-8
         print("Received messagae on topic " + msg.topic+" = "+str(msg.payload))
+        
+    def on_message_aedifion(self, client=None, userdata=None, msg=None):
+        payload = msg.payload.decode('utf-8')
+        dataPointID, new_value, _ = payload.split(" ")[:3]
+        _, val = new_value.split("=")[:2]
+        print('Received message on topic '+msg.topic.decode('utf-8')+'=> name: '+dataPointID+', value: '+val)
 
     def on_publish(self, client, userdata, msg_id):
         pass

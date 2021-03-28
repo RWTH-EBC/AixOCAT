@@ -71,9 +71,9 @@ def getADSvarsFromSymbols(ads):
                 #skip
                 continue
             if i.index_group == 61472:
-                subscribe[i.name] = (temptype, ads.plc.get_handle(i.name))
+                subscribe[i.name] = {'type': temptype, 'handle': ads.plc.get_handle(i.name)}
             elif i.index_group == 61488:
-                publish[i.name] = (temptype, ads.plc.get_handle(i.name))
+                publish[i.name] = {'type': temptype, 'handle': ads.plc.get_handle(i.name)}
         print('Done gathering data points. \n')
         return publish, subscribe
     except:
@@ -91,8 +91,22 @@ def getRawADSVarListFromSymbols(ads):
         print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
         return var_list
 
+#%%
+def add_topics(d_all, list_of_datapoints_to_add_topic, topic):
+    for i in list_of_datapoints_to_add_topic:
+        try:
+            d_all[i]['topic'] = topic
+        except:
+            print('Could not find data point '+i+' in data points, continuing with next entry.')
+    return d_all
+
+#%%
 def parseJSONpublish(name, value, timestamp):
     res = json.dumps({'name' : name, 'value' : value, 'timestamp' : timestamp}, separators=(',', ':'))
+    return res
+
+def parseInfluxDBLinepublish(name, value, timestamp):
+    res = f"{name} value={value} {timestamp}"
     return res
 
 def parseJSONsubscribe(payload):
