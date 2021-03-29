@@ -113,7 +113,9 @@ class mqtt():
         self.client.on_message = self.on_message # Bind call back function
         self.client.on_publish = self.on_publish # Bind call back function
         self.client.loop_start()
-        self.client.subscribe('controls')
+    
+    def stop_mqtt(self):
+        self.client.loop_stop()
 
     def on_message(self, client=None, userdata=None, msg=None):
         msg.payload = msg.payload.decode("utf-8")  # All mqtt-topics are coded in utf-8

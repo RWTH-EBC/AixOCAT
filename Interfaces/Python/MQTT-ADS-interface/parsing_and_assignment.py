@@ -51,7 +51,7 @@ def getADSVariables(file="TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampl
                     publish[s[0]] = temptype
                 # print(s)
     # Add control / set point variables to be monitored as well
-    # publish.update(subscribe)
+    # publish.update(subscribe)     # REMARK: It is not possible to read input-only variables (%I*) or internal variables without address/IO assignment via ADS
     print('Done gathering data points. \n')
     return publish, subscribe
 

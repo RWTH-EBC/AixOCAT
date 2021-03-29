@@ -74,8 +74,9 @@ class mqtt_ads_interface():
         messages by the listen method in this class.
 
         If the argument 'mqtt_host', 'mqtt_port' and 'mqtt_keepalive' are not 
-        passed in, default parameters for a local connection are used. Therefore, this 
-        connection will require a local mqtt broker to be running when executed.
+        passed in, default parameters for a local connection are used. Therefore, 
+        in that case, this connection will require a local mqtt broker to be 
+        running when executed.
 
         Parameters
         ----------
@@ -97,11 +98,31 @@ class mqtt_ads_interface():
             A tuple of environment variable entries to fetch the mqtt username 
             and password from (default is None which means that the credentials 
             will not be fetched)
-        aedifion : bool, optional
-            A bool signalizing if the connected broker will be aedifion which
+        aedifion : dict, optional
+            A dictionary, if not empty, the connected broker will be aedifion which
             results in specific treatment (e.g. fetching user and password from
-            specific env entries and user different functions for the connection;
-            default is False)
+            specific env entries and using different functions for the connection;
+            default is None). The aedifion connection will use following keys:
+                'project'
+                'topic_prefix_publish'
+                'topic_prefix_subscribe'
+        pub_wo_top : dict, optional
+            A dictionary containing the list of data points to be published without
+            publishing topics. For aedifion, the topic prefixes will be added, 
+            otherwise default topics are currently used.
+        sub_wo_top : dict, optional
+            A dictionary containing the list of data points to be listened to without
+            subscribing topics. For aedifion, the topic prefixes will be added, 
+            otherwise default topics are currently used.
+        
+        Returns
+        -------
+        pub : dict
+            A dictionary containing the list of data points to be published with
+            the related publishing topics.
+        sub : dict
+            A dictionary containing the list of data points to be listened to with
+            the related subscription topics.
         """
         """
         1. Set username and password from a given tuple/array or from your system environment variables
@@ -151,7 +172,28 @@ class mqtt_ads_interface():
         """
         self.mqtt.disconnect()    
 
-    def connect_ads(self, ams_netID, host, ads_user, ads_password, create_route=False):
+    def connect_ads(self, ams_netID, host, ads_user='Administrator', 
+                    ads_password='MyPassword', create_route=False):
+        """Invokes the connect function of the ads instance.
+
+        User and password are required to create a route to the plc device if 
+        not already existing.
+
+        Parameters
+        ----------
+        ams_netID : str
+            The ams net ID of the plc device to connect to, usually an ip-address-like
+            with two additional ones (e.g. '127.0.0.1.1.1')
+        host : str
+            The host name/plc device address to connect to, usually an ip address 
+            as this method should be preferred in the route creation
+        ads_user : str, optional
+            The host's username which is used in authentication to create a route to the host
+        ads_password : str, optional
+            The host's password which is used in authentication to create a route to the host
+        create_route : bool, optional
+            The flag determining if as additional step the route to the plc device shall be created
+        """
         if create_route == True:
             self.ads.create_route(ams_netID=ams_netID, remote_ip=host, user=ads_user, password=ads_password)
         self.ads.connect(ams_netID, host)
@@ -164,15 +206,47 @@ class mqtt_ads_interface():
 
 #%%        
     def start_mqtt(self, publish_format='simple_json', subscribe_format='simple_json', publish_delay=None):
+        """Starts the mqtt loop function. This includes setting up the threading for 
+        listening for and publishing messages. Hence, on_message and on_publish will 
+        be set for the client. Since the on_message function is overwritten within 
+        the connect_mqtt function and bound to the listen function in this class,
+        the internal on_message method of the mqtt class will not apply. Publishing
+        itself is handled by the publish function in this class. Currently, on_publish
+        will not induce any further actions.
+
+        Parameters
+        ----------
+        publish_format : str, optional
+            The formatting used for encoding messages to be published to the broker. 
+            Current possible encodings are 'simple_json' and 'influxDB_line'. 
+            (default is 'simple_json')
+        subscribe_format : str, optional
+            The formatting used for decoding received messages from the broker. 
+            Current possible encodings are 'simple_json' and 'SWOP'. 
+            (default is 'simple_json')
+        publish_delay : float, optional
+            A time-delay that would be added after each time the publish method 
+            has looped through all data points to be published. (default is None resulting in no additional pause)
+        """
         self.mqtt.start_mqtt()
         self.subscribe_format = subscribe_format
         self.publish(publish_format=publish_format, publish_delay=publish_delay)
         
     def listen(self, client=None, userdata=None, msg=None):
-        """"
-        1. Listen for MQTT messages from cloud to write PLC data points
-        2. Parse MQTT message to write PLC data point
-        3. Send ADS command to PLC data point
+        """ Handles receiving messages, decodes them and sends the commands
+        to the plc device's end points accordingly. Incoming messages run in
+        a seperate thread managed by the mqtt client.
+        
+        1. Listen for MQTT messages from cloud to write plc data points
+        2. Parse MQTT message to write plc data point
+        3. Send ADS command to plc data point
+
+        Parameters
+        ----------
+        client : mqtt client class object (PahoMQTTClient), optional
+            The mqtt client instance receiving the message.
+        msg : mqtt message type
+            The received mqtt message consisting of msg.payload and msg.topic
         """
         msg.payload = msg.payload.decode("utf-8")  # All mqtt-topics are coded in utf-8
         # print("Received messagae on topic " + msg.topic+" = "+str(msg.payload))
@@ -194,11 +268,24 @@ class mqtt_ads_interface():
             print(name+' '+value)
     
     def publish(self, publish_format='simple_json', publish_delay=None):
-        """"
-        Loop through PLC data points to send
-        1. Get data point to send from PLC
+        """ Handles fetching messages from the plc device, encodes them with a
+        chosen format (usually a timestamp is added as well, minimum information
+        are name, value and timestamp) and publishes the encoded messages on a given topic.
+        
+        Loop through plc data points to send
+        1. Get data point to send from plc
         2. Parse data point to send to MQTT message
         3. Publish MQTT message
+
+        Parameters
+        ----------
+        publish_format : str, optional
+            The formatting used for encoding messages to be published to the broker. 
+            Current possible encodings are 'simple_json' and 'influxDB_line'. 
+            (default is 'simple_json')
+        publish_delay : float, optional
+            A time-delay that would be added after each time the publish method 
+            has looped through all data points to be published. (default is None resulting in no additional pause)
         """
         while True:
             for i in pub:
@@ -212,7 +299,7 @@ class mqtt_ads_interface():
                     if publish_format == 'influxDB_line':
                         timestamp = timestamp = int(time.time()*10**9)
                         influxDB_line = parsing_and_assignment.parseInfluxDBLinepublish(i, value, timestamp)
-                        print(influxDB_line)
+                        # print(influxDB_line)
                         self.mqtt.publish(message=influxDB_line, topic=pub[i]['topic'])
                 except KeyboardInterrupt:
                     break
@@ -271,8 +358,10 @@ def load_config(f='config.ini'):
 
 #%%
 if __name__ == "__main__":
-    # TODO: load config file
-    load_conf=True
+    # TODO: user-input: load or write config file => this option should be transferred to config file as well
+    load_conf   = True
+    write_conf  = False
+    
     config = load_config(f='config.ini')
     
     #**************************************************************************
@@ -308,9 +397,8 @@ if __name__ == "__main__":
         print('\n ****************************************** \n Could not create MQTT connection to broker. \n ****************************************** \n')
     #**************************************************************************
     
-    # TODO: write config file
-    # write_conf=True
-    # write_config()
+    if write_conf == True:
+        write_config()
     
     try:
         if load_conf == True:
@@ -321,6 +409,7 @@ if __name__ == "__main__":
             mqtt_ads.start_mqtt(publish_delay=1)
     except KeyboardInterrupt:
         print("Disconnect MQTT..")
+        mqtt_ads.mqtt.stop_mqtt()
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")
         print('Disconnect ADS..')
@@ -334,6 +423,7 @@ if __name__ == "__main__":
     except:
         print("Faced an unintentional error, closing connections for safety.")
         print("Disconnect MQTT..")
+        mqtt_ads.mqtt.stop_mqtt()
         mqtt_ads.disconnect_mqtt()
         print("MQTT was disconnected")
         print('Disconnect ADS..')
