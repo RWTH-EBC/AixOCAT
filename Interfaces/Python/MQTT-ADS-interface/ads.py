@@ -9,7 +9,9 @@ import pyads
 import parsing_and_assignment
 import socket
 
-#%%
+# %%
+
+
 class ads():
     
     def __init__(self, port=pyads.PORT_TC3PLC1):
@@ -18,10 +20,10 @@ class ads():
     def create_route(self, ams_netID="127.0.0.1.1.1", remote_ip="127.0.0.1",
                      user=None, password=None):
         try:
-            pyads.ads.add_route_to_plc(ams_net_id=ams_netID, 
-                                       local_ip=socket.gethostbyname(socket.gethostname()), 
-                                       remote_ip=remote_ip,
-                                       user=user,
+            pyads.ads.add_route_to_plc(sending_net_id=ams_netID,
+                                       adding_host_name=socket.gethostbyname(socket.gethostname()),
+                                       ip_address=remote_ip,
+                                       username=user,
                                        password=password,
                                        route_name="Route_to_PLC_"+remote_ip,
                                        added_net_id=socket.gethostbyname(socket.gethostname())+'.1.1')
@@ -36,7 +38,7 @@ class ads():
         # Open the ADS connection
         try:
             self.plc = pyads.Connection(
-                ams_net_id= ams_netID,
+                ams_net_id=ams_netID,
                 ams_net_port=self.port, 
                 ip_address=host)   
             self.plc.open()
@@ -46,7 +48,7 @@ class ads():
     def disconnect(self):
         self.plc.close()
 
-#%%    
+# %%
     def read(self, var, handle=None):
         res = self.plc.read_by_name(var, handle=handle)
         return res
@@ -54,7 +56,9 @@ class ads():
     def write(self, var, val, typ):
         self.plc.write_by_name(var, val, typ)
     
-#%%
+# %%
+
+
 if __name__ == "__main__":
     ads_test = ads()
     ads_test.connect(ams_netID='127.0.0.1.1.1', host='127.0.0.1')
