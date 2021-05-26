@@ -57,7 +57,7 @@ If you actively develop AixOCAT you can clone this repository by using:
 You are invited to contribute to the development of AixOCAT. You may report any issues by using the 
 [Issues](https://github.com/RWTH-EBC/AixOCAT/issues) button.
 Furthermore, you are welcome to contribute via [Pull Requests](https://github.com/RWTH-EBC/AixOCAT/pulls).
-The workflow for changes is described in our [Wiki](https://github.com/RWTH-EBC/AixOCAT/wiki).
+The workflow for changes is described in our [contribution guidelines](CONTRIBUTING.md).
 
 ### AixOCAT related publications
 
