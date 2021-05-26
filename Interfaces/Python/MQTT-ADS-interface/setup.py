@@ -9,7 +9,7 @@ SETUP_REQUIRES = [
 setup(
     name='MQTT-ADS-interface',
     version='0.1.0',
-    url='https://github.com/RWTH-EBC/AixOCAT/tree/i52_MQTT-pyADS-Interface/Interfaces/Python/MQTT-ADS-interface',
+    url='https://github.com/RWTH-EBC/AixOCAT/tree/develop/Interfaces/Python/MQTT-ADS-interface',
     license='',
     author='Markus Schraven, Stephan Göbel',
     author_email='',
