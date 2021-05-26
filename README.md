@@ -19,7 +19,7 @@ AixOCAT features support for different software tools, that can be used for the 
 
 This GitHub page will be used to further develop the package and make it
 available under the
-[MIT License](https://github.com/RWTH-EBC/AixOCAT/blob/master/LICENSE).
+[MIT License](LICENSE).
 
 If you have any questions regarding AixOCAT feel free to contact us at
 [ebc-aixocat@eonerc.rwth-aachen.de](mailto:ebc-aixocat@eonerc.rwth-aachen.de).
@@ -68,7 +68,7 @@ The workflow for changes is described in our [contribution guidelines](CONTRIBUT
 AixOCAT is released by RWTH Aachen University, E.ON Energy
 Research Center, Institute for Energy Efficient Buildings and Indoor Climate,
 under the
-[MIT License](https://github.com/RWTH-EBC/AixOCAT/blob/master/LICENSE).
+[MIT License](LICENSE).
 
 ## Acknowledgements
 
