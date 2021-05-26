@@ -1,0 +1,29 @@
+\begin{tikzpicture}
+	\path[thick,draw,fill=white] (-1, 0.8) arc (180:90:0.2) -- (0.8, 1) arc (90:0:0.2) -- (1, -0.8) arc (360:270:0.2) -- (-0.8, -1) arc (270:180:0.2) -- cycle;
+	\begin{scope}[scale=0.92]
+		\path[fill=white] (0,0) circle (1);
+		\path[draw,thick] (0,0) circle (1);
+		\begin{scope}[rotate around={15:(0,0)}]
+			\draw (0, 0.69) .. controls (-0.055,0.75) and (0.33,0.89) .. (0.72,0.67);
+			\draw (0, 0.69) .. controls (0.028,0.67) and (0.19,0.83) .. (0.72,0.67);
+		\end{scope}
+		\begin{scope}[rotate around={87:(0,0)}]
+			\draw (0, 0.69) .. controls (-0.055,0.75) and (0.33,0.89) .. (0.72,0.67);
+			\draw (0, 0.69) .. controls (0.028,0.67) and (0.19,0.83) .. (0.72,0.67);
+		\end{scope}
+		\begin{scope}[rotate around={159:(0,0)}]
+			\draw (0, 0.69) .. controls (-0.055,0.75) and (0.33,0.89) .. (0.72,0.67);
+			\draw (0, 0.69) .. controls (0.028,0.67) and (0.19,0.83) .. (0.72,0.67);
+		\end{scope}
+		\begin{scope}[rotate around={231:(0,0)}]
+			\draw (0, 0.69) .. controls (-0.055,0.75) and (0.33,0.89) .. (0.72,0.67);
+			\draw (0, 0.69) .. controls (0.028,0.67) and (0.19,0.83) .. (0.72,0.67);
+		\end{scope}
+		\begin{scope}[rotate around={303:(0,0)}]
+			\draw (0, 0.69) .. controls (-0.055,0.75) and (0.33,0.89) .. (0.72,0.67);
+			\draw (0, 0.69) .. controls (0.028,0.67) and (0.19,0.83) .. (0.72,0.67);
+		\end{scope}	
+		\path[draw,thick] (0,0) circle (0.64);
+		%\draw[thick,->] (0.4, 0) arc (0:260:0.4);
+	\end{scope}
+\end{tikzpicture}

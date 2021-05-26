@@ -1,0 +1,5 @@
+\begin{tikzpicture}
+	\path[thick,draw,fill=white] (-1, 0.2) arc (180:90:0.2) -- (0.8, 0.4) arc (90:0:0.2) -- (1, -0.2) arc (360:270:0.2) -- (-0.8, -0.4) arc (270:180:0.2) -- cycle;
+	\draw[ultra thick] (-0.5, -0.4) -- (-0.5, -0.6);
+	\draw[ultra thick] (0.5, -0.4) -- (0.5, -0.6);
+\end{tikzpicture}

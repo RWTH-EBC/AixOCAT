@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="TON_P" Id="{378602ac-9984-4fb5-817c-f760de97e144}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TON_P	// Ton pausable
+(* If IN is FALSE, Q is FALSE and ET is 0. As soon as IN becomes TRUE, 
+the time will begin to be counted in milliseconds in ET until its value is equal to PT. 
+It will then remain constant. Q is TRUE when IN is TRUE and ET is equal to PT. 
+Otherwise it is FALSE. Thus, Q has a rising edge when the time indicated in PT in milliseconds has run out. 
+PAUSE allows for pausing the timer while retaining the elapsed time. 
+The timer will thus continue with the same amount of time left before pausing. *)
+VAR_INPUT
+    IN : BOOL;		(* starts timer with rising edge, resets timer with falling edge *)
+    PT : TIME;		(* time to pass, before Q is set *)
+    PAUSE : BOOL;
+END_VAR
+VAR_OUTPUT
+    Q : BOOL;		(* is TRUE, PT seconds after IN had a rising edge *)
+    ET : TIME;		(* elapsed time *)
+END_VAR
+VAR
+    rtPause : R_TRIG;	(* rising edge trigger *)
+    tTimePaused : TIME;
+    ton : TON;		(* timer on-delay *)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT IN THEN
+    tTimePaused := T#0S;
+END_IF
+
+rtPause(CLK := IN AND PAUSE);
+
+IF rtPause.Q THEN
+    tTimePaused := tTimePaused + ton.ET;
+END_IF
+
+ton(IN := IN AND NOT PAUSE, PT := PT - tTimePaused);
+
+//IF ET >= PT THEN
+//	Q := TRUE;
+//ELSE
+//	Q := FALSE;
+//END_IF
+
+Q := ton.Q;
+
+ET := tTimePaused + ton.ET;]]></ST>
+    </Implementation>
+    <LineIds Name="TON_P">
+      <LineId Id="24" Count="19" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

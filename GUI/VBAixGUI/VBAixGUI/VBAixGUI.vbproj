@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{62650101-F3B7-4A3C-BA31-25B264369830}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VBAixGUI</RootNamespace>
+    <AssemblyName>VBAixGUI</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>VBAixGUI.xml</DocumentationFile>
+    <DefineConstants>_MYFORMS=True</DefineConstants>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>VBAixGUI.xml</DocumentationFile>
+    <DefineConstants>_MYFORMS=True</DefineConstants>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="TwinCAT.Ads, Version=4.0.15.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TwinCAT\AdsApi\.NET\v4.0.30319\TwinCAT.Ads.dll</HintPath>
+    </Reference>
+    <Reference Include="TwinCAT.Scope2.Communications, Version=3.2.3132.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TwinCAT.Scope2.Tools, Version=3.2.3132.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\TwinCAT.Scope2.Tools\v4.0_3.2.3132.0__180016cd49e5e8c3\TwinCAT.Scope2.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="TwinCAT.Scope2.View.Control">
+      <HintPath>C:\TwinCAT\Functions\TE130X-Scope-View\TwinCAT.Scope2.View.Control.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADS.vb" />
+    <Compile Include="Befeuchter.designer.vb">
+      <DependentUpon>Befeuchter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Befeuchter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Buffer.vb" />
+    <Compile Include="CheckboxEingabe.designer.vb">
+      <DependentUpon>CheckboxEingabe.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CheckboxEingabe.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogListView.Designer.vb">
+      <DependentUpon>LogListView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LogListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ConvergenceWatchdog.Designer.vb">
+      <DependentUpon>ConvergenceWatchdog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ConvergenceWatchdog.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Measurement.Designer.vb">
+      <DependentUpon>Measurement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Measurement.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Decimal.designer.vb">
+      <DependentUpon>Sensor_Decimal.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Decimal.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DreiWegeKugelhahn.designer.vb">
+      <DependentUpon>DreiWegeKugelhahn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DreiWegeKugelhahn.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Input_ModeSelect.Designer.vb">
+      <DependentUpon>Input_ModeSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Input_ModeSelect.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Base_Component.designer.vb">
+      <DependentUpon>Sensor_Base_Component.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Base_Component.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Base_Orientation.designer.vb">
+      <DependentUpon>Sensor_Base_Orientation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Base_Orientation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Flap.designer.vb">
+      <DependentUpon>Sensor_Flap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Flap.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Power.designer.vb">
+      <DependentUpon>Sensor_Power.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Power.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Enums.vb" />
+    <Compile Include="Histogram.designer.vb">
+      <DependentUpon>Histogram.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Histogram.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LED.Designer.vb">
+      <DependentUpon>LED.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LED.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Log.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="Pumpe.designer.vb">
+      <DependentUpon>Pumpe.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Pumpe.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SeriesSelection.vb" />
+    <Compile Include="Sollwert.designer.vb">
+      <DependentUpon>Sollwert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sollwert.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ADS_Connection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ADS_Connection.Designer.vb">
+      <DependentUpon>ADS_Connection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Input_SetValue.designer.vb">
+      <DependentUpon>Input_SetValue.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Input_SetValue.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SymbolSelect.designer.vb">
+      <DependentUpon>SymbolSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SymbolSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sensor_Temperature.designer.vb">
+      <DependentUpon>Sensor_Temperature.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Temperature.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Humidity.designer.vb">
+      <DependentUpon>Sensor_Humidity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Humidity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Heizer.designer.vb">
+      <DependentUpon>Heizer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Heizer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DreiWegeVentil.designer.vb">
+      <DependentUpon>DreiWegeVentil.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DreiWegeVentil.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Fan.designer.vb">
+      <DependentUpon>Sensor_Fan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Fan.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Pressure.designer.vb">
+      <DependentUpon>Sensor_Pressure.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Pressure.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_Volumeflow.designer.vb">
+      <DependentUpon>Sensor_Volumeflow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Volumeflow.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogStatusBar.Designer.vb">
+      <DependentUpon>LogStatusBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LogStatusBar.vb">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ADS_Connection.resx">
+      <DependentUpon>ADS_Connection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Befeuchter.resx">
+      <DependentUpon>Befeuchter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheckboxEingabe.resx">
+      <DependentUpon>CheckboxEingabe.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConvergenceWatchdog.resx">
+      <DependentUpon>ConvergenceWatchdog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogListView.resx">
+      <DependentUpon>LogListView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogStatusBar.resx">
+      <DependentUpon>LogStatusBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Measurement.resx">
+      <DependentUpon>Measurement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Decimal.resx">
+      <DependentUpon>Sensor_Decimal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DreiWegeKugelhahn.resx">
+      <DependentUpon>DreiWegeKugelhahn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Input_ModeSelect.resx">
+      <DependentUpon>Input_ModeSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Base_Component.resx">
+      <DependentUpon>Sensor_Base_Component.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Base_Orientation.resx">
+      <DependentUpon>Sensor_Base_Orientation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Flap.resx">
+      <DependentUpon>Sensor_Flap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Power.resx">
+      <DependentUpon>Sensor_Power.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Histogram.resx">
+      <DependentUpon>Histogram.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LED.resx">
+      <DependentUpon>LED.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pumpe.resx">
+      <DependentUpon>Pumpe.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sollwert.resx">
+      <DependentUpon>Sollwert.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Input_SetValue.resx">
+      <DependentUpon>Input_SetValue.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SymbolSelect.resx">
+      <DependentUpon>SymbolSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Temperature.resx">
+      <DependentUpon>Sensor_Temperature.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Humidity.resx">
+      <DependentUpon>Sensor_Humidity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Heizer.resx">
+      <DependentUpon>Heizer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DreiWegeVentil.resx">
+      <DependentUpon>DreiWegeVentil.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Fan.resx">
+      <DependentUpon>Sensor_Fan.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Pressure.resx">
+      <DependentUpon>Sensor_Pressure.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Volumeflow.resx">
+      <DependentUpon>Sensor_Volumeflow.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Befeuchter_an.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Befeuchter_aus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\sps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\temp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\temp_kalt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\feuchte.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Lüfter_aus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Heizer_aus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Heizer_ein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_links_aus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_links_ein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_oben_aus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_oben_ein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_rechts_aus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_rechts_ein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_unten_aus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Pumpe_unten_ein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Volumenstrom_rund.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Wärmeübertrager_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Wärmeübertrager_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\3WegVentil.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\3WegVentil_alle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\3WegVentil_links_rechts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\3WegVentil_unten_rechts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Lüfter_ein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Befeuchter_an_v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Befeuchter_aus_v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Druck_rechteck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Leistungsaufnahme_rechteck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Volumenstrom_rechteck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shape_rectangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_pressure_diff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_pressure_abs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_fan_radial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_fan_radial_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_fan_axial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_fan_axial_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_temperature_hot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_temperature_cold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_humidity.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_power.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_flap_closed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_flap_half.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_flap_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_volumeflow_rectangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_volumeflow_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sensor_decimal.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
