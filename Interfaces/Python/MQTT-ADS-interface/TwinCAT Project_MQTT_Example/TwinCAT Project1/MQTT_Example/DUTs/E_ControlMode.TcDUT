@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="E_ControlMode" Id="{d9aac43f-035e-4502-b034-235fb9cd9fbd}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ControlMode :
+(
+	Off, 				(*0*)
+	Init, 				(*1*)
+	OperationTest, 		(*2*)
+	Auto, 				(*3*)
+	Manual,				(*4*)
+	ExternalADSControl,	(*5*)
+	IoT,				(*6*)
+	SimulateSummerCase	(*7*)
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>
