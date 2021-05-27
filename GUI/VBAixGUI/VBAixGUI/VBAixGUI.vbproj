@@ -120,6 +120,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Verdichter.designer.vb">
+      <DependentUpon>Verdichter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Verdichter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Sensor_Decimal.designer.vb">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
     </Compile>
@@ -293,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Measurement.resx">
       <DependentUpon>Measurement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Verdichter.resx">
+      <DependentUpon>Verdichter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Decimal.resx">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
@@ -528,6 +537,11 @@
     <Content Include="Resources\Coriolis_aus_vert.png" />
     <Content Include="Resources\Coriolis_ein_horiz.png" />
     <Content Include="Resources\Coriolis_ein_vert.png" />
+    <Content Include="Resources\Verdichter_aus.png" />
+    <Content Include="Resources\Verdichter_links.gif" />
+    <Content Include="Resources\Verdichter_oben.gif" />
+    <Content Include="Resources\Verdichter_rechts.gif" />
+    <Content Include="Resources\Verdichter_unten.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

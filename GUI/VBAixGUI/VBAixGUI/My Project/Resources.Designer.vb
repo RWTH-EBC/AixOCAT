@@ -523,6 +523,56 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property Verdichter_aus() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Verdichter_aus", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Verdichter_links() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Verdichter_links", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Verdichter_oben() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Verdichter_oben", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Verdichter_rechts() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Verdichter_rechts", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Verdichter_unten() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Verdichter_unten", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Volumenstrom_rechteck() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Volumenstrom_rechteck", resourceCulture)

@@ -268,4 +268,19 @@
   <data name="Coriolis_ein_vert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Coriolis_ein_vert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Verdichter_aus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Verdichter_aus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Verdichter_links" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Verdichter_links.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Verdichter_oben" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Verdichter_oben.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Verdichter_rechts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Verdichter_rechts.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Verdichter_unten" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Verdichter_unten.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
