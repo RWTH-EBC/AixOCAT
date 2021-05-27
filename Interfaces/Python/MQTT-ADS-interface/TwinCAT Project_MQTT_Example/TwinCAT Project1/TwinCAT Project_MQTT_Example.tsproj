@@ -85,7 +85,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{9F1978D7-018C-45FB-BA08-807DE0413152}" Name="MQTT_Example" PrjFilePath="MQTT_Example\MQTT_Example.plcproj" TmcFilePath="MQTT_Example\MQTT_Example.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MQTT_Example\MQTT_Example.tmc">
 					<Name>MQTT_Example Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
