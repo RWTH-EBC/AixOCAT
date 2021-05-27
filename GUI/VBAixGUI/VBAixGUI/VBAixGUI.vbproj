@@ -115,6 +115,11 @@
     <Compile Include="Measurement.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sensor_Decimal.designer.vb">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
     </Compile>
@@ -181,6 +186,12 @@
     <Compile Include="Pumpe.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Sensor_Coriolis.designer.vb">
+      <DependentUpon>Sensor_Coriolis.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Coriolis.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SeriesSelection.vb" />
     <Compile Include="Sollwert.designer.vb">
       <DependentUpon>Sollwert.vb</DependentUpon>
@@ -195,11 +206,6 @@
       <DependentUpon>ADS_Connection.vb</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -317,12 +323,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Pumpe.resx">
       <DependentUpon>Pumpe.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Coriolis.resx">
+      <DependentUpon>Sensor_Coriolis.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sollwert.resx">
       <DependentUpon>Sollwert.vb</DependentUpon>
@@ -513,6 +522,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sensor_decimal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Coriolis_aus_Horiz.png" />
+    <Content Include="Resources\Coriolis_aus_vert.png" />
+    <Content Include="Resources\Coriolis_ein_horiz.png" />
+    <Content Include="Resources\Coriolis_ein_vert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
