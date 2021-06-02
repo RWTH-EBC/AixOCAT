@@ -61,7 +61,7 @@ The workflow for changes is described in our [contribution guidelines](CONTRIBUT
 
 ### AixOCAT related publications
 
-- "AixOCAT: Open Source Library for Automation Systems" Essen / Vulkan Verlag GmbH (2019) [Link to RWTH Publications Server](http://publications.rwth-aachen.de/record/768255)
+- [AixOCAT: Open-Source-Bibliothek für Automationssysteme](Resources/Documentation/AixOCAT_paper_FB_RWTH.pdf)
 
 ## License
 
