@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <GVL Name="sampleADSGVL" Id="{03c17471-1e5b-428f-8728-646bfb4c56c5}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+
+	//Modes
+	eModeMainControlModeADS	AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
+	eModeDHSADS				AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
+	eModeCCAADS				AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
+	eModeAHUADS				AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
+
+	//Ambient air datapoints
+	fTempAmbAirADS				AT %Q* 	: REAL;
+	fTemperatureAmbientMeanADS 	AT %Q*	: REAL;
+
+	//District heating station datapoints
+	//Temperature sensor datapoints
+	fDHSTempSupPrimADS		AT %Q*	: REAL;                             //#
+	fDHSTempRetPrimADS		AT %Q*	: REAL;                             //#
+	//DHS power setpoint
+	fDHSPowSetADS 			AT %I*	: REAL;								//# W
+
+	//Concrete core activation datapoints
+	//Temperature sensor datapoints
+	fCCATempSupPrimADS 		AT %Q*	: REAL;
+	fCCATempRetPrimADS 		AT %Q*	: REAL;
+	fCCATempSupADS 			AT %Q*	: REAL;                             //#
+	fCCATempRetADS 			AT %Q*	: REAL;
+	//Valve datapoints
+	fCCAValveActADS 		AT %Q*	: REAL;
+	fCCAValveSetADS 		AT %I*	: REAL;								//W
+	//Pump datapoints
+	eCCAPumpContModeADS 	AT %I*	: E_PumpControlMode;				//# W
+	bCCAPumpErrorADS		AT %Q*	: BOOL;
+	bCCAPumpOperatingADS 	AT %Q*	: BOOL;
+	fCCAPumpPowerADS		AT %Q*	: REAL;
+	fCCAPumpPressureADS 	AT %Q*	: REAL;
+	bCCAPumpSetOnADS		AT %Q*	: BOOL;
+	fCCAPumpSetpointADS		AT %I*	: REAL;								//W
+	fCCAPumpSpeedADS		AT %Q*	: REAL;
+	fCCAPumpVolFlowADS		AT %Q*	: REAL;
+
+	//Air handling unit datapoints
+	//Flap datapoints
+	fAHUFlapEHAActADS 			AT %Q* 	: REAL;                         //#
+	fAHUFlapEHASetADS 			AT %I*	: REAL;							//W
+	fAHUFlapETAActADS 			AT %Q*	: REAL;
+	fAHUFlapETASetADS 			AT %I*	: REAL;							//W
+	fAHUFlapODAActADS 			AT %Q*	: REAL;
+	fAHUFlapODASetADS 			AT %I*	: REAL;							//# W
+	fAHUFlapSUPActADS 			AT %Q*	: REAL;
+	fAHUFlapSUPSetADS 			AT %I*	: REAL;							//# W
+	//Fan datapoints
+	fAHUFanETASpeedActADS		AT %Q*	: REAL;
+	fAHUFanETASpeedSetADS		AT %I*	: REAL;							//W
+	fAHUFanETAVdpActADS			AT %Q*	: REAL;
+	fAHUFanETAVolFlowActADS		AT %Q*	: REAL;                         //#
+	fAHUFanSUPSpeedActADS		AT %Q*	: REAL;
+	fAHUFanSUPSpeedSetADS		AT %I*	: REAL;							//W
+	fAHUFanSUPVdpActADS			AT %Q*	: REAL;
+	fAHUFanSUPVolFlowActADS		AT %Q*	: REAL;
+	//Temperature sensor datapoints
+	//fAHUTempAmbAirADS			AT %Q*	: REAL;
+	fAHUTempEHAADS				AT %Q*	: REAL;
+	fAHUTempETAADS				AT %Q*	: REAL;
+	fAHUTempODAADS				AT %Q*	: REAL;
+	fAHUTempSUPADS				AT %Q*	: REAL;
+	//Humidity sensor datapoints
+	fAHUHumEHAADS				AT %Q*	: REAL;
+	fAHUHumETAADS				AT %Q*	: REAL;                         //#
+	fAHUHumODAADS				AT %Q*	: REAL;
+	fAHUHumSUPADS				AT %Q*	: REAL;
+	//Frost protection sensor datapoints
+	bAHUFrostProtADS			AT %Q*	: BOOL;
+	//Preheater datapoints
+	//Temperature sensor datapoints
+	fAHUPHTempSupPrimADS		AT %Q*	: REAL;
+	fAHUPHTempRetPrimADS		AT %Q*	: REAL;
+	fAHUPHTempSupADS			AT %Q*	: REAL;                         //#
+	fAHUPHTempRetADS			AT %Q*	: REAL;                         //#
+	//Valve datapoints
+	fAHUPHValveActADS			AT %Q*	: REAL;
+	fAHUPHValveSetADS			AT %I*	: REAL;							//W
+	//Pump datapoints
+	eAHUPHPumpContModeADS		AT %I*	: E_PumpControlMode;			//W
+	bAHUPHPumpErrorADS 			AT %Q*	: BOOL;
+	bAHUPHPumpOperatingADS		AT %Q*	: BOOL;
+	fAHUPHPumpPowerADS			AT %Q*	: REAL;
+	fAHUPHPumpPressureADS 		AT %Q*	: REAL;
+	bAHUPHPumpSetOnADS			AT %Q*	: BOOL;
+	fAHUPHPumpSetpointADS		AT %I*	: REAL;							//W
+	fAHUPHPumpSpeedADS			AT %Q*	: REAL;
+	fAHUPHPumpVolFlowADS		AT %Q*	: REAL;
+	//Heat recovery datapoints
+	fAHUHRBypValveAct1ADS		AT %Q*	: REAL;
+	fAHUHRBypValveAct2ADS		AT %Q*	: REAL;
+	fAHUHRBypValveSetADS		AT %I*	: REAL;							//W
+	fAHUHRTempOutEstimatedADS	AT %Q*	: REAL;
+	//Cooler datapoints
+	//Temperature sensor datapoints
+	fAHUCOTempSupPrimADS		AT %Q*	: REAL;
+	fAHUCOTempRetPrimADS		AT %Q*	: REAL;
+	fAHUCOTempSupADS			AT %Q*	: REAL;
+	fAHUCOTempRetADS			AT %Q*	: REAL;
+	fAHUCOTempOutSetADS			AT %I*  : REAL;
+	fAHUCOTempOutEstimatedADS	AT %Q*	: REAL;
+	//Valve datapoints
+	fAHUCOValveActADS			AT %Q*	: REAL;
+	fAHUCOValveSetADS			AT %I*	: REAL;							//W
+	//Pump datapoints
+	eAHUCOPumpContModeADS		AT %I*	: E_PumpControlMode;			//W
+	bAHUCOPumpErrorADS 			AT %Q*	: BOOL;
+	bAHUCOPumpOperatingADS		AT %Q*	: BOOL;
+	fAHUCOPumpPowerADS			AT %Q*	: REAL;
+	fAHUCOPumpPressureADS 		AT %Q*	: REAL;
+	bAHUCOPumpSetOnADS			AT %Q*	: BOOL;
+	fAHUCOPumpSetpointADS		AT %I*	: REAL;							//W
+	fAHUCOPumpSpeedADS			AT %Q*	: REAL;
+	fAHUCOPumpVolFlowADS		AT %Q*	: REAL;
+	//Reheater datapoints
+	//Temperature sensor datapoints
+	fAHURHTempSupPrimADS		AT %Q*	: REAL;
+	fAHURHTempRetPrimADS		AT %Q*	: REAL;
+	fAHURHTempSupADS			AT %Q*	: REAL;
+	fAHURHTempRetADS			AT %Q*	: REAL;
+	//Valve datapoints
+	fAHURHValveActADS			AT %Q*	: REAL;
+	fAHURHValveSetADS			AT %I*	: REAL;							//W
+	//Pump datapoints
+	eAHURHPumpContModeADS		AT %I*	: E_PumpControlMode;			//W
+	bAHURHPumpErrorADS 			AT %Q*	: BOOL;
+	bAHURHPumpOperatingADS		AT %Q*	: BOOL;
+	fAHURHPumpPowerADS			AT %Q*	: REAL;
+	fAHURHPumpPressureADS 		AT %Q*	: REAL;                         //#
+	bAHURHPumpSetOnADS			AT %Q*	: BOOL;                         //#
+	fAHURHPumpSetpointADS		AT %I*	: REAL;							//# W
+	fAHURHPumpSpeedADS			AT %Q*	: REAL;
+	fAHURHPumpVolFlowADS		AT %Q*	: REAL;
+	//SteamHumidifier datapoints
+	fAHUSHSetpointADS			AT %I*	: REAL;							//W
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

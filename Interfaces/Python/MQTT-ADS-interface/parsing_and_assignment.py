@@ -10,7 +10,7 @@ import pyads
 import json
 
 #%%
-def getADSVariables(file="TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL"):
+def getADSVariables(file="TwinCAT Project_MQTT_Example/TwinCAT Project1/MQTT_Example/GVLs/sampleADSGVL.TcGVL"):
     startphrase = 'VAR_GLOBAL'
     endphrase   = 'END_VAR'
     start   = 0
@@ -52,6 +52,55 @@ def getADSVariables(file="TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampl
                 # print(s)
     # Add control / set point variables to be monitored as well
     # publish.update(subscribe)     # REMARK: It is not possible to read input-only variables (%I*) or internal variables without address/IO assignment via ADS
+    print('Done gathering data points. \n')
+    return publish, subscribe
+
+def getMarkedADSVariables(file="TwinCAT Project_MQTT_Example/TwinCAT Project1/MQTT_Example/GVLs/sampleADSGVL_markedVariables.TcGVL"):
+    startphrase = 'VAR_GLOBAL'
+    endphrase   = 'END_VAR'
+    start   = 0
+    finish  = 0
+    publish = {}
+    subscribe = {}
+
+    # To mark a variable put the comment //# in the respective line of the *TcGVL file
+    # Put further comments after the mark with at least one space, like this: //W -> //# W
+
+    with open(file) as f:
+        for num, line in enumerate(f, 1):
+            if startphrase in line:
+                start = num + 1
+            if endphrase in line:
+                finish = num - 1
+            if start > 0 and num >= start:
+                if finish > 0 and num > finish:
+                    break
+                if s: # skip empty lines
+                    # skip all comment lines
+                    if re.compile("//").findall(s[0]):
+                        continue
+                else:
+                    continue
+
+                # the mark is always at position 5 in s, counting from 0
+                if (len(s) >= 6) and (s[5] == "//#"):
+                    if "%I*" in s[1] or "%I*" in s[2] or "%I*" in s[3]:
+                        if re.compile("REAL").findall(s[3]) or re.compile("REAL").findall(s[4]):
+                            temptype = pyads.PLCTYPE_REAL
+                        elif re.compile("BOOL").findall(s[3]) or re.compile("BOOL").findall(s[4]):
+                            temptype = pyads.PLCTYPE_BOOL
+                        else:
+                            temptype = pyads.PLCTYPE_INT
+                        subscribe[s[0]] = temptype
+                    else:
+                        if re.compile("REAL").findall(s[3]) or re.compile("REAL").findall(s[4]):
+                            temptype = pyads.PLCTYPE_REAL
+                        elif re.compile("BOOL").findall(s[3]) or re.compile("BOOL").findall(s[4]):
+                            temptype = pyads.PLCTYPE_BOOL
+                        else:
+                            temptype = pyads.PLCTYPE_INT
+                        publish[s[0]] = temptype
+
     print('Done gathering data points. \n')
     return publish, subscribe
 
