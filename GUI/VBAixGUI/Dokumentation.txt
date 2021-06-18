@@ -1,0 +1,45 @@
+AixOCAT VBAixGUI Dokumentation
+
+
+Introduction:
+- 	Run the VisualBasic-Project "VBAixGUI.sln" to create a libary-file (.dll). You can now find your libary-file in "AixOCAT\GUI\VBAixGUI\VBAixGUI\bin\Debug". 
+	By dafault .dll-files in AixOCAT develop-Branch are ignored by Git and have to be created after cloning the repo.
+-	In order to use components from the AixOCAT-GUI-libary, import the .dll-file to your GUI Project: 
+		Add a reference in your project. It is recommended, to copy all necesssary .dll-files in a special folder in your project. You need to add both references "VBAixGUI.dll" and "TwinCAT.Ads.dll". 
+		Both can be found in the folder described above.
+-	After importing the libary, you can add all components to the toolbox: Right-click on Toolbox to add a tab in the Toolbox. Right-click again to add Elements. Search and add the VBAixGUI.dll file. 
+	Now you can drag and Drop all elements from the libary to your GUI.
+
+
+First steps:
+-	To connect your GUI with your PLC, use the component "ADS_Connection". Open the Element-Properties and add the Net-ID and the port of the PLC.
+	Now you can connect all Elements to Variables from you PLC by typing names in the Element's property "Symbol". Use dot notation e.g. "StateMachine.Temp_KK". 
+-	For many Elements you can add a unit (Propertie "Unit") or you can change Orientation to rotate the Element. 
+-	In order to write numerical Values to the PLC "Input-SetValue" is commonly used.
+
+
+New Elements:
+Coriolis Sensor:
+-	shows  a Coriolis sensor and measured Value, Image changes when <connected variable> != 0
+-	Important Properties: "Symbol", "Unit", "Flussrichtung" (change to rotate Element)
+
+Compressor:
+-	Shows Compressor Symbol and connected value. Image changes when <connected variable> >= 0
+- 	Important Properties: "Symbol", "Unit", "Flussrichtung" (change to rotate Element)
+
+
+
+
+Adding new Elements to the Libary:
+Simple Version:
+- 	Copy a similar Element and rename it (use this order to avoid problems):
+		1. Solution-Explorer (deutsch:Projektmappen-Explorer) -> <oldName-Copy>  -> <oldName-Copy>  -> InitializeComponent() -> Change "Partial Class <oldName>" to "Partial Class <newName>"
+		2. Solution-Explorer (deutsch:Projektmappen-Explorer) -> <oldName-Copy>  -> <oldName-Copy>  (double click) -> Change "Public Class <oldName>" to "Public Class <newName>"
+		3. Solution-Explorer (deutsch:Projektmappen-Explorer) -> <oldName-Copy>  (right click) -> change name
+- 	Adjust Variable Names
+- 	Add your element Symbols (look at "Adding Pictures")
+
+Adding Pictures:
+-	Create a png-file. The size of your picture has tom match the size of the newly created Element. (Pictures won't be scaled)
+- 	Add your Picture to Recources folder (Solution-Explorer (deutsch:Projektmappen-Explorer) -> Recources -> Right-click -> add existing element)
+-	Add picture to your Project: (Solution-Explorer -> MyProject -> double-click -> Recources -> Add Recources -> Add existing file)

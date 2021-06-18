@@ -10,6 +10,7 @@ Public Class Input_SetValue
 #Region "Properties"
     <Browsable(True), Description("Active")> Dim _active As Boolean
     <Browsable(True), Description("Hint")> Dim _hint As String
+    <Browsable(True), Description("Anzahl Nachkommastellen")> Dim _decimalplaces As Integer = 2
     <Browsable(True), Description("maximaler Wert der Variablen")> Dim _maxValue As Decimal = 100
     <Browsable(True), Description("minimaler Wert der Variablen")> Dim _minValue As Decimal = 0
     <Browsable(True), Description("Aktuallisierungsrate in ms")> Dim _pollRate As Integer = 1000
@@ -41,6 +42,19 @@ Public Class Input_SetValue
         Set(ByVal Value As String)
             If _hint <> Value Then
                 _hint = Value
+                Me.Invalidate()
+            End If
+        End Set
+    End Property
+
+    Public Property DecimalPlaces() As Integer
+        Get
+            DecimalPlaces = _decimalplaces
+        End Get
+        Set(ByVal Value As Integer)
+            If _decimalplaces <> Value Then
+                _decimalplaces = Value
+                applyDecimalPlaces()
                 Me.Invalidate()
             End If
         End Set
@@ -99,7 +113,7 @@ Public Class Input_SetValue
         Set(ByVal Value As Decimal)
             If _setValue <> Value Then
                 _setValue = Value
-                _setValue = Decimal.Round(_setValue, 2)
+                _setValue = Decimal.Round(_setValue, _decimalplaces)
                 lblUnit.Text = Unit
                 If SetValueNew = False Then
                     If _setValue > MaxValue Then
@@ -159,6 +173,10 @@ Public Class Input_SetValue
     Private Sub applyMinMax()
         Me.NumericUpDown1.Minimum = MinValue
         Me.NumericUpDown1.Maximum = MaxValue
+    End Sub
+
+    Private Sub applyDecimalPlaces()
+        Me.NumericUpDown1.DecimalPlaces = _decimalplaces
     End Sub
 
     Public Sub SubmitSetValue()
