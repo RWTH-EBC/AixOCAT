@@ -1,6 +1,4 @@
-﻿Imports EBC_ADS_Bib.ADS
-Imports TwinCAT.Ads
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 
 Public Class ADS_Connection
 
