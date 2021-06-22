@@ -48,6 +48,12 @@ Public Module ADS
             Timeout = _timeout
         End Get
     End Property
+
+    Public ReadOnly Property Initialized As Boolean
+        Get
+            Initialized = _initialized
+        End Get
+    End Property
 #End Region
 
 #Region "Public Functions"
@@ -55,6 +61,7 @@ Public Module ADS
         netID = _netID
         port = _port
         _address = New AmsAddress(netID & ":" & port)
+        _timeout = False
         Dim settings As SymbolLoaderSettings = New SymbolLoaderSettings(SymbolsLoadMode.Flat)
         'connect to the ads server
         client.Synchronize = False
