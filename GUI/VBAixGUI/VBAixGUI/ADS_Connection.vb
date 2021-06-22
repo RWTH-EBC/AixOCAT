@@ -73,9 +73,9 @@ Public Class ADS_Connection
     End Sub
 
     Private Sub TimerPoll_Tick(sender As Object, e As EventArgs) Handles TimerPoll.Tick
-        If ADS.CheckConnection() Then
+        If ADS.CheckConnection() And NetID <> "x.xx.xxx.xxx.x.x" Then
             ChangeIcon()
-        Else
+        ElseIf Not ADS.Timeout Then
             TestConnection()
         End If
     End Sub
