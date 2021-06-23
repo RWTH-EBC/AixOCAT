@@ -18,21 +18,21 @@ Public Class Verdichter
 
 #Region "Property Functions"
 
-    Public Property Flussrichtung() As Orientation
+    Public Property DirectionOfFlow() As Orientation
         Get
-            Flussrichtung = _ausrichtung
+            DirectionOfFlow = _ausrichtung
         End Get
         Set(value As Orientation)
             If _ausrichtung <> value Then
                 _ausrichtung = value
 
-                Select Case Flussrichtung
+                Select Case DirectionOfFlow
                     Case Orientation.Left
                         Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
                         Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
                         Me.Height = 80
                         Me.Width = 80
-                        Me.lblValue.Top = 30
+                        Me.lblValue.Top = 32
                         Me.lblValue.Left = 20
                     Case Orientation.Right
                         Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
@@ -46,7 +46,7 @@ Public Class Verdichter
                         Me.Height = 80
                         Me.Width = 80
                         Me.lblValue.Top = 30
-                        Me.lblValue.Left = 20
+                        Me.lblValue.Left = 18
                     Case Orientation.Bottom
                         Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
                         Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate90FlipNone)
@@ -62,9 +62,9 @@ Public Class Verdichter
         End Set
     End Property
 
-    Public Property Drehzahl() As Decimal
+    Public Property RotationSpeed() As Decimal
         Get
-            Drehzahl = _drehzahl
+            RotationSpeed = _drehzahl
         End Get
         Set(ByVal Value As Decimal)
             If _drehzahl <> Value Then
@@ -79,15 +79,15 @@ Public Class Verdichter
 
 #Region "Subs"
     Private Sub IconChange()
-        If Drehzahl >= 1000 Then
-            Me.lblValue.Text = Drehzahl.ToString("F0") & " " & Unit
-        ElseIf Drehzahl >= 100 Then
-            Me.lblValue.Text = Drehzahl.ToString("F1") & " " & Unit
+        If RotationSpeed >= 1000 Then
+            Me.lblValue.Text = RotationSpeed.ToString("F0") & " " & Unit
+        ElseIf RotationSpeed >= 100 Then
+            Me.lblValue.Text = RotationSpeed.ToString("F1") & " " & Unit
         Else
-            Me.lblValue.Text = Drehzahl.ToString("F") & " " & Unit
+            Me.lblValue.Text = RotationSpeed.ToString("F") & " " & Unit
         End If
-        If Drehzahl <> 0 Then
-            Select Case Flussrichtung
+        If RotationSpeed <> 0 Then
+            Select Case DirectionOfFlow
                 Case Orientation.Left
                     Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_links
                 Case Orientation.Right
@@ -98,7 +98,7 @@ Public Class Verdichter
                     Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_unten
             End Select
         Else
-            Select Case Flussrichtung
+            Select Case DirectionOfFlow
                 Case Orientation.Left
                     Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
                     Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
@@ -123,7 +123,7 @@ Public Class Verdichter
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles TimerPoll.Tick
         If DesignMode = False And ADS.Connected Then
-            Drehzahl = CDec(ADS.getSymbolValueCached(Symbol, PollRate))
+            RotationSpeed = CDec(ADS.getSymbolValueCached(Symbol, PollRate))
         End If
     End Sub
 
