@@ -1,6 +1,4 @@
-﻿Imports EBC_ADS_Bib.ADS
-Imports TwinCAT.Ads
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 
 Public Class ADS_Connection
 
@@ -75,7 +73,7 @@ Public Class ADS_Connection
     Private Sub TimerPoll_Tick(sender As Object, e As EventArgs) Handles TimerPoll.Tick
         If ADS.CheckConnection() Then
             ChangeIcon()
-        Else
+        ElseIf Not ADS.Initialized Then
             TestConnection()
         End If
     End Sub
