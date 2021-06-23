@@ -120,10 +120,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Verdichter.designer.vb">
-      <DependentUpon>Verdichter.vb</DependentUpon>
+    <Compile Include="Compressor.designer.vb">
+      <DependentUpon>Compressor.vb</DependentUpon>
     </Compile>
-    <Compile Include="Verdichter.vb">
+    <Compile Include="Compressor.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sensor_Decimal.designer.vb">
@@ -300,8 +300,8 @@
     <EmbeddedResource Include="Measurement.resx">
       <DependentUpon>Measurement.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Verdichter.resx">
-      <DependentUpon>Verdichter.vb</DependentUpon>
+    <EmbeddedResource Include="Compressor.resx">
+      <DependentUpon>Compressor.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Decimal.resx">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>

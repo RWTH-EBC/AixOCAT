@@ -17,15 +17,15 @@ Public Class Sensor_Coriolis
 
 #Region "Property Functions"
 
-    Public Property Flussrichtung() As Orientation
+    Public Property DirectionOfFlow() As Orientation
         Get
-            Flussrichtung = _ausrichtung
+            DirectionOfFlow = _ausrichtung
         End Get
         Set(value As Orientation)
             If _ausrichtung <> value Then
                 _ausrichtung = value
 
-                Select Case Flussrichtung
+                Select Case DirectionOfFlow
                     Case Orientation.Left
                         Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Coriolis_aus_Horiz
                         Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.RotateNoneFlipX)
@@ -85,7 +85,7 @@ Public Class Sensor_Coriolis
             Me.lblValue.Text = Massflow.ToString("F") & " " & Unit
         End If
         If Massflow <> 0 Then
-            Select Case Flussrichtung
+            Select Case DirectionOfFlow
                 Case Orientation.Left
                     Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Coriolis_ein_horiz
                     Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.RotateNoneFlipX)
@@ -98,7 +98,7 @@ Public Class Sensor_Coriolis
                     Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Coriolis_ein_vert
             End Select
         Else
-            Select Case Flussrichtung
+            Select Case DirectionOfFlow
                 Case Orientation.Left
                     Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Coriolis_aus_Horiz
                     Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.RotateNoneFlipX)

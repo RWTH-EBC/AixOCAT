@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Verdichter
+Partial Class Compressor
     Inherits Sensor_Base_Component
 
     'UserControl1 überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.

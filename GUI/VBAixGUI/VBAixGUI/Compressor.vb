@@ -2,7 +2,7 @@
 
 Imports System.ComponentModel
 
-Public Class Verdichter
+Public Class Compressor
 
     Inherits Sensor_Base_Component
 
