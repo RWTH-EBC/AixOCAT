@@ -34,6 +34,7 @@ Partial Class Input_SetValue
         Me.NumericUpDown1.BackColor = System.Drawing.SystemColors.Window
         Me.NumericUpDown1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.NumericUpDown1.DecimalPlaces = 2
+        Me.NumericUpDown1.Increment = 1
         Me.NumericUpDown1.Dock = System.Windows.Forms.DockStyle.Left
         Me.NumericUpDown1.Location = New System.Drawing.Point(0, 0)
         Me.NumericUpDown1.Name = "NumericUpDown1"
