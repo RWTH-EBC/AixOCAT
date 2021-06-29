@@ -75,6 +75,7 @@ def getMarkedADSVariables(file="TwinCAT Project_MQTT_Example/TwinCAT Project1/MQ
             if start > 0 and num >= start:
                 if finish > 0 and num > finish:
                     break
+                s = line.split()
                 if s: # skip empty lines
                     # skip all comment lines
                     if re.compile("//").findall(s[0]):
@@ -109,6 +110,7 @@ def getADSvarsFromSymbols(ads):
     subscribe   = {}
     try:
         ads_list    = ads.plc.get_all_symbols()
+        #ads_list    = ads.get_all_symbols()
         for i in ads_list:
             if i.symbol_type == 'BOOL':
                 temptype = pyads.PLCTYPE_BOOL
@@ -128,6 +130,35 @@ def getADSvarsFromSymbols(ads):
     except:
         print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
         return publish, subscribe
+
+def getMarkedADSvarsFromSymbols(plc):
+    publish = {}
+    subscribe = {}
+
+    # Desired variables have to be marked with a single //# comment
+    try:
+        symbol_list = plc.get_all_symbols()
+        for symbol in symbol_list:
+            if symbol.comment == '#':
+                if symbol.symbol_type == 'BOOL':
+                    temptype = pyads.PLCTYPE_BOOL
+                elif symbol.symbol_type == 'REAL':
+                    temptype = pyads.PLCTYPE_REAL
+                else:
+                    temptype = pyads.PLCTYPE_INT
+                if "OutData" in symbol.name:
+                    #skip
+                    continue
+                if symbol.index_group == 61472:
+                    subscribe[symbol.name] = {'type': temptype, 'handle': plc.get_handle(symbol.name)}
+                if symbol.index_group == 61488:
+                    publish[symbol.name] = {'type': temptype, 'handle': plc.get_handle(symbol.name)}
+        print('Done gathering data points. \n')
+    except:
+        print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
+
+    return publish, subscribe
+
 
 def getRawADSVarListFromSymbols(ads):
     var_list    = {}
