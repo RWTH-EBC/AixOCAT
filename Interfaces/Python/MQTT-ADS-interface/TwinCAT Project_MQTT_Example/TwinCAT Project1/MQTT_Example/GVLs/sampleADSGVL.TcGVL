@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <GVL Name="sampleADSGVL" Id="{03c17471-1e5b-428f-8728-646bfb4c56c5}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -11,8 +11,8 @@ VAR_GLOBAL
 	eModeAHUADS				AT %I*	: E_ControlMode := E_ControlMode.Auto; //W
 
 	//Ambient air datapoints
-	fTempAmbAirADS				AT %Q* 	: REAL;
-	fTemperatureAmbientMeanADS 	AT %Q*	: REAL;
+	fTempAmbAirADS				AT %Q* 	: REAL; //# test variable for ads
+	fTemperatureAmbientMeanADS 	AT %Q*	: REAL; //#
 
 	//District heating station datapoints
 	//Temperature sensor datapoints
@@ -139,6 +139,9 @@ VAR_GLOBAL
 	fAHURHPumpVolFlowADS		AT %Q*	: REAL;
 	//SteamHumidifier datapoints
 	fAHUSHSetpointADS			AT %I*	: REAL;							//W
+	
+	//Structure variables
+	strAdsTest : D_InputVar;
 	
 END_VAR]]></Declaration>
   </GVL>
