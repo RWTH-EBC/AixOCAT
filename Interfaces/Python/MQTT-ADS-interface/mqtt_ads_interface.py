@@ -380,7 +380,8 @@ if __name__ == "__main__":
         # Variables and Parsing
     # Get ADS variables from variable list
     # pub, sub = parsing_and_assignment.getADSVariables(file='TwinCAT Project1/TwinCAT Project1/Untitled1/GVLs/sampleADSGVL.TcGVL')
-    pub, sub = parsing_and_assignment.getADSvarsFromSymbols(mqtt_ads.ads)
+    #pub, sub = parsing_and_assignment.getADSvarsFromSymbols(mqtt_ads.ads)
+    pub, sub = parsing_and_assignment.getMarkedADSvarsFromSymbols(mqtt_ads.ads)
     # Connect MQTT
     try:
         if load_conf == True:
