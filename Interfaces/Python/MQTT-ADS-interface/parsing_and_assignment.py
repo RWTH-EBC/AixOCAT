@@ -131,13 +131,13 @@ def getADSvarsFromSymbols(ads):
         print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
         return publish, subscribe
 
-def getMarkedADSvarsFromSymbols(plc):
+def getMarkedADSvarsFromSymbols(ads):
     publish = {}
     subscribe = {}
 
     # Desired variables have to be marked with a single //# comment
     try:
-        symbol_list = plc.get_all_symbols()
+        symbol_list = ads.plc.get_all_symbols()
         for symbol in symbol_list:
             if symbol.comment == '#':
                 if symbol.symbol_type == 'BOOL':
@@ -150,9 +150,9 @@ def getMarkedADSvarsFromSymbols(plc):
                     #skip
                     continue
                 if symbol.index_group == 61472:
-                    subscribe[symbol.name] = {'type': temptype, 'handle': plc.get_handle(symbol.name)}
+                    subscribe[symbol.name] = {'type': temptype, 'handle': ads.plc.get_handle(symbol.name)}
                 if symbol.index_group == 61488:
-                    publish[symbol.name] = {'type': temptype, 'handle': plc.get_handle(symbol.name)}
+                    publish[symbol.name] = {'type': temptype, 'handle': ads.plc.get_handle(symbol.name)}
         print('Done gathering data points. \n')
     except:
         print('There seems to be an issue with the ads connection. Could not fetch data points from plc device via ads.')
