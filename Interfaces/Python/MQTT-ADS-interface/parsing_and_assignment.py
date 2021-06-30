@@ -135,11 +135,13 @@ def getMarkedADSvarsFromSymbols(ads):
     publish = {}
     subscribe = {}
 
-    # Desired variables have to be marked with a single //# comment
+    # Desired variables have to be marked with a //# comment (add further comments with a space after '#')
     try:
         symbol_list = ads.plc.get_all_symbols()
         for symbol in symbol_list:
-            if symbol.comment == '#':
+            sym_comment = symbol.comment
+            comment_words = sym_comment.split()
+            if (len(comment_words) >= 1) and (comment_words[0] == '#'):
                 if symbol.symbol_type == 'BOOL':
                     temptype = pyads.PLCTYPE_BOOL
                 elif symbol.symbol_type == 'REAL':
