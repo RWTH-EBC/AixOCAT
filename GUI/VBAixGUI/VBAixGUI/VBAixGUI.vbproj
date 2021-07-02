@@ -533,6 +533,12 @@
     <None Include="Resources\sensor_decimal.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Compressor_bottom.gif" />
+    <Content Include="Resources\Compressor_left.gif" />
+    <Content Include="Resources\Compressor_Off.png" />
+    <Content Include="Resources\Compressor_On.gif" />
+    <Content Include="Resources\Compressor_right.gif" />
+    <Content Include="Resources\Compressor_top.gif" />
     <Content Include="Resources\Coriolis_aus_Horiz.png" />
     <Content Include="Resources\Coriolis_aus_vert.png" />
     <Content Include="Resources\Coriolis_ein_horiz.png" />

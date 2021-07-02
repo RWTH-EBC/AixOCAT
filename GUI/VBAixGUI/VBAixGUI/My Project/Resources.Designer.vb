@@ -143,6 +143,56 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property Compressor_bottom() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Compressor_bottom", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Compressor_left() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Compressor_left", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Compressor_Off() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Compressor_Off", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Compressor_right() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Compressor_right", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Compressor_top() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Compressor_top", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Coriolis_aus_Horiz() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Coriolis_aus_Horiz", resourceCulture)
@@ -516,56 +566,6 @@ Namespace My.Resources
         Friend ReadOnly Property temp_kalt() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("temp_kalt", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Verdichter_aus() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Verdichter_aus", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Verdichter_links() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Verdichter_links", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Verdichter_oben() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Verdichter_oben", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Verdichter_rechts() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Verdichter_rechts", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Verdichter_unten() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Verdichter_unten", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

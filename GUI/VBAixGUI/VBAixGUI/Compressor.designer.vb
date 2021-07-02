@@ -31,7 +31,7 @@ Partial Class Compressor
         Me.lblValue.Left = 20
         Me.lblValue.BackColor = Color.Transparent
         Me.lblValue.AutoSize = True
-        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Verdichter_aus
+        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Compressor_Off
         Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.RotateNoneFlipX)
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font

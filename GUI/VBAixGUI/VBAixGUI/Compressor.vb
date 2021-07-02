@@ -28,31 +28,31 @@ Public Class Compressor
 
                 Select Case DirectionOfFlow
                     Case Orientation.Left
-                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
-                        Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
-                        Me.Height = 80
-                        Me.Width = 80
-                        Me.lblValue.Top = 32
+                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                        Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate270FlipNone)
+                        Me.Height = 70
+                        Me.Width = 70
+                        Me.lblValue.Top = 28
                         Me.lblValue.Left = 20
                     Case Orientation.Right
-                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
-                        Me.Height = 80
-                        Me.Width = 80
-                        Me.lblValue.Top = 30
+                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                        Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate90FlipNone)
+                        Me.Height = 70
+                        Me.Width = 70
+                        Me.lblValue.Top = 28
                         Me.lblValue.Left = 20
                     Case Orientation.Top
-                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
-                        Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate270FlipNone)
-                        Me.Height = 80
-                        Me.Width = 80
-                        Me.lblValue.Top = 30
+                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                        Me.Height = 70
+                        Me.Width = 70
+                        Me.lblValue.Top = 38
                         Me.lblValue.Left = 18
                     Case Orientation.Bottom
-                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
-                        Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate90FlipNone)
-                        Me.Height = 80
-                        Me.Width = 80
-                        Me.lblValue.Top = 30
+                        Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                        Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
+                        Me.Height = 70
+                        Me.Width = 70
+                        Me.lblValue.Top = 18
                         Me.lblValue.Left = 20
                 End Select
 
@@ -89,27 +89,27 @@ Public Class Compressor
         If RotationSpeed <> 0 Then
             Select Case DirectionOfFlow
                 Case Orientation.Left
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_links
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_left
                 Case Orientation.Right
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_rechts
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_right
                 Case Orientation.Top
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_oben
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_top
                 Case Orientation.Bottom
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_unten
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_bottom
             End Select
         Else
             Select Case DirectionOfFlow
                 Case Orientation.Left
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
-                    Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
-                Case Orientation.Right
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
-                Case Orientation.Top
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
                     Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate270FlipNone)
-                Case Orientation.Bottom
-                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Verdichter_aus
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                Case Orientation.Right
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
                     Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate90FlipNone)
+                Case Orientation.Top
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                Case Orientation.Bottom
+                    Me.PictureBoxIcon.Image = Global.VBAixGUI.My.Resources.Resources.Compressor_Off
+                    Me.PictureBoxIcon.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
 
             End Select
         End If
