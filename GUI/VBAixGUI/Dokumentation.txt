@@ -10,7 +10,6 @@ Introduction:
 -	After importing the libary, you can add all components to the toolbox: Right-click on Toolbox to add a tab in the Toolbox. Right-click again to add Elements. Search and add the VBAixGUI.dll file. 
 	Now you can drag and Drop all elements from the libary to your GUI.
 
-
 First steps:
 -	To connect your GUI with your PLC, use the component "ADS_Connection". Open the Element-Properties and add the Net-ID and the port of the PLC.
 	Now you can connect all Elements to Variables from you PLC by typing names in the Element's property "Symbol". Use dot notation e.g. "StateMachine.Temp_KK". 
@@ -18,7 +17,7 @@ First steps:
 -	In order to write numerical Values to the PLC "Input-SetValue" is commonly used.
 
 
-New Elements:
+##### New Elements: ######
 Coriolis Sensor:
 -	shows  a Coriolis sensor and measured Value, Image changes when <connected variable> != 0
 -	Important Properties: "Symbol", "Unit", "Flussrichtung" (change to rotate Element)
@@ -30,7 +29,7 @@ Compressor:
 
 
 
-Adding new Elements to the Libary:
+##### Adding new Elements to the Libary: #####
 Simple Version:
 - 	Copy a similar Element and rename it (use this order to avoid problems):
 		1. Solution-Explorer (deutsch:Projektmappen-Explorer) -> <oldName-Copy>  -> <oldName-Copy>  -> InitializeComponent() -> Change "Partial Class <oldName>" to "Partial Class <newName>"

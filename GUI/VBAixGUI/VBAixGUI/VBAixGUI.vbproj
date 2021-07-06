@@ -97,6 +97,12 @@
     <Compile Include="CheckboxEingabe.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Diagram.Designer.vb">
+      <DependentUpon>Diagram.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Diagram.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="LogListView.Designer.vb">
       <DependentUpon>LogListView.vb</DependentUpon>
     </Compile>
@@ -290,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConvergenceWatchdog.resx">
       <DependentUpon>ConvergenceWatchdog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Diagram.resx">
+      <DependentUpon>Diagram.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogListView.resx">
       <DependentUpon>LogListView.vb</DependentUpon>
