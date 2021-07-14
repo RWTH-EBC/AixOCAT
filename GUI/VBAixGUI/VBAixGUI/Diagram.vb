@@ -15,9 +15,13 @@ Public Class Diagram
     <Browsable(True), Description("X-Axis logaritmic")> Dim _xAxis_log As Boolean = 0
     <Browsable(True), Description("Y-Axis min")> Dim _yAxis_min As Decimal = 0
     <Browsable(True), Description("Y-Axis max")> Dim _yAxis_max As Decimal = 100
+    <Browsable(True), Description("X-Axis Interval")> Dim _xAxis_Interval As Decimal = 10
+    <Browsable(True), Description("Y-Axis max")> Dim _yAxis_Interval As Decimal = 10
     <Browsable(True), Description("Y-Axis logaritmic")> Dim _yAxis_log As Boolean = 0
     <Browsable(True), Description("X-Axis Name")> Dim _xAxis_Name As String = "X-Axis"
     <Browsable(True), Description("Y-Axis Name")> Dim _yAxis_Name As String = "Y-Axis"
+    <Browsable(True), Description("GridColor")> Dim _gridColor As System.Drawing.Color = System.Drawing.Color.LightGray
+    <Browsable(True), Description("BackImage")> Dim _backImage As String
 
     Private _symbolList As New List(Of SeriesSelection)
 #End Region
@@ -91,6 +95,19 @@ Public Class Diagram
             End If
         End Set
     End Property
+
+    Public Property XAxis_Interval() As Decimal
+        Get
+            XAxis_Interval = _xAxis_Interval
+        End Get
+        Set(ByVal value As Decimal)
+            If _xAxis_Interval <> value Then
+                _xAxis_Interval = value
+                AxisAdjust()
+            End If
+        End Set
+    End Property
+
     Public Property YAxis_min() As Decimal
         Get
             YAxis_min = _yAxis_min
@@ -128,6 +145,17 @@ Public Class Diagram
             End If
         End Set
     End Property
+    Public Property YAxis_Interval() As Decimal
+        Get
+            YAxis_Interval = _yAxis_Interval
+        End Get
+        Set(ByVal value As Decimal)
+            If _yAxis_Interval <> value Then
+                _yAxis_Interval = value
+                AxisAdjust()
+            End If
+        End Set
+    End Property
     Public Property YAxis_Name() As String
         Get
             YAxis_Name = _yAxis_Name
@@ -140,6 +168,29 @@ Public Class Diagram
         End Set
     End Property
 
+    Public Property GridColor() As System.Drawing.Color
+        Get
+            GridColor = _gridColor
+        End Get
+        Set(ByVal value As System.Drawing.Color)
+            If _gridColor <> value Then
+                _gridColor = value
+                AxisAdjust()
+            End If
+        End Set
+    End Property
+
+    Public Property BackImage() As String
+        Get
+            BackImage = _backImage
+        End Get
+        Set(ByVal value As String)
+            If _backImage <> value Then
+                _backImage = value
+                AxisAdjust()
+            End If
+        End Set
+    End Property
 #End Region
 
 #Region "Subs"
@@ -156,8 +207,15 @@ Public Class Diagram
         Chart1.ChartAreas(0).AxisX.Maximum = _xAxis_max
         Chart1.ChartAreas(0).AxisY.Minimum = _yAxis_min
         Chart1.ChartAreas(0).AxisY.Maximum = _yAxis_max
+        'Chart1.ChartAreas(0).AxisX.Interval = _xAxis_Interval
+        'Chart1.ChartAreas(0).AxisY.Interval = _yAxis_Interval
         Chart1.ChartAreas(0).AxisX.Title = _xAxis_Name
         Chart1.ChartAreas(0).AxisY.Title = _yAxis_Name
+        Chart1.ChartAreas(0).AxisX.MajorGrid.LineColor = _gridColor
+        Chart1.ChartAreas(0).AxisY.MajorGrid.LineColor = _gridColor
+        If Not _backImage = "" Then
+            Chart1.ChartAreas(0).BackImage = _backImage
+        End If
     End Sub
 
 

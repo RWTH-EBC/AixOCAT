@@ -53,7 +53,7 @@ Partial Class Diagram
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.Chart1)
         Me.SplitContainer1.Panel2MinSize = 100
-        Me.SplitContainer1.Size = New System.Drawing.Size(660, 300)
+        Me.SplitContainer1.Size = New System.Drawing.Size(1000, 600)
         Me.SplitContainer1.SplitterDistance = 0
         Me.SplitContainer1.TabIndex = 0
         '
@@ -73,16 +73,21 @@ Partial Class Diagram
         ChartArea1.AxisX.Title = "XAchse"
         ChartArea1.AxisX.Minimum = 0
         ChartArea1.AxisX.Maximum = 100
+        'ChartArea1.AxisX.Interval = 10
         ChartArea1.AxisY.Minimum = 0
         ChartArea1.AxisY.Maximum = 100
-        ChartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.AxisX2.LineColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.AxisX2.TitleForeColor = System.Drawing.Color.WhiteSmoke
+        ChartArea1.AxisY.IntervalAutoMode = 1
+        'ChartArea1.AxisY.Interval = 10
+        ChartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray
+        ChartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray
+        'ChartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.WhiteSmoke
+        'ChartArea1.AxisX2.LineColor = System.Drawing.Color.WhiteSmoke
+        'ChartArea1.AxisX2.TitleForeColor = System.Drawing.Color.WhiteSmoke
         ChartArea1.AxisY.Title = "YAchse"
         ChartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.AxisY2.LineColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.AxisY2.TitleForeColor = System.Drawing.Color.WhiteSmoke
+        'ChartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.WhiteSmoke
+        'ChartArea1.AxisY2.LineColor = System.Drawing.Color.WhiteSmoke
+        'ChartArea1.AxisY2.TitleForeColor = System.Drawing.Color.WhiteSmoke
         ChartArea1.BackColor = System.Drawing.Color.White
         ChartArea1.Name = "ChartArea1"
         ChartArea1.ShadowColor = System.Drawing.Color.Black
@@ -104,12 +109,12 @@ Partial Class Diagram
         Series1.Points.Add(DataPoint2)
         Series1.Points.Add(DataPoint3)
         Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(660, 300)
+        Me.Chart1.Size = New System.Drawing.Size(1000, 600)
         Me.Chart1.SuppressExceptions = True
         Me.Chart1.TabIndex = 1
         Me.Chart1.Text = "Chart1"
         Me.Chart1.Margin = New Padding(0)
-        Me.Chart1.ChartAreas(0).BackImage = "C:\Users\janik\Documents\HiWi\Bild.png"
+        Me.Chart1.ChartAreas(0).BackImageWrapMode = 4
         'Me.Chart1.ChartAreas(0).InnerPlotPosition.Width = 600
         'Me.Chart1.ChartAreas(0).InnerPlotPosition.Height = 250
 
@@ -127,7 +132,7 @@ Partial Class Diagram
         Me.Controls.Add(Me.SplitContainer1)
         Me.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.Name = "Diagram"
-        Me.Size = New System.Drawing.Size(660, 300)
+        Me.Size = New System.Drawing.Size(1000, 600)
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
