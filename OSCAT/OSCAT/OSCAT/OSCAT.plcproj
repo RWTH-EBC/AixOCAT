@@ -540,6 +540,18 @@
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\FADE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_InLinear.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_InOnOff.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_OutLinear.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_OutOnOff.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_DW.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -1162,6 +1174,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_AVG.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_AVG_200.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_MIN_MAX.TcPOU">

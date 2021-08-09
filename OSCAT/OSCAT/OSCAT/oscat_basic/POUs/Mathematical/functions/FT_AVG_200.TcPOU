@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FT_AVG_200" Id="{d89de838-a4ef-4478-9803-d954c8b7d37c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FT_AVG_200
+VAR_INPUT
+	IN : REAL;
+	E : BOOL := TRUE;
+	N : INT := 200;
+	RST : BOOL;
+END_VAR
+VAR_OUTPUT
+	AVG : REAL;
+END_VAR
+VAR
+	buff : DELAY_200;
+	i: INT;
+	init : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[buff.N := LIMIT(0, N, 200);
+
+IF NOT init OR rst THEN
+	FOR i := 1 TO N DO
+		buff(in := in);
+	END_FOR;
+	avg := in;
+	init := TRUE;
+ELSIF E THEN
+	buff(in := in);
+	avg := avg + (in - buff.out ) / INT_TO_REAL(N);
+END_IF;]]></ST>
+    </Implementation>
+    <LineIds Name="FT_AVG_200">
+      <LineId Id="23" Count="10" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

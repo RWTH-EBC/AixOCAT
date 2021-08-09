@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_OutOnOff" Id="{dba33beb-2add-4d73-999d-97127d9bb5ea}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OutOnOff
+VAR
+	//Properties
+	bError 				: BOOL 				:= FALSE;
+
+	//value
+	bValueOut			: BOOL;
+
+	//Raw value
+	bValueInRaw			AT %Q* : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{76fab60f-327b-421a-b545-c3a19badea0c}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4c4480c7-9d76-4089-8899-453ac209bb8c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0ce510f0-717e-499e-8907-cafdf3228545}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ValueOut" Id="{4e245188-4580-44db-b5aa-be6d9c44162b}">
+      <Declaration><![CDATA[PROPERTY ValueOut : BOOL]]></Declaration>
+      <Get Name="Get" Id="{fdb7fb88-dd91-4958-9fc9-2d8c6551dbbb}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValueOut := THIS^.bValueOut;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{56dd7628-9ab1-48fe-9b6c-93a8fdabf7bb}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bValueOut := ValueOut;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Write" Id="{ddc78650-7f0a-4902-bc34-3aeeb4b8017a}">
+      <Declaration><![CDATA[METHOD Write]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bValueInRaw := bValueOut;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_OutOnOff">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutOnOff.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutOnOff.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutOnOff.ValueOut.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutOnOff.ValueOut.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutOnOff.Write">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
