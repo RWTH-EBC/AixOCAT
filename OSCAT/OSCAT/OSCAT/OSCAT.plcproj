@@ -33,7 +33,7 @@
     <Folder Include="oscat_basic\POUs\Engineering" />
     <Folder Include="oscat_basic\POUs\Engineering\automation" />
     <Folder Include="oscat_basic\POUs\Engineering\Control" />
-    <Folder Include="oscat_basic\POUs\Engineering\CO_Nversion" />
+    <Folder Include="oscat_basic\POUs\Engineering\Conversion" />
     <Folder Include="oscat_basic\POUs\Engineering\measurements" />
     <Folder Include="oscat_basic\POUs\Engineering\sensor" />
     <Folder Include="oscat_basic\POUs\Engineering\signal generators" />
@@ -324,67 +324,67 @@
     <Compile Include="oscat_basic\POUs\Engineering\Control\INTEGRATE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\ASTRO.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\ASTRO.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\BFT_TO_MS.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\BFT_TO_MS.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\C_TO_F.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\C_TO_F.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\C_TO_K.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\C_TO_K.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\DEG_TO_DIR.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\DEG_TO_DIR.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\DIR_TO_DEG.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\DIR_TO_DEG.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\ENERGY.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\ENERGY.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_C.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\F_TO_C.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_OM.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\F_TO_OM.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_PT.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\F_TO_PT.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\GEO_TO_DEG.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\GEO_TO_DEG.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\KMH_TO_MS.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\KMH_TO_MS.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\K_TO_C.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\K_TO_C.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\LENGTH.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\LENGTH.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\MS_TO_BFT.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\MS_TO_BFT.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\MS_TO_KMH.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\MS_TO_KMH.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\OM_TO_F.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\OM_TO_F.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\PRESSURE.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\PRESSURE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\PT_TO_F.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\PT_TO_F.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\SPEED.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\SPEED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\TEMPERATURE.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\TEMPERATURE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\measurements\ALARM_2.TcPOU">
