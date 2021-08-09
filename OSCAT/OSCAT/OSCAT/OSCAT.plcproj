@@ -16,7 +16,7 @@
     <LibraryReferences>{fd789346-d196-4941-98dd-ac5ca986e047}</LibraryReferences>
     <CombineIds>false</CombineIds>
     <Released>false</Released>
-    <ProjectVersion>1.0.5</ProjectVersion>
+    <ProjectVersion>1.1.1</ProjectVersion>
     <Company>RWTH Aachen University - E.ON Energy Research Center</Company>
     <Title>OSCAT</Title>
     <Description>This library is based on the OSCAT library (http://www.oscat.de/)</Description>
@@ -109,6 +109,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\Data types\ESR_DATA.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONTROL_MODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\Data types\FRACTION.TcDUT">
@@ -250,6 +253,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_ZONE2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FB_CONTROL.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\Control\FB_Integrate.TcPOU">
@@ -1894,6 +1900,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_building\POUs\HLK\DEW_TEMP.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_building\POUs\HLK\FAN_VOLTAGE_CONTROL.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_building\POUs\HLK\HEAT_INDEX.TcPOU">
