@@ -123,6 +123,12 @@
     <Compile Include="oscat_basic\Data types\SDT.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\Data types\CONTROL_PARAMETERS.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\IO_TERMINAL_PARAMETERS.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\Data types\TIMER_EVENT.TcDUT">
       <SubType>Code</SubType>
     </Compile>

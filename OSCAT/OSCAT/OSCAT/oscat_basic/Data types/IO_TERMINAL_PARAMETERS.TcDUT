@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="IO_TERMINAL_PARAMETERS" Id="{f3369846-c2c6-4bc7-a0c5-f550e9f350e4}">
+    <Declaration><![CDATA[TYPE IO_TERMINAL_PARAMETERS :
+STRUCT
+	cValue1Raw 				: REAL;			//Maximaler Klemmenwert (z.B. 32767)
+	cValue2Raw				: REAL;			//Minimaler Klemmenwert (z.B. 0)
+	cValue1 				: REAL;			//Maximaler Bildwert (z.B. 100%)
+	cValue2 				: REAL;			//Minimaler Bildwert (z.B. 0%)
+	cAVG_N					: INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
