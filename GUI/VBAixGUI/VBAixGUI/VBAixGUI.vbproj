@@ -204,6 +204,7 @@
     <Compile Include="Sensor_Coriolis.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DiagramSeriesCollection.vb" />
     <Compile Include="SeriesSelection.vb" />
     <Compile Include="Sollwert.designer.vb">
       <DependentUpon>Sollwert.vb</DependentUpon>

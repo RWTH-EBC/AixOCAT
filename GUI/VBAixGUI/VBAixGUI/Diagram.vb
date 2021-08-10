@@ -23,7 +23,7 @@ Public Class Diagram
     <Browsable(True), Description("GridColor")> Dim _gridColor As System.Drawing.Color = System.Drawing.Color.LightGray
     <Browsable(True), Description("BackImage")> Dim _backImage As String
 
-    Private _symbolList As New List(Of SeriesSelection)
+    Private _symbolList As New List(Of DiagramSeriesCollection)
 #End Region
 
 #Region "Property Functions"
@@ -190,6 +190,16 @@ Public Class Diagram
                 AxisAdjust()
             End If
         End Set
+    End Property
+
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
+    Public Property SymbolList As List(Of DiagramSeriesCollection)
+        Set(ByVal value As List(Of DiagramSeriesCollection))
+            _symbolList = value
+        End Set
+        Get
+            Return _symbolList
+        End Get
     End Property
 #End Region
 
