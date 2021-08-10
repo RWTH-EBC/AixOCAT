@@ -26,13 +26,15 @@ Partial Class Diagram
         Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
         Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
         Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataPoint1 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(1, 5)
-        Dim DataPoint2 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(10, 6)
-        Dim DataPoint3 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(1000, 7)
+        Dim DataPoint1 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(30, 30)
+        Dim DataPoint2 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(100, 50)
+        Dim DataPoint3 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(50, 70)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TimerPoll = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerPoll.Interval = 1000
+        Me.TimerPoll.Start()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -102,12 +104,14 @@ Partial Class Diagram
         Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
         Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(7, Byte), Integer), CType(CType(30, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(84, Byte), Integer), CType(CType(159, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(87, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(39, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(152, Byte), Integer), CType(CType(161, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(246, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(0, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(122, Byte), Integer), CType(CType(111, Byte), Integer), CType(CType(172, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(189, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(0, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(97, Byte), Integer), CType(CType(101, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(53, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(97, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(88, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(142, Byte), Integer), CType(CType(186, Byte), Integer), CType(CType(229, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(79, Byte), Integer), CType(CType(79, Byte), Integer), CType(CType(80, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(157, Byte), Integer), CType(CType(158, Byte), Integer), CType(CType(160, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(196, Byte), Integer), CType(CType(197, Byte), Integer), CType(CType(198, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(237, Byte), Integer), CType(CType(0, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(227, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(102, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(229, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(39, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(176, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(70, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(115, Byte), Integer), CType(CType(40, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(190, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(152, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(95, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(155, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(155, Byte), Integer), CType(CType(155, Byte), Integer), CType(CType(30, Byte), Integer))}
         Series1.ChartArea = "ChartArea1"
-        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point
+        Series1.IsVisibleInLegend = False
+        Series1.MarkerColor = Color.Transparent
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Series1.Points.Add(DataPoint1)
-        Series1.Points.Add(DataPoint2)
-        Series1.Points.Add(DataPoint3)
+        'Series1.Points.Add(DataPoint2)
+        'Series1.Points.Add(DataPoint3)
         Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(1000, 600)
         Me.Chart1.SuppressExceptions = True
@@ -115,6 +119,7 @@ Partial Class Diagram
         Me.Chart1.Text = "Chart1"
         Me.Chart1.Margin = New Padding(0)
         Me.Chart1.ChartAreas(0).BackImageWrapMode = 4
+
         'Me.Chart1.ChartAreas(0).InnerPlotPosition.Width = 600
         'Me.Chart1.ChartAreas(0).InnerPlotPosition.Height = 250
 
@@ -122,6 +127,7 @@ Partial Class Diagram
         '
         'TimerPoll
         '
+
         '
         'Histogram
         '

@@ -1,7 +1,7 @@
 ﻿Public Class DiagramSeriesCollection
     Public Property Name As String
-    Public Property xValue_Symbol As String
-    Public Property yValue_Symbol As String
+    Public Property xValue_Symbol As Integer
+    Public Property yValue_Symbol As Integer
 
     Sub New()
 

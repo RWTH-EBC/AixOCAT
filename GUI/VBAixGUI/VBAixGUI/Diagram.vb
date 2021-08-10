@@ -228,6 +228,75 @@ Public Class Diagram
         End If
     End Sub
 
+    Private Sub TimerPoll_Tick(sender As Object, e As EventArgs) Handles TimerPoll.Tick
+        Dim len As Integer
+        len = Chart1.Series.Count()
+        If len > 1 Then
+            Dim i As Integer
+            i = len - 1
+            While len > 1
+                Chart1.Series.RemoveAt(i)
+                i = i - 1
+            End While
+        End If
+        If SymbolList.Count > 0 Then
+            For Each dPoint As DiagramSeriesCollection In SymbolList 'delete DataPoints from Series
+                Dim seriesName As String
+                seriesName = dPoint.Name
+                If seriesName <> "" Then
+                    If Chart1.Series.IsUniqueName(seriesName) = False Then
+                        Chart1.Series(seriesName).Points.Clear()
+                    End If
+                End If
+                'Chart1.Series.Clear()
+            Next
+
+            For Each dataPoint As DiagramSeriesCollection In SymbolList
+                Dim seriesName As String
+                If dataPoint.Name <> "" Then
+                    seriesName = dataPoint.Name
+                    If Chart1.Series.IsUniqueName(seriesName) = True Then
+                        Chart1.Series.Add(seriesName)
+                    End If
+                    Chart1.Series(seriesName).ChartType = DataVisualization.Charting.SeriesChartType.Point
+                    Chart1.Series(seriesName).Points.AddXY(dataPoint.xValue_Symbol, dataPoint.yValue_Symbol)
+                End If
+                'Chart1.Series(seriesName).Points.AddXY(ADS.getSymbolValueCached(dataPoint.xValue_Symbol, PollRate), ADS.getSymbolValueCached(dataPoint.yValue_Symbol, PollRate))
+            Next
+        End If
+
+        'Dim delete As String
+        'delete = ""
+        'For Each Serie In Chart1.Series 'Remove unnecessary Series
+        '    Dim existingSeries As String
+        '    existingSeries = Serie.ToString()
+        '    Dim isNecessary As Boolean
+        '    isNecessary = False
+        '    Dim comp As String
+        '    For Each datapoint As DiagramSeriesCollection In SymbolList
+        '        comp = "Series-" & datapoint.Name
+        '        If comp = existingSeries Then
+        '            isNecessary = True
+        '        End If
+        '        Chart1.ChartAreas(0).AxisY.Title = "!" & comp & "!"
+        '        Chart1.ChartAreas(0).AxisX.Title = "!" & existingSeries & "!"
+        '        comp = datapoint.Name
+        '    Next
+        '    If Not isNecessary Then
+        '        delete = comp
+        '    End If
+
+
+        '    'If Not isNecessary And existingSeries <> "Series-Series1" Then
+        '    '    Chart1.Series.Remove(Serie)
+        '    'End If
+        'Next
+        'If delete <> "" Then
+        '    Chart1.Series.Remove(delete)
+        'End If
+
+    End Sub
+
 
 #End Region
 
