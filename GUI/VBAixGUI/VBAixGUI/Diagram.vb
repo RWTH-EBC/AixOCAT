@@ -217,8 +217,6 @@ Public Class Diagram
         Chart1.ChartAreas(0).AxisX.Maximum = _xAxis_max
         Chart1.ChartAreas(0).AxisY.Minimum = _yAxis_min
         Chart1.ChartAreas(0).AxisY.Maximum = _yAxis_max
-        'Chart1.ChartAreas(0).AxisX.Interval = _xAxis_Interval
-        'Chart1.ChartAreas(0).AxisY.Interval = _yAxis_Interval
         Chart1.ChartAreas(0).AxisX.Title = _xAxis_Name
         Chart1.ChartAreas(0).AxisY.Title = _yAxis_Name
         Chart1.ChartAreas(0).AxisX.MajorGrid.LineColor = _gridColor
@@ -231,7 +229,7 @@ Public Class Diagram
     Private Sub TimerPoll_Tick(sender As Object, e As EventArgs) Handles TimerPoll.Tick
         Dim len As Integer
         len = Chart1.Series.Count()
-        If len > 1 Then
+        If len > 1 Then             'Delete Series
             Dim i As Integer
             i = len - 1
             While len > 1
@@ -249,52 +247,25 @@ Public Class Diagram
                         Chart1.Series(seriesName).Points.Clear()
                     End If
                 End If
-                'Chart1.Series.Clear()
             Next
 
             For Each dataPoint As DiagramSeriesCollection In SymbolList
                 Dim seriesName As String
+                seriesName = dataPoint.Name
                 If dataPoint.Name <> "" Then
-                    seriesName = dataPoint.Name
                     If Chart1.Series.IsUniqueName(seriesName) = True Then
                         Chart1.Series.Add(seriesName)
                     End If
                     Chart1.Series(seriesName).ChartType = DataVisualization.Charting.SeriesChartType.Point
+                    Chart1.Series(seriesName).MarkerStyle = dataPoint.MarkerStyle
+                    Chart1.Series(seriesName).MarkerColor = dataPoint.MarkerColor
+                    Chart1.Series(seriesName).MarkerSize = dataPoint.MarkerSize
+                    'Chart1.Series(seriesName).ChartType = dataPoint.ConnectionType
                     Chart1.Series(seriesName).Points.AddXY(dataPoint.xValue_Symbol, dataPoint.yValue_Symbol)
+                    'Chart1.Series(seriesName).Points.AddXY(ADS.getSymbolValueCached(dataPoint.xValue_Symbol, PollRate), ADS.getSymbolValueCached(dataPoint.yValue_Symbol, PollRate))
                 End If
-                'Chart1.Series(seriesName).Points.AddXY(ADS.getSymbolValueCached(dataPoint.xValue_Symbol, PollRate), ADS.getSymbolValueCached(dataPoint.yValue_Symbol, PollRate))
             Next
         End If
-
-        'Dim delete As String
-        'delete = ""
-        'For Each Serie In Chart1.Series 'Remove unnecessary Series
-        '    Dim existingSeries As String
-        '    existingSeries = Serie.ToString()
-        '    Dim isNecessary As Boolean
-        '    isNecessary = False
-        '    Dim comp As String
-        '    For Each datapoint As DiagramSeriesCollection In SymbolList
-        '        comp = "Series-" & datapoint.Name
-        '        If comp = existingSeries Then
-        '            isNecessary = True
-        '        End If
-        '        Chart1.ChartAreas(0).AxisY.Title = "!" & comp & "!"
-        '        Chart1.ChartAreas(0).AxisX.Title = "!" & existingSeries & "!"
-        '        comp = datapoint.Name
-        '    Next
-        '    If Not isNecessary Then
-        '        delete = comp
-        '    End If
-
-
-        '    'If Not isNecessary And existingSeries <> "Series-Series1" Then
-        '    '    Chart1.Series.Remove(Serie)
-        '    'End If
-        'Next
-        'If delete <> "" Then
-        '    Chart1.Series.Remove(delete)
-        'End If
 
     End Sub
 

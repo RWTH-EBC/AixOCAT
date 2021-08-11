@@ -87,9 +87,6 @@ Partial Class Diagram
         'ChartArea1.AxisX2.TitleForeColor = System.Drawing.Color.WhiteSmoke
         ChartArea1.AxisY.Title = "YAchse"
         ChartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.WhiteSmoke
-        'ChartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.WhiteSmoke
-        'ChartArea1.AxisY2.LineColor = System.Drawing.Color.WhiteSmoke
-        'ChartArea1.AxisY2.TitleForeColor = System.Drawing.Color.WhiteSmoke
         ChartArea1.BackColor = System.Drawing.Color.White
         ChartArea1.Name = "ChartArea1"
         ChartArea1.ShadowColor = System.Drawing.Color.Black
@@ -107,11 +104,11 @@ Partial Class Diagram
         Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point
         Series1.IsVisibleInLegend = False
         Series1.MarkerColor = Color.Transparent
+        Series1.MarkerStyle = DataVisualization.Charting.MarkerStyle.Circle
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Series1.Points.Add(DataPoint1)
-        'Series1.Points.Add(DataPoint2)
-        'Series1.Points.Add(DataPoint3)
+        Series1.MarkerSize = 10
         Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(1000, 600)
         Me.Chart1.SuppressExceptions = True
