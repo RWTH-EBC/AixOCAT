@@ -237,6 +237,7 @@ Public Class Diagram
             While len > 1
                 Chart1.Series.RemoveAt(i)
                 i = i - 1
+                len = Chart1.Series.Count()
             End While
         End If
         If SymbolList.Count > 0 Then
