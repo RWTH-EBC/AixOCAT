@@ -42,6 +42,7 @@ Partial Class Diagram
         CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        'Dim PictureBox1 As New PictureBox()
 
         '
         'SplitContainer1
@@ -75,11 +76,11 @@ Partial Class Diagram
         ChartArea1.AxisX.Title = "XAchse"
         ChartArea1.AxisX.Minimum = 0
         ChartArea1.AxisX.Maximum = 100
-        'ChartArea1.AxisX.Interval = 10
+        ChartArea1.AxisX.Interval = 10
         ChartArea1.AxisY.Minimum = 0
         ChartArea1.AxisY.Maximum = 100
         ChartArea1.AxisY.IntervalAutoMode = 1
-        'ChartArea1.AxisY.Interval = 10
+        ChartArea1.AxisY.Interval = 10
         ChartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray
         ChartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray
         'ChartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.WhiteSmoke
@@ -117,6 +118,7 @@ Partial Class Diagram
         Me.Chart1.Margin = New Padding(0)
         Me.Chart1.ChartAreas(0).BackImageWrapMode = 4
 
+
         'Me.Chart1.ChartAreas(0).InnerPlotPosition.Width = 600
         'Me.Chart1.ChartAreas(0).InnerPlotPosition.Height = 250
 
@@ -150,6 +152,8 @@ Partial Class Diagram
     Friend WithEvents SymboleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Chart1 As System.Windows.Forms.DataVisualization.Charting.Chart
     Friend WithEvents TimerPoll As Timer
+    Friend WithEvents PictureBoxIcon As System.Windows.Forms.PictureBox
+
 
 
 End Class

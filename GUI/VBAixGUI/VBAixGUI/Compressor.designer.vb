@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿'<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Compressor
     Inherits Sensor_Base_Component
 

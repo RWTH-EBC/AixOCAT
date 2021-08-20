@@ -16,12 +16,14 @@ Public Class Diagram
     <Browsable(True), Description("Y-Axis min")> Dim _yAxis_min As Decimal = 0
     <Browsable(True), Description("Y-Axis max")> Dim _yAxis_max As Decimal = 100
     <Browsable(True), Description("X-Axis Interval")> Dim _xAxis_Interval As Decimal = 10
-    <Browsable(True), Description("Y-Axis max")> Dim _yAxis_Interval As Decimal = 10
+    <Browsable(True), Description("X-Axis Interval Offset")> Dim _xAxis_Offset As Decimal = 0
+    <Browsable(True), Description("Y-Axis Interval")> Dim _yAxis_Interval As Decimal = 10
+    <Browsable(True), Description("Y-Axis Interval Offset")> Dim _yAxis_Offset As Decimal = 0
     <Browsable(True), Description("Y-Axis logaritmic")> Dim _yAxis_log As Boolean = 0
     <Browsable(True), Description("X-Axis Name")> Dim _xAxis_Name As String = "X-Axis"
     <Browsable(True), Description("Y-Axis Name")> Dim _yAxis_Name As String = "Y-Axis"
     <Browsable(True), Description("GridColor")> Dim _gridColor As System.Drawing.Color = System.Drawing.Color.LightGray
-    <Browsable(True), Description("BackImage")> Dim _backImage As String
+    <Browsable(True), Description("BackImage")> Dim _backImage As System.Drawing.Image
 
     Private _symbolList As New List(Of DiagramSeriesCollection)
 #End Region
@@ -108,6 +110,18 @@ Public Class Diagram
         End Set
     End Property
 
+    Public Property XAxis_Offset() As Decimal
+        Get
+            XAxis_Offset = _xAxis_Offset
+        End Get
+        Set(ByVal value As Decimal)
+            If _xAxis_Offset <> value Then
+                _xAxis_Offset = value
+                AxisAdjust()
+            End If
+        End Set
+    End Property
+
     Public Property YAxis_min() As Decimal
         Get
             YAxis_min = _yAxis_min
@@ -156,6 +170,17 @@ Public Class Diagram
             End If
         End Set
     End Property
+    Public Property YAxis_Offset() As Decimal
+        Get
+            YAxis_Offset = _yAxis_Offset
+        End Get
+        Set(ByVal value As Decimal)
+            If _yAxis_Offset <> value Then
+                _yAxis_Offset = value
+                AxisAdjust()
+            End If
+        End Set
+    End Property
     Public Property YAxis_Name() As String
         Get
             YAxis_Name = _yAxis_Name
@@ -180,15 +205,22 @@ Public Class Diagram
         End Set
     End Property
 
-    Public Property BackImage() As String
+    Public Property BackImage() As System.Drawing.Image
         Get
             BackImage = _backImage
         End Get
-        Set(ByVal value As String)
-            If _backImage <> value Then
-                _backImage = value
-                AxisAdjust()
+        Set(ByVal value As System.Drawing.Image)
+            Dim x As Integer
+            If IsNothing(_backImage) Then
+                x = 0
+            Else x = _backImage.Width
             End If
+
+            If x <> value.Width Then
+                _backImage = value
+                BackgroundPic()
+            End If
+
         End Set
     End Property
 
@@ -205,14 +237,8 @@ Public Class Diagram
 
 #Region "Subs"
     Private Sub AxisAdjust()
-        If _xAxis_log = True Then
-            Chart1.ChartAreas(0).AxisX.IsLogarithmic = True
-        Else Chart1.ChartAreas(0).AxisX.IsLogarithmic = False
-        End If
-        If _yAxis_log = True Then
-            Chart1.ChartAreas(0).AxisY.IsLogarithmic = True
-        Else Chart1.ChartAreas(0).AxisY.IsLogarithmic = False
-        End If
+        Chart1.ChartAreas(0).AxisX.IntervalAutoMode = DataVisualization.Charting.IntervalAutoMode.VariableCount
+        Chart1.ChartAreas(0).AxisY.IntervalAutoMode = DataVisualization.Charting.IntervalAutoMode.VariableCount
         Chart1.ChartAreas(0).AxisX.Minimum = _xAxis_min
         Chart1.ChartAreas(0).AxisX.Maximum = _xAxis_max
         Chart1.ChartAreas(0).AxisY.Minimum = _yAxis_min
@@ -221,9 +247,30 @@ Public Class Diagram
         Chart1.ChartAreas(0).AxisY.Title = _yAxis_Name
         Chart1.ChartAreas(0).AxisX.MajorGrid.LineColor = _gridColor
         Chart1.ChartAreas(0).AxisY.MajorGrid.LineColor = _gridColor
-        If Not _backImage = "" Then
-            Chart1.ChartAreas(0).BackImage = _backImage
+        Chart1.ChartAreas(0).AxisY.Interval = _yAxis_Interval
+        Chart1.ChartAreas(0).AxisX.Interval = _xAxis_Interval
+        Chart1.ChartAreas(0).AxisY.IntervalOffset = _yAxis_Offset
+        Chart1.ChartAreas(0).AxisX.IntervalOffset = _xAxis_Offset
+        If _xAxis_log = True Then
+            Chart1.ChartAreas(0).AxisX.IsLogarithmic = True
+            Chart1.ChartAreas(0).AxisX.Interval = Math.Log10(_xAxis_Interval)
+        Else Chart1.ChartAreas(0).AxisX.IsLogarithmic = False
         End If
+        If _yAxis_log = True Then
+            Chart1.ChartAreas(0).AxisY.IsLogarithmic = True
+            Chart1.ChartAreas(0).AxisY.Interval = Math.Log10(_yAxis_Interval)
+        Else Chart1.ChartAreas(0).AxisY.IsLogarithmic = False
+        End If
+        Chart1.ChartAreas(0).AxisX.LabelStyle.Format = "0.00"
+        Chart1.ChartAreas(0).AxisY.LabelStyle.Format = "0.00"
+
+
+    End Sub
+
+    Private Sub BackgroundPic()
+        Chart1.Images.Clear()
+        Chart1.Images.Add(New DataVisualization.Charting.NamedImage("Background", _backImage))
+        Chart1.ChartAreas(0).BackImage = Chart1.Images(0).Name
     End Sub
 
     Private Sub TimerPoll_Tick(sender As Object, e As EventArgs) Handles TimerPoll.Tick
@@ -261,8 +308,8 @@ Public Class Diagram
                     Chart1.Series(seriesName).MarkerColor = dataPoint.MarkerColor
                     Chart1.Series(seriesName).MarkerSize = dataPoint.MarkerSize
                     'Chart1.Series(seriesName).ChartType = dataPoint.ConnectionType
-                    Chart1.Series(seriesName).Points.AddXY(dataPoint.xValue_Symbol, dataPoint.yValue_Symbol)
-                    'Chart1.Series(seriesName).Points.AddXY(ADS.getSymbolValueCached(dataPoint.xValue_Symbol, PollRate), ADS.getSymbolValueCached(dataPoint.yValue_Symbol, PollRate))
+                    'Chart1.Series(seriesName).Points.AddXY(dataPoint.xValue_Symbol, dataPoint.yValue_Symbol)
+                    Chart1.Series(seriesName).Points.AddXY(ADS.getSymbolValueCached(dataPoint.xValue_Symbol, PollRate), ADS.getSymbolValueCached(dataPoint.yValue_Symbol, PollRate))
                 End If
             Next
         End If
