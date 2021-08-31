@@ -5,7 +5,7 @@
 VAR
 	//Properties
 	bError 				: BOOL 				:= FALSE;
-	stIOConv			: ST_IO_Conversion;
+	stIOConv			: IO_TERMINAL_PARAMETERS;
 	
 	//value
 	fValueOut			: REAL;
@@ -32,7 +32,7 @@ END_VAR]]></Declaration>
       </Set>
     </Property>
     <Property Name="IO_Conversion" Id="{95b1d063-2aea-4a38-a4a7-324d5c8b277a}">
-      <Declaration><![CDATA[PROPERTY IO_Conversion : REFERENCE TO ST_IO_Conversion]]></Declaration>
+      <Declaration><![CDATA[PROPERTY IO_Conversion : REFERENCE TO IO_TERMINAL_PARAMETERS]]></Declaration>
       <Get Name="Get" Id="{47991903-5933-4c6e-91e5-796a5cc199c1}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
