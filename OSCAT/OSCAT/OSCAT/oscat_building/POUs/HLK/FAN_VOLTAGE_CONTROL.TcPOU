@@ -26,13 +26,13 @@ SUPER^.Control();]]></ST>
       </Implementation>
     </Method>
     <Property Name="Output" Id="{9a1e45b0-0f6e-4273-aa0d-7545de409a58}">
-      <Declaration><![CDATA[PROPERTY Output : REAL]]></Declaration>
+      <Declaration><![CDATA[PROPERTY Output : REFERENCE TO FB_OutLinear]]></Declaration>
       <Get Name="Get" Id="{b2ea25cc-1729-432b-ae06-ce2da8038476}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[Output :=THIS^.fbOutput.ValueOut;]]></ST>
+          <ST><![CDATA[Output REF=THIS^.fbOutput;]]></ST>
         </Implementation>
       </Get>
     </Property>
