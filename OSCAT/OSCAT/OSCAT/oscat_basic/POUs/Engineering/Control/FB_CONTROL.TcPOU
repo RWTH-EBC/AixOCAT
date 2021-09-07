@@ -17,6 +17,25 @@ END_VAR
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Property Name="Act" Id="{a6fed756-94cb-4bc0-a5a3-e34d1122c3dc}">
+      <Declaration><![CDATA[PROPERTY Act : REAL]]></Declaration>
+      <Get Name="Get" Id="{bc5bfd96-0d2e-4c61-af4b-7ad245b56d05}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Act:=THIS^.fAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ffe151c8-1d99-4325-909a-6869261acdec}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fAct:=Act;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="Control" Id="{083bf493-ca97-46cd-9a57-3b1f413e339b}">
       <Declaration><![CDATA[METHOD Control
 VAR
@@ -89,6 +108,25 @@ END_IF	]]></ST>
         </Implementation>
       </Set>
     </Property>
+    <Property Name="Set" Id="{c4e9ea93-8bd6-4108-a270-e0516649d553}">
+      <Declaration><![CDATA[PROPERTY Set : REAL]]></Declaration>
+      <Get Name="Get" Id="{2bd4f9d1-926d-4013-ac44-46cefe45ff2a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Set:=THIS^.fSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b642650c-7e91-4fd2-acf5-56425ce13e9c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fSet:=Set;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="Y" Id="{1f067d2a-11fc-4b84-96c4-bfc38f4f42d0}">
       <Declaration><![CDATA[PROPERTY Y : Real]]></Declaration>
       <Get Name="Get" Id="{505434c3-90be-4e5c-8656-432b8d7caaac}">
@@ -102,6 +140,12 @@ END_VAR
     </Property>
     <LineIds Name="FB_CONTROL">
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Act.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Act.Set">
+      <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_CONTROL.Control">
       <LineId Id="9" Count="31" />
@@ -117,6 +161,12 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_CONTROL.ControlParameter.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Set.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Set.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_CONTROL.Y.Get">

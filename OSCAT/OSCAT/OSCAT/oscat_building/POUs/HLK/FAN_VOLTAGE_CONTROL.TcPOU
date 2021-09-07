@@ -3,9 +3,6 @@
   <POU Name="FAN_VOLTAGE_CONTROL" Id="{46b85e44-dde3-42b1-aa18-ffc577baf9f6}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FAN_VOLTAGE_CONTROL EXTENDS FB_CONTROL 
 VAR
-	fVolumeflowAct	:	REAL; // current volume flow
-	fVolumeflowSet	:	REAL; // target volume flow
-
 	fbOutput		: FB_OutLinear;
 END_VAR
 ]]></Declaration>
@@ -16,12 +13,10 @@ END_VAR
       <Declaration><![CDATA[METHOD Control
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF fVolumeflowSet < 0 THEN
-	fVolumeflowSet := 0;
+        <ST><![CDATA[IF fSet < 0 THEN
+	fSet := 0;
 END_IF
 
-SUPER^.fAct := fVolumeflowAct;
-SUPER^.fSet := fVolumeflowSet;
 SUPER^.Control();]]></ST>
       </Implementation>
     </Method>
@@ -36,49 +31,14 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="VolumeflowAct" Id="{020abcd9-01cb-433b-ab4a-b588b4df4175}">
-      <Declaration><![CDATA[PROPERTY VolumeflowAct : REAL]]></Declaration>
-      <Get Name="Get" Id="{58e19a82-7a56-4a51-99e6-25248426b77c}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[VolumeflowAct :=THIS^.fAct;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{e4c43a5a-a9c6-4598-b65f-fbae3455a070}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[THIS^.fAct:=VolumeflowAct;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
-    <Property Name="VolumeflowSet" Id="{29058f48-c08f-4e92-a4bb-f43bbaa4ed18}">
-      <Declaration><![CDATA[PROPERTY VolumeflowSet : REAL]]></Declaration>
-      <Get Name="Get" Id="{fec59237-fb0c-4f01-8050-08a406ba9063}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[VolumeflowSet :=THIS^.fSet;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{3e777d55-1dba-4081-a955-152c44cac486}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[THIS^.fSet:=VolumeflowSet;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
     <Method Name="Write" Id="{9d476219-2625-46a7-9000-7861cc0be81d}">
       <Declaration><![CDATA[METHOD Write
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[fbOutput.ValueOut := SUPER^.fY;
+IF fSet <= 0 THEN
+	fbOutput.ValueOut := 0;
+END_IF
 fbOutput.Write();]]></ST>
       </Implementation>
     </Method>
@@ -88,28 +48,15 @@ fbOutput.Write();]]></ST>
     <LineIds Name="FAN_VOLTAGE_CONTROL.Control">
       <LineId Id="13" Count="1" />
       <LineId Id="12" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="7" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FAN_VOLTAGE_CONTROL.Output.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.VolumeflowAct.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.VolumeflowAct.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.VolumeflowSet.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.VolumeflowSet.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
     <LineIds Name="FAN_VOLTAGE_CONTROL.Write">
       <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
