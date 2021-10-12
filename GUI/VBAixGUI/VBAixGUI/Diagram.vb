@@ -304,7 +304,7 @@ Public Class Diagram
                         Chart1.Series.Add(seriesName)
                     End If
                     Chart1.Series(seriesName).ChartType = DataVisualization.Charting.SeriesChartType.Point
-                    Chart1.Series(seriesName).MarkerStyle = dataPoint.MarkerStyle
+                    'Chart1.Series(seriesName).MarkerStyle = dataPoint.MarkerStyle
                     Chart1.Series(seriesName).MarkerColor = dataPoint.MarkerColor
                     Chart1.Series(seriesName).MarkerSize = dataPoint.MarkerSize
                     'Chart1.Series(seriesName).ChartType = dataPoint.ConnectionType

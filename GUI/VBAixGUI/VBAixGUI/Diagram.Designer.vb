@@ -105,7 +105,7 @@ Partial Class Diagram
         Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point
         Series1.IsVisibleInLegend = False
         Series1.MarkerColor = Color.Transparent
-        Series1.MarkerStyle = DataVisualization.Charting.MarkerStyle.Circle
+        Series1.MarkerStyle = 2
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Series1.Points.Add(DataPoint1)

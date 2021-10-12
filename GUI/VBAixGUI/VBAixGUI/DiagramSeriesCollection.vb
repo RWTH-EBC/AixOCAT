@@ -4,7 +4,7 @@
     Public Property yValue_Symbol As String
     Public Property MarkerSize As Integer = 10
     Public Property MarkerColor As System.Drawing.Color = System.Drawing.Color.Red
-    Public Property MarkerStyle As DataVisualization.Charting.MarkerStyle = DataVisualization.Charting.MarkerStyle.Circle
+    'Public Property MarkerStyle As DataVisualization.Charting.MarkerStyle = DataVisualization.Charting.MarkerStyle.Circle
     'Public Property ConnectionType As System.Windows.Forms.DataVisualization.Charting.SeriesChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point
 
     Sub New()
@@ -16,7 +16,7 @@
         xValue_Symbol = _xValue_symbol
         yValue_Symbol = _yValue_symbol
         MarkerSize = _markerSize
-        MarkerStyle = _markerStyle
+        'MarkerStyle = _markerStyle
         MarkerColor = _markerColor
         'ConnectionType = _connectionType
     End Sub
