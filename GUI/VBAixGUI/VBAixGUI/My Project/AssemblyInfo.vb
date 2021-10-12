@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("RWTH Aachen")>
 <Assembly: AssemblyProduct("VBAixGUI")>
-<Assembly: AssemblyCopyright("Copyright © RWTH Aachen 2020")>
+<Assembly: AssemblyCopyright("Copyright © RWTH Aachen 2021")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
