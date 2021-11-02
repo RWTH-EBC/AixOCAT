@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_ExampleCHP" Id="{ec82e3eb-1b9d-4414-9f96-ccd4130e5e8d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ExampleCHP EXTENDS BaseComponent
+// This implements a SPECIFIC CHP, this means the following values have to be adjusted, according to each CHP
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	// Temperature sensors
+	fbChpTin: FB_TempSensPTx(Ptx:=1000);
+	fbChpTout: FB_TempSensPTx(Ptx:=1000);
+	
+	// Volume Flow Sensors
+	fbChpVdot: FB_VolSensVmax(Qminimum:=0, Qmaximum:=50, nIntMaximum:=32767, nIntMinimum:=0);
+	
+	// Gas Counter
+	fbGasCHP: FB_GasCounter(fChpGasVtotal:=67868.4, fChpGasImpulse:=0.1);
+	
+	// Time
+	fbUnixTime: FB_Get_Unix_Timestamp;
+	ntimestamp: ULINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="run" Id="{9f92f588-bc8e-4cb3-a6d6-94cd682eedc2}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Start every sensor that is connected
+fbChpTin.Run();
+fbChpTout.Run();
+fbChpVdot.Run();
+fbGasCHP.Run();
+
+//TempSensors
+Example_CHP.T_IN.value:=fbChpTin.Temperature;
+Example_CHP.T_IN.name:=Example_CHP.T_IN_name;
+Example_CHP.T_IN.topic:=Example_CHP.T_IN_topic;
+
+Example_CHP.T_OUT.value:=fbChpTout.Temperature;
+Example_CHP.T_OUT.name:=Example_CHP.T_OUT_name;
+Example_CHP.T_OUT.topic:=Example_CHP.T_OUT_topic;
+
+//Volume Flow Sensor
+Example_CHP.V_dot.value:=fbChpVdot.VolumeFlow;
+Example_CHP.V_dot.name:=Example_CHP.V_dot_name;
+Example_CHP.V_dot.topic:=Example_CHP.V_dot_topic;
+
+//Gas Counter
+Example_CHP.I_Gas.value:=fbGasCHP.nImpulses; // Count number of Impulses
+Example_CHP.I_Gas.name:=Example_CHP.I_Gas_name;
+Example_CHP.I_Gas.topic:=Example_CHP.I_Gas_topic;
+
+Example_CHP.V_dot_Gas.value:=fbGasCHP.fValue; // Add amount of gas per impulse to the initial value
+Example_CHP.V_dot_Gas.name:=Example_CHP.V_dot_Gas_name;
+Example_CHP.V_dot_Gas.topic:=Example_CHP.V_dot_Gas_topic;
+
+//Get timestamp
+fbUnixTime.Run();
+ntimestamp:=fbUnixTime.nanoseconds;
+
+//Write Payload
+Example_CHP.T_IN.payload:=F_Create_Aedifion_Payload(Example_CHP.T_IN,ntimestamp);
+Example_CHP.T_OUT.payload:=F_Create_Aedifion_Payload(Example_CHP.T_OUT,ntimestamp);
+Example_CHP.V_dot.payload:=F_Create_Aedifion_Payload(Example_CHP.V_dot,ntimestamp);
+
+Example_CHP.I_Gas.payload:=F_Create_Aedifion_Payload(Example_CHP.I_Gas,ntimestamp);
+Example_CHP.V_dot_Gas.payload:=F_Create_Aedifion_Payload(Example_CHP.V_dot_Gas,ntimestamp);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ExampleCHP">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleCHP.run">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="11" Count="7" />
+      <LineId Id="27" Count="4" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="44" Count="8" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="56" Count="4" />
+      <LineId Id="65" Count="2" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

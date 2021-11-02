@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_GasCounter" Id="{ef793c63-f1dd-458d-9982-db52cb00f461}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GasCounter IMPLEMENTS  I_ImpulseSensor
+(*The impulse sensor counts impulses on the input devices. This can be used for gas counter, which trigger cyclic impulses every time a certain 
+amount of gas has passed.
+Example for a gas counter:
+To calculate the total amount of consumed gas of the connected gas counter, firstly the counter at the start of the monitoring process is needed.
+Then you can add the amount of gas that triggers the impulse of the gas counter (e.g. 0.1 m³) multiplied with nImpulse to get an approximation of
+the current gas counter value*)
+VAR
+	fChpGasVtot: REAL:=67868.4; // Initial value of gas counter at start of monitoring
+	fChpGasImp: REAL:=0.1; // Amount of gas, that triggers the impulse sensor
+	nImpulse: UINT := 0; // Current number of registered Impulses
+	fValue: REAL := fChpGasVtot; // Current value of gas counter
+	nOn AT %I* : BIT; // Input signal of impulse sensor (if set from FALSE to TRUE, nImpulse increases by one)
+	Counter: CTU; // Counter object
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{efac4151-a654-410d-bbcb-b1763c41bae0}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	fChpGasVtotal: REAL:=67868.4; // Initial value of gas counter at start of monitoring
+	fChpGasImpulse: REAL:=0.1; // Amount of gas, that triggers the impulse sensor
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fChpGasVtot:=fChpGasVtotal;
+fChpGasImp:=fChpGasImpulse;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="nImpulses" Id="{aed0d181-6136-497c-b4a5-ef6e47bc1a8b}">
+      <Declaration><![CDATA[PROPERTY nImpulses : UINT
+]]></Declaration>
+      <Get Name="Get" Id="{1d5cdb7e-ceec-4cdb-a2f7-d5230eab1e9d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nImpulses := THIS^.nImpulse;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7f2494c9-cd10-45ca-a17f-91abf0336487}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ THIS^.nImpulse:=nImpulses;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{2f383681-bc32-4027-8750-5382c350814d}">
+      <Declaration><![CDATA[METHOD Run: BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Counter(CU:=nOn); // Count up (if nOn is set from FALSE to TRUE)
+nImpulse:=WORD_TO_UINT(Counter.CV); // Write current counter value as UINT
+fValue:=fCHPGasVtot+nImpulse*fChpGasImp;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_GasCounter">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GasCounter.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GasCounter.nImpulses.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GasCounter.nImpulses.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GasCounter.Run">
+      <LineId Id="6" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

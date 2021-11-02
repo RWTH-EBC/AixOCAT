@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_VolumeFlowSensor" Id="{089227fb-b415-4beb-aaea-251b5d9eb105}">
+    <Declaration><![CDATA[INTERFACE I_VolumeFlowSensor
+]]></Declaration>
+    <Method Name="Run" Id="{5155f185-d9eb-43d8-88a6-d324b645ae90}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="VolumeFlow" Id="{2b0f1f59-a34e-49da-a853-6c2b5f240a43}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL]]></Declaration>
+      <Get Name="Get" Id="{e649a035-edf1-407f-8052-fd2b698baefe}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{86fc4102-6c32-4901-a6a1-8dd00791e016}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

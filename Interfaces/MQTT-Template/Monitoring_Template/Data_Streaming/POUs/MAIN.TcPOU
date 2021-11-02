@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="MAIN" Id="{3dd875e7-b946-4b33-9dca-126f43be13ba}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	//MQTT
+	fbMQTT:FB_Mqtt_Publisher; // MQTT publisher
+	Connected:BOOL:=FALSE; // Connection status
+	// Timing
+	i:UDINT; // Counter for every cycle (just to see progress)
+	fbTimer:TON:=(PT:=T#20S); // Initialize timer with delay of 20 seconds
+	
+	// Example Component
+	fbCHP:FB_ExampleCHP; // CHP
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Connect to MQTT Broker if not already connected
+IF Connected=FALSE THEN
+	fbMQTT.Connect();
+	// Update connection status
+	Connected:=fbMQTT.Connected;
+END_IF
+
+
+IF Connected THEN
+	fbTimer(IN:=TRUE); // Start timer
+	IF fbTimer.Q THEN // If timer reaches delay (20s) start publishing process
+		fbTimer(IN:=FALSE); // Reset timer for next cycle
+		i := i + 1; // Count cycle
+		
+		// Publish for every component
+		fbCHP.run();
+		fbMQTT.Publish_Payload(Example_CHP.T_IN);
+		fbMQTT.Publish_Payload(Example_CHP.T_OUT);
+		fbMQTT.Publish_Payload(Example_CHP.V_dot);
+		fbMQTT.Publish_Payload(Example_CHP.I_Gas);
+		fbMQTT.Publish_Payload(Example_CHP.V_dot_Gas);
+		
+	END_IF
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="63" Count="14" />
+      <LineId Id="96" Count="2" />
+      <LineId Id="102" Count="1" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="78" Count="1" />
+      <LineId Id="29" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

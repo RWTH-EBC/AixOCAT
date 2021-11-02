@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_Mqtt_Publisher" Id="{cca4b2ba-3d2f-47db-9cd1-a3d6b2c67837}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Mqtt_Publisher
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	// Twincat MQTT Client
+	fbMqttClient : FB_IotMqttClient; // Enables communication with an MQTT broker
+	bSetParameter : BOOL :=	TRUE; // If True, the borker credentials are set in the MQTT client
+	bConnect : BOOL	:= TRUE; // If true, the client communicates cyclically with the broker
+	bConnected : BOOL := FALSE; // True if connected to Broker
+	fbMessageQueue : FB_IotMqttMessageQueue; // Queue for MQTT message, following First-in-First-out
+	fbMessage : FB_IotMqttMessage; // MQTT message
+	
+	hrErrorCode: HRESULT; // Error message, needed for debug purposes
+	
+	eQoS: TCIOTMQTTQOS := TcIotMqttQos.AtMostOnceDelivery; // Type of QoS
+	bRetain: BOOL := FALSE; // True, if broker shall retain messages and send them to new subscribers
+	bQueue: BOOL := FALSE; // True, if queue shall be used
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Connect" Id="{72b36423-aa50-492c-9122-3bd6169d27af}">
+      <Declaration><![CDATA[METHOD Connect : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Set Connection Parameters
+IF bSetParameter THEN
+	bSetParameter  := FALSE;
+	fbMqttClient.sHostName := MQTT_Credentials.sHostName;
+	fbMqttClient.nHostPort := MQTT_Credentials.nHostPort;
+	fbMqttClient.sClientId := MQTT_Credentials.sClientId; 
+	fbMqttClient.sTopicPrefix := MQTT_Credentials.sTopicPrefix; 
+	fbMqttClient.nKeepAlive := MQTT_Credentials.nKeepAlive; 
+	fbMqttClient.sUserName := MQTT_Credentials.sUserName ;
+	fbMqttClient.sUserPassword := MQTT_Credentials.sUserPassword; 
+	// fbMqttClient.stTLS.sVersion := MQTT_Credentials.sTlsVersion;
+	// fbMqttClient.stTLS.sCA := MQTT_Credentials.sCaPath;
+	// fbMqttClient.stTLS.bNoServerCertCheck := MQTT_Credentials.bNoServerCertCheck;
+END_IF
+
+// Connect to broker
+fbMqttClient.Execute(bConnect);
+
+// Set connected to true
+bConnected:=fbMqttClient.bConnected;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Connected" Id="{e901aed4-8037-4832-8489-b3835cb1664b}">
+      <Declaration><![CDATA[PROPERTY Connected : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b103a56c-907f-4703-9a83-2853e2f85eeb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Connected:=THIS^.bConnected;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6c80c4ff-db09-4d11-9df6-c99ceaf14b8a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bConnected:=Connected;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Publish_Payload" Id="{64e3efa5-6261-4ffa-88bd-5b875a6ef5cb}">
+      <Declaration><![CDATA[METHOD Publish_Payload : BOOL
+VAR_INPUT
+	Datapoint : ST_Data_Struct; // Datapoint in MQTT data truct format
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Publish payload
+fbMqttClient.Publish( sTopic:= Datapoint.topic,
+pPayload:= ADR(Datapoint.payload), nPayloadSize:= LEN2(ADR(Datapoint.payload))+1,
+eQoS:= eQoS, bRetain:= bRetain,
+bQueue:= bQueue );
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Mqtt_Publisher">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Mqtt_Publisher.Connect">
+      <LineId Id="18" Count="0" />
+      <LineId Id="6" Count="4" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Mqtt_Publisher.Connected.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Mqtt_Publisher.Connected.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Mqtt_Publisher.Publish_Payload">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_VolSensVmax" Id="{dbc2cc76-717a-431c-a2e3-6a3b3f8c7305}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VolSensVmax IMPLEMENTS  I_VolumeFlowSensor
+(*Volume flow sensor with minimal and maximal measurement values.
+The unit of the returned measurement depends on the unit given in Q_max and Q_min.*)
+VAR
+	// Conversion Factors for volume flow value
+	Q_max: REAL:=5/12; // Maximum acutal value of volume flow sensor measurement
+	Q_min: REAL:=0; // Minimum acutal value of volume flow sensor measurement
+	// Conversion factors for sensor signal
+	nIntMax: INT:=32767; // Maximum digital value of volume flow sensor (this is dependet on the type of volume sensor, check the data sheet)
+	nIntMin: INT:=0; // Minimum digital value of volume flow sensor (this is dependet on the type of volume sensor, check the data sheet)
+
+	fVolFlow: REAL; // Property
+	nVolFlowRaw AT %I* : INT; // Raw value
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{c9af2b5b-6657-4fd0-9872-8b51231c73f1}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	// Conversion Factors for volume flow value
+	Qmaximum: REAL:=5/12; // Maximum acutal value of volume flow sensor measurement
+	Qminimum: REAL:=0; // Minimum acutal value of volume flow sensor measurement
+	// Conversion factors for sensor signal
+	nIntMaximum: INT:=32767; // Maximum digital value of volume flow sensor (this is dependet on the type of volume sensor, check the data sheet)
+	nIntMinimum: INT:=0; // Minimum digital value of volume flow sensor (this is dependet on the type of volume sensor, check the data sheet)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Q_max:=Qmaximum;
+Q_min:=Qminimum;
+nIntMax:=nIntMaximum;
+nIntMin:=nIntMinimum;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Run" Id="{843a11c5-63f2-439b-bb63-9c347450707f}">
+      <Declaration><![CDATA[METHOD Run: BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fVolFlow:=Q_min+INT_TO_REAL(nVolFlowRaw-nIntMin)/(nIntMax-nIntMin)*(Q_max-Q_min); // Convert digital signal to volumeflow values]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="VolumeFlow" Id="{1ee5a007-ce4b-4157-b7d0-cce4dcbf226e}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{d4923e73-e2dd-48af-8d7e-055a299b5181}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[VolumeFlow := THIS^.fVolFlow;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0bb880f9-be3d-418b-a203-d0bac15cd9ed}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fVolFlow:=VolumeFlow;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_VolSensVmax">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VolSensVmax.FB_init">
+      <LineId Id="15" Count="1" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VolSensVmax.Run">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VolSensVmax.VolumeFlow.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_VolSensVmax.VolumeFlow.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_Clock" Id="{fe9741fb-f3cc-4c6d-9cd4-5dbd144a7176}">
+    <Declaration><![CDATA[INTERFACE I_Clock
+// Interface for every time dependent method]]></Declaration>
+    <Property Name="milliseconds" Id="{81a36bb7-ce70-49ea-bb69-9c7a2ea8f956}">
+      <Declaration><![CDATA[PROPERTY milliseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{edf9b888-8270-4967-8499-4846d80a4b44}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{af9cf0f8-62bf-4f39-87dc-4ce5992010de}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="nanoseconds" Id="{c87822df-d528-45b2-81a9-1f52f134750e}">
+      <Declaration><![CDATA[PROPERTY nanoseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{f0af0f42-6c71-4986-9143-79a5d0dae0ad}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{88e6d234-6ad5-4669-b88a-6d50db8d921f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{31e97ae0-ae5a-46cd-b63b-0b5a265c6ca7}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="seconds" Id="{9f0f52c9-6e21-41f4-a5db-e65044d420fc}">
+      <Declaration><![CDATA[PROPERTY seconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{dd16df9e-0349-4fe6-8f01-77ac9fd48209}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ad919a90-3a2b-4032-9be4-2cd50af0bcc0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

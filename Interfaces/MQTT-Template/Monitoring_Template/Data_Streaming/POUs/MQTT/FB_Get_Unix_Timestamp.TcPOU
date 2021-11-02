@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_Get_Unix_Timestamp" Id="{a70ec6bb-5973-44e5-b2d9-64026342a606}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Get_Unix_Timestamp IMPLEMENTS I_Clock
+// Turns windows systemtime into unix systemtime
+VAR_OUTPUT
+END_VAR
+VAR
+	nSeconds: ULINT; // Seconds
+    nMilliseconds: ULINT; // Milliseconds
+	nNanoseconds: ULINT; // Nanoseconds
+
+	localSystemTime: FB_LocalSystemTime := ( bEnable := TRUE, dwCycle := 1 ); // Time (local time) in system time format
+    getTimeZoneInformation: FB_GetTimeZoneInformation; // Gets time zone information
+    timeZoneInformation: ST_TimeZoneInformation; // Struct to store information about the timezone
+    specificLocalTimeToFileTime: FB_TzSpecificLocalTimeToFileTime; // Converts local time to UTC time
+    fileTime: T_FILETIME; // Time (UTC) in file format
+    onZerothSecondLastCycle: BOOL; // Variable to track the zeroth second of every cycle
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="milliseconds" Id="{e9ea15d7-26df-46aa-a7a3-6e4125e1a307}">
+      <Declaration><![CDATA[PROPERTY milliseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{a6e31237-6eca-415d-93a8-5afe8846771a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[milliseconds:=THIS^.nMilliseconds;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{abdfb4fa-fd13-453b-bae1-52775d4eccbe}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.nMilliseconds:=milliseconds;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nanoseconds" Id="{ee1a5a23-6e8b-4087-ba2c-9c9681cd4241}">
+      <Declaration><![CDATA[PROPERTY nanoseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{fbd1c012-3dd2-42bd-b155-e9adb9166385}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nanoseconds:=THIS^.nNanoseconds;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6ab0d3ed-1691-4d67-b8c7-dc6da586d01d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.nNanoseconds:=nanoseconds;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{a8a6fd42-9ae0-4d54-9b26-761c3a583745}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Get local system time
+localSystemTime();
+
+// If first cycle or if its the zeroth second of each minute, the timezone information is updated/synced
+IF (timeZoneInformation.standardName = '' OR (localSystemTime.systemTime.wSecond = 0 AND NOT onZerothSecondLastCycle)) THEN
+    // Sync timezone information
+	getTimeZoneInformation(sNetID := '', bExecute := TRUE, tzInfo => timeZoneInformation);
+END_IF;
+
+// Convert local system time to unix timestamps
+specificLocalTimeToFileTime(in := SYSTEMTIME_TO_FILETIME(localSystemTime.systemTime), tzInfo := timeZoneInformation, out => fileTime);
+// PLC uses Windows systemtime while aedifion needs Linux systemtime. Therefore, the time is converted with 11644473600 seconds
+// fileTime contains the timestamp in 2 separate 32-bit objects. With SHL the significant (high) one ist transformed int 64-bit and the less significant 
+// one (low) is added to that.
+nSeconds := (SHL(DWORD_TO_ULINT(fileTime.dwHighDateTime), 32) + DWORD_TO_ULINT(fileTime.dwLowDateTime)) / 10000000 - 11644473600;
+nMilliseconds := nSeconds*1000;
+nNanoseconds := nMilliseconds*1000000;
+
+// The zeroth second is reached, the zone information is updated/synced
+onZerothSecondLastCycle := localSystemTime.systemTime.wSecond = 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="seconds" Id="{d309a0db-1d62-4fd4-abfb-d717e1f608ad}">
+      <Declaration><![CDATA[PROPERTY seconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{48ddd470-5a7d-4872-8a76-7a40fa1b3fb5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Seconds:=THIS^.nSeconds;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{91ebc3f3-6649-4dcd-a10b-cbacb77a01bb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.nSeconds:=Seconds;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_Get_Unix_Timestamp">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.milliseconds.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.milliseconds.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.nanoseconds.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.nanoseconds.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.Run">
+      <LineId Id="6" Count="5" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="12" Count="3" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="16" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.seconds.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Get_Unix_Timestamp.seconds.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

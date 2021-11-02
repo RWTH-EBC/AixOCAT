@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_TemperatureSensor" Id="{49488df3-dbfc-4e57-b26b-56381a9ee01b}">
+    <Declaration><![CDATA[INTERFACE I_TemperatureSensor
+]]></Declaration>
+    <Method Name="Run" Id="{a887ec2b-5ded-41e4-a836-d66d8f3ae003}">
+      <Declaration><![CDATA[METHOD Run
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Temperature" Id="{0feb6fe9-d9b1-42f8-8eb2-f000fe631ab0}">
+      <Declaration><![CDATA[PROPERTY Temperature : REAL]]></Declaration>
+      <Get Name="Get" Id="{e3763511-b0c7-46f5-a86a-b9fe34f56290}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{8660d4b4-18bc-414d-9032-d035388a320a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

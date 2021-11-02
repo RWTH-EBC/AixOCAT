@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="F_Create_Aedifion_Payload" Id="{0ec39f4d-d93a-4420-86e2-a76d225d8a00}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Create_Aedifion_Payload : STRING(255)
+// Creates the payload for aedifion based on the ST_Data_Struct
+VAR_INPUT
+	Payload:ST_Data_Struct; // MQTT datastruct
+	TimeStamp:ULINT; // Timestamp as integer in Nanoseconds
+END_VAR
+VAR
+
+	timestring:STRING(255); // Temporary variable
+	value:STRING(255); // Temporary variable
+	msg_1:STRING(255); // Final payload
+	msg_2:STRING(255); // Temporary variable
+	a:STRING(255):=' '; // String variable for spaces in payload
+	b:STRING(255):='value='; // String variable for test in payload
+	
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Create strings
+timestring:=ULINT_TO_STRING(TimeStamp);
+value:=REAL_TO_STRING(Payload.value);
+
+// Concanate message
+msg_1:=CONCAT(Payload.name,a);
+msg_2:=CONCAT(msg_1,b);
+msg_1:=CONCAT(msg_2,value);
+msg_2:=CONCAT(msg_1,a);
+msg_1:=CONCAT(msg_2,timestring);
+
+
+F_Create_Aedifion_Payload:=msg_1;]]></ST>
+    </Implementation>
+    <LineIds Name="F_Create_Aedifion_Payload">
+      <LineId Id="58" Count="2" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="61" Count="7" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <GVL Name="Example_CHP" Id="{690ecaa2-d0a6-4d34-bc34-518edec60c17}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	// CHP - Combined Heat and Power
+	
+	// Setup MQTT message structs for every reelevant monitoring variable
+	
+	T_IN:ST_Data_Struct;
+	T_IN_name:STRING:='T_sens';	
+	T_IN_topic:STRING:='9kfHHUyq';
+	
+	T_OUT:ST_Data_Struct;
+	T_OUT_name:STRING:='bacnet501-NAE01ERC-EBC-4120MONI-AEMW045-TBE-CHP-T-out';	
+	T_OUT_topic:STRING:='8Oiu3m3T';
+	
+	V_dot:ST_Data_Struct;
+	V_dot_name:STRING:='bacnet501-NAE01ERC-EBC-4120MONI-AEMW079-TBE-CHP-V-dot';	
+	V_dot_topic:STRING:='MNgBovsb';
+
+	V_dot_Gas:ST_Data_Struct;
+	V_dot_Gas_name:STRING:='bacnet501-NAE01ERC-EBC-4120MONI-AEMW088-TBE-CHP-V-dot-Gas';	
+	V_dot_Gas_topic:STRING:='CoypqcGt';
+	
+	I_Gas:ST_Data_Struct;
+	I_Gas_name:STRING:='bacnet501-NAE01ERC-EBC-4120MONI-AEMW088-TBE-CHP-Imp-Gas';	
+	I_Gas_topic:STRING:='KGFsRU7v';
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

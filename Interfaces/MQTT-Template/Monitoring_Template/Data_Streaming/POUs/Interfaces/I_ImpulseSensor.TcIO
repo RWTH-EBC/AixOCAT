@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_ImpulseSensor" Id="{f7cf1c66-7826-4e6e-a8de-663c53f8bd4b}">
+    <Declaration><![CDATA[INTERFACE I_ImpulseSensor
+]]></Declaration>
+    <Property Name="nImpulses" Id="{286d0eb8-acc9-4b7b-b0e1-0fa08629e0c4}">
+      <Declaration><![CDATA[PROPERTY nImpulses : UINT]]></Declaration>
+      <Get Name="Get" Id="{99bd11db-53d7-41a1-8b18-b7dc8b63173e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{100ae714-36f6-481f-ba6e-dad12e478ac2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Run" Id="{10b1f7ff-070a-407b-a0d9-0196cd30a9ae}">
+      <Declaration><![CDATA[METHOD Run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
