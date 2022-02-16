@@ -202,6 +202,7 @@ Public Class Histogram
                 End If
                 If Chart1.Series.IndexOf(seriesName) <> -1 Then
                     Chart1.Series(seriesName).Points.AddXY(Now.ToOADate, ADS.getSymbolValueCached(series.Symbol, PollRate))
+
                 End If
             Next
             ApplyLookBack()

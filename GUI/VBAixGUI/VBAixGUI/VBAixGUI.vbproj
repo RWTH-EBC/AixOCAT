@@ -97,6 +97,12 @@
     <Compile Include="CheckboxEingabe.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Diagram.Designer.vb">
+      <DependentUpon>Diagram.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Diagram.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="LogListView.Designer.vb">
       <DependentUpon>LogListView.vb</DependentUpon>
     </Compile>
@@ -113,6 +119,17 @@
       <DependentUpon>Measurement.vb</DependentUpon>
     </Compile>
     <Compile Include="Measurement.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Compressor.designer.vb">
+      <DependentUpon>Compressor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Compressor.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sensor_Decimal.designer.vb">
@@ -181,6 +198,13 @@
     <Compile Include="Pumpe.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Sensor_Coriolis.designer.vb">
+      <DependentUpon>Sensor_Coriolis.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_Coriolis.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DiagramSeriesCollection.vb" />
     <Compile Include="SeriesSelection.vb" />
     <Compile Include="Sollwert.designer.vb">
       <DependentUpon>Sollwert.vb</DependentUpon>
@@ -195,11 +219,6 @@
       <DependentUpon>ADS_Connection.vb</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -279,6 +298,9 @@
     <EmbeddedResource Include="ConvergenceWatchdog.resx">
       <DependentUpon>ConvergenceWatchdog.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Diagram.resx">
+      <DependentUpon>Diagram.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogListView.resx">
       <DependentUpon>LogListView.vb</DependentUpon>
     </EmbeddedResource>
@@ -287,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Measurement.resx">
       <DependentUpon>Measurement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compressor.resx">
+      <DependentUpon>Compressor.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Decimal.resx">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
@@ -317,12 +342,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Pumpe.resx">
       <DependentUpon>Pumpe.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_Coriolis.resx">
+      <DependentUpon>Sensor_Coriolis.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sollwert.resx">
       <DependentUpon>Sollwert.vb</DependentUpon>
@@ -513,6 +541,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sensor_decimal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Compressor_bottom.gif" />
+    <Content Include="Resources\Compressor_left.gif" />
+    <Content Include="Resources\Compressor_Off.png" />
+    <Content Include="Resources\Compressor_On.gif" />
+    <Content Include="Resources\Compressor_right.gif" />
+    <Content Include="Resources\Compressor_top.gif" />
+    <Content Include="Resources\Coriolis_aus_Horiz.png" />
+    <Content Include="Resources\Coriolis_aus_vert.png" />
+    <Content Include="Resources\Coriolis_ein_horiz.png" />
+    <Content Include="Resources\Coriolis_ein_vert.png" />
+    <Content Include="Resources\Verdichter_aus.png" />
+    <Content Include="Resources\Verdichter_links.gif" />
+    <Content Include="Resources\Verdichter_oben.gif" />
+    <Content Include="Resources\Verdichter_rechts.gif" />
+    <Content Include="Resources\Verdichter_unten.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

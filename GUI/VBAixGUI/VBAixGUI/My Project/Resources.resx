@@ -256,4 +256,31 @@
   <data name="sensor_decimal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sensor_decimal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Coriolis_aus_Horiz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Coriolis_aus_Horiz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Coriolis_aus_vert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Coriolis_aus_vert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Coriolis_ein_horiz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Coriolis_ein_horiz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Coriolis_ein_vert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Coriolis_ein_vert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Compressor_Off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Compressor_Off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Compressor_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Compressor_bottom.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Compressor_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Compressor_left.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Compressor_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Compressor_right.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Compressor_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Compressor_top.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
