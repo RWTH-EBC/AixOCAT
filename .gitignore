@@ -666,3 +666,7 @@ F:/Users/MarkusSchraven/Desktop/PS/Git/AixOCAT/Interfaces/Python/MQTT-ADS-interf
 F:/Users/MarkusSchraven/Desktop/PS/Git/AixOCAT/Interfaces/Python/MQTT-ADS-interface/config_Teamrunde.ini
 
 *.bak
+
+GUI/VBAixGUI/tikz_icons/*
+!GUI/VBAixGUI/tikz_icons/*.png
+!GUI/VBAixGUI/tikz_icons/*.tikz
