@@ -132,6 +132,12 @@
     <Compile Include="Compressor.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Sensor_ControlValve.designer.vb">
+      <DependentUpon>Sensor_ControlValve.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_ControlValve.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Sensor_Decimal.designer.vb">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
     </Compile>
@@ -160,6 +166,12 @@
       <DependentUpon>Sensor_Base_Orientation.vb</DependentUpon>
     </Compile>
     <Compile Include="Sensor_Base_Orientation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sensor_3W_Mixing.designer.vb">
+      <DependentUpon>Sensor_3W_Mixing.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sensor_3W_Mixing.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sensor_Flap.designer.vb">
@@ -313,6 +325,9 @@
     <EmbeddedResource Include="Compressor.resx">
       <DependentUpon>Compressor.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_ControlValve.resx">
+      <DependentUpon>Sensor_ControlValve.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Decimal.resx">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
     </EmbeddedResource>
@@ -327,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Base_Orientation.resx">
       <DependentUpon>Sensor_Base_Orientation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sensor_3W_Mixing.resx">
+      <DependentUpon>Sensor_3W_Mixing.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Flap.resx">
       <DependentUpon>Sensor_Flap.vb</DependentUpon>
@@ -553,6 +571,10 @@
     <Content Include="Resources\Coriolis_aus_vert.png" />
     <Content Include="Resources\Coriolis_ein_horiz.png" />
     <Content Include="Resources\Coriolis_ein_vert.png" />
+    <None Include="Resources\sensor_3w_valve_hor.png" />
+    <None Include="Resources\sensor_3w_valve_ver.png" />
+    <None Include="Resources\sensor_control_valve_hor.png" />
+    <None Include="Resources\sensor_control_valve_ver.png" />
     <Content Include="Resources\Verdichter_aus.png" />
     <Content Include="Resources\Verdichter_links.gif" />
     <Content Include="Resources\Verdichter_oben.gif" />

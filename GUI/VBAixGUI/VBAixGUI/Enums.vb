@@ -27,3 +27,9 @@ Public Enum Bohrung
     L
 End Enum
 
+Public Enum Rotation
+    horizontal
+    vertical
+End Enum
+
+
