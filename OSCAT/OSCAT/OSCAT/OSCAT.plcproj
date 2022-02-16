@@ -255,6 +255,9 @@
     <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_ZONE2.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\VOLTAGE_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\Control\FB_CONTROL.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -1900,9 +1903,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_building\POUs\HLK\DEW_TEMP.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="oscat_building\POUs\HLK\FAN_VOLTAGE_CONTROL.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_building\POUs\HLK\HEAT_INDEX.TcPOU">

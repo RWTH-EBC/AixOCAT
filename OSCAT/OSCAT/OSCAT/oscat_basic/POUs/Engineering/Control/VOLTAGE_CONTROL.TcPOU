@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
-  <POU Name="FAN_VOLTAGE_CONTROL" Id="{46b85e44-dde3-42b1-aa18-ffc577baf9f6}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FAN_VOLTAGE_CONTROL EXTENDS FB_CONTROL 
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="VOLTAGE_CONTROL" Id="{46b85e44-dde3-42b1-aa18-ffc577baf9f6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK VOLTAGE_CONTROL EXTENDS FB_CONTROL 
 VAR
 	fbOutput		: FB_OutLinear;
 END_VAR
@@ -42,19 +42,19 @@ END_IF
 fbOutput.Write();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FAN_VOLTAGE_CONTROL">
+    <LineIds Name="VOLTAGE_CONTROL">
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.Control">
+    <LineIds Name="VOLTAGE_CONTROL.Control">
       <LineId Id="13" Count="1" />
       <LineId Id="12" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.Output.Get">
+    <LineIds Name="VOLTAGE_CONTROL.Output.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FAN_VOLTAGE_CONTROL.Write">
+    <LineIds Name="VOLTAGE_CONTROL.Write">
       <LineId Id="11" Count="0" />
       <LineId Id="13" Count="2" />
       <LineId Id="5" Count="0" />
