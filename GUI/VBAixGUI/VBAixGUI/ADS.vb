@@ -17,6 +17,7 @@ Public Module ADS
     Private _cachedOnly As Boolean
     Private _connected As Boolean
     Private _initialized As Boolean
+    Private _timeout As Boolean
 #End Region
 
 #Region "Property Functions"
@@ -41,6 +42,18 @@ Public Module ADS
             Connected = _connected
         End Get
     End Property
+
+    Public ReadOnly Property Timeout As Boolean
+        Get
+            Timeout = _timeout
+        End Get
+    End Property
+
+    Public ReadOnly Property Initialized As Boolean
+        Get
+            Initialized = _initialized
+        End Get
+    End Property
 #End Region
 
 #Region "Public Functions"
@@ -48,6 +61,7 @@ Public Module ADS
         netID = _netID
         port = _port
         _address = New AmsAddress(netID & ":" & port)
+        _timeout = False
         Dim settings As SymbolLoaderSettings = New SymbolLoaderSettings(SymbolsLoadMode.VirtualTree)
         'connect to the ads server
         client.Synchronize = False
@@ -67,23 +81,28 @@ Public Module ADS
 
     Private Function IsConnected() As Boolean
         Dim _state As Boolean
-        If client.IsConnected Then
+        If client.IsConnected And Not _timeout Then
             Try
                 _state = (client.ReadState().AdsState = AdsState.Run)
-            Catch ex As Exception
+            Catch ex As AdsErrorException
+                If ex.ErrorCode = AdsErrorCode.ClientSyncTimeOut Then
+                    Log.AddMessage(MessageType.Information, "Connection to PLC timed out. Aborting automatic reconnect.")
+                    _timeout = True
+                End If
                 _state = False
             End Try
         Else
             _state = False
         End If
+        If _connected Then
+            _timeout = False
+        End If
         If _state <> _connected Or Not _initialized Then
             _connected = _state
             If _connected Then
                 Log.AddMessage(MessageType.Information, "Connection to PLC successful")
-                Return True
             Else
                 Log.AddMessage(MessageType.MajorError, "Connection to PLC failed")
-                Return False
             End If
         End If
         Return _connected
