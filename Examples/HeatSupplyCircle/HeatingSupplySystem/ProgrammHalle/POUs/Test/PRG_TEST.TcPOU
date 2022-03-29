@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="PRG_TEST" Id="{0cbfb4b1-94b7-40de-9fdc-5d0f41511cae}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_TEST
+VAR
+									 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_TEST">
+      <LineId Id="1658" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

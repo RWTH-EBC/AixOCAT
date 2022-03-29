@@ -173,6 +173,9 @@
     <Compile Include="POUs\Test\HeatSupplySystem_Test\FB_HSSController_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Test\PRG_TEST.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
