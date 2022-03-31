@@ -3,13 +3,41 @@
   <POU Name="FB_HSSController_Test" Id="{f5de085e-b521-4344-a831-832f06898f03}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_HSSController_Test EXTENDS FB_TestSuite
 VAR
+	(*Sum : FB_Sum;
+    Result : UINT;
+    ExpectedSum : UINT := 4;*)
+
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Method Name="PID_Test1" Id="{875486f2-93ac-4006-b819-9b900d2c2eaf}">
+      <Declaration><![CDATA[METHOD PID_Test1 : BOOL
+VAR
+	//Sum : FB_Sum;
+    //Result : UINT;
+    //ExpectedSum : UINT := 4;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//TEST('TwoPlusTwoEqualsFour');
+ 
+//Sum(one := 2, two := 2, result => Result);
+ 
+//AssertEquals(Expected := ExpectedSum,
+//             Actual := Result,
+//             Message := 'The calculation is not correct');
+ 
+//TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_HSSController_Test">
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HSSController_Test.PID_Test1">
+      <LineId Id="15" Count="7" />
+      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
