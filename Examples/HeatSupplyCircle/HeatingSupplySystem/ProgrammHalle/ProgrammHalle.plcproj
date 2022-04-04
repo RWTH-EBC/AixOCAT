@@ -170,6 +170,9 @@
     <Compile Include="POUs\SensorData\FB_SenDaHydMixCir.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Test\Components_Test\FC_HeatingCurve_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Test\HeatSupplySystem_Test\FB_HSSController_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -187,6 +190,7 @@
     <Folder Include="POUs\Test" />
     <Folder Include="POUs\SensorData" />
     <Folder Include="POUs\Test\HeatSupplySystem_Test" />
+    <Folder Include="POUs\Test\Components_Test" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>

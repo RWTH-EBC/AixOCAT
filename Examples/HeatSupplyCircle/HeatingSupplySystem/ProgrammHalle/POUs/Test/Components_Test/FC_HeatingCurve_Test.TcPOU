@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FC_HeatingCurve_Test" Id="{8e411346-ca53-4fb8-b98d-0f5f8749ec27}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FC_HeatingCurve_Test EXTENDS FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[NegativeTAmb();
+]]></ST>
+    </Implementation>
+    <Method Name="NegativeTAmb" Id="{9d838b89-4191-4965-a221-a3d4c4ffe851}">
+      <Declaration><![CDATA[METHOD NegativeTAmb : BOOL
+VAR
+	HeatingCurve : FC_HeatingCurve;
+	Result : REAL;
+	ExpectedValue : REAL := -1;
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('NegativeTAmb');
+ 
+//Sum(one := 2, two := 2, result => Result);
+ 
+//AssertEquals(Expected := ExpectedSum,
+//             Actual := Result,
+//             Message := 'The calculation is not correct');
+ 
+//TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FC_HeatingCurve_Test">
+      <LineId Id="9" Count="1" />
+    </LineIds>
+    <LineIds Name="FC_HeatingCurve_Test.NegativeTAmb">
+      <LineId Id="10" Count="7" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
