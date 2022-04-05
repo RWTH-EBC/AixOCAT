@@ -3,10 +3,10 @@
   <POU Name="PRG_TEST" Id="{0cbfb4b1-94b7-40de-9fdc-5d0f41511cae}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_TEST
 VAR
-									 
+	HeatingCurve_Test : FC_HeatingCurve_Test;							 
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[TcUnit.RUN();]]></ST>
     </Implementation>
     <LineIds Name="PRG_TEST">
       <LineId Id="1658" Count="0" />

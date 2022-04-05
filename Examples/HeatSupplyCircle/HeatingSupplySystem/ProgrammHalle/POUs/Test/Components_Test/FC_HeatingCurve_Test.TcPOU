@@ -1,40 +1,133 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
   <POU Name="FC_HeatingCurve_Test" Id="{8e411346-ca53-4fb8-b98d-0f5f8749ec27}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FC_HeatingCurve_Test EXTENDS FB_TestSuite
+    <Declaration><![CDATA[FUNCTION_BLOCK FC_HeatingCurve_Test EXTENDS TcUnit.FB_TestSuite
 VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[NegativeTAmb();
-]]></ST>
+TAmbZero();
+HeatingCurveZero();
+NegativeHeatingCurve();]]></ST>
     </Implementation>
-    <Method Name="NegativeTAmb" Id="{9d838b89-4191-4965-a221-a3d4c4ffe851}">
-      <Declaration><![CDATA[METHOD NegativeTAmb : BOOL
+    <Method Name="FB_init" Id="{17668140-ad48-4f55-bdcc-0c34a19d497e}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+    bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+    bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HeatingCurveZero" Id="{a8a24643-9d4c-47d2-9a52-f8327d36a5c7}">
+      <Declaration><![CDATA[METHOD HeatingCurveZero
 VAR
-	HeatingCurve : FC_HeatingCurve;
-	Result : REAL;
+	HeatingCurve: FC_HeatingCurve;
+	ExpectedValue : REAL := 0;
+	fSlope: REAL;
+	fOffset: REAL;
+
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('HeatingCurveZero');
+ 
+HeatingCurve(fTempAmb := 35, fSlope, fOffset);
+ 
+AssertEquals(Expected := ExpectedValue,
+             Actual := HeatingCurve,
+             Message := 'The calculation is not correct');
+ 
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NegativeHeatingCurve" Id="{c18ef7fb-b184-4ae9-a8c8-5a1b615ecc7a}">
+      <Declaration><![CDATA[METHOD NegativeHeatingCurve
+VAR
+	HeatingCurve: FC_HeatingCurve;
 	ExpectedValue : REAL := -1;
-	
+	fSlope: REAL;
+	fOffset: REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('NegativeHeatingCurve');
+ 
+HeatingCurve(fTempAmb := 36, fSlope, fOffset);
+ 
+AssertEquals(Expected := ExpectedValue,
+             Actual := HeatingCurve,
+             Message := 'The calculation is not correct');
+ 
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NegativeTAmb" Id="{9d838b89-4191-4965-a221-a3d4c4ffe851}">
+      <Declaration><![CDATA[METHOD NegativeTAmb
+VAR
+	HeatingCurve: FC_HeatingCurve;
+	ExpectedValue : REAL := 40;
+	fSlope: REAL;
+	fOffset: REAL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('NegativeTAmb');
  
-//Sum(one := 2, two := 2, result => Result);
+HeatingCurve(fTempAmb := -5, fSlope, fOffset);
  
-//AssertEquals(Expected := ExpectedSum,
-//             Actual := Result,
-//             Message := 'The calculation is not correct');
+AssertEquals(Expected := ExpectedValue,
+             Actual := HeatingCurve,
+             Message := 'The calculation is not correct');
  
-//TEST_FINISHED();]]></ST>
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TAmbZero" Id="{dc201b29-625d-4f36-9a87-0bee747e9dca}">
+      <Declaration><![CDATA[METHOD TAmbZero
+VAR
+	HeatingCurve: FC_HeatingCurve;
+	ExpectedValue : REAL := 35;
+	fSlope: REAL;
+	fOffset: REAL;
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('TAmbZero');
+ 
+HeatingCurve(fTempAmb := 0, fSlope, fOffset);
+ 
+AssertEquals(Expected := ExpectedValue,
+             Actual := HeatingCurve,
+             Message := 'The calculation is not correct');
+ 
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FC_HeatingCurve_Test">
       <LineId Id="9" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FC_HeatingCurve_Test.FB_init">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FC_HeatingCurve_Test.HeatingCurveZero">
+      <LineId Id="14" Count="7" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FC_HeatingCurve_Test.NegativeHeatingCurve">
+      <LineId Id="13" Count="7" />
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FC_HeatingCurve_Test.NegativeTAmb">
       <LineId Id="10" Count="7" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FC_HeatingCurve_Test.TAmbZero">
+      <LineId Id="13" Count="7" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
