@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
   <POU Name="MAIN" Id="{739250fd-a178-4b07-8586-e950252efe80}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
@@ -12,7 +12,8 @@ VAR
 	//simulated sensor data
 	fbHSSSenDa	: FB_SenDaHydMixCir;
 	//simulated enviromental temperature
-	fbAmbientAir : FB_AmbientAir;										 
+	fbAmbientAir : FB_AmbientAir;		
+								 
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Check main control mode
@@ -36,6 +37,7 @@ fbHSS.TempRet := fbHSSSenDa.fTempRetAct;
 fbHSS.TempSup := fbHSSSenDa.fTempSupAct;
 //Valve input
 fbHSS.Valve := fbHSSSenDa.fHSSValveAct;
+
 
 //Execute Routine 
 fbHSS.Run();
@@ -64,6 +66,7 @@ fbHSS.Run();
       <LineId Id="2029" Count="0" />
       <LineId Id="2027" Count="0" />
       <LineId Id="1981" Count="0" />
+      <LineId Id="2074" Count="0" />
       <LineId Id="1898" Count="0" />
       <LineId Id="1921" Count="0" />
       <LineId Id="1529" Count="0" />
