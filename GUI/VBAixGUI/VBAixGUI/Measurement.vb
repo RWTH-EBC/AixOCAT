@@ -339,5 +339,13 @@ Public Class Measurement
         FinishMeasurement()
     End Sub
 
+    Private Sub numUpDownDuration_ValueChanged(sender As Object, e As EventArgs) Handles numUpDownDuration.ValueChanged
+        Duration = CInt(numUpDownDuration.Value)
+    End Sub
+
+    Private Sub numUpDownResolution_ValueChanged(sender As Object, e As EventArgs) Handles numUpDownResolution.ValueChanged
+        Resolution = CInt(numUpDownResolution.Value)
+    End Sub
+
 #End Region
 End Class
