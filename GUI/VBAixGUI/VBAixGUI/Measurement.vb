@@ -81,11 +81,8 @@ Public Class Measurement
         Set(ByVal Value As Integer)
             If _resolution <> Value Then
                 If Value <= 0 Then
-                    TimerPoll.Stop()
                     _resolution = 0
                 ElseIf Value > 0 Then
-                    TimerPoll.Start()
-                    TimerPoll.Interval = Value
                     _resolution = Value
                 End If
                 numUpDownResolution.Value = _resolution
