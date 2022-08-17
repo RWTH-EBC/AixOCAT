@@ -37,6 +37,8 @@ Public Class Sensor_Humidity
 
 #Region "Form Events"
     Private Sub Sensor_Humidity_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.Size = New Size(60, 50)
+        Me.lblValue.Size = New Size(60, 12)
         If PollRate > 0 And DesignMode = False Then
             TimerPoll.Interval = PollRate
             TimerPoll.Start()

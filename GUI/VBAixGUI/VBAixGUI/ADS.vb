@@ -62,7 +62,7 @@ Public Module ADS
         port = _port
         _address = New AmsAddress(netID & ":" & port)
         _timeout = False
-        Dim settings As SymbolLoaderSettings = New SymbolLoaderSettings(SymbolsLoadMode.Flat)
+        Dim settings As SymbolLoaderSettings = New SymbolLoaderSettings(SymbolsLoadMode.VirtualTree)
         'connect to the ads server
         client.Synchronize = False
         client.Connect(_address)

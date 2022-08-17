@@ -52,11 +52,11 @@ Partial Class DreiWegVentil
         '
         'lbl_Wert
         '
+        Me.lbl_Wert.BackColor = System.Drawing.Color.White
         Me.lbl_Wert.Location = New System.Drawing.Point(0, 0)
         Me.lbl_Wert.Name = "lbl_Wert"
         Me.lbl_Wert.Size = New System.Drawing.Size(48, 23)
         Me.lbl_Wert.TabIndex = 1
-        Me.lbl_Wert.Text = "00,00 V"
         Me.lbl_Wert.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Timer1
