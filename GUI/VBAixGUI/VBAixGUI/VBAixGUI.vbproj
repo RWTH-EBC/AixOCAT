@@ -45,6 +45,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -54,19 +55,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="TwinCAT.Ads, Version=4.0.15.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\TwinCAT\AdsApi\.NET\v4.0.30319\TwinCAT.Ads.dll</HintPath>
-    </Reference>
-    <Reference Include="TwinCAT.Scope2.Communications, Version=3.2.3132.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="TwinCAT.Scope2.Tools, Version=3.2.3132.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\TwinCAT.Scope2.Tools\v4.0_3.2.3132.0__180016cd49e5e8c3\TwinCAT.Scope2.Tools.dll</HintPath>
-    </Reference>
-    <Reference Include="TwinCAT.Scope2.View.Control">
-      <HintPath>C:\TwinCAT\Functions\TE130X-Scope-View\TwinCAT.Scope2.View.Control.dll</HintPath>
+    <Reference Include="TwinCAT.Ads, Version=4.4.0.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Helena HiL3 KK+HYD Control GUI\packages\Beckhoff.TwinCAT.Ads.4.4.19\lib\Net40-full\TwinCAT.Ads.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +120,12 @@
       <DependentUpon>Compressor.vb</DependentUpon>
     </Compile>
     <Compile Include="Compressor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="pidControlPanel.Designer.vb">
+      <DependentUpon>pidControlPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="pidControlPanel.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sensor_Decimal.designer.vb">
@@ -284,6 +280,12 @@
     <Compile Include="LogStatusBar.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="waermeuebertrager.Designer.vb">
+      <DependentUpon>waermeuebertrager.vb</DependentUpon>
+    </Compile>
+    <Compile Include="waermeuebertrager.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ADS_Connection.resx">
@@ -312,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Compressor.resx">
       <DependentUpon>Compressor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pidControlPanel.resx">
+      <DependentUpon>pidControlPanel.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sensor_Decimal.resx">
       <DependentUpon>Sensor_Decimal.vb</DependentUpon>
@@ -492,6 +497,7 @@
     <EmbeddedResource Include="Resources\Volumenstrom_rechteck.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\shape_rectangle.png" />
   </ItemGroup>
   <ItemGroup>
@@ -553,6 +559,7 @@
     <Content Include="Resources\Coriolis_aus_vert.png" />
     <Content Include="Resources\Coriolis_ein_horiz.png" />
     <Content Include="Resources\Coriolis_ein_vert.png" />
+    <None Include="Resources\sensor_volumeflow_round_right.png" />
     <Content Include="Resources\Verdichter_aus.png" />
     <Content Include="Resources\Verdichter_links.gif" />
     <Content Include="Resources\Verdichter_oben.gif" />

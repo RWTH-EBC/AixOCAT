@@ -22,19 +22,18 @@ Partial Class Heizer
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Heizer))
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ImageList1 = New System.Windows.Forms.ImageList()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip()
         Me.lbl_Wert = New System.Windows.Forms.Label()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        Me.Timer1 = New System.Windows.Forms.Timer()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackColor = System.Drawing.SystemColors.Control
+        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Image = Global.VBAixGUI.My.Resources.Resources.Heizer_aus
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
