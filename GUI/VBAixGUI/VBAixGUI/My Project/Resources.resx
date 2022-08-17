@@ -283,7 +283,4 @@
   <data name="Compressor_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Compressor_top.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="sensor_volumeflow_round_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sensor_volumeflow_round_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

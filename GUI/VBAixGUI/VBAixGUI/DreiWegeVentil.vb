@@ -100,57 +100,59 @@ Public Class DreiWegVentil
             Wert = mWert
         End Get
         Set(ByVal Value As Decimal)
-            mWert = Value
-            mWert = Decimal.Round(mWert, 2)
-            lbl_Wert.Text = mWert & " " & Einheit
+            If mWert <> Value Then
+                mWert = Value
+                mWert = Decimal.Round(mWert, 2)
+                lbl_Wert.Text = mWert & " " & Einheit
 
 
-            'If mWert = minWert Then
-            '    Me.PictureBox1.Image = ImageList1.Images(0)
-            'ElseIf mWert > 0 And mWert < maxWert Then
-            '    Me.PictureBox1.Image = ImageList1.Images(1)
-            'ElseIf mWert = maxWert Then
-            '    Me.PictureBox1.Image = ImageList1.Images(2)
-            'End If
+                'If mWert = minWert Then
+                '    Me.PictureBox1.Image = ImageList1.Images(0)
+                'ElseIf mWert > 0 And mWert < maxWert Then
+                '    Me.PictureBox1.Image = ImageList1.Images(1)
+                'ElseIf mWert = maxWert Then
+                '    Me.PictureBox1.Image = ImageList1.Images(2)
+                'End If
 
 
-            Select Case Ausrichtung
-                Case Orientation.Left
-                    If mWert = 0 Then
-                        Me.PictureBox1.Image = ImageList1.Images(3)
-                    ElseIf mWert > 0 And mWert < maxWert Then
-                        Me.PictureBox1.Image = ImageList1.Images(1)
-                    ElseIf mWert = maxWert Then
-                        Me.PictureBox1.Image = ImageList1.Images(2)
-                    End If
-                    Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone)
-                Case Orientation.Right
-                    If mWert = 0 Then
-                        Me.PictureBox1.Image = ImageList1.Images(3)
-                    ElseIf mWert > 0 And mWert < maxWert Then
-                        Me.PictureBox1.Image = ImageList1.Images(1)
-                    ElseIf mWert = maxWert Then
-                        Me.PictureBox1.Image = ImageList1.Images(2)
-                    End If
-                    Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate270FlipNone)
-                Case Orientation.Top
-                    'noch keinen Anwendungsfall
-                    Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
-                Case Orientation.Bottom
-                    If mWert = 0 Then
-                        Me.PictureBox1.Image = ImageList1.Images(0)
-                    ElseIf mWert > 0 And mWert < maxWert Then
-                        Me.PictureBox1.Image = ImageList1.Images(1)
-                    ElseIf mWert = maxWert Then
-                        Me.PictureBox1.Image = ImageList1.Images(2)
-                    End If
-            End Select
+                Select Case Ausrichtung
+                    Case Orientation.Left
+                        If mWert = 0 Then
+                            Me.PictureBox1.Image = ImageList1.Images(3)
+                        ElseIf mWert > 0 And mWert < maxWert Then
+                            Me.PictureBox1.Image = ImageList1.Images(1)
+                        ElseIf mWert = maxWert Then
+                            Me.PictureBox1.Image = ImageList1.Images(2)
+                        End If
+                        Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone)
+                    Case Orientation.Right
+                        If mWert = 0 Then
+                            Me.PictureBox1.Image = ImageList1.Images(3)
+                        ElseIf mWert > 0 And mWert < maxWert Then
+                            Me.PictureBox1.Image = ImageList1.Images(1)
+                        ElseIf mWert = maxWert Then
+                            Me.PictureBox1.Image = ImageList1.Images(2)
+                        End If
+                        Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate270FlipNone)
+                    Case Orientation.Top
+                        'noch keinen Anwendungsfall
+                        Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate180FlipNone)
+                    Case Orientation.Bottom
+                        If mWert = 0 Then
+                            Me.PictureBox1.Image = ImageList1.Images(0)
+                        ElseIf mWert > 0 And mWert < maxWert Then
+                            Me.PictureBox1.Image = ImageList1.Images(1)
+                        ElseIf mWert = maxWert Then
+                            Me.PictureBox1.Image = ImageList1.Images(2)
+                        End If
+                End Select
 
 
 
 
 
-            Me.Invalidate()
+                Me.Invalidate()
+            End If
         End Set
     End Property
 
@@ -224,10 +226,9 @@ Public Class DreiWegVentil
 
 
     Private Sub DreiWegVentil_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Me.lbl_Wert.TextAlign = ContentAlignment.MiddleCenter
-        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Symbolname: " & Symbolname & ControlChars.NewLine &
-               "Hersteller:" & Hersteller & ControlChars.NewLine &
-               "Model: " & Model & ControlChars.NewLine &
+        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Symbolname: " & Symbolname & ControlChars.NewLine & _
+               "Hersteller:" & Hersteller & ControlChars.NewLine & _
+               "Model: " & Model & ControlChars.NewLine & _
                    "Hinweis: " & Hinweis)
     End Sub
 
@@ -247,6 +248,7 @@ Public Class DreiWegVentil
                     Timer1.Start()
                     Timer1.Interval = Value
                     aktRate = Value
+                Else
                 End If
 
 
@@ -280,7 +282,7 @@ Public Class DreiWegVentil
         Set(ByVal Value As Orientation)
             If mAusrichtung <> Value Then
                 mAusrichtung = Value
-                Me.lbl_Wert.TextAlign = ContentAlignment.MiddleRight
+
                 Select Case Ausrichtung
                     Case Orientation.Left
                         Me.PictureBox1.Image = ImageList1.Images(0)
@@ -295,10 +297,9 @@ Public Class DreiWegVentil
                         Me.PictureBox1.Image = ImageList1.Images(0)
                         Me.PictureBox1.Image.RotateFlip(RotateFlipType.Rotate270FlipNone)
 
-                        Me.Size = New Size(40, 60)
-                        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
-                        Me.lbl_Wert.Location = New System.Drawing.Point(0, 40)
-                        Me.lbl_Wert.TextAlign = ContentAlignment.MiddleLeft
+                        Me.Size = New Size(93, 40)
+                        Me.PictureBox1.Location = New System.Drawing.Point(50, 0)
+                        Me.lbl_Wert.Location = New System.Drawing.Point(0, 10)
 
                     Case Orientation.Top
                         Me.PictureBox1.Image = ImageList1.Images(0)
