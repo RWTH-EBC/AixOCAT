@@ -1,5 +1,8 @@
 ![E.ON EBC RWTH Aachen University](./Resources/Images/EBC_Logo.png)
-![AixOCAT](./Resources/Images/AixOCAT-logo-small.png)
+
+<p align="center">
+    <img src="./Resources/Images/AixOCAT-logo-neutral.png" alt="AixOCAT Logo" height="200">
+</p>
 
 # AixOCAT - Library framework for building automation systems based on the OSCAT libraries
 
@@ -16,7 +19,7 @@ AixOCAT features support for different software tools, that can be used for the 
 
 This GitHub page will be used to further develop the package and make it
 available under the
-[MIT License](https://github.com/RWTH-EBC/AixOCAT/blob/master/LICENSE).
+[MIT License](LICENSE).
 
 If you have any questions regarding AixOCAT feel free to contact us at
 [ebc-aixocat@eonerc.rwth-aachen.de](mailto:ebc-aixocat@eonerc.rwth-aachen.de).
@@ -54,22 +57,24 @@ If you actively develop AixOCAT you can clone this repository by using:
 You are invited to contribute to the development of AixOCAT. You may report any issues by using the 
 [Issues](https://github.com/RWTH-EBC/AixOCAT/issues) button.
 Furthermore, you are welcome to contribute via [Pull Requests](https://github.com/RWTH-EBC/AixOCAT/pulls).
-The workflow for changes is described in our [Wiki](https://github.com/RWTH-EBC/AixOCAT/wiki).
+The workflow for changes is described in our [contribution guidelines](CONTRIBUTING.md).
 
 ### AixOCAT related publications
 
-- "AixOCAT: Open Source Library for Automation Systems" Essen / Vulkan Verlag GmbH (2019) [Link to RWTH Publications Server](http://publications.rwth-aachen.de/record/768255)
+- [AixOCAT: Open-Source-Bibliothek für Automationssysteme](Resources/Documentation/AixOCAT_paper_FB_RWTH.pdf)
 
 ## License
 
 AixOCAT is released by RWTH Aachen University, E.ON Energy
 Research Center, Institute for Energy Efficient Buildings and Indoor Climate,
 under the
-[MIT License](https://github.com/RWTH-EBC/AixOCAT/blob/master/LICENSE).
+[MIT License](LICENSE).
 
 ## Acknowledgements
 
 As this framework is based on the OSCAT libraries we want to acknowlegde Tobias Mühlbauer for his Contribution to the OSCAT libraries.
 
 We also acknowledge the ERDF for their financial support (reference No. KEU-1-006C).
-﻿![ERDF](./Resources/Images/ERDF_Logo.jpg)
+
+<img src="./Resources/Images/ERDF_Logo.jpg" alt="ERDF Logo" align="left" height="90">
+
