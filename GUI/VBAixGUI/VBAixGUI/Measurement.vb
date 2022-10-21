@@ -81,11 +81,8 @@ Public Class Measurement
         Set(ByVal Value As Integer)
             If _resolution <> Value Then
                 If Value <= 0 Then
-                    TimerPoll.Stop()
                     _resolution = 0
                 ElseIf Value > 0 Then
-                    TimerPoll.Start()
-                    TimerPoll.Interval = Value
                     _resolution = Value
                 End If
                 numUpDownResolution.Value = _resolution
@@ -337,6 +334,14 @@ Public Class Measurement
 
     Private Sub btnStopMeasurement_Click(sender As Object, e As EventArgs) Handles btnStopMeasurement.Click
         FinishMeasurement()
+    End Sub
+
+    Private Sub numUpDownDuration_ValueChanged(sender As Object, e As EventArgs) Handles numUpDownDuration.ValueChanged
+        Duration = CInt(numUpDownDuration.Value)
+    End Sub
+
+    Private Sub numUpDownResolution_ValueChanged(sender As Object, e As EventArgs) Handles numUpDownResolution.ValueChanged
+        Resolution = CInt(numUpDownResolution.Value)
     End Sub
 
 #End Region
