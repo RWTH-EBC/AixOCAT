@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_OutLinear" Id="{1129039b-235d-42f6-9031-f7cf02c75c4f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OutLinear
+VAR
+	//Properties
+	bError 				: BOOL 				:= FALSE;
+	stIOConv			: IO_TERMINAL_PARAMETERS;
+	
+	//value
+	fValueOut			: REAL;
+	
+	//Raw value
+	nValueOutRaw		AT %Q* : INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{c75753be-259e-41d7-a0dd-7398f9503b9a}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{12324abb-39dd-4ba1-96d6-af83bbf38b7e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a3dfe7d4-d0a0-48fa-b801-050d29862b03}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="IO_Conversion" Id="{95b1d063-2aea-4a38-a4a7-324d5c8b277a}">
+      <Declaration><![CDATA[PROPERTY IO_Conversion : REFERENCE TO IO_TERMINAL_PARAMETERS]]></Declaration>
+      <Get Name="Get" Id="{47991903-5933-4c6e-91e5-796a5cc199c1}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IO_Conversion REF= THIS^.stIOConv;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{134f0b25-5d4e-4b08-bab8-149e7c7408dc}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.stIOConv := IO_Conversion;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ValueOut" Id="{98ce44bc-1da4-4c29-ba1b-87cfea33daef}">
+      <Declaration><![CDATA[PROPERTY ValueOut : REAL]]></Declaration>
+      <Get Name="Get" Id="{625a6961-46ca-4f32-85e4-555bebedf209}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValueOut := THIS^.fValueOut;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{536de769-5b2d-4c40-a418-3ced6a3f8fc9}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fValueOut := ValueOut;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Write" Id="{4ea49992-efbe-4dbe-abec-201d6b60ac5f}">
+      <Declaration><![CDATA[METHOD Write]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[nValueOutRaw := REAL_TO_INT(F_LIN2(X:=fValueOut,X1:=stIOConv.cValue1,Y1:=stIOConv.cValue1Raw,X2:=stIOConv.cValue2,Y2:=stIOConv.cValue2Raw));]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_OutLinear">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.IO_Conversion.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.IO_Conversion.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.ValueOut.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.ValueOut.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_OutLinear.Write">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

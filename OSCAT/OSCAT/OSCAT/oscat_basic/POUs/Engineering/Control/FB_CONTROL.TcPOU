@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_CONTROL" Id="{431e90c2-3f53-42b6-bdae-8ec16d6fc076}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CONTROL
+VAR
+	//Properties
+	eControlMode		: CONTROL_MODE;
+	stControlParameter	: CONTROL_PARAMETERS;
+	
+	fAct		:	REAL; 	// act value
+	fSet		:	REAL; 	// set value
+	fY			:	REAL; 	// control difference
+	
+	fbPID	:	FB_PID;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Act" Id="{a6fed756-94cb-4bc0-a5a3-e34d1122c3dc}">
+      <Declaration><![CDATA[PROPERTY Act : REAL]]></Declaration>
+      <Get Name="Get" Id="{bc5bfd96-0d2e-4c61-af4b-7ad245b56d05}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Act:=THIS^.fAct;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ffe151c8-1d99-4325-909a-6869261acdec}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fAct:=Act;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Control" Id="{083bf493-ca97-46cd-9a57-3b1f413e339b}">
+      <Declaration><![CDATA[METHOD Control
+VAR
+	bResetController	: BOOL := FALSE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF fSet > 0 THEN
+	bResetController := FALSE;
+	// PID parameters are set in GVL 'ControlParameter_Props'
+	fbPID(
+		xSet := fSet,
+		xAct := fAct,
+		Kp := ControlParameter.Kp,
+		Ti := ControlParameter.Ti,
+		Td := ControlParameter.Td,
+		LimLow := ControlParameter.LimLow,
+		LimHigh := ControlParameter.LimHigh,
+		bReverseActing := ControlParameter.bReverseActing,
+		RST := bResetController,
+		Y => fY
+		);
+ELSE
+	IF NOT bResetController THEN
+		bResetController := TRUE;
+		fbPID(
+		xSet := fSet,
+		xAct := fAct,
+		Kp := ControlParameter.Kp,
+		Ti := ControlParameter.Ti,
+		Td := ControlParameter.Td,
+		LimLow := ControlParameter.LimLow,
+		LimHigh := ControlParameter.LimHigh,
+		bReverseActing := ControlParameter.bReverseActing,
+		RST := bResetController,
+		Y => fY
+		);
+	END_IF
+	fY := 0;
+END_IF	]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ControlMode" Id="{2c47d686-cebe-4be6-a87d-2ab633d6c170}">
+      <Declaration><![CDATA[PROPERTY ControlMode : CONTROL_MODE]]></Declaration>
+      <Get Name="Get" Id="{9e8c2fc4-905b-4af9-8c5f-99472f167384}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ControlMode := THIS^.eControlMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{00cbe839-eed2-405b-9e38-2a0901f15eff}">
+        <Declaration><![CDATA[
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.eControlMode := ControlMode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ControlParameter" Id="{c0af4740-e9c7-4c8d-a4b6-02f0c80d2263}">
+      <Declaration><![CDATA[PROPERTY ControlParameter : REFERENCE TO CONTROL_PARAMETERS]]></Declaration>
+      <Get Name="Get" Id="{568e2ace-b184-49d3-8a23-9cdb68df5b59}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ControlParameter REF=THIS^.stControlParameter;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bd990303-8953-45ff-ae9d-d763ab04462d}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.stControlParameter := ControlParameter;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Set" Id="{c4e9ea93-8bd6-4108-a270-e0516649d553}">
+      <Declaration><![CDATA[PROPERTY Set : REAL]]></Declaration>
+      <Get Name="Get" Id="{2bd4f9d1-926d-4013-ac44-46cefe45ff2a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Set:=THIS^.fSet;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b642650c-7e91-4fd2-acf5-56425ce13e9c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fSet:=Set;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Y" Id="{1f067d2a-11fc-4b84-96c4-bfc38f4f42d0}">
+      <Declaration><![CDATA[PROPERTY Y : Real]]></Declaration>
+      <Get Name="Get" Id="{505434c3-90be-4e5c-8656-432b8d7caaac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Y :=THIS^.fY;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_CONTROL">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Act.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Act.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Control">
+      <LineId Id="9" Count="31" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.ControlMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.ControlMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.ControlParameter.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.ControlParameter.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Set.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Set.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CONTROL.Y.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="CONTROL_PARAMETERS" Id="{72424fd5-d91e-4b02-ad3c-a13f31754161}">
+    <Declaration><![CDATA[TYPE CONTROL_PARAMETERS :
+STRUCT
+	Kp		:	REAL;	
+	Ti		:	REAL;
+	Td		:	REAL;
+	LimLow	:	REAL;
+	LimHigh	:	REAL;
+	bReverseActing	:	BOOL;
+	RST	:	BOOL;	//Reset
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
