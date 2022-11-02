@@ -356,3 +356,5 @@ MigrationBackup/
 EBC_ADS_Bib/bin/
 
 EBC_ADS_Bib/obj/
+
+tikz_icons/*.tikz.preview.pdf

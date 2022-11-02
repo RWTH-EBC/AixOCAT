@@ -178,7 +178,14 @@ Public Class Measurement
             txtBoxSaveLocation.Text = _saveLocation
 
             Try
-                File.Create(_saveLocation).Dispose()
+                Dim _line As String
+                Dim sw As StreamWriter = New StreamWriter(_saveLocation)
+                _line = "Time [ms]"
+                For Each symbol As SeriesSelection In SymbolList
+                    _line &= "," & symbol.Name & " [" & symbol.Unit & "]"
+                Next
+                sw.WriteLine(_line)
+                sw.Close()
                 lblStatus.Text = "Prepared result file."
                 Return True
             Catch ex As Exception
@@ -289,6 +296,7 @@ Public Class Measurement
         If _elapsed >= (Duration * 1000.0) And (_symbolBuffers("Time").Size - _loggedPoints) <> 1 Then
             FinishMeasurement()
         Else
+            Dim _line As String
             _loggedPoints = _loggedPoints + 1
             _adjustedInterval = _adjustedInterval + CInt(((Resolution * _loggedPoints) - _elapsed) * 0.3)
             If _adjustedInterval > Resolution Then
@@ -302,10 +310,18 @@ Public Class Measurement
             End If
             TimerPoll.Interval = _adjustedInterval
             lblStatus.Text = "Measurement is running ... " & CInt((DateTime.UtcNow - _startTime).TotalSeconds).ToString & "/" & Duration & "s | " & _loggedPoints & " points logged"
-            _symbolBuffers("Time").AddValue(CInt((DateTime.UtcNow - _startTime).TotalMilliseconds))
+            Dim _time As Integer = CInt((DateTime.UtcNow - _startTime).TotalMilliseconds)
+            _symbolBuffers("Time").AddValue(_time)
+            _line = _time.ToString()
             For Each symbol As SeriesSelection In SymbolList
                 _symbolBuffers(symbol.Symbol).AddValue(CDec(ADS.getSymbolValue(symbol.Symbol)))
+                _line &= "," & CDec(ADS.getSymbolValue(symbol.Symbol)).ToString("F5", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
             Next
+            If Resolution > 500 Then
+                Dim sw As StreamWriter = New StreamWriter(_saveLocation, True)
+                sw.WriteLine(_line)
+                sw.Close()
+            End If
         End If
     End Sub
 
