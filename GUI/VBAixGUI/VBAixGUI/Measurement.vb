@@ -235,7 +235,9 @@ Public Class Measurement
             btnStopMeasurement.Enabled = True
             lblStatus.Text = "Starting measurement ..."
             _running = True
-            ADS.CachedOnly = True
+            If Resolution < 500 Then
+                ADS.CachedOnly = True
+            End If
             TimerPoll.Interval = Resolution
             _startTime = DateTime.UtcNow
             _adjustedInterval = Resolution
