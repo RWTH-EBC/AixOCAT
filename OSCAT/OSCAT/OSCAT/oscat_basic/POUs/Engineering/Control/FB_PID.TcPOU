@@ -25,13 +25,13 @@ VAR_OUTPUT
 	LIM : BOOL;		// True, if output reaches LimLow or LimHigh
 END_VAR
 VAR
-	e			:  REAL;		// control difference
-	yOffset		:  REAL	:= 0;		// constant offset used on Y	
+	e			 :  REAL;		// control difference
+	yOffset		 :  REAL	:= 0;		// constant offset used on Y	
 	fbDerivative :  FT_DERIV; 	// function block for derivation
 	fbIntegrate  :	FB_Integrate;	// function block for integration
 	
 	e_gaintrack	:  REAL;		// control difference for integrator
-	Y_gaintrack	:	REAL := 0;	// tracking gain of y for Anti-windup
+	Y_gaintrack	:  REAL := 0;	// tracking gain of y for Anti-windup
 END_VAR
 ]]></Declaration>
     <Implementation>
