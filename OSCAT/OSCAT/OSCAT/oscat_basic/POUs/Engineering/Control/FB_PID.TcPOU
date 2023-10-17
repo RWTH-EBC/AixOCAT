@@ -18,7 +18,7 @@ VAR_INPUT
 	bReverseActing 	:	BOOL;	// True for reverse acting
 	
 	RST		:	BOOL; 	// True, if integrator should be resetted
-	inStart	:	BOOL; 	// Value to which Integrator is resetted if RST is True
+	inStart	:	REAL := 0; 	// Value to which Integrator is resetted if RST is True
 END_VAR
 VAR_OUTPUT
 	Y : REAL;		// controller output
@@ -37,10 +37,10 @@ END_VAR
     <Implementation>
       <ST><![CDATA[IF StartY <> yOffset THEN
 	yOffset := StartY;
-	fbIntegrate(RST:=TRUE, inStart:=0);
+	fbIntegrate(RST:=TRUE, inStart:=inStart);
 END_IF
 IF RST THEN
-	fbIntegrate(RST:=TRUE, inStart:=0);
+	fbIntegrate(RST:=TRUE, inStart:=inStart);
 END_IF
 
 //determine direct or reverse acting
