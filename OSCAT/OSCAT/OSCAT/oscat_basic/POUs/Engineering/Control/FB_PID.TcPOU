@@ -2,6 +2,10 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
   <POU Name="FB_PID" Id="{9148ddd9-4f6e-4c4f-98a6-9a43459fe84e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PID
+(* This PID controller implements an integrator anti-windup method (back-calculation). 
+For this the difference between the unlimited control output the limited control output is added to the integrator input. 
+This is done continously, allowing to track and correct the gain of the integrator.
+*)
 VAR_INPUT
 	xSet:	REAL; 	// Set value
 	xAct:	REAL;	// measured Value	
