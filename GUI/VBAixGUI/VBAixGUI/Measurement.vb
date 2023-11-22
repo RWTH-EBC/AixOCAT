@@ -16,6 +16,7 @@ Public Class Measurement
     <Browsable(True), Description("Measurement identifier")> Dim _measurementIdentifier As String = "HighlyScientifcMeasurement"
     <Browsable(True), Description("Measurement resolution / ms")> Dim _resolution As Integer = 100
     <Browsable(True), Description("Save folder")> Dim _saveFolder As String
+    <Browsable(True), Description("Use intermediate saving")> Dim _intermediateSave As Boolean
 
     Private _symbolList As New List(Of SeriesSelection)
 
@@ -101,6 +102,15 @@ Public Class Measurement
         Get
             SymbolBuffers = _symbolBuffers
         End Get
+    End Property
+
+    Public Property IntermediateSaving() As Boolean
+        Get
+            IntermediateSaving = _intermediateSave
+        End Get
+        Set(ByVal Value As Boolean)
+            _intermediateSave = IntermediateSaving
+        End Set
     End Property
 
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
@@ -225,7 +235,9 @@ Public Class Measurement
             btnStopMeasurement.Enabled = True
             lblStatus.Text = "Starting measurement ..."
             _running = True
-            ADS.CachedOnly = True
+            If Resolution < 500 Then
+                ADS.CachedOnly = True
+            End If
             TimerPoll.Interval = Resolution
             _startTime = DateTime.UtcNow
             _adjustedInterval = Resolution
@@ -296,7 +308,7 @@ Public Class Measurement
         If _elapsed >= (Duration * 1000.0) And (_symbolBuffers("Time").Size - _loggedPoints) <> 1 Then
             FinishMeasurement()
         Else
-            Dim _line As String
+            Dim _line As String = ""
             _loggedPoints = _loggedPoints + 1
             _adjustedInterval = _adjustedInterval + CInt(((Resolution * _loggedPoints) - _elapsed) * 0.3)
             If _adjustedInterval > Resolution Then
@@ -312,12 +324,16 @@ Public Class Measurement
             lblStatus.Text = "Measurement is running ... " & CInt((DateTime.UtcNow - _startTime).TotalSeconds).ToString & "/" & Duration & "s | " & _loggedPoints & " points logged"
             Dim _time As Integer = CInt((DateTime.UtcNow - _startTime).TotalMilliseconds)
             _symbolBuffers("Time").AddValue(_time)
-            _line = _time.ToString()
+            If _intermediateSave Then
+                _line = _time.ToString()
+            End If
             For Each symbol As SeriesSelection In SymbolList
                 _symbolBuffers(symbol.Symbol).AddValue(CDec(ADS.getSymbolValue(symbol.Symbol)))
-                _line &= "," & CDec(ADS.getSymbolValue(symbol.Symbol)).ToString("F5", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+                If _intermediateSave Then
+                    _line &= "," & CDec(ADS.getSymbolValue(symbol.Symbol)).ToString("F5", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+                End If
             Next
-            If Resolution > 500 Then
+            If _intermediateSave Then
                 Dim sw As StreamWriter = New StreamWriter(_saveLocation, True)
                 sw.WriteLine(_line)
                 sw.Close()
