@@ -132,3 +132,4 @@ class mqtt():
     
     def publish(self, message, topic, client=None):
         self.client.publish(topic, message, qos=1)
+        print("published: " + topic + message)

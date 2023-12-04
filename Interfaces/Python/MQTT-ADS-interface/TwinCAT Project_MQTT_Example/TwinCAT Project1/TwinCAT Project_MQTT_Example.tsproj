@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4023.119">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.7">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{A77DD582-54D2-00CF-0D27-2A53472DBBA9}" AutoDeleteType="true">E_ControlMode</Name>
@@ -224,11 +224,12 @@
 						<Name>PlcTask Outputs</Name>
 						<Var>
 							<Name>sampleADSGVL.fTempAmbAirADS</Name>
-							<Comment><![CDATA[Ambient air datapoints]]></Comment>
+							<Comment><![CDATA[# test variable for ads]]></Comment>
 							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>sampleADSGVL.fTemperatureAmbientMeanADS</Name>
+							<Comment><![CDATA[#]]></Comment>
 							<Type>REAL</Type>
 						</Var>
 						<Var>

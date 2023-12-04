@@ -17,6 +17,9 @@
     <LibraryReferences>{e13035b6-8b35-4c2d-bceb-88fea9accf4e}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\D_InputVar.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\E_ControlMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
