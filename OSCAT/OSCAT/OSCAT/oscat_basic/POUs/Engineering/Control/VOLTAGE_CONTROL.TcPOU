@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="VOLTAGE_CONTROL" Id="{46b85e44-dde3-42b1-aa18-ffc577baf9f6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK VOLTAGE_CONTROL EXTENDS FB_CONTROL 
+VAR
+	fbOutput		: FB_OutLinear;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Control" Id="{22213b50-62cb-46cc-9d2f-09585c7911d3}">
+      <Declaration><![CDATA[METHOD Control
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF fSet < 0 THEN
+	fSet := 0;
+END_IF
+
+SUPER^.Control();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Output" Id="{9a1e45b0-0f6e-4273-aa0d-7545de409a58}">
+      <Declaration><![CDATA[PROPERTY Output : REFERENCE TO FB_OutLinear]]></Declaration>
+      <Get Name="Get" Id="{b2ea25cc-1729-432b-ae06-ce2da8038476}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Output REF=THIS^.fbOutput;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Write" Id="{9d476219-2625-46a7-9000-7861cc0be81d}">
+      <Declaration><![CDATA[METHOD Write
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbOutput.ValueOut := SUPER^.fY;
+IF fSet <= 0 THEN
+	fbOutput.ValueOut := 0;
+END_IF
+fbOutput.Write();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="VOLTAGE_CONTROL">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="VOLTAGE_CONTROL.Control">
+      <LineId Id="13" Count="1" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="VOLTAGE_CONTROL.Output.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="VOLTAGE_CONTROL.Write">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

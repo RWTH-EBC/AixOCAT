@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_InLinear" Id="{0a67a78c-47d0-450c-8447-2447a810aeda}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_InLinear
+VAR
+	//Properties
+	bError 				: BOOL 				:= FALSE;
+	stIOConv			: IO_TERMINAL_PARAMETERS;
+	
+	ft_avg				: FT_AVG_200;
+	
+	//value
+	fValueIn			: REAL;
+	fValueInAVG			: REAL;
+	
+	//Raw value
+	nValueInRaw			AT %I* : INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{844045b2-0124-4fa6-8ff0-e954e7d16add}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{7a808e37-09b5-49ce-81bb-97f862149a4c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{85c8ff8e-5bc5-4446-a021-883bec9fe0c8}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="IO_Conversion" Id="{317d6ac2-17cc-40a8-9b19-2cb4811e7608}">
+      <Declaration><![CDATA[PROPERTY IO_Conversion : REFERENCE TO IO_TERMINAL_PARAMETERS]]></Declaration>
+      <Get Name="Get" Id="{c6d4b821-7b5f-4661-9459-2d5eac70c3d2}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IO_Conversion REF= THIS^.stIOConv;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ea410d8f-cc6e-4ec5-a024-cb8cc8a265e0}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.stIOConv := IO_Conversion;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Read" Id="{7de6d781-74a1-47ba-8b7a-aabd48500ff6}">
+      <Declaration><![CDATA[METHOD Read]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fValueIn := F_LIN2(X:=nValueInRaw,X1:=stIOConv.cValue1Raw,Y1:=stIOConv.cValue1,X2:=stIOConv.cValue2Raw,Y2:=stIOConv.cValue2);
+ft_avg(IN:=fValueIn,N:=stIOConv.cAVG_N,AVG=>fValueInAVG);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ValueIn" Id="{8c081386-69ad-4cf5-a14d-cee5b7741138}">
+      <Declaration><![CDATA[PROPERTY ValueIn : REAL]]></Declaration>
+      <Get Name="Get" Id="{7e8ae9ab-1927-4aa2-b46c-43e4de66aa82}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValueIn := THIS^.fValueIn;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{1872e6f9-176e-4773-84fa-ce778f48fb55}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fValueIn := ValueIn;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ValueInAVG" Id="{96820c1e-0c0f-46ef-a2e2-a7a5f2e8443f}">
+      <Declaration><![CDATA[PROPERTY ValueInAVG : REAL]]></Declaration>
+      <Get Name="Get" Id="{31da6ded-10fe-4dcc-b63f-475fde19e841}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValueInAVG := THIS^.fValueInAVG;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{99f60058-3b14-42b3-8484-2a54a3db8f8b}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.fValueInAVG := ValueInAVG;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_InLinear">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.IO_Conversion.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.IO_Conversion.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.Read">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.ValueIn.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.ValueIn.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.ValueInAVG.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InLinear.ValueInAVG.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

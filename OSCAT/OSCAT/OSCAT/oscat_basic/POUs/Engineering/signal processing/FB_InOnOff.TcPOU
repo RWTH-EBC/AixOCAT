@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_InOnOff" Id="{67e160cd-5a71-4a38-950b-a6bd10bc48ca}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_InOnOff
+VAR
+	//Properties
+	bError 				: BOOL 				:= FALSE;
+
+	//value
+	bValueIn			: BOOL;
+
+	//Raw value
+	bValueInRaw			AT %I* : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Error" Id="{1be92a6d-0ba8-483f-92e2-0da30d228ff4}">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d7cdb247-bdb8-4dc9-af54-69106716b17c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := THIS^.bError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f81c76bf-f9d8-4f30-851d-1863bdf30d30}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Read" Id="{3b68c215-86f0-49de-8d85-6a780fc756a2}">
+      <Declaration><![CDATA[METHOD Read]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bValueIn := bValueInRaw;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ValueIn" Id="{4832e14f-f1e0-449c-9239-7e9fecafff4d}">
+      <Declaration><![CDATA[PROPERTY ValueIn : BOOL]]></Declaration>
+      <Get Name="Get" Id="{75435d00-565f-41de-acbe-1ad45738a3e7}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ValueIn := THIS^.bValueIn;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{48077b17-3827-417a-8238-a9ae99629d9b}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.bValueIn := ValueIn;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_InOnOff">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InOnOff.Error.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InOnOff.Error.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InOnOff.Read">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InOnOff.ValueIn.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InOnOff.ValueIn.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

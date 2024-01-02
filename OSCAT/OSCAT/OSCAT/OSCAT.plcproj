@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>-->
@@ -16,7 +16,7 @@
     <LibraryReferences>{fd789346-d196-4941-98dd-ac5ca986e047}</LibraryReferences>
     <CombineIds>false</CombineIds>
     <Released>false</Released>
-    <ProjectVersion>1.1.1</ProjectVersion>
+    <ProjectVersion>1.1.2</ProjectVersion>
     <Company>RWTH Aachen University - E.ON Energy Research Center</Company>
     <Title>OSCAT</Title>
     <Description>This library is based on the OSCAT library (http://www.oscat.de/)</Description>
@@ -33,7 +33,7 @@
     <Folder Include="oscat_basic\POUs\Engineering" />
     <Folder Include="oscat_basic\POUs\Engineering\automation" />
     <Folder Include="oscat_basic\POUs\Engineering\Control" />
-    <Folder Include="oscat_basic\POUs\Engineering\CO_Nversion" />
+    <Folder Include="oscat_basic\POUs\Engineering\Conversion" />
     <Folder Include="oscat_basic\POUs\Engineering\measurements" />
     <Folder Include="oscat_basic\POUs\Engineering\sensor" />
     <Folder Include="oscat_basic\POUs\Engineering\signal generators" />
@@ -111,6 +111,9 @@
     <Compile Include="oscat_basic\Data types\ESR_DATA.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\Data types\CONTROL_MODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\Data types\FRACTION.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -121,6 +124,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\Data types\SDT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\CONTROL_PARAMETERS.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\Data types\IO_TERMINAL_PARAMETERS.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\Data types\TIMER_EVENT.TcDUT">
@@ -246,6 +255,12 @@
     <Compile Include="oscat_basic\POUs\Engineering\Control\DEAD_ZONE2.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\VOLTAGE_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\Control\FB_CONTROL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\Control\FB_Integrate.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -318,67 +333,67 @@
     <Compile Include="oscat_basic\POUs\Engineering\Control\INTEGRATE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\ASTRO.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\ASTRO.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\BFT_TO_MS.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\BFT_TO_MS.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\C_TO_F.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\C_TO_F.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\C_TO_K.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\C_TO_K.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\DEG_TO_DIR.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\DEG_TO_DIR.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\DIR_TO_DEG.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\DIR_TO_DEG.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\ENERGY.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\ENERGY.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_C.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\F_TO_C.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_OM.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\F_TO_OM.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\F_TO_PT.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\F_TO_PT.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\GEO_TO_DEG.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\GEO_TO_DEG.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\KMH_TO_MS.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\KMH_TO_MS.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\K_TO_C.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\K_TO_C.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\LENGTH.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\LENGTH.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\MS_TO_BFT.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\MS_TO_BFT.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\MS_TO_KMH.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\MS_TO_KMH.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\OM_TO_F.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\OM_TO_F.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\PRESSURE.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\PRESSURE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\PT_TO_F.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\PT_TO_F.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\SPEED.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\SPEED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="oscat_basic\POUs\Engineering\CO_Nversion\TEMPERATURE.TcPOU">
+    <Compile Include="oscat_basic\POUs\Engineering\Conversion\TEMPERATURE.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\measurements\ALARM_2.TcPOU">
@@ -532,6 +547,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\FADE.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_InLinear.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_InOnOff.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_OutLinear.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Engineering\signal processing\FB_OutOnOff.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Engineering\signal processing\FILTER_DW.TcPOU">
@@ -1158,6 +1185,9 @@
     <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_AVG.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_AVG_200.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oscat_basic\POUs\Mathematical\functions\FT_MIN_MAX.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -1756,6 +1786,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Time&amp;Date\TIMECHECK.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="oscat_basic\POUs\Time&amp;Date\TON_P.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="oscat_basic\POUs\Time&amp;Date\UTC_TO_LTIME.TcPOU">

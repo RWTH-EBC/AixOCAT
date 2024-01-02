@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="MAIN" Id="{38c85d5e-1444-4b25-93ab-b80f636cf0cf}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fRand1 	: DRAND;
+	iSeed 	: INT := 13;
+	fTest 	: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fRand1(Seed:=iSeed);
+sampleADSGVL.fCCATempSupPrimADS := fRand1.Num * 50.0;
+sampleADSGVL.fCCATempSupADS 	:= fRand1.Num * 30.0;
+sampleADSGVL.fCCATempRetADS 	:= fRand1.Num * 25.0;
+sampleADSGVL.fCCATempRetPrimADS := fRand1.Num * 25.0;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

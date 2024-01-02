@@ -1,0 +1,6 @@
+\begin{tikzpicture}
+	%\path[draw,thick,fill=rwth_green] (0, 0) arc (270:375:0.2) -- (0, 0.7);
+	%\path[draw,thick,fill=rwth_green] (0, 0) arc (270:165:0.2) -- (0, 0.7);
+	\path[draw,thick,fill=rwth_green] (0, 0.5) .. controls (0.2, 0.05) .. (0.2, 0) arc (0:-180:0.2) .. controls (-0.2, 0.05) .. cycle;
+	\path[fill=white] (0, -0.15) arc (270:170:0.15) arc (170:-10:0.02) arc (170:270:0.11) arc (90:-90:0.02);
+\end{tikzpicture}
