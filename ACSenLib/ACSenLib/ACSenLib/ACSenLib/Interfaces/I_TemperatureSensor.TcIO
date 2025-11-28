@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TemperatureSensor" Id="{83bb4304-a51b-4ad9-a3b6-6fe0a375e02b}">
+    <Declaration><![CDATA[INTERFACE I_TemperatureSensor
+]]></Declaration>
+    <Property Name="Temperature" Id="{79d7e23f-7f45-45e3-9b0f-3b9a5ace9663}">
+      <Declaration><![CDATA[PROPERTY Temperature : REAL]]></Declaration>
+      <Get Name="Get" Id="{bc210361-8fe6-461a-bdc7-2546ec0f0903}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>
