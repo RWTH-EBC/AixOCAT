@@ -16,11 +16,23 @@
     <Implicit_KindOfTask>{b2fd90c6-021a-4ef4-9a5f-1544faeca9d3}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{6629b339-011b-4da0-9b6e-86361de2319b}</Implicit_Jitter_Distribution>
     <LibraryReferences>{d2d62064-1660-4a11-ad2f-5fe81ebe7474}</LibraryReferences>
+    <Company>EBC</Company>
+    <Released>false</Released>
+    <Title>ACSenLib</Title>
+    <ProjectVersion>0.1</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Interfaces" />
     <Folder Include="Actors" />
     <Folder Include="Sensors" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interfaces\I_TemperatureSensor.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Sensors\FB_PT100_EL3202.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
