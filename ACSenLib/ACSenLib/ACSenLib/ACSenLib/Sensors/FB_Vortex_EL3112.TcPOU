@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Vortex_EL3112" Id="{23953ab1-035f-4a94-a17d-2ee96d89fb3e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Vortex_EL3112 IMPLEMENTS I_VolumeFlowSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR								
+	//Property Real value
+	fVolFlow : REAL;
+	//Raw value
+	VolFlowRaw AT %I* : INT;
+	//Convertion parameters
+	m : REAL := 0.00305185071; //Multiplier for convertion
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Volume Flow measurement with Grundfos Vortex sensor]]></ST>
+    </Implementation>
+    <Property Name="VolumeFlow" Id="{54670c57-2382-41bd-85d2-98a1c19c6c3b}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{7b2ba617-9b10-4aed-bdce-4147aba7112a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fVolFlow := m * INT_TO_REAL(VolFlowRaw);
+VolumeFlow := THIS^.fVolFlow;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

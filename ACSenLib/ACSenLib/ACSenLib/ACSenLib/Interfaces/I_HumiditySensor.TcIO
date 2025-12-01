@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_HumiditySensor" Id="{46ec89d5-3c5f-466c-85ba-d291fb8e6f47}">
+    <Declaration><![CDATA[INTERFACE I_HumiditySensor
+]]></Declaration>
+    <Property Name="Humidity" Id="{ea77c722-472d-406a-a74a-01de788c3ffc}">
+      <Declaration><![CDATA[PROPERTY Humidity : REAL]]></Declaration>
+      <Get Name="Get" Id="{1d6d4099-5682-4aa7-ae14-68f1f759aaca}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

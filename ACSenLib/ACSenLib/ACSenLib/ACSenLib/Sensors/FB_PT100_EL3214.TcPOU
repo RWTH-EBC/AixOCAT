@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_PT100_EL3214" Id="{53f33390-605b-45f3-b0c4-f896ba7505ff}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PT100_EL3214 IMPLEMENTS I_TemperatureSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Property Real value
+	fTemperature : REAL;
+	//Raw value
+	TempRaw AT %I* : INT;
+	//Convertion parameters
+	m : REAL := 0.1; //Multiplier for convertion
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Temperature measurement: PT 100 1/10 DIN + EL3214: 3-wire]]></ST>
+    </Implementation>
+    <Property Name="Temperature" Id="{667d44b9-225d-41ed-bc93-6540bd10ff8f}">
+      <Declaration><![CDATA[PROPERTY Temperature : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{041db4e0-f07a-4a4d-a863-73886e1b9200}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fTemperature := INT_TO_REAL(TempRaw) * m;
+Temperature := THIS^.fTemperature;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

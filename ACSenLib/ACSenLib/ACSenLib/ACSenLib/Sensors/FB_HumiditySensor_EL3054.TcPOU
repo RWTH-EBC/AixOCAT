@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HumiditySensor_EL3054" Id="{0da4b185-c333-42ce-96bc-7d6db4f7a49c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HumiditySensor_EL3054 IMPLEMENTS I_HumiditySensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Property Real value
+	fHumidity : REAL;
+	//Raw value
+	HumRaw AT %I* : INT;
+	//Convertion parameters
+	m : REAL := 0.00305185071; //Multiplier for convertion
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Humidity measurement with rotronic HygroFlex 5 
+// https://www.rotronic.com/de/catalog/product/view/id/299/s/hygroflex5-hf5-hlk-messumformer/category/12/]]></ST>
+    </Implementation>
+    <Property Name="Humidity" Id="{7ba85027-3b4b-485f-aeed-d09726388122}">
+      <Declaration><![CDATA[PROPERTY Humidity : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{53f5695d-8143-4b8a-be2e-4d16fcb201b9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fHumidity := m* INT_TO_REAL(HumRaw);
+Humidity := THIS^.fHumidity;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

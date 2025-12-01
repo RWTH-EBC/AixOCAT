@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Optiflux5000_EL3022" Id="{993a7f08-d4e9-4a4b-81b1-d13df2987775}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Optiflux5000_EL3022 IMPLEMENTS I_VolumeFlowSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR								
+	//Property Real value
+	fVolFlow : REAL;
+	//Raw value
+	VolFlowRaw AT %I* : INT;
+	//Convertion parameters
+	m : REAL := 0.1098666341; //Multiplier for convertion
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Volume Flow measurement with Krohne Optiflux 5000
+// https://www.krohne.com/de-de/produkte/durchflussmesstechnik/komponenten-und-zusaetzliche-betriebsmittel-fuer-die-durchflussmessung/messwertaufnehmer/optiflux-5000]]></ST>
+    </Implementation>
+    <Property Name="VolumeFlow" Id="{a8f81ea5-c692-4837-9874-9e77a19b3686}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{d0be21c8-fd5c-4567-ae96-7ea0a2f352bf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fVolFlow := m * INT_TO_REAL(VolFlowRaw);
+VolumeFlow := THIS^.fVolFlow;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

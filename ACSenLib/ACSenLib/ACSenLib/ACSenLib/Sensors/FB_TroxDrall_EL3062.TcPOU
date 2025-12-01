@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_TroxDrall_EL3062" Id="{0512a377-69d2-4887-92b7-d773adc7f8c7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TroxDrall_EL3062 IMPLEMENTS I_VolumeFlowSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Propertie Real value
+	fVolumeFlow : REAL;
+	//Raw value
+	VolumeFlowRaw AT %I* : INT;
+	//Convertion parameters
+	m : REAL := 0.0444959849; //Multiplier for convertion
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Air Volume Flow measurement with Trox Drallauslass]]></ST>
+    </Implementation>
+    <Property Name="VolumeFlow" Id="{27e31527-7dc0-4b40-aead-a54547972eb6}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{65686630-1534-4fe1-bb7a-fa8f0603eb9b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//Read volume flow
+fVolumeFlow := m * INT_TO_REAL (VolumeFlowRaw); 
+VolumeFlow := This^.fVolumeFlow;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

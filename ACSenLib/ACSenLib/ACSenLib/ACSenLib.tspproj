@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.18">
+	<Project ProjectGUID="{545DE349-10F8-4698-A0CE-20FB41FD31C9}" Target64Bit="true" ShowHideConfigurations="#x6">
+		<Plc>
+			<Project GUID="{374E8C8C-88E4-4FEC-8E85-FF1723525693}" Name="ACSenLib" PrjFilePath="ACSenLib\ACSenLib.plcproj" TmcFilePath="ACSenLib\ACSenLib.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e"/>
+		</Plc>
+	</Project>
+</TcSmProject>
