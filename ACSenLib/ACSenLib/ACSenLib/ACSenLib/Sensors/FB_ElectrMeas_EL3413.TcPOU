@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_ElectrMeas_EL3413" Id="{9f752a22-5ae7-4222-a9b5-a7c3d268ecd9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ElectrMeas_EL3413
+VAR
+	fCurInt_P1 AT %I* : DINT;
+	fCurInt_P2 AT %I* : DINT;
+	fCurInt_P3 AT %I* : DINT;
+	fCur_P1 : REAL;
+	fCur_P2 : REAL;
+	fCur_P3 : REAL;
+	fmCur : REAL := 0.000004; //Multiplier Current
+	fVolInt_P1 AT %I* : DINT;
+	fVolInt_P2 AT %I* : DINT;
+	fVolInt_P3 AT %I* : DINT;
+	fVol_P1 : REAL;
+	fVol_P2 : REAL;
+	fVol_P3 : REAL;
+	fmVol : REAL := 0.0001; //Multiplier voltage
+	fPowerInt_P1 AT %I* : DINT;
+	fPowerInt_P2 AT %I* : DINT;
+	fPowerInt_P3 AT %I* : DINT;
+	fPower_P1 : REAL;
+	fPower_P2: REAL;
+	fPower_P3 : REAL;
+	fmPow : REAL := 0.04; //Multiplier power 
+	fPower_total :REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Electrical measurements with EL3413]]></ST>
+    </Implementation>
+    <Property Name="Power_P1" Id="{8823c928-71a4-4b17-97d6-6971bdd225d9}">
+      <Declaration><![CDATA[PROPERTY Power_P1 : REAL]]></Declaration>
+      <Get Name="Get" Id="{218c1f6e-673f-48e5-b954-5f9ed6350c70}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Power_P1 := THIS^.fPower_P1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Power_P2" Id="{daac2d0f-e425-43ab-9983-e2145df5cce0}">
+      <Declaration><![CDATA[PROPERTY Power_P2 : REAL]]></Declaration>
+      <Get Name="Get" Id="{4cf35e2f-1b9d-4cd7-8ed8-c811f3aaaea9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Power_P2 := THIS^.fPower_P2;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Power_P3" Id="{c678f921-1b0f-48df-bc6e-78201e43c659}">
+      <Declaration><![CDATA[PROPERTY Power_P3 : REAL]]></Declaration>
+      <Get Name="Get" Id="{cdc32406-0c89-455a-ad8e-fd4aaab21642}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Power_P3 := THIS^.fPower_P3;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Power_total" Id="{869b7b35-d156-41a2-a104-1bfcf976d98c}">
+      <Declaration><![CDATA[PROPERTY Power_total : REAL]]></Declaration>
+      <Get Name="Get" Id="{67664778-3dc5-4f02-907b-96005f72986d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Power_total := THIS^.fPower_total;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Read" Id="{c073a807-9888-4a9e-a26c-928e39cee245}">
+      <Declaration><![CDATA[METHOD Read
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Read Current
+fCur_P1 := DINT_TO_REAL(fCurInt_P1) * fmCur; 
+fCur_P2 := DINT_TO_REAL(fCurInt_P2) * fmCur; 
+fCur_P3 := DINT_TO_REAL(fCurInt_P3) * fmCur;
+
+//Voltage
+fVol_P1 := DINT_TO_REAL(fVolInt_P1) * fmVol;
+fVol_P2 := DINT_TO_REAL(fVolInt_P2) * fmVol;
+fVol_P3 := DINT_TO_REAL(fVolInt_P3) * fmVol;
+
+//Power
+fPower_P1 := DINT_TO_REAL(fPowerInt_P1) * fmPow;
+fPower_P2 := DINT_TO_REAL(fPowerInt_P2) * fmPow;
+fPower_P3 := DINT_TO_REAL(fPowerInt_P3) * fmPow;
+
+fPower_total := fPower_P1 + fPower_P2 + fPower_P3;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

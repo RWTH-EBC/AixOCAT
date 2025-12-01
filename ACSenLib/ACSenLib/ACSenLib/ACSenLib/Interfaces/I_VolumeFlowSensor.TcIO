@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_VolumeFlowSensor" Id="{788adee9-3c81-47b7-b107-04763dfb9584}">
+    <Declaration><![CDATA[INTERFACE I_VolumeFlowSensor
+]]></Declaration>
+    <Property Name="VolumeFlow" Id="{2727b38c-5799-4eb9-981c-4bb8da8fa637}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL]]></Declaration>
+      <Get Name="Get" Id="{c8a4b2b1-839f-4831-96e7-c9001554f03c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

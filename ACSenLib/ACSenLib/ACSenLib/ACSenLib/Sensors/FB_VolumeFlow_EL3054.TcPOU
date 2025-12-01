@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_VolumeFlow_EL3054" Id="{0c1f86b8-d855-4a32-ba8b-f5b6e88ec322}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VolumeFlow_EL3054 IMPLEMENTS I_VolumeFlowSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//Property Real value
+	fVolFlow : REAL;
+	//Raw value
+	VolFlowRaw AT %I* : INT;
+	//Convertion parameters
+	m : REAL := 0.000366222026; //Multiplier for convertion
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="VolumeFlow" Id="{a420b916-67af-406a-bbd1-8413364e2f5d}">
+      <Declaration><![CDATA[PROPERTY VolumeFlow : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{19e69505-7e17-4d06-a20f-c5112e8c91f5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fVolFlow := m * INT_TO_REAL(VolFlowRaw);
+VolumeFlow := THIS^.fVolFlow;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

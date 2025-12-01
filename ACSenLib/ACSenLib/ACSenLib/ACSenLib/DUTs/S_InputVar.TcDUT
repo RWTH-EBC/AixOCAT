@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="S_InputVar" Id="{6fa4f742-b8d6-439a-ab7a-ca6f6617de48}">
+    <Declaration><![CDATA[TYPE S_InputVar :
+STRUCT
+	(*	
+RealVar=IntVarInput*RealParaM+RealParaC
+
+RealParaMinWert>=RealVar>=RealParaMaxWert
+
+IntVarOutput=(RealVar-RealParaC)/RealParaM
+
+*)	
+
+	IntVarInput AT %I*	:INT ; //Input von Klemme (z.B. 2100)
+	RealVar 			:REAL; //Wert als REAL/Float/Single (z.B. 21.00)
+	
+	RealParaM 			:REAL; //Parameter M
+	RealParaC 			:REAL; //Parameter C
+	
+	RealParaMaxVal 	:REAL; //Maximaler Wert des nativen Wertes (z.B. 10V, 20mA)
+	RealParaMinVal 	:REAL; //Minimaler Wert des nativen Wertes (z.B. 0V, 4mA)	
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
