@@ -17,7 +17,7 @@ END_VAR]]></Declaration>
 2V - 3V		: pump runs at minimum speed (operation)
 3V - 10V	: speed varies linear between minimum and maximum
 *)
-fVolt	:=	3 + (10 - 3)*(USINT_TO_SINT(nPercentRPM)/100);
+fVolt	:=	3 + (10 - 3)*(USINT_TO_REAL(nPercentRPM)/100.0);
 
 //assign output
 F_PumpConvPercVolt	:=	fVolt;]]></ST>
